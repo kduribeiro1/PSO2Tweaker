@@ -6337,4 +6337,8 @@ NextStuff:
             Exit Sub
         End Try
     End Sub
+
+    Private Sub lblStatus_Click(sender As Object, e As EventArgs) Handles lblStatus.Click
+        'test
+    End Sub
 End Class
