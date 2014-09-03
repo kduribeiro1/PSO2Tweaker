@@ -1,0 +1,771 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="strAndthelatestis" xml:space="preserve">
+    <value> et la dernière est </value>
+  </data>
+  <data name="strApplySelectedChanges" xml:space="preserve">
+    <value>Appliquer les changements sélectionnés</value>
+  </data>
+  <data name="strCancelCurrentDownload" xml:space="preserve">
+    <value>Annuler le téléchargement actuel</value>
+  </data>
+  <data name="strChanges" xml:space="preserve">
+    <value>Changements :</value>
+  </data>
+  <data name="strCheckforPSO2Updates" xml:space="preserve">
+    <value>Vérifier les dernières mises à jour de PSO2</value>
+  </data>
+  <data name="strCheckingforupdatesPleasewaitamoment" xml:space="preserve">
+    <value>Vérification de mises à jour, veuillez patienter...</value>
+  </data>
+  <data name="strCurrentlyselecteddirectory" xml:space="preserve">
+    <value>Répertoire de jeu actuel :</value>
+  </data>
+  <data name="strCurrentOSFullName" xml:space="preserve">
+    <value>Système d'exploitation actuel : </value>
+  </data>
+  <data name="strCurrentOSVersion" xml:space="preserve">
+    <value>Version du système d'exploitation actuel : </value>
+  </data>
+  <data name="strInstallUpdatePatches" xml:space="preserve">
+    <value>Installer/Mettre à jour les patchs</value>
+  </data>
+  <data name="strIsTheCurrentOS64bit" xml:space="preserve">
+    <value>Le système d'exploitation actuel est-il en 64-bit ? </value>
+  </data>
+  <data name="strIsUnrarAvailable" xml:space="preserve">
+    <value>Unrar est-il disponible : </value>
+  </data>
+  <data name="strLaunchPSO2" xml:space="preserve">
+    <value>Lancer PSO2</value>
+  </data>
+  <data name="strPleaseSelectwin32Dir" xml:space="preserve">
+    <value>Sélectionner le répertoire win32 de PSO2. Ce sera sauvegardé, vous n'aurez pas à devoir le sélectionner de nouveau.</value>
+  </data>
+  <data name="strProgramOpeningRunningDiagnostics" xml:space="preserve">
+    <value>Ouverture du programme, diagnotics en cours...</value>
+  </data>
+  <data name="strProgramOpeningSuccessfully" xml:space="preserve">
+    <value>Programme ouvert avec succès ! Version </value>
+  </data>
+  <data name="strRemoveCensorFile" xml:space="preserve">
+    <value>Retirer le fichier de censure</value>
+  </data>
+  <data name="strRemoveNVidiaVideo" xml:space="preserve">
+    <value>Retirer la vidéo du logo NVIDIA</value>
+  </data>
+  <data name="strRemovePCOpening" xml:space="preserve">
+    <value>Retirer l'introduction PC</value>
+  </data>
+  <data name="strRemoveSEGALogoVideo" xml:space="preserve">
+    <value>Retirer la vidéo du logo SEGA</value>
+  </data>
+  <data name="strRemoveVitaOpening" xml:space="preserve">
+    <value>Retirer l'introduction Vita</value>
+  </data>
+  <data name="strRestoreBackups" xml:space="preserve">
+    <value>Restaurer les backups</value>
+  </data>
+  <data name="strRestoreCensorFile" xml:space="preserve">
+    <value>Restaurer le fichier de censure</value>
+  </data>
+  <data name="strRestoreNVidiaLogo" xml:space="preserve">
+    <value>Restaurer la vidéo du logo NVIDIA</value>
+  </data>
+  <data name="strRestorePCOpeningVideo" xml:space="preserve">
+    <value>Restaurer l'introduction PC</value>
+  </data>
+  <data name="strRestoreSEGALogoVideo" xml:space="preserve">
+    <value>Restaurer la vidéo du logo SEGA</value>
+  </data>
+  <data name="strRestoreVitaOpeningVideo" xml:space="preserve">
+    <value>Restaurer l'introduction Vita</value>
+  </data>
+  <data name="strRunDirectory" xml:space="preserve">
+    <value>Répertoire dans lequel le programme est lancé : </value>
+  </data>
+  <data name="strSelectedPSO2win32directory" xml:space="preserve">
+    <value>Répertoire win32 de PSO2 sélectionné : </value>
+  </data>
+  <data name="strSelectPSO2win32folder" xml:space="preserve">
+    <value>Sélectionner le dossier win32 de PSO2...</value>
+  </data>
+  <data name="strSwapPCVitaOpenings" xml:space="preserve">
+    <value>Interchanger les introductions PC/Vita </value>
+  </data>
+  <data name="strTroubleshooting" xml:space="preserve">
+    <value>Dépannage</value>
+  </data>
+  <data name="strWaitingforacommand" xml:space="preserve">
+    <value>En attente de commande</value>
+  </data>
+  <data name="strWouldyouliketodownloadthenewversion" xml:space="preserve">
+    <value>. Voulez-vous télécharger la dernière version ?</value>
+  </data>
+  <data name="strYouareusinganoutdatedversionoftheprogram" xml:space="preserve">
+    <value>Vous utilisez une version dépassée du programme. Vous avez la version </value>
+  </data>
+  <data name="strYouhavethelatestversionoftheprogram" xml:space="preserve">
+    <value>Vous avez la dernière version du programme : </value>
+  </data>
+  <data name="strYourLogFileisHUGE" xml:space="preserve">
+    <value>Votre fichier log est imposant - Voulez-vous le vider ?</value>
+  </data>
+  <data name="strCheckformissingfiles" xml:space="preserve">
+    <value>Vérification pour fichiers manquants</value>
+  </data>
+  <data name="strExit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="strFixPSO2EXEs" xml:space="preserve">
+    <value>Corriger les EXEs de PSO2</value>
+  </data>
+  <data name="strFixPSO2Permissions" xml:space="preserve">
+    <value>Corriger les permissions de PSO2</value>
+  </data>
+  <data name="strOptions" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="strCheckingforUpdatestopatches" xml:space="preserve">
+    <value>Vérification de mises à jour des patchs...</value>
+  </data>
+  <data name="strCurrentStoryPatchis" xml:space="preserve">
+    <value>La version actuel du patch du mode Histoire est : </value>
+  </data>
+  <data name="strDownloadingUpdate" xml:space="preserve">
+    <value>Téléchargement de mises à jour...</value>
+  </data>
+  <data name="strNotSwapped" xml:space="preserve">
+    <value>NON INTERCHANGE</value>
+  </data>
+  <data name="strSwapped" xml:space="preserve">
+    <value>INTERCHANGE</value>
+  </data>
+  <data name="strallDone" xml:space="preserve">
+    <value>Fait !</value>
+  </data>
+  <data name="strAllDoneSystemReady" xml:space="preserve">
+    <value>Fait - Système prêt !</value>
+  </data>
+  <data name="strAllFilesCheckedOut" xml:space="preserve">
+    <value>Tous les fichiers vérifiés !</value>
+  </data>
+  <data name="strAllNecessaryFiles" xml:space="preserve">
+    <value>Tous les fichiers nécessaires restaurés !</value>
+  </data>
+  <data name="strAreYouSureRestoreBackup" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir continuer ? Cela va restaurer votre backup d'avant l'application de ce patch.</value>
+  </data>
+  <data name="strAreYouSurewin32" xml:space="preserve">
+    <value>Êtes-vous SÛR que vous avez sélectionné le dossier win32 ?</value>
+  </data>
+  <data name="strAreYouSurewin32NotInside" xml:space="preserve">
+    <value>Êtes-vous SÛR que vous avez sélectionné le dossier win32 et non un sous-dossier ?</value>
+  </data>
+  <data name="strBackupRestored" xml:space="preserve">
+    <value>Backup restauré !</value>
+  </data>
+  <data name="strBeginningStoryModeUpdate" xml:space="preserve">
+    <value>Début de la mise à jour du mode Histoire...</value>
+  </data>
+  <data name="strCheckingFiles" xml:space="preserve">
+    <value>Vérification des fichiers...</value>
+  </data>
+  <data name="strCheckingforAllFiles" xml:space="preserve">
+    <value>Vérification de tous les fichiers...</value>
+  </data>
+  <data name="strCheckingforNewContent" xml:space="preserve">
+    <value>Vérification de nouveau contenu...</value>
+  </data>
+  <data name="strCheckingforPSO2Updates" xml:space="preserve">
+    <value>Vérification de mises à jour de PSO2...</value>
+  </data>
+  <data name="strChooseABackgroundImage" xml:space="preserve">
+    <value>Serveur de patch du mode Histoire :</value>
+  </data>
+  <data name="strChooseALanguage" xml:space="preserve">
+    <value>Choisissez une langue :</value>
+  </data>
+  <data name="strChooseATheme" xml:space="preserve">
+    <value>Choisissez un thème :</value>
+  </data>
+  <data name="strCouldNotFindPSO2" xml:space="preserve">
+    <value>pso2.exe non trouvé ! Êtes-vous sûr d'avoir sélectionné le bon répertoire ?</value>
+  </data>
+  <data name="strCreatingBackupDirectory" xml:space="preserve">
+    <value>Création du répertoire de backup...</value>
+  </data>
+  <data name="strCurrentENPatchis" xml:space="preserve">
+    <value>Version actuelle du patch EN simple : </value>
+  </data>
+  <data name="strCurrentLargeFilesis" xml:space="preserve">
+    <value>Version actuelle du patch EN étendu : </value>
+  </data>
+  <data name="strCurrentlyCheckingFile" xml:space="preserve">
+    <value>Vérification en cours du fichier #</value>
+  </data>
+  <data name="strDidYouHaveTheLatestVersion" xml:space="preserve">
+    <value>Aviez-vous la dernière version de PSO2 avant aujourd'hui ? De plus, pouviez-vous vous connecter au serveur et jouer ? Si oui, cliquez sur Oui pour télécharger seulement le nouveau contenu. Sinon, cliquez sur Non pour scanner tous les fichiers.</value>
+  </data>
+  <data name="strDone" xml:space="preserve">
+    <value>Fait !</value>
+  </data>
+  <data name="strDownloadCompleteDownloaded" xml:space="preserve">
+    <value>Téléchargement terminé ! (Téléchargé </value>
+  </data>
+  <data name="strDownloaded" xml:space="preserve">
+    <value>Téléchargé </value>
+  </data>
+  <data name="strDownloadedandInstalled" xml:space="preserve">
+    <value>Téléchargé et installé </value>
+  </data>
+  <data name="strDownloading" xml:space="preserve">
+    <value>Téléchargement de </value>
+  </data>
+  <data name="strDownloadingLatestPatchFiles" xml:space="preserve">
+    <value>Téléchargement des fichiers du dernier patch...</value>
+  </data>
+  <data name="strDownloadingPatchFile1" xml:space="preserve">
+    <value>Téléchargement du fichier de patch #1...</value>
+  </data>
+  <data name="strDownloadingPatchFile2" xml:space="preserve">
+    <value>Téléchargement du fichier de patch #2...</value>
+  </data>
+  <data name="strDownloadingPatchFile3" xml:space="preserve">
+    <value>Téléchargement du fichier de patch #3...</value>
+  </data>
+  <data name="strDownloadingPatchFile4" xml:space="preserve">
+    <value>Téléchargement du fichier de patch #4...</value>
+  </data>
+  <data name="strDownloadStoryPatch" xml:space="preserve">
+    <value>Télécharger la dernière version du patch du mode Histoire sur http://arks-layer.com/story.php en premier !</value>
+  </data>
+  <data name="strDownloadwasCancelled" xml:space="preserve">
+    <value>Téléchargement annulé manuellement !</value>
+  </data>
+  <data name="strErasingPreviousBackup" xml:space="preserve">
+    <value>Effacement du backup précédent...</value>
+  </data>
+  <data name="strExtractingTo" xml:space="preserve">
+    <value>Extraction vers </value>
+  </data>
+  <data name="strFirstTime" xml:space="preserve">
+    <value>On dirait que c'est la première fois que vous utilisez cette version de PSO2 Tweaker - Sélectionner votre langue et un thème dans la prochaine fenêtre.</value>
+  </data>
+  <data name="strFixingPermissionsFor" xml:space="preserve">
+    <value>Correction des permissions pour </value>
+  </data>
+  <data name="strGameUpdatedVanilla" xml:space="preserve">
+    <value>Jeu mis à jour vers la dernière version JP Vanilla. Ne pas oublier de réinstaller les patchs !</value>
+  </data>
+  <data name="strHaveyouDownloadedStoryYet" xml:space="preserve">
+    <value>Avez-vous déjà téléchargé le patch du mode Histoire ? Si vous cliquez sur Oui, vous serez demandé à indiquer le fichier RAR correspondant.</value>
+  </data>
+  <data name="strInstalledUpdated" xml:space="preserve">
+    <value>Installé/Mis à jour !</value>
+  </data>
+  <data name="strInstalledUpdatedBackup" xml:space="preserve">
+    <value> installé/mis à jour ! Le backup est vers </value>
+  </data>
+  <data name="strInstallingPatch" xml:space="preserve">
+    <value>Installation du patch...</value>
+  </data>
+  <data name="strIsMissing" xml:space="preserve">
+    <value> est manquant.</value>
+  </data>
+  <data name="strItSeemsLikePSO2isalready" xml:space="preserve">
+    <value>Il semblerait que PSO2 est déjà en cours d'éxecution. Voulez-vous le fermer ?</value>
+  </data>
+  <data name="strLaunchingPSO2" xml:space="preserve">
+    <value>Démarrage de Phantasy Star Online 2...</value>
+  </data>
+  <data name="strNewENPatch" xml:space="preserve">
+    <value>Une nouvelle mise à jour du patch EN simple est disponible - Voulez-vous la télécharger l'installer ?</value>
+  </data>
+  <data name="strNewLargeFiles" xml:space="preserve">
+    <value>Une nouvelle mise à jour du patch EN étendu est disponible - Voulez-vous la télécharger et l'installer ?</value>
+  </data>
+  <data name="strNewPSO2Update" xml:space="preserve">
+    <value>Une mise à jour pour PSO2 est disponible - Voulez-vous la télécharger et l'installer ?</value>
+  </data>
+  <data name="strPleasecopytheURL" xml:space="preserve">
+    <value>Copier l'URL de la fenêtre qui va s'ouvrir vers votre post sur PSOW pour que je puisse voir votre log et corriger l'erreur. Merci ! - AIDA</value>
+  </data>
+  <data name="strPleaseSelectPSO2win32dir" xml:space="preserve">
+    <value>Sélectionnez le répertoire win32 de PSO2. Ce sera sauvegardé et vous n'aurez pas à devoir le sélectionner de nouveau.</value>
+  </data>
+  <data name="strPleaseSelectWin32folder" xml:space="preserve">
+    <value>Sélectionner le dossier win32 de PSO2.</value>
+  </data>
+  <data name="strRemoving" xml:space="preserve">
+    <value>Retrait de </value>
+  </data>
+  <data name="strRestoring" xml:space="preserve">
+    <value>Restauration de </value>
+  </data>
+  <data name="strRightClickforOptions" xml:space="preserve">
+    <value>Clic-droit pour options supplémentaires</value>
+  </data>
+  <data name="strSelectedDir" xml:space="preserve">
+    <value>Sélectionné &lt;DIRECTORY&gt; comme répertoire de PSO2.</value>
+  </data>
+  <data name="strSomethingWentWrongUpload" xml:space="preserve">
+    <value>Quelque chose s'est mal passé. Voulez-vous uploader votre fichier log afin de pouvoir corriger le problème ?</value>
+  </data>
+  <data name="strStoryModeUpdate" xml:space="preserve">
+    <value>Une nouvelle mise à jour du patch du mode Histoire est disponible - Voulez-vous la télécharger et l'installer ? NOTE: Cette mise à jour présume que vous avez déjà téléchargé et installé le fichier RAR le plus récent disponible sur http://arks-layer.com, qui parait être : </value>
+  </data>
+  <data name="strStoryPatchBackup" xml:space="preserve">
+    <value>Patch du mode Histoire installé ! Backup sur </value>
+  </data>
+  <data name="strStoryPatchInstalled" xml:space="preserve">
+    <value>Patch du mode Histoire installé !</value>
+  </data>
+  <data name="strStoryPatchUpdated" xml:space="preserve">
+    <value>Patch du mode Histoire mis à jour !</value>
+  </data>
+  <data name="strSwappingOpenings" xml:space="preserve">
+    <value>Interchangement des introductions...</value>
+  </data>
+  <data name="strUpdating" xml:space="preserve">
+    <value>Mise à jour de </value>
+  </data>
+  <data name="strWaitingforPatch" xml:space="preserve">
+    <value>En attente du patch de finir l'extraction...</value>
+  </data>
+  <data name="strWouldYouLikeBackupStory" xml:space="preserve">
+    <value>Voulez-vous faire un backup de vos fichiers avant d'appliquer le patch ? Cela va effacer tous les précédents backups du patch du mode Histoire.</value>
+  </data>
+  <data name="strWouldYouLikeToBackupLanguagePatch" xml:space="preserve">
+    <value>Voulez-vous faire un backup de vos fichiers avant d'appliquer le patch ? Cela va effacer tous les précédents backups du patch de langue.</value>
+  </data>
+  <data name="strWouldYouLikeToBackupLargeFiles" xml:space="preserve">
+    <value>Voulez-vous faire un backup de vos fichiers avant d'appliquer le patch ? Cela va effacer tous les précédents backups du patch de langue étendu.</value>
+  </data>
+  <data name="strWouldYouLikeToDownloadInstallMissing" xml:space="preserve">
+    <value>Voulez-vous télécharger et installer les fichiers manquants ?</value>
+  </data>
+  <data name="strYouAppearToBeUpToDate" xml:space="preserve">
+    <value>Il semblerait que vous ayiez les derniers fichiers de données - Dernières étapes de la mise à jour finale !</value>
+  </data>
+  <data name="strYouCannotRemoveRestore" xml:space="preserve">
+    <value>Vous ne pouvez pas restaurer et retirer en même temps.</value>
+  </data>
+  <data name="strAlwaysonTop" xml:space="preserve">
+    <value>Toujours en premier plan</value>
+  </data>
+  <data name="strAnalyzeInstallforIssues" xml:space="preserve">
+    <value>Analyse de l'installation pour problèmes rencontrés</value>
+  </data>
+  <data name="strCheckforDeletedMissingFiles" xml:space="preserve">
+    <value>Vérifier les fichiers supprimés/manquants</value>
+  </data>
+  <data name="strCheckForOldMissingFiles" xml:space="preserve">
+    <value>Vérifier les fichiers anciens/manquants</value>
+  </data>
+  <data name="strCheckForStoryPatchUpdates" xml:space="preserve">
+    <value>Vérifier les mises à jour du mode Histoire</value>
+  </data>
+  <data name="strClickOrb" xml:space="preserve">
+    <value>Cliquer sur l'ORBE pour accéder au menu</value>
+  </data>
+  <data name="strDiagnoseConnectionIssues" xml:space="preserve">
+    <value>Diagnostiquer les problèmes de connexion</value>
+  </data>
+  <data name="strDoesItemPatchWork" xml:space="preserve">
+    <value>Est-ce que le patch d'objets fonctionne avec la dernière version de PSO2 : </value>
+  </data>
+  <data name="strDownloadingItemTranslationFiles" xml:space="preserve">
+    <value>Téléchargement des derniers fichiers de traduction d'objets...</value>
+  </data>
+  <data name="strERROR" xml:space="preserve">
+    <value>ERREUR - </value>
+  </data>
+  <data name="strFAILED" xml:space="preserve">
+    <value> [ECHOUE !]</value>
+  </data>
+  <data name="strFailedToGetUpdateInfo" xml:space="preserve">
+    <value>Echec d'obtention des dernières informations de mise à jour. Généralement, cela signifie qu'AIDA a oublié un truc. Ne paniquez pas, le programme continuera de fonctionner correctement. Il est également inutile de reporter cette erreur.</value>
+  </data>
+  <data name="strFixGameguardErrors" xml:space="preserve">
+    <value>Corriger les erreurs GameGuard</value>
+  </data>
+  <data name="strIfAboveVersions" xml:space="preserve">
+    <value>Si n'importe laquelle des versions ci-dessus est incorrecte, utiliser Outrepasser dans les options pour la/les corriger.</value>
+  </data>
+  <data name="strLaunchChrome" xml:space="preserve">
+    <value>Lancer Chrome en mode de compatibilité PSO2</value>
+  </data>
+  <data name="strLoadingSidebar" xml:space="preserve">
+    <value>Chargement de la barre...</value>
+  </data>
+  <data name="strOtherTasks" xml:space="preserve">
+    <value>Autres tâches</value>
+  </data>
+  <data name="strProgramStarted" xml:space="preserve">
+    <value>Programme démarré...</value>
+  </data>
+  <data name="strPSO2Options" xml:space="preserve">
+    <value>Options de PSO2</value>
+  </data>
+  <data name="strResetPSO2Settings" xml:space="preserve">
+    <value>Réinitialiser les paramètres de PSO2</value>
+  </data>
+  <data name="strResumePatching" xml:space="preserve">
+    <value>Reprendre la mise à jour</value>
+  </data>
+  <data name="strStoryPatchServerTests" xml:space="preserve">
+    <value>Tests de serveurs du moe Histoire</value>
+  </data>
+  <data name="strTerminate" xml:space="preserve">
+    <value>Arrêter le processus PSO2</value>
+  </data>
+  <data name="strTranslateItems" xml:space="preserve">
+    <value>Traduction des objets</value>
+  </data>
+  <data name="strUninstallPatches" xml:space="preserve">
+    <value>Désinstaller les patchs</value>
+  </data>
+  <data name="strWebLinks" xml:space="preserve">
+    <value>Liens Web</value>
+  </data>
+  <data name="strYour7zipiscorrupt" xml:space="preserve">
+    <value>7za.exe semble être corrompu, retéléchargement...</value>
+  </data>
+  <data name="strYourTranslationBINiscorrupt" xml:space="preserve">
+    <value>translation.bin semble être corrompu, retéléchargement...</value>
+  </data>
+  <data name="strYourTranslatorDLLiscorrupt" xml:space="preserve">
+    <value>translator.dll semble être corrompu, retéléchargement...</value>
+  </data>
+  <data name="strYourUnrariscorrupt" xml:space="preserve">
+    <value>UnRar.exe semble être corrompu, retéléchargement...</value>
+  </data>
+  <data name="strAreYouSureResetPSO2Settings" xml:space="preserve">
+    <value>Êtes-vous sûr de réinitialiser tous les paramètres de PSO2 ? Cela inclut les préférences, auto-login, serveurs de préférence, etc.</value>
+  </data>
+  <data name="strAutoInstallingENPatch" xml:space="preserve">
+    <value>Auto-installation du patch EN simple...</value>
+  </data>
+  <data name="strAutoInstallingLF" xml:space="preserve">
+    <value>Auto-installation du patch EN étendu...</value>
+  </data>
+  <data name="strAutoInstallingStoryPatch" xml:space="preserve">
+    <value>Auto-installation du patch du mode Histoire...</value>
+  </data>
+  <data name="strBackupEN" xml:space="preserve">
+    <value>Voulez-vous faire un backup de vos fichiers avant d'appliquer le patch ? Cela va effacer tous les précédents backups du patch EN simple.</value>
+  </data>
+  <data name="strCannotFindResume" xml:space="preserve">
+    <value>Ne peut trouver le fichier resume - Veuillez réessayer la mise à jour !</value>
+  </data>
+  <data name="strCantFindBackupDirectory" xml:space="preserve">
+    <value>N'a pu trouver le répertoire de backup - Cela doit être </value>
+  </data>
+  <data name="strCheckingConnection" xml:space="preserve">
+    <value>Vérification de connexion vers le serveur de patch...</value>
+  </data>
+  <data name="strCheckingForFolders" xml:space="preserve">
+    <value>Vérification des dossiers...</value>
+  </data>
+  <data name="strCheckingForMissingOldFiles" xml:space="preserve">
+    <value>Vérification des fichiers anciens/manquants...</value>
+  </data>
+  <data name="strCheckingForNecessaryFiles" xml:space="preserve">
+    <value>Vérification des fichiers nécessaires...</value>
+  </data>
+  <data name="strCouldNotFindPSO2EXE" xml:space="preserve">
+    <value>N'a pu trouver pso2.exe - Cela peut être résolu en allant dans le mode de Dépannage -&gt; Corriger les EXEs de PSO2</value>;
+  </data>
+  <data name="strDeletingItemCache" xml:space="preserve">
+    <value>Suppression du fichier item_name_cache.dat pour éviter des problèmes avec PSO2 Vanilla...</value>
+  </data>
+  <data name="strDoneTesting" xml:space="preserve">
+    <value>Tests effectués ! Si vous avez eu des erreurs, veuillez suivre les étapes recommandées.</value>
+  </data>
+  <data name="strDownloadedATotalOf" xml:space="preserve">
+    <value>Téléchargé un total de </value>
+  </data>
+  <data name="strDownloadingENToUninstall" xml:space="preserve">
+    <value>Téléchargement du patch EN simple pour préparer à la désinstallation...</value>
+  </data>
+  <data name="strDownloadingLatestItemTranslationFiles" xml:space="preserve">
+    <value>Téléchargement des derniers fichiers de traduction d'objets...</value>
+  </data>
+  <data name="strDownloadingLFToUninstall" xml:space="preserve">
+    <value>Téléchargement du patch EN étendu pour préparer à la désinstallation...</value>
+  </data>
+  <data name="strDownloadingTestFile" xml:space="preserve">
+    <value>Téléchargement de </value>
+  </data>
+  <data name="strENBackupFound" xml:space="preserve">
+    <value>Backup EN simple trouvé, restauration en cours...</value>
+  </data>
+  <data name="strENPatchUninstalled" xml:space="preserve">
+    <value>Patch EN simple désinstallé !</value>
+  </data>
+  <data name="strFailedToRemoveCensor" xml:space="preserve">
+    <value>Fichier de censure inexistant. Ëtes-vous déjà décensuré ?</value>
+  </data>
+  <data name="strFailedToRemoveNVidia" xml:space="preserve">
+    <value>Fichier de vidéo du logo NVIDIA inexistant. L'avez-vous déjà retiré ?</value>
+  </data>
+  <data name="strFailedToRemovePC" xml:space="preserve">
+    <value>Fichier de vidéo d'introduction PC inexistant. L'avez-vous déjà retiré ?</value>
+  </data>
+  <data name="strFailedToRemoveSEGA" xml:space="preserve">
+    <value>Fichier de vidéo du logo SEGA inexistant. L'avez-vous déjà retiré ?</value>
+  </data>
+  <data name="strFailedToRemoveVita" xml:space="preserve">
+    <value>Fichier de vidéo d'introduction Vita inexistant. L'avez-vous retiré ?</value>
+  </data>
+  <data name="strFailedToRestoreCensor" xml:space="preserve">
+    <value>Backup de censure inexistant. Êtes-vous déjà censuré ?</value>
+  </data>
+  <data name="strFailedToRestoreNVidia" xml:space="preserve">
+    <value>Backup de vidéo du logo de NVIDIA inexistant. L'avez-vous déjà restauré ?</value>
+  </data>
+  <data name="strFailedToRestorePC" xml:space="preserve">
+    <value>Backup de vidéo d'introduction PC inexistant. L'avez-vous déjà restauré ?</value>
+  </data>
+  <data name="strFailedToRestoreSEGA" xml:space="preserve">
+    <value>Backup de vidéo du logo SEGA inexistant. L'avez-vous déjà restauré ?</value>
+  </data>
+  <data name="strFailedToRestoreVita" xml:space="preserve">
+    <value>Backup de vidéo d'introduction Vita inexistant. L'avez-vous déjà restauré ?</value>
+  </data>
+  <data name="strFixPermissionIssuesText" xml:space="preserve">
+    <value>Cela va corriger les problèmes de permission de PSO2. Tout d'abord, ouvrez pso2updater.exe, l'erreur "has canceled the launch of pso2updater.exe. file is not updated." s'affiche. NE CLIQUEZ PAS OK. Laissez cette fenêtre en haut et cliquez sur OK ici. Quelques corrections vont être effectuées. Un message apparaîtra avec plus d'informations disponibles quand c'est fait.</value>
+  </data>
+  <data name="strFixPermissionsDone" xml:space="preserve">
+    <value>Permissions corrigées ! Maintenant, vous pouvez cliquer sur OK sur le message de pso2updater.exe - Cela doit permettre à l'updater de fonctionner et de se corriger tout seul :) Merci à RappyPerms et jooozek pour cette astuce~</value>
+  </data>
+  <data name="strFoundIncompleteJob" xml:space="preserve">
+    <value>Trouvé patch en cours incomplet - Reprise !</value>
+  </data>
+  <data name="strGGReset" xml:space="preserve">
+    <value>GameGuard réinitialisé par défaut ! Maintenant, essayez de lancer Phantasy Star Online 2 - Cela doit mettre à jour Gameguard quand le logo de PSO2 apparaît.</value>
+  </data>
+  <data name="strIfStoryIncorrect" xml:space="preserve">
+    <value>Si c'est incorrect, utiliser l'option de réinitialisation d'emplacement du patch du mode Histoire.</value>
+  </data>
+  <data name="strIfTheAboveNumbers" xml:space="preserve">
+    <value>Si les valeurs affichées ci-dessus dépassent 400, vous avez une mauvaise connexion vers les serveurs de patch PSO2.</value>
+  </data>
+  <data name="strLatestGG" xml:space="preserve">
+    <value>Avec la dernière mise à jour de GameGuard, Google Chrome doit fonctionner correctement avec GameGuard. Vous ne devez PLUS utiliser cette fonction pour lancer Chrome, Lancez-le normalement. Merci.</value>
+  </data>
+  <data name="strItemTranslationEnabled" xml:space="preserve">
+    <value>Traduction des objets activée - NOTE: Cette fonctionne est EXTREMEMENT expérimentale !</value>
+  </data>
+  <data name="strItemTranslationNotWorking" xml:space="preserve">
+    <value>Désolé, mais la traduction d'objets ne fonctionne pas avec la version actuelle de PSO2 ! Veuillez décocher l'option " Traduction des objets " si vous voulez lancer PSO2 sans.</value>
+  </data>
+  <data name="strItSeemsThereWasAnError" xml:space="preserve">
+    <value>On dirait qu'il y a un problème au lancement de PSO2, tentative d'autocorrection...</value>
+  </data>
+  <data name="strLFBackupFound" xml:space="preserve">
+    <value>Backup de patch EN étendu trouvé, restauration en cours...</value>
+  </data>
+  <data name="strLFUninstalled" xml:space="preserve">
+    <value>Patch EN étendu désinstallé !</value>
+  </data>
+  <data name="strLoadingSidebarPage" xml:space="preserve">
+    <value>Chargement de la barre...</value>
+  </data>
+  <data name="strMissingFilesPart1" xml:space="preserve">
+    <value>fichiers manquants Part 1...</value>
+  </data>
+  <data name="strMissingFilesPart2" xml:space="preserve">
+    <value>fichiers manquants Part 2...</value>
+  </data>
+  <data name="strPleaseBeAwareGG" xml:space="preserve">
+    <value>Soyez conscient que cela va corriger certaines erreurs de GameGuard, mais pas toutes. Vérifiez que tout ce qui pourrait "scanner" PSO2 soit désactivé (Pare-feus, debuggers, antivirus, Speed boosters, etc).</value>
+  </data>
+  <data name="strPleaseFixGG" xml:space="preserve">
+    <value>Lancer le mode de dépannage -&gt; Corriger les problèmes de GameGuard !</value>;
+  </data>
+  <data name="strPleaseFixPSO2EXEs" xml:space="preserve">
+    <value>Lancer le mode de dépannage -&gt; Corriger les EXEs de PSO2 !</value>;
+  </data>
+  <data name="strPleaseReinstallOrCheck" xml:space="preserve">
+    <value>Réinstaller PSO2 ou vérifier que vous avez bien sélectionné le bon répertoire win32 !</value>
+  </data>
+  <data name="strPleaseSelectPreDownloaded" xml:space="preserve">
+    <value>Sélectionner le fichier RAR du patch EN étendu pré-téléchargé</value>
+  </data>
+  <data name="strPleaseSelectPreDownloadENRAR" xml:space="preserve">
+    <value>Sélectionner le fichier RAR du patch EN simple pré-téléchargé</value>
+  </data>
+  <data name="strPleaseSelectStoryRAR" xml:space="preserve">
+    <value>Sélectionner le fichier RAR du patch du mode Histoire</value>
+  </data>
+  <data name="strProcessWasCancelled" xml:space="preserve">
+    <value>Processus annulé manuellement !</value>
+  </data>
+  <data name="strPSO2SettingsReset" xml:space="preserve">
+    <value>Tous les paramètres de PSO2 réinitialisés par défaut !</value>
+  </data>
+  <data name="strRestoreFailedPleaseReinstall" xml:space="preserve">
+    <value>Restauration échouée - backup non trouvé ! Réinstaller le patch pour corriger le problème.</value>
+  </data>
+  <data name="strRestoringBackupTo" xml:space="preserve">
+    <value>Restauration du backup vers </value>
+  </data>
+  <data name="strSelectPSO2win32folder2" xml:space="preserve">
+    <value>Sélectionner le dossier data/win32 de PSO2</value>
+  </data>
+  <data name="strSetAsYourPSO2" xml:space="preserve">
+    <value>mis comme répertoire PSO2.</value>
+  </data>
+  <data name="strStoryBackupFound" xml:space="preserve">
+    <value>Backup de patch du mode Histoire trouvé, restauration en cours...</value>
+  </data>
+  <data name="strStoryPatchFound" xml:space="preserve">
+    <value>Patch du mode Histoire automatiquement situé sur :</value>
+  </data>
+  <data name="strStoryPatchUninstalled" xml:space="preserve">
+    <value>Patch du mode Histoire désinstallé !</value>
+  </data>
+  <data name="strTerminatePSO2" xml:space="preserve">
+    <value>Arrêt du processus PSO2 avec préjudices importants...</value>
+  </data>
+  <data name="strTestingDownloadSpeeds" xml:space="preserve">
+    <value>Test de vitesse de téléchargement...</value>
+  </data>
+  <data name="strTranslationFilesDontMatch" xml:space="preserve">
+    <value>Les fichiers de traduction des objets ne correspondent PAS à ceux qui ont été téléchargés ! Les télécharger de nouveau en redémarrant le Tweaker.</value>
+  </data>
+  <data name="strUninstalling" xml:space="preserve">
+    <value>Désinstallation de </value>
+  </data>
+  <data name="strUninstallingPatch" xml:space="preserve">
+    <value>Désinstallation du patch...</value>
+  </data>
+  <data name="strWouldYouLikeToUse" xml:space="preserve">
+    <value>Voulez-vous utiliser un fichier RAR pré-téléchargé contenant le patch plutôt que de le télécharger maintenant ?</value>
+  </data>
+  <data name="strYourDownloadSpeedIs" xml:space="preserve">
+    <value>Votre vitesse de téléchargement est :</value>
+  </data>
+  <data name="strPleaseBeAwareChrome" xml:space="preserve">
+    <value>ATTENTION : Cela va lancer Chrome avec son sandbox préconfiguré désactivé, qui réduit la sécurité. Utilisez cette version de Chrome uniquement pour naviguer sur des sites de confiance tout en jouant à PSO2 (comme Cirnopedia ou Bumped)</value>
+  </data>
+</root>
