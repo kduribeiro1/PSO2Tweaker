@@ -406,31 +406,34 @@ Public Class frmMain
                         Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
                         Log(My.Resources.strDownloadingItemTranslationFiles)
                         Dim client As New WebClient
-                        Dim failednumbers As Integer = 0
-DOWNLOADDLL3:
-                        Try
-                            client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
-                        Catch ex As Exception
-                            failednumbers = failednumbers + 1
-                            If failednumbers = 4 Then
-                                Log("Failed to download translation files! (" & ex.Message & ")")
-                                Exit Try
-                            End If
-                            GoTo DOWNLOADDLL3
-                        End Try
-                        failednumbers = 0
+
+                        ' Try up to 4 times to download the translator DLL.
+                        For tries As Integer = 1 To 4
+                            Try
+                                client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
+                                Exit For
+                            Catch ex As Exception
+                                If tries = 4 Then
+                                    Log("Failed to download translation files! (" & ex.Message & ")")
+                                    Exit For
+                                End If
+                            End Try
+                        Next
                         'DLWUA(DLLink2, (pso2launchpath & "\translation.bin"), True)
-DOWNLOADBIN3:
-                        Try
-                            client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
-                        Catch ex As Exception
-                            failednumbers = failednumbers + 1
-                            If failednumbers = 4 Then
-                                Log("Failed to download translation files! (" & ex.Message & ")")
-                                Exit Try
-                            End If
-                            GoTo DOWNLOADBIN3
-                        End Try
+
+                        ' Try up to 4 times to download the translation strings.
+                        For tries As Integer = 1 To 4
+                            Try
+                                client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
+                                Exit For
+                            Catch ex As Exception
+                                If tries = 4 Then
+                                    Log("Failed to download translation files! (" & ex.Message & ")")
+                                    Exit Try
+                                End If
+                            End Try
+                        Next
+
                         'If Environment.Is64BitOperatingSystem = True Then
                         'SaveSetting("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
                         'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
@@ -2430,20 +2433,20 @@ BackToCheckUpdates2:
 
     Public Function Ping(ByVal server As String) As String
         'Switch is a class already, for what it is worth
-        Dim Result As Net.NetworkInformation.PingReply
+        Dim Response As Net.NetworkInformation.PingReply
         Dim SendPing As New Net.NetworkInformation.Ping
-        Dim ResponseTime As Long '<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
         Try
-            Result = SendPing.Send(server)
-            ResponseTime = Result.RoundtripTime
-            If Result.Status = Net.NetworkInformation.IPStatus.Success Then
-                Return ResponseTime.ToString
-            Else
-                Return "ERROR"
+            Response = SendPing.Send(server)
+            If Response.Status = Net.NetworkInformation.IPStatus.Success Then
+                Return Response.RoundtripTime.ToString
             End If
         Catch ex As Exception
         End Try
+
+        Return "ERROR"
     End Function
+
     Private Sub CancelProcessToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CancelProcessToolStripMenuItem.Click
         If DLS.IsBusy = True Then DLS.CancelAsync()
         'WriteDebugInfo(My.Resources.strDownloadwasCancelled)
