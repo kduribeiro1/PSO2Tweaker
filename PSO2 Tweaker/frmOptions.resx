@@ -496,6 +496,9 @@
   <data name="&gt;&gt;ColorPickerButton2.ZOrder" xml:space="preserve">
     <value>27</value>
   </data>
+  <data name="CheckBoxX2.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="CheckBoxX2.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 34</value>
   </data>

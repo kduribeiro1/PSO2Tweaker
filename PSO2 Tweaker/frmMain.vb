@@ -4618,7 +4618,7 @@ Try
                 'MsgBox(("Moving" & (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & downloadstring) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             Next
 
-            If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch") = True Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch"), FileIO.DeleteDirectoryOption.DeleteAllContents)
+            If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreLargeFiles") = True Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreLargeFiles"), FileIO.DeleteDirectoryOption.DeleteAllContents)
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strLFUninstalled)
             SaveSetting("LargeFilesVersion", "Not Installed")
@@ -4633,90 +4633,62 @@ Try
 
     Private Sub btnUninstallStory_Click(sender As Object, e As EventArgs) Handles btnUninstallStory.Click
         Try
-            Dim StoryLocation As String
-            Log("Selecting story patch...")
-            OpenFileDialog1.Title = My.Resources.strPleaseSelectStoryRAR
-            OpenFileDialog1.FileName = "PSO2 Story Patch RAR file"
-            OpenFileDialog1.Filter = "RAR Archives|*.rar"
-            Dim result = OpenFileDialog1.ShowDialog()
-            If result = DialogResult.Cancel Then
+            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
+                MsgBox(My.Resources.strPleaseSelectwin32Dir)
+                Button1.RaiseClick()
                 Exit Sub
             End If
-            StoryLocation = OpenFileDialog1.FileName.ToString()
-            If StoryLocation = "PSO2 Story Patch RAR file" Then
-                Exit Sub
-            End If
-            Log("Story mode RAR selected as: " & StoryLocation)
-UninstallStory:
-            If System.IO.Directory.Exists("TEMPPATCHAIDAFOOL") = True Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                System.IO.Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            If System.IO.Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
-                System.IO.Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            Dim process As System.Diagnostics.Process = Nothing
-            Dim processStartInfo As System.Diagnostics.ProcessStartInfo
-            processStartInfo = New System.Diagnostics.ProcessStartInfo()
-            Dim UnRarLocation As String
-            UnRarLocation = (Application.StartupPath & "\unrar.exe")
-            UnRarLocation = UnRarLocation.Replace("\\", "\")
-            processStartInfo.FileName = UnRarLocation
-            processStartInfo.Verb = "runas"
-            processStartInfo.Arguments = ("e " & """" & StoryLocation & """" & " TEMPPATCHAIDAFOOL")
-            processStartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
-            process = System.Diagnostics.Process.Start(processStartInfo)
-            WriteDebugInfo(My.Resources.strWaitingforPatch)
-            Do Until process.WaitForExit(1000)
-            Loop
-            If System.IO.Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
-                System.IO.Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-                WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New IO.DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
-            'WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
-            Application.DoEvents()
+
+            DLWUA("http://162.243.211.123/patches/storyfilelist.txt", "storyfilelist.txt", True)
+
+            Dim oReader As StreamReader = File.OpenText("storyfilelist.txt")
+            Dim sBuffer As String = Nothing
+            Dim filename As String = Nothing
+            Dim missingfiles As New List(Of String)
+            Dim NumberofChecks As Integer = 0
+
+            While Not (oReader.EndOfStream)
+                sBuffer = oReader.ReadLine
+                filename = sBuffer
+                missingfiles.Add(filename)
+                NumberofChecks += 1
+            End While
+
+            oReader.Close()
+            File.Delete("storyfilelist.txt")
 
             WriteDebugInfo(My.Resources.strUninstallingPatch)
+            Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
-            Dim totaldownload As String = diar1.Count
-            For Each dra In diar1
+            For Each downloadstring In missingfiles
                 downloaded = downloaded + 1
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
                 'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
                 'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
-                System.IO.File.Delete(("TEMPPATCHAIDAFOOL\" & dra.ToString))
+                'System.IO.File.Delete(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'Download JP file
                 lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & dra.ToString & ".pat"), dra.ToString, True)
-                Dim info7 As New FileInfo(dra.ToString)
-                Dim length2 As Long
-                If File.Exists(dra.ToString) = True Then length2 = info7.Length
-                If info7.Length = 0 Then
-                    Log("File appears to be empty, trying to download from secondary SEGA server")
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & dra.ToString & ".pat"), dra.ToString, True)
-                End If
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
+                Dim info7 As New FileInfo(downloadstring)
+                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
                 'Move JP file to win32
-                System.IO.File.Delete(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                System.IO.File.Move(dra.ToString, ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then File.Delete(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
+                System.IO.File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " still exists! File was NOT overwritten!")
+                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
+                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & downloadstring) & " still exists! File was NOT overwritten!")
                 'End If
                 'End If
-                'MsgBox(("Moving" & (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                'MsgBox(("Moving" & (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & downloadstring) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             Next
 
-            My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch") = True Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch"), FileIO.DeleteDirectoryOption.DeleteAllContents)
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strStoryPatchUninstalled)
             SaveSetting("StoryPatchVersion", "Not Installed")
+            '            System.IO.File.Delete("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
             Log(ex.Message)
