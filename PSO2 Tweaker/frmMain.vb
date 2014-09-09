@@ -236,18 +236,15 @@ Public Class frmMain
             Dim DirectoryString As String
             Dim pso2launchpath As String
             Dim sBuffer As String
-            If My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing) <> "" Then
-                GoTo Alreadyinstalled1
-            Else
+
+            If My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing) = "" Then
                 Dim AlreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
-                If AlreadyInstalled = vbYes Then
-                    GoTo alreadyinstalled1
-                End If
                 If AlreadyInstalled = vbNo Then
                     btnInstallPSO2.RaiseClick()
                 End If
             End If
-Alreadyinstalled1:
+
+
             Log("Attempting to auto-load pso2_bin directory from settings")
             If My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing) = "" Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -571,9 +568,9 @@ DOWNLOADBIN3:
             End If
             If LoadSetting("UID") = "" Then SaveSetting("UID", "False")
             If LoadSetting("UID") = "False" Then
-                    Dim client As New System.Net.WebClient()
+                Dim client As New System.Net.WebClient()
                 Dim UIDSTRING As String = client.DownloadString("http://arks-layer.com/docs/client.php")
-                    SaveSetting("UID", UIDSTRING)
+                SaveSetting("UID", UIDSTRING)
             End If
             If LoadSetting("Locale") <> "" Then
                 Dim Locale As String = LoadSetting("Locale")
@@ -4566,7 +4563,7 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnUninstallLargeFiles_Click(sender As Object, e As EventArgs) Handles btnUninstallLargeFiles.Click
-Try
+        Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
@@ -5845,33 +5842,33 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnPredownloadLobbyVideos_Click(sender As Object, e As EventArgs) Handles btnPredownloadLobbyVideos.Click
-            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If 'Download the missing files:
+        If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
+            MsgBox(My.Resources.strPleaseSelectwin32Dir)
+            Button1.RaiseClick()
+            Exit Sub
+        End If 'Download the missing files:
         Cancelled = False
         Dim downloadstring As String = "3fdcad94b7af8c597542cd23e6a87236"
         Dim downloaded As Long = 0
         Dim totaldownloaded As Long = 0
         totaldownloaded = totaldownloaded + totalsize2
-            If totaldownloaded < 1073741824 Then
+        If totaldownloaded < 1073741824 Then
             lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
-            End If
-            If totaldownloaded > 1073741823 Then
+        End If
+        If totaldownloaded > 1073741823 Then
             lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Format((totaldownloaded / 1073741824), "0.00") & "GB)"
-            End If
-            DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-            Dim info7 As New FileInfo(downloadstring)
-            Dim length2 As Long
-            If File.Exists(downloadstring) = True Then length2 = info7.Length
-            If info7.Length = 0 Then
-                Log("File appears to be empty, trying to download from secondary SEGA server")
-                DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-            End If
-            If Cancelled = True Then Exit Sub
-            System.IO.File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-            WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring & "."))
+        End If
+        DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
+        Dim info7 As New FileInfo(downloadstring)
+        Dim length2 As Long
+        If File.Exists(downloadstring) = True Then length2 = info7.Length
+        If info7.Length = 0 Then
+            Log("File appears to be empty, trying to download from secondary SEGA server")
+            DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
+        End If
+        If Cancelled = True Then Exit Sub
+        System.IO.File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
+        WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring & "."))
     End Sub
 
     Private Sub btnDownloadPrepatch_Click(sender As Object, e As EventArgs) Handles btnDownloadPrepatch.Click
