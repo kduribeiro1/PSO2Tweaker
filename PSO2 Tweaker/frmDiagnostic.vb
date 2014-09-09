@@ -21,8 +21,8 @@ Public Class frmDiagnostic
             Dim buffer As New List(Of String)
             Do Until xRead.EndOfStream
                 CurrentLine = xRead.ReadLine
-                '[AIDA] Gotta change this, it'll make lines that have comments at the end be ignored as well.
-                If CurrentLine.Contains("#") = False And CurrentLine <> "" Then TotalString += CurrentLine & vbCrLf
+                '[AIDA] Changed it, only took a few days! :D.... :(
+                If CurrentLine <> "" Then TotalString += CurrentLine & vbCrLf
             Loop
         End Using
         'Dim TotalString As String = IO.File.ReadAllText("C:\WINDOWS\system32\drivers\etc\hosts")

@@ -2214,22 +2214,23 @@ BackToCheckUpdates2:
             'Log("PSO2 Launch patch is " & pso2launchpath)
             'MsgBox(pso2launchpath)
             WriteDebugInfo(My.Resources.strLaunchingPSO2)
-            If UseItemTranslation = True Then
-                Dim dir As String
-                dir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                'Log("Delete item cache")
-                If File.Exists(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat") Then File.Delete(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-                'Check to see if the keys exist
-                'for x64
-                'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows
-                'for x86
-                'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows
-                'Keys are:
-                'LoadAppInit_DLLs (0 for no, 1 for yes)
-                'AppInit_DLLs (string, pointing to the file)
-                'If it's 64-bit
-                'Fuck this shit~
-                'Log("Make sure the item translation is working atm")
+            'If UseItemTranslation = True Then
+            Dim dir As String
+            dir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            'Log("Delete item cache")
+            If File.Exists(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat") Then File.Delete(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
+            'Check to see if the keys exist
+            'for x64
+            'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows
+            'for x86
+            'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows
+            'Keys are:
+            'LoadAppInit_DLLs (0 for no, 1 for yes)
+            'AppInit_DLLs (string, pointing to the file)
+            'If it's 64-bit
+            'Fuck this shit~
+            'Log("Make sure the item translation is working atm")
+            If chkItemTranslation.Checked = True Then
                 DLWUA("http://162.243.211.123/freedom/working.txt", "working.txt", True)
                 Try
                     Dim sBuffer As String
@@ -2246,26 +2247,26 @@ BackToCheckUpdates2:
                 End Try
                 'Log("Delete the check")
                 File.Delete("working.txt")
-                    If GetMD5(pso2launchpath & "\translator.dll") <> LoadSetting("DLLMD5") Then
-                        MsgBox(My.Resources.strTranslationFilesDontMatch)
-                        Exit Sub
-                    End If
-                'If Environment.Is64BitOperatingSystem = True Then
-                'SaveSetting("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                'SaveSettingInteger("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
-                'End If
-                'If it's 32-bit
-                'If Environment.Is64BitOperatingSystem = False Then
-                'SaveSetting("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                'SaveSettingInteger("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
-                'End If
-                'End Item Translation stuff
-                SaveToDisk("ddraw.dll", pso2launchpath & "\ddraw.dll")
+                If GetMD5(pso2launchpath & "\translator.dll") <> LoadSetting("DLLMD5") Then
+                    MsgBox(My.Resources.strTranslationFilesDontMatch)
+                    Exit Sub
+                End If
             End If
+            'If Environment.Is64BitOperatingSystem = True Then
+            'SaveSetting("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+            'SaveSettingInteger("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+            'End If
+            'If it's 32-bit
+            'If Environment.Is64BitOperatingSystem = False Then
+            'SaveSetting("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+            'SaveSettingInteger("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+            'End If
+            'End Item Translation stuff
+            SaveToDisk("ddraw.dll", pso2launchpath & "\ddraw.dll")
             'Log("Start building the process")
             Dim startInfo As ProcessStartInfo
             startInfo = New ProcessStartInfo
@@ -2300,41 +2301,41 @@ BackToCheckUpdates2:
             'If File.Exists("patchlist_old.txt") = True Then File.Delete("patchlist_old.txt")
             'If File.Exists("version.ver") = True Then File.Delete("version.ver")
             'If UseItemTranslation = False Then
-            If UseItemTranslation = True Then
-                Me.Hide()
-                'Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
-                Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
-                Do Until hWnd <> IntPtr.Zero
-                    hWnd = FindWindow("Phantasy Star Online 2", Nothing)
-                    'MsgBox(hWnd.ToString)
-                    'Dim procs As Process() = Process.GetProcessesByName("pso2")
-                    'For Each proc As Process In procs
-                    'If proc.MainWindowTitle = "Phantasy Star Online 2" And proc.MainModule.ToString = "System.Diagnostics.ProcessModule (pso2.exe)" Then File.Delete(pso2launchpath & "\ddraw.dll")
-                    'Next
-                    System.Threading.Thread.Sleep(10)
-                Loop
-                If File.Exists(pso2launchpath & "\ddraw.dll") = True And TransOverride = False Then File.Delete(pso2launchpath & "\ddraw.dll")
-                'Loop
-                'Check to see if the keys exist
-                'for x64
-                'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows
-                'for x86
-                'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows
-                'Keys are:
-                'LoadAppInit_DLLs (0 for no, 1 for yes)
-                'AppInit_DLLs (string, pointing to the file)
-                'If it's 64-bit
-                'If Environment.Is64BitOperatingSystem = "True" Then
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", LoadSetting("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", LoadSettingInteger("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
-                'End If
-                'If it's 32-bit
-                'If Environment.Is64BitOperatingSystem = "False" Then
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", LoadSetting("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-                'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", LoadSettingInteger("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
-                'End If
-                'End Item Translation stuff
-            End If
+            'If UseItemTranslation = True Then
+            Me.Hide()
+            'Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
+            Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
+            Do Until hWnd <> IntPtr.Zero
+                hWnd = FindWindow("Phantasy Star Online 2", Nothing)
+                'MsgBox(hWnd.ToString)
+                'Dim procs As Process() = Process.GetProcessesByName("pso2")
+                'For Each proc As Process In procs
+                'If proc.MainWindowTitle = "Phantasy Star Online 2" And proc.MainModule.ToString = "System.Diagnostics.ProcessModule (pso2.exe)" Then File.Delete(pso2launchpath & "\ddraw.dll")
+                'Next
+                System.Threading.Thread.Sleep(10)
+            Loop
+            If File.Exists(pso2launchpath & "\ddraw.dll") = True And TransOverride = False Then File.Delete(pso2launchpath & "\ddraw.dll")
+            'Loop
+            'Check to see if the keys exist
+            'for x64
+            'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows
+            'for x86
+            'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows
+            'Keys are:
+            'LoadAppInit_DLLs (0 for no, 1 for yes)
+            'AppInit_DLLs (string, pointing to the file)
+            'If it's 64-bit
+            'If Environment.Is64BitOperatingSystem = "True" Then
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", LoadSetting("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", LoadSettingInteger("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+            'End If
+            'If it's 32-bit
+            'If Environment.Is64BitOperatingSystem = "False" Then
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", LoadSetting("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", LoadSettingInteger("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+            'End If
+            'End Item Translation stuff
+            'End If
             'If LoadSetting("CloseAfterLaunch") = True Then btnExit.RaiseClick()
             Me.Close()
             'End If
@@ -2893,9 +2894,11 @@ InstallStory:
     End Sub
 
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
+        If File.Exists(lblDirectory.Text & "\translation.cfg") = False Then
+            File.WriteAllText(lblDirectory.Text & "\translation.cfg", "TranslationPath:translation.bin")
+        End If
         If chkItemTranslation.Checked = True Then
-            WriteDebugInfoAndOK(My.Resources.strItemTranslationEnabled)
-
+            'WriteDebugInfoAndOK(My.Resources.strItemTranslationEnabled)
             Dim DirectoryString As String
             Dim pso2launchpath As String
             DirectoryString = (lblDirectory.Text & "\data\win32")
@@ -2932,6 +2935,21 @@ DOWNLOADBIN2:
                 End If
                 GoTo DOWNLOADBIN2
             End Try
+            'Start the shitstorm
+            Dim objReader As New System.IO.StreamReader(lblDirectory.Text & "\translation.cfg")
+            Dim CurrentLine As String = ""
+            Dim BuiltFile As String = ""
+            Do While objReader.Peek() <> -1
+
+                CurrentLine = objReader.ReadLine()
+
+                If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:translation.bin"
+
+                BuiltFile += CurrentLine & vbNewLine
+            Loop
+            objReader.Close()
+            'MsgBox(BuiltFile)
+            File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
             WriteDebugInfoSameLine(My.Resources.strDone)
         End If
         If chkItemTranslation.Checked = False Then
@@ -2940,7 +2958,23 @@ DOWNLOADBIN2:
             dir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             If File.Exists(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat") Then File.Delete(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
+            Dim objReader As New System.IO.StreamReader(lblDirectory.Text & "\translation.cfg")
+            Dim CurrentLine As String = ""
+            Dim BuiltFile As String = ""
+            Do While objReader.Peek() <> -1
+
+                CurrentLine = objReader.ReadLine()
+
+                If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:"
+
+                BuiltFile += CurrentLine & vbNewLine
+            Loop
+            objReader.Close()
+
+            'MsgBox(BuiltFile)
+            File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
         End If
+
         UseItemTranslation = chkItemTranslation.Checked
         SaveSetting("UseItemTranslation", UseItemTranslation)
     End Sub
