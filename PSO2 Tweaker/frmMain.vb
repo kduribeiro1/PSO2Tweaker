@@ -1184,30 +1184,11 @@ DOWNLOADBIN2:
         Dim downloadedBytes As Long = e.BytesReceived
         Dim percentage As Integer = e.ProgressPercentage
         PB1.Value = percentage
-        PB1.Text = (My.Resources.strDownloaded & SetBytes(downloadedBytes) & " / " & SetBytes(totalSize) & " (" & percentage & "%) - " & My.Resources.strRightClickforOptions)
+        PB1.Text = (My.Resources.strDownloaded & Helper.SizeSuffix(downloadedBytes) & " / " & Helper.SizeSuffix(totalSize) & " (" & percentage & "%) - " & My.Resources.strRightClickforOptions)
         'Put your progress UI here, you can cancel download by uncommenting the line below
         'wc.CancelAsync()
 
     End Sub
-    Function SetBytes(Bytes) As String
-
-        On Error GoTo hell
-
-        If Bytes >= 1073741824 Then
-            SetBytes = Format(Bytes / 1024 / 1024 / 1024, "#0.00") _
-                 & "GB"
-        ElseIf Bytes >= 1048576 Then
-            SetBytes = Format(Bytes / 1024 / 1024, "#0.00") & "MB"
-        ElseIf Bytes >= 1024 Then
-            SetBytes = Format(Bytes / 1024 / 1024, "#0.00") & "MB"
-        ElseIf Bytes < 1024 Then
-            SetBytes = Format(Bytes / 1024 / 1024, "#0.00") & "MB"
-        End If
-
-        Exit Function
-hell:
-        SetBytes = "0 Bytes"
-    End Function
     Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
 
         PB1.Value = 0
@@ -3317,10 +3298,10 @@ DOWNLOADFILES:
                 downloaded2 = downloaded2 + 1
                 totaldownloaded = totaldownloaded + totalsize2
                 If totaldownloaded < 1073741824 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB / " & SetBytes(totalfilesize) & ")"
+                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB / " & Helper.SizeSuffix(totalfilesize) & ")"
                 End If
                 If totaldownloaded > 1073741823 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB / " & SetBytes(totalfilesize) & ")"
+                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB / " & Helper.SizeSuffix(totalfilesize) & ")"
                 End If
                 Application.DoEvents()
                 DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, False)
