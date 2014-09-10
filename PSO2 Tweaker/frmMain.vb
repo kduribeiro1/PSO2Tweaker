@@ -1353,7 +1353,7 @@ DOWNLOADBIN2:
         sr3.Close()
         sw3.Close()
         'Dim sText As String = File.ReadAllText("SOMEOFTHETHINGS.txt")
-        'Dim sNewLines() As String = sText.Split(New Char() {ControlChars.Lf}, StringSplitOptions.RemoveEmptyEntries)
+        'Dim sNewLines As String() = sText.Split(New Char() {ControlChars.Lf}, StringSplitOptions.RemoveEmptyEntries)
         'File.WriteAllLines("SOMEOFTHETHINGS.txt", sNewLines)
         'MsgBox("Duplicates Removed!")
         'System.Diagnostics.Process.Start("notepad", "SOMEOFTHETHINGS.txt")
@@ -1417,7 +1417,7 @@ DOWNLOADBIN2:
         sr3.Close()
         sw3.Close()
         'Dim sText As String = File.ReadAllText("SOMEOFTHETHINGS.txt")
-        'Dim sNewLines() As String = sText.Split(New Char() {ControlChars.Lf}, StringSplitOptions.RemoveEmptyEntries)
+        'Dim sNewLines As String() = sText.Split(New Char() {ControlChars.Lf}, StringSplitOptions.RemoveEmptyEntries)
         'File.WriteAllLines("SOMEOFTHETHINGS.txt", sNewLines)
         'MsgBox("Duplicates Removed!")
         'System.Diagnostics.Process.Start("notepad", "SOMEOFTHETHINGS.txt")
@@ -1679,7 +1679,7 @@ NEXTFILE1:
             Dim strDownloadME As String = src
             'strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
             'http://dl.dropboxusercontent.com/u/12757141/patch_2013_10_09.rar
-            Dim Lastfilename() As String = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/")
             Dim strVersion As String = Lastfilename(Lastfilename.Count - 1)
             'Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
             'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
@@ -1731,7 +1731,7 @@ NEXTFILE1:
             'txtHTML.Text = m.NextMatch.ToString
             Dim strDownloadME As String = src
             'Get the current version, save as NewVersionTemp
-            Dim Lastfilename() As String = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/")
             Dim strVersion As String = Lastfilename(Lastfilename.Count - 1)
             'Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
             'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
@@ -4897,7 +4897,7 @@ SelectInstallFolder:
             ' Spit out the value plucked from the code
             txtHTML.Text = m.NextMatch.ToString
             Dim strDownloadME As String = txtHTML.Text
-            Dim Lastfilename() As String = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/")
             strVersion = Lastfilename(Lastfilename.Count - 1)
             'strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
             ''http://dl.dropboxusercontent.com/u/12757141/patch_2013_10_09.rar
@@ -5010,7 +5010,7 @@ SelectInstallFolder:
             txtHTML.Text = m.Value
             Dim strDownloadME As String = txtHTML.Text
             strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
-            Dim Lastfilename() As String = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/")
             strVersion = Lastfilename(Lastfilename.Count - 1)
             'http://dl.dropboxusercontent.com/u/12757141/patch_2013_10_09.rar
             'strVersion = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")

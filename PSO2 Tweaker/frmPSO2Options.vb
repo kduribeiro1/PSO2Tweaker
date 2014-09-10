@@ -4,7 +4,7 @@ Imports System.Runtime.InteropServices
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
+    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
     Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplaySettingsA" (ByRef DEVMODE As DEVMODE, ByVal flags As Integer) As Integer
 
     <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
@@ -165,7 +165,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To TextLines.Count
@@ -176,7 +176,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -208,7 +208,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To TextLines.Count
@@ -226,7 +226,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
 CONTINUEHEIGHT:
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -258,7 +258,7 @@ CONTINUEHEIGHT:
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To TextLines.Count
@@ -276,7 +276,7 @@ CONTINUEHEIGHT:
 CONTINUEWIDTH:
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -344,7 +344,7 @@ CONTINUEWIDTH:
             frmMain.Log("Saving Resolution...")
             If ComboBoxEx5.SelectedText <> "x" Then
                 Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString
-                Dim RealResolution() As String = StrResolution.Split("x")
+                Dim RealResolution As String() = StrResolution.Split("x")
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If

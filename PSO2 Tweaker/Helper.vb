@@ -1,5 +1,5 @@
 ﻿Public Class Helper
-    Private Shared ReadOnly SizeSuffixes() As String = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
+    Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
 
     Public Shared Function SizeSuffix(ByVal value As Long) As String
         If (value = 0) Then
