@@ -2287,7 +2287,7 @@ BackToCheckUpdates2:
                 'Next
                 System.Threading.Thread.Sleep(10)
             Loop
-            If File.Exists(pso2launchpath & "\ddraw.dll") = True And TransOverride = False Then File.Delete(pso2launchpath & "\ddraw.dll")
+            If File.Exists(pso2launchpath & "\ddraw.dll") = True Then File.Delete(pso2launchpath & "\ddraw.dll")
             'Loop
             'Check to see if the keys exist
             'for x64
