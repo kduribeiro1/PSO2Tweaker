@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("A program to modify/tweak settings/solve errors for PSO2!")> 
 <Assembly: AssemblyCompany("Arks-Layer")> 
 <Assembly: AssemblyProduct("PSO2 Tweaker")> 
-<Assembly: AssemblyCopyright("Copyright ©2013")> 
+<Assembly: AssemblyCopyright("Copyright ©2014")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.7.3.5")> 
-<Assembly: AssemblyFileVersion("2.7.3.5")> 
+<Assembly: AssemblyVersion("2.7.3.6")> 
+<Assembly: AssemblyFileVersion("2.7.3.6")> 
