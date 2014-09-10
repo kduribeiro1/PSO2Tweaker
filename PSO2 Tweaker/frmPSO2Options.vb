@@ -135,8 +135,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
         Try
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
             Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim i As Integer
-            For i = 0 To TextLines.Count
+            For i As Integer = 0 To TextLines.Count
                 'SettingToRead is FileType in the example
                 If i + 1 = TextLines.Count Then
                     Return "Setting not found"
@@ -159,13 +158,14 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
+        ' TODO: Actually fix the function
+        Return ""
     End Function
     Public Function ReadINISettingStartingAtLine(ByRef SettingToRead As String, ByRef LineToStartAt As Integer)
         Try
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
             Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim i As Integer
-            For i = LineToStartAt To TextLines.Count
+            For i As Integer = LineToStartAt To TextLines.Count
                 'SettingToRead is FileType in the example
                 If i + 1 = TextLines.Count Then
                     Return "Setting not found"
@@ -188,6 +188,8 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
+        ' TODO: Actually fix the function
+        Return ""
     End Function
     Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
         Try
