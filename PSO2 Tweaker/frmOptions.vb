@@ -75,16 +75,16 @@ Public Class frmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             Loading = True
-            If frmMain.GetRegKey(Of String)("Color") <> "" Then ColorPickerButton1.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of String)("Color"))
-            If frmMain.GetRegKey(Of String)("FontColor") <> "" Then ColorPickerButton2.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of String)("FontColor"))
-            If frmMain.GetRegKey(Of String)("TextBoxBGColor") <> "" Then ColorPickerButton4.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of String)("TextboxBGColor"))
-            If frmMain.GetRegKey(Of String)("TextBoxColor") <> "" Then ColorPickerButton3.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of String)("TextboxColor"))
-            If frmMain.GetRegKey(Of String)("Backup") <> "" Then
+            If Not String.IsNullOrEmpty(frmMain.GetRegKey(Of String)("Color")) Then ColorPickerButton1.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of Integer)("Color"))
+            If Not String.IsNullOrEmpty(frmMain.GetRegKey(Of String)("FontColor")) Then ColorPickerButton2.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of Integer)("FontColor"))
+            If Not String.IsNullOrEmpty(frmMain.GetRegKey(Of String)("TextBoxBGColor")) Then ColorPickerButton4.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of Integer)("TextboxBGColor"))
+            If Not String.IsNullOrEmpty(frmMain.GetRegKey(Of String)("TextBoxColor")) Then ColorPickerButton3.SelectedColor = Color.FromArgb(frmMain.GetRegKey(Of Integer)("TextboxColor"))
+            If Not String.IsNullOrEmpty(frmMain.GetRegKey(Of String)("Backup")) Then
                 If frmMain.GetRegKey(Of String)("Backup") = "Ask" Then cmbBackupPreference.Text = "Ask every time"
                 If frmMain.GetRegKey(Of String)("Backup") = "Always" Then cmbBackupPreference.Text = "Always backup"
                 If frmMain.GetRegKey(Of String)("Backup") = "Never" Then cmbBackupPreference.Text = "Never backup"
             End If
-            If frmMain.GetRegKey(Of String)("PredownloadedRAR") <> "" Then
+            If Not String.IsNullOrEmpty(frmMain.GetRegKey(Of String)("PredownloadedRAR")) Then
                 If frmMain.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then cmbPredownload.Text = "Ask every time"
                 If frmMain.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then cmbPredownload.Text = "Always backup"
                 If frmMain.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then cmbPredownload.Text = "Never backup"
@@ -99,49 +99,60 @@ Public Class frmOptions
             g.Dispose()
             If DPISetting = "96" Then Me.Size = New Size(440, 451)
             If DPISetting = "120" Then Me.Size = New Size(583, 554)
-            If frmMain.GetRegKey(Of String)("Locale") = "" Then
-                cmbLanguage.Text = "English"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "en" Then
-                cmbLanguage.Text = "English"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "fr" Then
-                cmbLanguage.Text = "French"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "de" Then
-                cmbLanguage.Text = "German"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "ja" Then
-                cmbLanguage.Text = "Japanese"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "pt" Then
-                cmbLanguage.Text = "Portuguese"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "ru" Then
-                cmbLanguage.Text = "Russian"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "es" Then
-                cmbLanguage.Text = "Spanish"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") = "pl" Then
-                cmbLanguage.Text = "Polish"
-            End If
-            If frmMain.GetRegKey(Of String)("Locale") <> "" Then
-                Dim Locale As String = frmMain.GetRegKey(Of String)("Locale")
+
+            ' TODO: Enum hax
+            Dim Locale As String = frmMain.GetRegKey(Of String)("Locale")
+
+            Select Case Locale
+                Case "en"
+                    cmbLanguage.Text = "English"
+
+                Case "fr"
+                    cmbLanguage.Text = "French"
+
+                Case "de"
+                    cmbLanguage.Text = "German"
+
+                Case "ja"
+                    cmbLanguage.Text = "Japanese"
+
+                Case "pt"
+                    cmbLanguage.Text = "Portuguese"
+
+                Case "ru"
+                    cmbLanguage.Text = "Russian"
+
+                Case "es"
+                    cmbLanguage.Text = "Spanish"
+
+                Case "pl"
+                    cmbLanguage.Text = "Polish"
+
+                Case Else
+                    cmbLanguage.Text = "English"
+            End Select
+
+            If Not String.IsNullOrEmpty(Locale) Then
                 Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(Locale)
                 Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(Locale)
             End If
+
             LabelX1.Text = My.Resources.strChooseATheme
             LabelX2.Text = My.Resources.strChooseALanguage
             LabelX3.Text = My.Resources.strChooseABackgroundImage
+
             'Me.BackgroundImage = Nothing
+
             CheckBoxX1.Checked = frmMain.GetRegKey(Of Boolean)("Pastebin")
             CheckBoxX2.Checked = frmMain.GetRegKey(Of Boolean)("ENPatchAfterInstall")
             CheckBoxX3.Checked = frmMain.GetRegKey(Of Boolean)("LargeFilesAfterInstall")
             CheckBoxX4.Checked = frmMain.GetRegKey(Of Boolean)("StoryPatchAfterInstall")
             CheckBoxX5.Checked = frmMain.GetRegKey(Of Boolean)("SidebarEnabled")
+
             chkAutoRemoveCensor.Checked = frmMain.GetRegKey(Of Boolean)("RemoveCensor")
+
             CMBStyle.Text = frmMain.GetRegKey(Of String)("Style")
+
             ComboItem33.Text = "Last installed: " & frmMain.GetRegKey(Of String)("StoryPatchVersion")
             ComboItem33.Text = "Latest version: " & frmMain.GetRegKey(Of String)("NewStoryVersion")
             ComboItem35.Text = "Last installed: " & frmMain.GetRegKey(Of String)("ENPatchVersion")
@@ -158,6 +169,7 @@ Public Class frmOptions
     Private Sub CMBStyle_SelectedValueChanged(sender As Object, e As EventArgs) Handles CMBStyle.SelectedValueChanged
         'WHAT IN THE FUCK IS GOING ON HERE
         '(╯°□°)╯︵ ┻━┻
+        ' TODO: Switch statement
         If CMBStyle.Text = "Blue" Then
             StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
             frmMain.SetRegKey(Of String)("Style", "Blue")
@@ -232,8 +244,11 @@ Public Class frmOptions
         processStartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
         processStartInfo.UseShellExecute = True
         process = System.Diagnostics.Process.Start(processStartInfo)
+
         Do Until process.WaitForExit(1000)
         Loop
+
+        ' TODO: Switch statement, enum
         If cmbLanguage.SelectedIndex = 0 Then
             'English
             Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("en")
@@ -288,7 +303,7 @@ Public Class frmOptions
         frmMain.StyleManager1.ManagerColorTint = ColorPickerButton1.SelectedColor
         Me.StyleManager1.ManagerColorTint = ColorPickerButton1.SelectedColor
         frmPSO2Options.StyleManager1.ManagerColorTint = ColorPickerButton1.SelectedColor
-        frmMain.SetRegKey(Of String)("Color", (ColorPickerButton1.SelectedColor.ToArgb))
+        frmMain.SetRegKey(Of Integer)("Color", (ColorPickerButton1.SelectedColor.ToArgb))
     End Sub
 
     Private Sub CheckBoxX1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX1.CheckedChanged
@@ -321,7 +336,7 @@ Public Class frmOptions
         frmMain.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.SetRegKey(Of String)("FontColor", (ColorPickerButton2.SelectedColor.ToArgb))
+        frmMain.SetRegKey(Of Integer)("FontColor", (ColorPickerButton2.SelectedColor.ToArgb))
     End Sub
     Private Sub LabelX6_Click(sender As Object, e As EventArgs) Handles LabelX6.Click
 
@@ -340,6 +355,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbBackupPreference_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBackupPreference.SelectedIndexChanged
+        ' TODO: Switch statement
         If cmbBackupPreference.SelectedIndex = 0 Then frmMain.SetRegKey(Of String)("Backup", "Ask")
         If cmbBackupPreference.SelectedIndex = 1 Then frmMain.SetRegKey(Of String)("Backup", "Always")
         If cmbBackupPreference.SelectedIndex = 2 Then frmMain.SetRegKey(Of String)("Backup", "Never")
@@ -378,12 +394,12 @@ Public Class frmOptions
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
         frmMain.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
-        frmMain.SetRegKey(Of String)("TextboxBGColor", (ColorPickerButton4.SelectedColor.ToArgb))
+        frmMain.SetRegKey(Of Integer)("TextboxBGColor", (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
 
     Private Sub ColorPickerButton3_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton3.SelectedColorChanged
         frmMain.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
-        frmMain.SetRegKey(Of String)("TextboxColor", (ColorPickerButton3.SelectedColor.ToArgb))
+        frmMain.SetRegKey(Of Integer)("TextboxColor", (ColorPickerButton3.SelectedColor.ToArgb))
     End Sub
 
     Private Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
@@ -397,7 +413,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub ButtonX3_Click(sender As Object, e As EventArgs) Handles ButtonX3.Click
-        If TextBoxX1.Text <> "" Then
+        If Not String.IsNullOrEmpty(TextBoxX1.Text) Then
             Dim UIDString As String = TextBoxX1.Text.Replace("steam://rungameid/", "")
             MsgBox(UIDString)
             frmMain.SetRegKey(Of String)("SteamUID", UIDString)
