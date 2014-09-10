@@ -13,7 +13,7 @@ Namespace My
     ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
     Partial Friend Class MyApplication
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
-            If frmMain.LoadSetting("Pastebin") = "True" Then
+            If frmMain.GetRegKey(Of Boolean)("Pastebin") Then
                 frmMain.Log(e.ToString)
                 frmMain.PasteBinUpload()
                 'MsgBox("It looks like the program crashed! Sorry! Please copy/paste the contents of logfile.txt into http://pastebin.com/ and post a link to it on the PSO-W forums on the thread that will be opened in a moment. Thank you! - AIDA")
