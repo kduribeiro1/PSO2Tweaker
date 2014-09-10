@@ -2541,8 +2541,8 @@ SelectPSO2Folder:
             End If
             Dim backupyesno As MsgBoxResult
             Dim predownloadedyesno As MsgBoxResult
-            Dim RARLocation As String
-            Dim strVersion As String
+            Dim RARLocation As String = ""
+            Dim strVersion As String = ""
             If LoadSetting("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
             If LoadSetting("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
             If LoadSetting("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
@@ -3024,13 +3024,16 @@ DOWNLOADBIN2:
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
         UnlockGUI()
-        If ComingFromOldFiles = True Then GoTo CHECKFOROLDFILES
-        Me.TopMost = False
-        'Dim result As MsgBoxResult = MsgBox(My.Resources.strDidYouHaveTheLatestVersion, vbYesNo)
+
+        ' Mike: No idea what you were doing here. Hope I didn't break anything.
         Dim result As MsgBoxResult = MsgBoxResult.No
-        If chkAlwaysOnTop.Checked = True Then Me.TopMost = True
-        If result = MsgBoxResult.Yes Then
-CHECKFORNEWFILES:
+        If ComingFromOldFiles = False Then
+            Me.TopMost = False
+            'result = MsgBox(My.Resources.strDidYouHaveTheLatestVersion, vbYesNo)
+            If chkAlwaysOnTop.Checked = True Then Me.TopMost = True
+        End If
+
+        If result = MsgBoxResult.Yes Or ComingFromOldFiles Then
             WriteDebugInfo(My.Resources.strCheckingforNewContent)
             NumberofChecks = 0
             missingfiles.Clear()
@@ -4251,8 +4254,8 @@ DOWNLOADFILES:
         Try
             Dim backupyesno As MsgBoxResult
             Dim predownloadedyesno As MsgBoxResult
-            Dim RARLocation As String
-            Dim strVersion As String
+            Dim RARLocation As String = ""
+            Dim strVersion As String = ""
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
@@ -4684,8 +4687,8 @@ DOWNLOADFILES:
         Try
             Dim backupyesno As MsgBoxResult
             Dim predownloadedyesno As MsgBoxResult
-            Dim RARLocation As String
-            Dim strVersion As String
+            Dim RARLocation As String = ""
+            Dim strVersion As String = ""
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
@@ -5087,7 +5090,7 @@ DOWNLOADFILES:
     End Function
 
     Private Sub btnInstallPSO2_Click(sender As Object, e As EventArgs) Handles btnInstallPSO2.Click
-        Dim InstallFolder As String
+        Dim InstallFolder As String = ""
         'Dim InstallYesNo As MsgBoxResult = MsgBox("While this installer is great, there is an installer that contains all the latest PSO updates and is available through a torrent at http://arks-layer.com, which could possibly be faster to download than this. Would you like to continue with the installation?", vbYesNo)
         Dim InstallYesNo As MsgBoxResult = vbYes
         If InstallYesNo = vbNo Then
@@ -5221,7 +5224,8 @@ SelectInstallFolder:
     Public Sub SilentLargeFiles()
         CancelledFull = False
         Try
-            Dim RARLocation As String
+            ' Unused?
+            'Dim RARLocation As String
             Dim strVersion As String
             WriteDebugInfo(My.Resources.strDownloading & "Large Files....")
             Application.DoEvents()
@@ -5476,8 +5480,8 @@ SelectInstallFolder:
         Try
             Dim backupyesno As MsgBoxResult
             Dim predownloadedyesno As MsgBoxResult
-            Dim RARLocation As String
-            Dim strVersion As String
+            Dim RARLocation As String = ""
+            Dim strVersion As String = ""
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
@@ -6117,7 +6121,8 @@ SelectInstallFolder:
         Dim SplitSEGALine() As String
         'Dim SplitLocalLine() As String
         Dim SEGAFilename As String = ""
-        Dim SEGAFilesize As Long
+        ' Unused?
+        'Dim SEGAFilesize As Long
         Dim missingfiles As New List(Of String)
         Dim sr1 As StreamReader = File.OpenText("SOMEOFTHETHINGS.txt")
         Dim sr2 As StreamReader = New StreamReader("old_patchlist.txt")
