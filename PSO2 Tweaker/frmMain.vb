@@ -1036,7 +1036,7 @@ DOWNLOADDLL2:
         Try
             client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
         Catch ex As Exception
-            'failednumbers = failednumbers + 1
+            'failednumbers += 1
             'If failednumbers = 4 Then
             MsgBox("Failed to download translation files! (" & ex.Message & ")")
             Exit Try
@@ -1050,7 +1050,7 @@ DOWNLOADBIN2:
         Try
             client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
         Catch ex As Exception
-            'failednumbers = failednumbers + 1
+            'failednumbers += 1
             'If failednumbers = 4 Then
             MsgBox("Failed to download translation files! (" & ex.Message & ")")
             Exit Try
@@ -1556,7 +1556,7 @@ NEXTFILE1:
                 'If LoadSetting("PatchServer") = "Patch Server #3" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #3 (Germany)")
                 For Each downloadstring In missingfiles
                     'Download the missing files:
-                    downloaded = downloaded + 1
+                    downloaded += 1
                     lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
                     Application.DoEvents()
                     Cancelled = False
@@ -1887,14 +1887,10 @@ NEXTFILE1:
                             If CancelledFull = True Then Exit Sub
                             'Download the missing files:
                             'WHAT THE FUCK IS GOING ON HERE?
-                            downloaded = downloaded + 1
-                            totaldownloaded = totaldownloaded + totalsize2
-                            If totaldownloaded < 1073741824 Then
-                                lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
-                            End If
-                            If totaldownloaded > 1073741823 Then
-                                lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB)"
-                            End If
+                            downloaded += 1
+                            totaldownloaded += totalsize2
+
+                            lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
                             Application.DoEvents()
                             Cancelled = False
@@ -2401,7 +2397,7 @@ BackToCheckUpdates2:
     End Function
     Private Sub seconds_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles seconds.Tick
         Me.seconds.Interval = 10
-        Me.timer_start = timer_start + 1
+        Me.timer_start += 1
         'Me.Label3.Text = Format(timer_start, "0.000") / 100 & " s"
     End Sub
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
@@ -2727,7 +2723,7 @@ DOWNLOADDLL2:
             Try
                 client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
             Catch ex As Exception
-                failednumbers = failednumbers + 1
+                failednumbers += 1
                 If failednumbers = 4 Then
                     WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message & ")")
                     Exit Try
@@ -2741,7 +2737,7 @@ DOWNLOADBIN2:
             Try
                 client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
             Catch ex As Exception
-                failednumbers = failednumbers + 1
+                failednumbers += 1
                 If failednumbers = 4 Then
                     WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message & ")")
                     Exit Try
@@ -2917,7 +2913,7 @@ NEXTFILE1:
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
-                downloaded = downloaded + 1
+                downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
                 If totaldownloaded < 1073741824 Then
                     lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
@@ -3011,7 +3007,7 @@ NEXTFILE1:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled = True Then Exit Sub
             'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
-            ' NumberofDownloads = NumberofDownloads + 1
+            ' NumberofDownloads += 1
             ' WriteDebugInfoAndWarning("It appears PSO2.EXE did not download correctly... Retrying...")
             ' If NumberofDownloads < 6 Then GoTo DLPSO2EXE
             ' If NumberofDownloads > 6 Then
@@ -3131,14 +3127,11 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
-                downloaded2 = downloaded2 + 1
-                totaldownloaded = totaldownloaded + totalsize2
-                If totaldownloaded < 1073741824 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB / " & Helper.SizeSuffix(totalfilesize) & ")"
-                End If
-                If totaldownloaded > 1073741823 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB / " & Helper.SizeSuffix(totalfilesize) & ")"
-                End If
+                downloaded2 += 1
+                totaldownloaded += totalsize2
+
+                lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Helper.SizeSuffix(totaldownloaded) & " / " & Helper.SizeSuffix(totalfilesize) & ")"
+
                 Application.DoEvents()
                 DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, False)
                 Dim info7 As New FileInfo(downloadstring)
@@ -3214,7 +3207,7 @@ DOWNLOADFILES:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled = True Then Exit Sub
             'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
-            ' NumberofDownloads = NumberofDownloads + 1
+            ' NumberofDownloads += 1
             ' WriteDebugInfoAndWarning("It appears PSO2.EXE did not download correctly... Retrying...")
             ' If NumberofDownloads < 6 Then GoTo DLPSO2EXE
             ' If NumberofDownloads > 6 Then
@@ -3542,7 +3535,7 @@ DOWNLOADFILES:
             For Each downloadstring In missingfiles
                 'Download the missing files:
                 Cancelled = False
-                downloaded = downloaded + 1
+                downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
                 If totaldownloaded < 1073741824 Then
                     lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
@@ -3595,7 +3588,7 @@ DOWNLOADFILES:
                 If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & downloadstring2)) = False Then
                     'filedownloader2.DownloadFile(("http://dl.dropboxusercontent.com/u/23005008/win32/" & downloadstring2), downloadstring2)
                     Cancelled = False
-                    downloaded2 = downloaded2 + 1
+                    downloaded2 += 1
                     totaldownloaded2 = totaldownloaded2 + totalsize2
                     If totaldownloaded2 < 1073741824 Then
                         lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded2 / 1048576), "0.00") & "MB)"
@@ -4176,7 +4169,7 @@ DOWNLOADFILES:
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             For Each downloadstring In missingfiles
-                downloaded = downloaded + 1
+                downloaded += 1
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
@@ -4242,7 +4235,7 @@ DOWNLOADFILES:
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             For Each downloadstring In missingfiles
-                downloaded = downloaded + 1
+                downloaded += 1
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
@@ -4308,7 +4301,7 @@ DOWNLOADFILES:
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             For Each downloadstring In missingfiles
-                downloaded = downloaded + 1
+                downloaded += 1
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
@@ -4528,7 +4521,7 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?v3
-                downloaded = downloaded + 1
+                downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
                 If totaldownloaded < 1073741824 Then
                     lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
@@ -4621,7 +4614,7 @@ DOWNLOADFILES:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled = True Then Exit Sub
             'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
-            ' NumberofDownloads = NumberofDownloads + 1
+            ' NumberofDownloads += 1
             ' WriteDebugInfoAndWarning("It appears PSO2.EXE did not download correctly... Retrying...")
             ' If NumberofDownloads < 6 Then GoTo DLPSO2EXE
             ' If NumberofDownloads > 6 Then
@@ -6000,7 +5993,7 @@ SelectInstallFolder:
         'test2
     End Sub
 
-    Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String)
+    Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String, msgBackup As String, msgSelectArchive As String)
         CancelledFull = False
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
@@ -6014,7 +6007,7 @@ SelectInstallFolder:
             Dim RARLocation As String = ""
             Dim strVersion As String = ""
 
-            If LoadSetting("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
+            If LoadSetting("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(msgBackup, vbYesNo)
             If LoadSetting("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
             If LoadSetting("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
             If LoadSetting("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strBackupEN, vbYesNo)
@@ -6047,7 +6040,7 @@ SelectInstallFolder:
             End If
 
             If predownloadedyesno = MsgBoxResult.Yes Then
-                OpenFileDialog1.Title = My.Resources.strPleaseSelectPreDownloadENRAR
+                OpenFileDialog1.Title = msgSelectArchive
                 OpenFileDialog1.FileName = "PSO2 " & PatchName & " RAR file"
                 OpenFileDialog1.Filter = "RAR Archives|*.rar|All Files (*.*) |*.*"
                 If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Exit Sub
