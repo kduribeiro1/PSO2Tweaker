@@ -237,7 +237,7 @@ Public Class frmMain
             Dim pso2launchpath As String
             Dim sBuffer As String
 
-            If My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing) = "" Then
+            If String.IsNullOrEmpty(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing)) Then
                 Dim AlreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
                 If AlreadyInstalled = vbNo Then
                     btnInstallPSO2.RaiseClick()
@@ -246,7 +246,7 @@ Public Class frmMain
 
 
             Log("Attempting to auto-load pso2_bin directory from settings")
-            If My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing) = "" Then
+            If String.IsNullOrEmpty(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing)) Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
             Else
@@ -279,7 +279,7 @@ Public Class frmMain
                 End If
                 If CommandLineArgs(i).ToString = "-steam" Then
                     Log("Detected -steam argument")
-                    If LoadSetting("SteamUID") = "" Then
+                    If String.IsNullOrEmpty(LoadSetting("SteamUID")) Then
                         MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
                     End If
                     'Dim lngResult As Long
@@ -555,21 +555,21 @@ Public Class frmMain
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             If File.Exists(pso2launchpath & "\ddraw.dll") And TransOverride = False Then File.Delete(pso2launchpath & "\ddraw.dll")
             Log("Loading settings...")
-            If LoadSetting("PatchServer") = "" Then SaveSetting("PatchServer", "Patch Server #1")
-            If LoadSetting("SeenFuckSEGAMessage") = "" Then SaveSetting("SeenFuckSEGAMessage", "False")
-            If LoadSetting("Backup") = "" Then SaveSetting("Backup", "Always")
-            If LoadSetting("PreDownloadedRAR") = "" Then SaveSetting("PreDownloadedRAR", "Never")
-            If LoadSetting("Pastebin") = "" Then SaveSetting("Pastebin", "True")
-            If LoadSetting("CloseAfterLaunch") = "" Then SaveSetting("CloseAfterLaunch", "False")
-            If LoadSetting("ENPatchAfterInstall") = "" Then SaveSetting("ENPatchAfterInstall", "False")
-            If LoadSetting("LargeFilesAfterInstall") = "" Then SaveSetting("LargeFilesAfterInstall", "False")
-            If LoadSetting("StoryPatchAfterInstall") = "" Then SaveSetting("StoryPatchAfterInstall", "False")
-            If LoadSetting("LatestStoryBase") = "" Then SaveSetting("LatestStoryBase", "Unknown")
-            If LoadSetting("ProxyEnabled") = "" Then SaveSetting("ProxyEnabled", "False")
+            If String.IsNullOrEmpty(LoadSetting("PatchServer")) Then SaveSetting("PatchServer", "Patch Server #1")
+            If String.IsNullOrEmpty(LoadSetting("SeenFuckSEGAMessage")) Then SaveSetting("SeenFuckSEGAMessage", "False")
+            If String.IsNullOrEmpty(LoadSetting("Backup")) Then SaveSetting("Backup", "Always")
+            If String.IsNullOrEmpty(LoadSetting("PreDownloadedRAR")) Then SaveSetting("PreDownloadedRAR", "Never")
+            If String.IsNullOrEmpty(LoadSetting("Pastebin")) Then SaveSetting("Pastebin", "True")
+            If String.IsNullOrEmpty(LoadSetting("CloseAfterLaunch")) Then SaveSetting("CloseAfterLaunch", "False")
+            If String.IsNullOrEmpty(LoadSetting("ENPatchAfterInstall")) Then SaveSetting("ENPatchAfterInstall", "False")
+            If String.IsNullOrEmpty(LoadSetting("LargeFilesAfterInstall")) Then SaveSetting("LargeFilesAfterInstall", "False")
+            If String.IsNullOrEmpty(LoadSetting("StoryPatchAfterInstall")) Then SaveSetting("StoryPatchAfterInstall", "False")
+            If String.IsNullOrEmpty(LoadSetting("LatestStoryBase")) Then SaveSetting("LatestStoryBase", "Unknown")
+            If String.IsNullOrEmpty(LoadSetting("ProxyEnabled")) Then SaveSetting("ProxyEnabled", "False")
             If LoadSetting("SidebarEnabled") = "False" Then
                 btnAnnouncements.PerformClick()
             End If
-            If LoadSetting("UID") = "" Then SaveSetting("UID", "False")
+            If String.IsNullOrEmpty(LoadSetting("UID")) Then SaveSetting("UID", "False")
             If LoadSetting("UID") = "False" Then
                 Dim client As New System.Net.WebClient()
                 Dim UIDSTRING As String = client.DownloadString("http://arks-layer.com/docs/client.php")
@@ -632,9 +632,9 @@ Public Class frmMain
             ButtonItem7.Text = My.Resources.strLaunchChrome
 
             Log("Load more settings...")
-            If LoadSetting("StoryPatchVersion") = "" Then SaveSetting("StoryPatchVersion", "Not Installed")
-            If LoadSetting("ENPatchVersion") = "" Then SaveSetting("ENPatchVersion", "Not Installed")
-            If LoadSetting("LargeFilesVersion") = "" Then SaveSetting("LargeFilesVersion", "Not Installed")
+            If String.IsNullOrEmpty(LoadSetting("StoryPatchVersion")) Then SaveSetting("StoryPatchVersion", "Not Installed")
+            If String.IsNullOrEmpty(LoadSetting("ENPatchVersion")) Then SaveSetting("ENPatchVersion", "Not Installed")
+            If String.IsNullOrEmpty(LoadSetting("LargeFilesVersion")) Then SaveSetting("LargeFilesVersion", "Not Installed")
             Log("Loading style setting")
             If LoadSetting("Style") = "Blue" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
@@ -711,7 +711,7 @@ Public Class frmMain
             Me.Text = ("PSO2 Tweaker ver " & My.Application.Info.Version.ToString)
             Application.DoEvents()
             Me.Show()
-            If LoadSetting("SeenDownloadMessage") = "" Then SaveSetting("SeenDownloadMessage", "No")
+            If String.IsNullOrEmpty(LoadSetting("SeenDownloadMessage")) Then SaveSetting("SeenDownloadMessage", "No")
             If Application.StartupPath = GetDownloadsPath() Then
                 If LoadSetting("SeenDownloadMessage") = "No" Then
                     MsgBox("Please be aware - Due to various Windows 7/8 issues, this program might not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
@@ -719,7 +719,7 @@ Public Class frmMain
                 End If
             End If
             LockGUI()
-            If LoadSetting("AlwaysOnTop") = "" Then SaveSetting("AlwaysOnTop", "False")
+            If String.IsNullOrEmpty(LoadSetting("AlwaysOnTop")) Then SaveSetting("AlwaysOnTop", "False")
             Me.TopMost = LoadSetting("AlwaysOnTop")
             chkAlwaysOnTop.Checked = LoadSetting("AlwaysOnTop")
             If File.Exists((Application.StartupPath & "\logfile.txt")) = True Then
@@ -847,7 +847,7 @@ Public Class frmMain
             Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
             Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
             Application.DoEvents()
-            If My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing) = "" Then
+            If String.IsNullOrEmpty(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing)) Then
                 MsgBox(My.Resources.strPleaseSelectPSO2win32dir)
                 Button1.RaiseClick()
             Else
@@ -932,8 +932,8 @@ Public Class frmMain
             If File.Exists("Story MD5HashList.txt") = True Then File.Delete("Story MD5HashList.txt")
             UnlockGUI()
             ButtonItem6.Enabled = False
-            If LoadSetting("SidebarEnabled") = "" Then SaveSetting("SidebarEnabled", "True")
-            If LoadSetting("RemoveCensor") = "" Then SaveSetting("RemoveCensor", "True")
+            If String.IsNullOrEmpty(LoadSetting("SidebarEnabled")) Then SaveSetting("SidebarEnabled", "True")
+            If String.IsNullOrEmpty(LoadSetting("RemoveCensor")) Then SaveSetting("RemoveCensor", "True")
             If LoadSetting("SidebarEnabled") = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
                 Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
@@ -977,7 +977,7 @@ Public Class frmMain
             Application.DoEvents()
             WriteDebugInfo(My.Resources.strIfAboveVersions)
             'DEBUGMYSHITDAWG:
-            If LoadSetting("UseItemTranslation") = "" Then
+            If String.IsNullOrEmpty(LoadSetting("UseItemTranslation")) Then
                 SaveSetting("UseItemTranslation", "True")
             End If
             UseItemTranslation = LoadSetting("UseItemTranslation")
@@ -1197,7 +1197,7 @@ DOWNLOADBIN2:
     <DllImport("user32.dll", EntryPoint:="FlashWindow")> _
     Public Shared Function FlashWindow(ByVal hwnd As Integer, ByVal bInvert As Integer) As Integer
     End Function
-    Public Function DLWUA(ByVal Address As String, ByVal Filename As String, ByVal Overwrite As String) As String
+    Public Function DLWUA(ByVal Address As String, ByVal Filename As String, ByVal Overwrite As String) As Boolean
         Overwrite = Application.StartupPath & "\" & Overwrite
         'Appeler la fonction avec: DLWUA(URL, Emplacement fichier, append ou overwrite (true ou false))
 
@@ -1208,20 +1208,20 @@ DOWNLOADBIN2:
         DLS.Headers.Add("user-agent", "AQUA_HTTP")
         DLS.timeout = 10000
 
-TryAgain:
+        For i As Integer = 1 To 5
+            Try
+                Application.DoEvents()
+                DLS.DownloadFileAsync((New Uri(Address)), Filename)
+                Application.DoEvents()
+                Exit For
+            Catch ex As Exception
+                If i = 4 Then Threading.Thread.Sleep(5000)
+                If i = 5 Then Return False
+            End Try
+        Next
 
-        Try
-            Application.DoEvents()
-            DLS.DownloadFileAsync((New Uri(Address)), Filename)
-            Application.DoEvents()
-        Catch ex As Exception
-            Continu = Continu - 1
-            If Continu = 1 Then Threading.Thread.Sleep(5000)
-            If Continu > 0 Then GoTo TryAgain
-            Return "Error"
-            Exit Function
-        End Try
         'My.Computer.FileSystem.WriteAllBytes(File, Fichier, Ajout)
+
         While DLS.IsBusy = True
             Application.DoEvents()
             If Restartplz = True Then
@@ -1238,8 +1238,8 @@ TryAgain:
                 Application.Exit()
             End If
         End While
-        Return "OK"
 
+        Return True
     End Function
     Public Function GetMD5(ByVal fichier As String) As String
 
@@ -1783,8 +1783,9 @@ NEXTFILE1:
             versionclient.DownloadFile("http://162.243.211.123/freedom/precede.txt", "precede.txt")
             'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
             If ComingFromPrePatch = True Then GoTo StartPrePatch
+
             Dim FirstTimechecking As Boolean = False
-            If LoadSetting("PSO2PrecedeVersion") = "" Then
+            If String.IsNullOrEmpty(LoadSetting("PSO2PrecedeVersion")) Then
                 Dim precedefile2() As String = File.ReadAllLines("precede.txt")
                 Dim PrecedeVersion2() As String = precedefile2(0).Split(":")
                 SaveSetting("PSO2PrecedeVersion", PrecedeVersion2(1))
@@ -1974,7 +1975,7 @@ BackToCheckUpdates:
             End If
 BackToCheckUpdates2:
             If ComingFromPrePatch = True Then Exit Sub
-            If LoadSetting("PSO2RemoteVersion") = "" Then
+            If String.IsNullOrEmpty(LoadSetting("PSO2RemoteVersion")) Then
                 Dim lines2 = File.ReadAllLines("version.ver")
                 Dim RemoteVersion2 As String = lines2(0)
                 SaveSetting("PSO2RemoteVersion", RemoteVersion2)
@@ -2392,7 +2393,7 @@ BackToCheckUpdates2:
         For Each match As Match In mactches
             If match.ToString.Contains(urlIdentifier) Then returnURL = match.ToString
         Next
-        If returnURL = "" Then
+        If String.IsNullOrEmpty(returnURL) Then
             Return "Error! URL not found!"
             Exit Function
         End If
@@ -2916,6 +2917,7 @@ DOWNLOADBIN2:
                 End If
                 GoTo DOWNLOADBIN2
             End Try
+
             'Start the shitstorm
             Dim objReader As New System.IO.StreamReader(lblDirectory.Text & "\translation.cfg")
             Dim CurrentLine As String = ""
@@ -3234,7 +3236,7 @@ CHECKFOROLDFILES:
                 While Not (oReader.EndOfStream)
                     If CancelledFull = True Then Exit Sub
                     sBuffer = oReader.ReadLine
-                    If sBuffer = "" Then GoTo DOWNLOADFILES
+                    If String.IsNullOrEmpty(sBuffer) Then GoTo DOWNLOADFILES
                     'MsgBox(sBuffer.ToString)
                     filename = Regex.Split(sBuffer, ".pat")
                     'MsgBox(filename(1))
@@ -5184,13 +5186,15 @@ SelectInstallFolder:
                     DLWUA("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", pso2_binfolder & "\GameGuard.des", True)
                     WriteDebugInfoSameLine(My.Resources.strDone)
                     Application.DoEvents()
+
                     'set the lbldirectory.text to the install patch
                     lblDirectory.Text = pso2_binfolder
                     My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
                     WriteDebugInfo(lblDirectory.Text & " " & My.Resources.strSetAsYourPSO2)
-                    If LoadSetting("StoryPatchVersion") = "" Then SaveSetting("StoryPatchVersion", "Not Installed")
-                    If LoadSetting("ENPatchVersion") = "" Then SaveSetting("ENPatchVersion", "Not Installed")
-                    If LoadSetting("LargeFilesVersion") = "" Then SaveSetting("LargeFilesVersion", "Not Installed")
+                    If String.IsNullOrEmpty(LoadSetting("StoryPatchVersion")) Then SaveSetting("StoryPatchVersion", "Not Installed")
+                    If String.IsNullOrEmpty(LoadSetting("ENPatchVersion")) Then SaveSetting("ENPatchVersion", "Not Installed")
+                    If String.IsNullOrEmpty(LoadSetting("LargeFilesVersion")) Then SaveSetting("LargeFilesVersion", "Not Installed")
+
                     'Check for PSO2 Updates~
                     ButtonItem5.RaiseClick()
                     If InstallENPatchesAfter = vbNo Then
@@ -6126,9 +6130,10 @@ SelectInstallFolder:
         'MsgBox(sr1.ReadLine)
         Do While sr1.Peek <> -1
             SEGALine = sr1.ReadLine()
-            If sr1.ReadLine = "" Then
-                GoTo NextStuff
-                count -= 1
+            If String.IsNullOrEmpty(sr1.ReadLine) Then
+                Continue Do
+                ' Mike: Why was this here? It never executed!
+                'count -= 1
             End If
             'MsgBox(SEGALine)
             SplitSEGALine = Regex.Split(SEGALine, ".pat")
@@ -6143,8 +6148,8 @@ SelectInstallFolder:
             'MsgBox("Found a mismatched filed! Name: " & SEGAFilename & vbNewLine & "Filesize should be: " & SEGAFilesize & vbNewLine & "but is: " & SplitLocalLine(1).ToString)
             If oldarray.Contains(SEGALine) = False Then missingfiles.Add(SEGAFilename)
             count += 2
-NextStuff:
         Loop
+
         sr1.Close()
         sr2.Close()
     End Sub
