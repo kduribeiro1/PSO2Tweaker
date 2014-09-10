@@ -33,7 +33,7 @@ Public Class frmDiagnostic
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Dim drInfo As New DirectoryInfo(frmMain.GetRegKey(Of String)("PSO2Dir") & "\data\win32\")
-        Dim filesInfo() As FileInfo = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
+        Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
 
         Dim fileSize As Long = 0
 
@@ -55,7 +55,7 @@ Public Class frmDiagnostic
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim drInfo As New DirectoryInfo(frmMain.GetRegKey(Of String)("PSO2Dir"))
-        Dim filesInfo() As FileInfo = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
+        Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
 
         Dim fileSize As Long = 0
         Dim filename As String = ""

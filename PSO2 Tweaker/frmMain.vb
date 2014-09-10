@@ -1311,7 +1311,7 @@ DOWNLOADBIN2:
         Return r
     End Function
     Public Sub MergePatches()
-        Dim filename() As String
+        Dim filename As String()
         Dim truefilename As String
         Dim sr As StreamReader = File.OpenText("patchlist.txt")
         ' Store it in a string variable for now
@@ -1359,7 +1359,7 @@ DOWNLOADBIN2:
         'System.Diagnostics.Process.Start("notepad", "SOMEOFTHETHINGS.txt")
     End Sub
     Public Sub MergePrePatches()
-        Dim filename() As String
+        Dim filename As String()
         Dim truefilename As String
         Dim sr As StreamReader = File.OpenText("patchlist0.txt")
         ' Store it in a string variable for now
@@ -1470,7 +1470,7 @@ DOWNLOADBIN2:
             DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt", True)
             Dim filedownloader As New Net.WebClient()
             Dim sBuffer As String
-            Dim filename() As String
+            Dim filename As String()
             Dim truefilename As String
             Dim missingfiles As New List(Of String)
             Dim filedownloader2 As New Net.WebClient()
@@ -1781,14 +1781,14 @@ NEXTFILE1:
 
             Dim FirstTimechecking As Boolean = False
             If String.IsNullOrEmpty(GetRegKey(Of String)("PSO2PrecedeVersion")) Then
-                Dim precedefile2() As String = File.ReadAllLines("precede.txt")
-                Dim PrecedeVersion2() As String = precedefile2(0).Split(":")
+                Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
+                Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
                 SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
                 FirstTimechecking = True
             End If
             'MsgBox("Change version now.")
             Dim precedefile = File.ReadAllLines("precede.txt")
-            Dim PrecedeSplit() As String = precedefile(0).Split(":")
+            Dim PrecedeSplit As String() = precedefile(0).Split(":")
             Dim PrecedeYesNo As String = PrecedeSplit(0)
             Dim precedeversionstring As String = PrecedeSplit(1)
 
@@ -1805,13 +1805,13 @@ StartPrePatch:
                         CancelledFull = False
                         'Dim filedownloader As New Net.WebClient()
                         Dim sBuffer As String = Nothing
-                        Dim filename() As String = Nothing
+                        Dim filename As String() = Nothing
                         Dim truefilename As String = Nothing
                         Dim missingfiles As New List(Of String)
                         Dim filedownloader2 As New Net.WebClient()
                         Dim missingfiles2 As New List(Of String)
                         Dim NumberofChecks As Integer = 0
-                        Dim MD5() As String = Nothing
+                        Dim MD5 As String() = Nothing
                         Dim TrueMD5 As String = Nothing
                         Dim PSO2EXEMD5 As String = "FUCK YOU DUDU"
                         lblStatus.Text = ""
@@ -1918,8 +1918,8 @@ NEXTFILE1:
                         patching = False
                         If missingfiles.Count = 0 Then WriteDebugInfo("Your precede data is up to date!")
                         If missingfiles.Count <> 0 Then WriteDebugInfo("Precede data downloaded/updated!")
-                        Dim precedefile2() As String = File.ReadAllLines("precede.txt")
-                        Dim PrecedeVersion2() As String = precedefile2(0).Split(":")
+                        Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
+                        Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
                         SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
                         GoTo BackToCheckUpdates
                     End If
@@ -2337,7 +2337,7 @@ BackToCheckUpdates2:
                     If resourceStream IsNot Nothing Then
                         Using reader As New BinaryReader(resourceStream)
                             ' Read the bytes from the input stream.
-                            Dim buffer() As Byte = reader.ReadBytes(CInt(resourceStream.Length))
+                            Dim buffer As Byte() = reader.ReadBytes(CInt(resourceStream.Length))
                             Using outputStream As New FileStream(fileName, FileMode.Create)
                                 Using writer As New BinaryWriter(outputStream)
                                     ' Write the bytes to the output stream.
@@ -2794,17 +2794,17 @@ DOWNLOADBIN2:
         End If
         Dim filedownloader As New Net.WebClient()
         Dim sBuffer As String = Nothing
-        Dim filename() As String = Nothing
+        Dim filename As String() = Nothing
         Dim truefilename As String = Nothing
         Dim missingfiles As New List(Of String)
         Dim filedownloader2 As New Net.WebClient()
         Dim missingfiles2 As New List(Of String)
         Dim NumberofChecks As Integer = 0
-        Dim MD5() As String = Nothing
+        Dim MD5 As String() = Nothing
         Dim TrueMD5 As String = Nothing
         Dim PSO2EXEMD5 As String = "FUCK YOU DUDU"
         Dim totalfilesize As Long = 0
-        Dim testfilesize() As String
+        Dim testfilesize As String()
         lblStatus.Text = ""
         If System.IO.Directory.Exists(((lblDirectory.Text & "\data\win32") & "\backupPreENPatch")) = True Then
             WriteDebugInfo(My.Resources.strENBackupFound)
@@ -3377,12 +3377,12 @@ DOWNLOADFILES:
         End If
         Dim filedownloader As New Net.WebClient()
         Dim sBuffer As String
-        Dim filename() As String
+        Dim filename As String()
         Dim truefilename As String
         Dim missingfiles As New List(Of String)
         Dim filedownloader2 As New Net.WebClient()
         Dim sBuffer2 As String
-        Dim filename2() As String
+        Dim filename2 As String()
         Dim truefilename2 As String
         Dim missingfiles2 As New List(Of String)
         Dim missingfiles3 As New List(Of String)
@@ -5767,7 +5767,7 @@ SelectInstallFolder:
 
         Dim SEGALine As String = ""
         Dim LocalLine As String = ""
-        Dim SplitSEGALine() As String
+        Dim SplitSEGALine As String()
         'Dim SplitLocalLine() As String
         Dim SEGAFilename As String = ""
         ' Unused?
