@@ -118,7 +118,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 ComboBoxEx4.SelectedIndex = 2
                 'Disable resolution thingie
             End If
-            ComboBoxEx5.Text = ReadINISettingStartingAtLine("Width", 240) & "x" & ReadINISettingStartingAtLine("Height", 240)
+            ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
             If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text.ToString) = False Then ComboBoxEx5.SelectedIndex = 0
             CheckBoxX1.Checked = False
             If ReadINISetting("Y") = "99999" Then
@@ -131,40 +131,10 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
-    Public Function ReadINISetting(ByRef SettingToRead As String)
+    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
         Try
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = 0 To TextLines.Count
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
-                    Return "Setting not found"
-                End If
-                If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
-                    'MsgBox(strReturn(0)) 'Filetype
-                    'MsgBox(strReturn(1)) ' "png",
-                    'MsgBox(strReturn(2)) ' 
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
-                    FinalString = FinalString.Replace(" ", "")
-                    'MsgBox(FinalString)
-                    Return FinalString
-                End If
-            Next i
-        Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        End Try
-        ' TODO: Actually fix the function
-        Return ""
-    End Function
-    Public Function ReadINISettingStartingAtLine(ByRef SettingToRead As String, ByRef LineToStartAt As Integer)
-        Try
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             For i As Integer = LineToStartAt To TextLines.Count
                 'SettingToRead is FileType in the example
                 If i + 1 = TextLines.Count Then
@@ -173,7 +143,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 If TextLines(i).Contains(" " & SettingToRead & " ") Then
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(strReturn(1)) ' "png",
                     'MsgBox(strReturn(2)) ' 
