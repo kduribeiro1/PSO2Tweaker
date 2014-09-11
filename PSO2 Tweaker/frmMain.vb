@@ -5683,6 +5683,8 @@ SelectInstallFolder:
     End Sub
     Private Sub IsServerOnline()
 
+        'This isn't working at the moment. Let's just exit the sub for now.
+        Exit Sub
         Dim sock As TcpClient
         Dim ip As String = "210.129.209.16"
         Dim port As Int32 = 12200
