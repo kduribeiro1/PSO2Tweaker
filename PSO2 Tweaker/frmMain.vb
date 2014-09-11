@@ -2266,6 +2266,7 @@ BackToCheckUpdates2:
             'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'End Item Translation stuff
+            If File.Exists(pso2launchpath & "\ddraw.dll") = True Then File.Delete(pso2launchpath & "\ddraw.dll")
             SaveToDisk("ddraw.dll", pso2launchpath & "\ddraw.dll")
             'Log("Start building the process")
             Dim startInfo As ProcessStartInfo
