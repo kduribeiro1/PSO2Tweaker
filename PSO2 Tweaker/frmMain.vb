@@ -5906,7 +5906,7 @@ SelectInstallFolder:
             Dim JSONURL As String = InputBox("Please input the URL of the configuration JSON:", "Configuration JSON", "")
             '[AIDA] am i doin it rite sonicfreak?
             If String.IsNullOrEmpty(JSONURL) Then Exit Sub
-            WriteDebugInfo("Downloading configuration...") Then
+            WriteDebugInfo("Downloading configuration...")
             myWebClient.DownloadFile(JSONURL, "ServerConfig.txt")
             Dim JSONCONTENTS As String = File.ReadAllText("ServerConfig.txt")
             Dim json As JObject = JObject.Parse(JSONCONTENTS)
