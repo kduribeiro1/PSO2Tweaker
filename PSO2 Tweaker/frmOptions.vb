@@ -6,59 +6,13 @@ Imports System.IO
 Imports System.Net
 
 Public Class frmOptions
-    Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-    Dim Loading As Boolean
+
     Dim DPISetting As String
+
+    Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
+
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        Dim tempstring As String = Helper.GetRegKey(Of String)("Locale")
-        If cmbLanguage.SelectedIndex = 0 Then
-            'English
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("en")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("en")
-            Helper.SetRegKey(Of String)("Locale", "en")
-        End If
-        If cmbLanguage.SelectedIndex = 1 Then
-            'French
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("fr")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("fr")
-            Helper.SetRegKey(Of String)("Locale", "fr")
-        End If
-        If cmbLanguage.SelectedIndex = 2 Then
-            'German
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("de")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("de")
-            Helper.SetRegKey(Of String)("Locale", "de")
-        End If
-        If cmbLanguage.SelectedIndex = 3 Then
-            'Japanese
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("ja")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("ja")
-            Helper.SetRegKey(Of String)("Locale", "ja")
-        End If
-        If cmbLanguage.SelectedIndex = 4 Then
-            'Portuguese
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("pt")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("pt")
-            Helper.SetRegKey(Of String)("Locale", "pt")
-        End If
-        If cmbLanguage.SelectedIndex = 5 Then
-            'Russian
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("ru")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("ru")
-            Helper.SetRegKey(Of String)("Locale", "ru")
-        End If
-        If cmbLanguage.SelectedIndex = 6 Then
-            'Spanish
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("es")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es")
-            Helper.SetRegKey(Of String)("Locale", "es")
-        End If
-        If cmbLanguage.SelectedIndex = 7 Then
-            'Spanish
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("es")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es")
-            Helper.SetRegKey(Of String)("Locale", "pl")
-        End If
+        SetLocale()
         ' Dim RestartYesNo As MsgBoxResult = MsgBox("The program will now restart in the selected language. Hit Cancel if you don't want to restart now.", MsgBoxStyle.OkCancel)
         ' If RestartYesNo = MsgBoxResult.Ok Then
         '    frmMain.CancelDownloadToolStripMenuItem.PerformClick()
@@ -72,69 +26,50 @@ Public Class frmOptions
         'End If
         Me.CMBStyle.SelectedIndex = -1
     End Sub
+
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            Loading = True
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Color")) Then ColorPickerButton1.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("Color"))
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("FontColor")) Then ColorPickerButton2.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("FontColor"))
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("TextBoxBGColor")) Then ColorPickerButton4.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("TextboxBGColor"))
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("TextBoxColor")) Then ColorPickerButton3.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("TextboxColor"))
+            ' TODO: Split out into function
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Backup")) Then
                 If Helper.GetRegKey(Of String)("Backup") = "Ask" Then cmbBackupPreference.Text = "Ask every time"
                 If Helper.GetRegKey(Of String)("Backup") = "Always" Then cmbBackupPreference.Text = "Always backup"
                 If Helper.GetRegKey(Of String)("Backup") = "Never" Then cmbBackupPreference.Text = "Never backup"
             End If
+            ' TODO: Ditto
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PredownloadedRAR")) Then
                 If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then cmbPredownload.Text = "Ask every time"
                 If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then cmbPredownload.Text = "Always backup"
                 If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then cmbPredownload.Text = "Never backup"
             End If
-            Dim g As Graphics = Me.CreateGraphics
-            If g.DpiX.ToString = "120" Then
-                DPISetting = "120"
-            End If
-            If g.DpiX.ToString = "96" Then
-                DPISetting = "96"
-            End If
-            g.Dispose()
-            If DPISetting = "96" Then Me.Size = New Size(440, 451)
-            If DPISetting = "120" Then Me.Size = New Size(583, 554)
 
-            ' TODO: Enum hax
-            Dim Locale As String = Helper.GetRegKey(Of String)("Locale")
+            ' Checks if the DPI greater or equal to 120, and sets accordingly.
+            ' Otherwise, we'll assume is 96 or lower.
+            Using g As Graphics = Me.CreateGraphics
+                If g.DpiX >= 120 Then
+                    Me.Size = New Size(583, 554)
+                Else
+                    Me.Size = New Size(440, 451)
+                End If
+            End Using
 
-            Select Case Locale
-                Case "en"
-                    cmbLanguage.Text = "English"
+            ' Here we pull the locale setting from registry and apply it to the form.
 
-                Case "fr"
-                    cmbLanguage.Text = "French"
+            ' Reads locale from registry and converts from LangCode (e.g "en") to Language (e.g "English")
+            Dim Locale As Language = [Enum].Parse(GetType(LangCode), Helper.GetRegKey(Of String)("Locale"))
 
-                Case "de"
-                    cmbLanguage.Text = "German"
-
-                Case "ja"
-                    cmbLanguage.Text = "Japanese"
-
-                Case "pt"
-                    cmbLanguage.Text = "Portuguese"
-
-                Case "ru"
-                    cmbLanguage.Text = "Russian"
-
-                Case "es"
-                    cmbLanguage.Text = "Spanish"
-
-                Case "pl"
-                    cmbLanguage.Text = "Polish"
-
-                Case Else
-                    cmbLanguage.Text = "English"
-            End Select
-
-            If Not String.IsNullOrEmpty(Locale) Then
-                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(Locale)
-                Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(Locale)
+            ' Defaults to English if there is no locale or an error occurs
+            If Locale = Nothing Then
+                cmbLanguage.Text = "English"
+                Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
+                Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
+            Else
+                cmbLanguage.Text = Locale.ToString
+                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(CType(Locale, LangCode).ToString)
+                Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             End If
 
             LabelX1.Text = My.Resources.strChooseATheme
@@ -159,7 +94,6 @@ Public Class frmOptions
             ComboItem36.Text = "Latest version: " & Helper.GetRegKey(Of String)("NewENVersion")
             ComboItem40.Text = "Last installed: " & Helper.GetRegKey(Of String)("LargeFilesVersion")
             ComboItem42.Text = "Latest version: " & Helper.GetRegKey(Of String)("NewLargeFilesVersion")
-            Loading = False
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
@@ -229,7 +163,6 @@ Public Class frmOptions
         ' End If
     End Sub
 
-
     Private Sub ComboBoxEx1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx1.SelectedIndexChanged
         Helper.SetRegKey(Of String)("PatchServer", ComboBoxEx1.Text)
     End Sub
@@ -253,54 +186,20 @@ Public Class frmOptions
         Do Until process.WaitForExit(1000)
         Loop
 
-        ' TODO: Switch statement, enum
-        If cmbLanguage.SelectedIndex = 0 Then
-            'English
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("en")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("en")
+        SetLocale()
+    End Sub
+
+    Private Sub SetLocale()
+        Dim SelectedLocale As String = [Enum].GetName(GetType(LangCode), cmbLanguage.SelectedIndex)
+
+        If String.IsNullOrEmpty(SelectedLocale) Then
+            Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
+            Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             Helper.SetRegKey(Of String)("Locale", "en")
-        End If
-        If cmbLanguage.SelectedIndex = 1 Then
-            'French
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("fr")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("fr")
-            Helper.SetRegKey(Of String)("Locale", "fr")
-        End If
-        If cmbLanguage.SelectedIndex = 2 Then
-            'German
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("de")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("de")
-            Helper.SetRegKey(Of String)("Locale", "de")
-        End If
-        If cmbLanguage.SelectedIndex = 3 Then
-            'Japanese
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("ja")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("ja")
-            Helper.SetRegKey(Of String)("Locale", "ja")
-        End If
-        If cmbLanguage.SelectedIndex = 4 Then
-            'Portuguese
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("pt")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("pt")
-            Helper.SetRegKey(Of String)("Locale", "pt")
-        End If
-        If cmbLanguage.SelectedIndex = 5 Then
-            'Russian
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("ru")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("ru")
-            Helper.SetRegKey(Of String)("Locale", "ru")
-        End If
-        If cmbLanguage.SelectedIndex = 6 Then
-            'Spanish
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("es")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es")
-            Helper.SetRegKey(Of String)("Locale", "es")
-        End If
-        If cmbLanguage.SelectedIndex = 7 Then
-            'Spanish
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("es")
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es")
-            Helper.SetRegKey(Of String)("Locale", "pl")
+        Else
+            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(SelectedLocale)
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
+            Helper.SetRegKey(Of String)("Locale", SelectedLocale)
         End If
     End Sub
 
@@ -343,6 +242,7 @@ Public Class frmOptions
         frmMain.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
         Helper.SetRegKey(Of Integer)("FontColor", (ColorPickerButton2.SelectedColor.ToArgb))
     End Sub
+
     Private Sub LabelX6_Click(sender As Object, e As EventArgs) Handles LabelX6.Click
 
     End Sub
@@ -360,6 +260,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbBackupPreference_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBackupPreference.SelectedIndexChanged
+        ' TODO: Make an enum for the strings below
         Select Case cmbBackupPreference.SelectedIndex
             Case 0
                 Helper.SetRegKey(Of String)("Backup", "Ask")
@@ -380,6 +281,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbENOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbENOverride.SelectedIndexChanged
+        ' TODO: Split into function
         Dim strENselection As String
         strENselection = cmbENOverride.Text
         strENselection = strENselection.Replace("Latest version: ", "")
@@ -389,6 +291,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbLargeFilesOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLargeFilesOverride.SelectedIndexChanged
+        ' TODO: Split into function
         Dim strLargeFilesselection As String
         strLargeFilesselection = cmbLargeFilesOverride.Text
         strLargeFilesselection = strLargeFilesselection.Replace("Latest version: ", "")
@@ -398,6 +301,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbStoryOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbStoryOverride.SelectedIndexChanged
+        ' TODO: Split into function
         Dim strStoryPatchselection As String
         strStoryPatchselection = cmbStoryOverride.Text
         strStoryPatchselection = strStoryPatchselection.Replace("Latest version: ", "")
@@ -433,6 +337,7 @@ Public Class frmOptions
             Helper.SetRegKey(Of String)("SteamUID", UIDString)
         End If
     End Sub
+
     Private Sub ButtonX5_Click(sender As Object, e As EventArgs) Handles ButtonX5.Click
         Dim DirectoryString As String = frmMain.lblDirectory.Text
         Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
@@ -449,10 +354,6 @@ Public Class frmOptions
 
     Private Sub chkAutoRemoveCensor_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoRemoveCensor.CheckedChanged
         Helper.SetRegKey(Of String)("RemoveCensor", chkAutoRemoveCensor.Checked.ToString)
-    End Sub
-
-    Private Sub cmbLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedIndexChanged
-
     End Sub
 
     Private Sub cmbPredownload_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPredownload.SelectedIndexChanged

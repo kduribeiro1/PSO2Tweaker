@@ -13,7 +13,10 @@ Imports System.Net.Sockets
 Imports System.Management
 Imports Newtonsoft.Json.Linq
 
-
+' TODO: Replace all redundant code with functions
+' TODO: Cache all read registry values in a structure
+' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
+' TODO: Organize this form by order of member type (variable, function, etc)
 
 Public Class frmMain
 
@@ -1061,6 +1064,7 @@ DOWNLOADBIN2:
     End Sub
     Friend Function GetFolderAccess(ByVal sDirectory As String) As Boolean
         Try
+            ' TODO: Using statements or better implementation in general
             Dim fsw As New FileStream(sDirectory & "\test.test", FileMode.Create, FileAccess.Write)
             Dim sw As New StreamWriter(fsw)
             sw.Dispose()

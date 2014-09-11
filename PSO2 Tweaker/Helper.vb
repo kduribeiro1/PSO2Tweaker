@@ -1,5 +1,9 @@
-﻿Public Class Helper
+﻿Imports System.Globalization
+
+Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
+
+    Public Shared DefaltCultureInfo As CultureInfo = New System.Globalization.CultureInfo("en")
 
     Public Shared Function SizeSuffix(ByVal value As Long) As String
         If (value = 0) Then
