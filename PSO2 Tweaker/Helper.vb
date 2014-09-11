@@ -13,4 +13,12 @@
 
         Return String.Format("{0:n2} {1}", num1, SizeSuffixes(num))
     End Function
+
+    Public Shared Function GetRegKey(Of T)(ByRef Key As String) As T
+        Return My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Nothing)
+    End Function
+
+    Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
+        My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
+    End Sub
 End Class

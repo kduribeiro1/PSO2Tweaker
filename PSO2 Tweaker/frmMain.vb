@@ -279,7 +279,7 @@ Public Class frmMain
                 End If
                 If CommandLineArgs(i).ToString = "-steam" Then
                     Log("Detected -steam argument")
-                    If String.IsNullOrEmpty(GetRegKey(Of String)("SteamUID")) Then
+                    If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SteamUID")) Then
                         MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
                     End If
                     'Dim lngResult As Long
@@ -328,16 +328,16 @@ Public Class frmMain
                     DirectoryString = (lblDirectory.Text & "\data\win32")
                     pso2launchpath = DirectoryString.Replace("\data\win32", "")
                     'If Environment.Is64BitOperatingSystem = True Then
-                    'SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                    'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
                     'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                    'SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                    'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
                     'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                     'End If
                     'If it's 32-bit
                     'If Environment.Is64BitOperatingSystem = False Then
-                    'SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                    'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
                     'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                    'SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                    'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
                     'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                     'End If
                     'End Item Translation stuff
@@ -361,8 +361,8 @@ Public Class frmMain
                 If CommandLineArgs(i).ToString = "-pso2" Then
                     Log("Detected command argument -pso2")
                     'Fuck SEGA. Fuck them hard.
-                    'If GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
-                    'SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
+                    'If Helper.GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
+                    'Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
                     'Log("Checking if PSO2 is running")
                     'If CheckIfRunning("pso2") = "Running" Then Exit Sub
                     'If CheckIfRunning("pso2.exe") = "Running" Then Exit Sub
@@ -435,16 +435,16 @@ Public Class frmMain
                         Next
 
                         'If Environment.Is64BitOperatingSystem = True Then
-                        'SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                        'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
                         'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                        'SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                        'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
                         'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'If it's 32-bit
                         'If Environment.Is64BitOperatingSystem = False Then
-                        'SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                        'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
                         'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                        'SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                        'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
                         'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'End Item Translation stuff
@@ -495,13 +495,13 @@ Public Class frmMain
                         'AppInit_DLLs (string, pointing to the file)
                         'If it's 64-bit
                         'If Environment.Is64BitOperatingSystem = "True" Then
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'If it's 32-bit
                         'If Environment.Is64BitOperatingSystem = "False" Then
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'End Item Translation stuff
                     End If
@@ -537,8 +537,8 @@ Public Class frmMain
             'Exit Sub
             'frmPSO2Settings.Show()
             'Exit Sub
-            'SetRegKey(Of String)("Locale", "")
-            'If GetRegKey(Of String)("Locale") = "" Then
+            'Helper.SetRegKey(Of String)("Locale", "")
+            'If Helper.GetRegKey(Of String)("Locale") = "" Then
             'MsgBox("This appears to be the first time you've used the new version of the Arks System - Please select your language and theme in the next window.")
             'btnOptions.RaiseClick()
             'Do While frmOptions.Visible = True
@@ -555,28 +555,28 @@ Public Class frmMain
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             If File.Exists(pso2launchpath & "\ddraw.dll") And TransOverride = False Then File.Delete(pso2launchpath & "\ddraw.dll")
             Log("Loading settings...")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("PatchServer")) Then SetRegKey(Of String)("PatchServer", "Patch Server #1")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("SeenFuckSEGAMessage")) Then SetRegKey(Of String)("SeenFuckSEGAMessage", "False")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("Backup")) Then SetRegKey(Of String)("Backup", "Always")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("PreDownloadedRAR")) Then SetRegKey(Of String)("PreDownloadedRAR", "Never")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("Pastebin")) Then SetRegKey(Of String)("Pastebin", "True")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("CloseAfterLaunch")) Then SetRegKey(Of String)("CloseAfterLaunch", "False")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("ENPatchAfterInstall")) Then SetRegKey(Of String)("ENPatchAfterInstall", "False")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("LargeFilesAfterInstall")) Then SetRegKey(Of String)("LargeFilesAfterInstall", "False")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("StoryPatchAfterInstall")) Then SetRegKey(Of String)("StoryPatchAfterInstall", "False")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("LatestStoryBase")) Then SetRegKey(Of String)("LatestStoryBase", "Unknown")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("ProxyEnabled")) Then SetRegKey(Of String)("ProxyEnabled", "False")
-            If GetRegKey(Of String)("SidebarEnabled") = "False" Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PatchServer")) Then Helper.SetRegKey(Of String)("PatchServer", "Patch Server #1")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SeenFuckSEGAMessage")) Then Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "False")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Backup")) Then Helper.SetRegKey(Of String)("Backup", "Always")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PreDownloadedRAR")) Then Helper.SetRegKey(Of String)("PreDownloadedRAR", "Never")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Pastebin")) Then Helper.SetRegKey(Of String)("Pastebin", "True")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("CloseAfterLaunch")) Then Helper.SetRegKey(Of String)("CloseAfterLaunch", "False")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ENPatchAfterInstall")) Then Helper.SetRegKey(Of String)("ENPatchAfterInstall", "False")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("LargeFilesAfterInstall")) Then Helper.SetRegKey(Of String)("LargeFilesAfterInstall", "False")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("StoryPatchAfterInstall")) Then Helper.SetRegKey(Of String)("StoryPatchAfterInstall", "False")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("LatestStoryBase")) Then Helper.SetRegKey(Of String)("LatestStoryBase", "Unknown")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ProxyEnabled")) Then Helper.SetRegKey(Of String)("ProxyEnabled", "False")
+            If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                 btnAnnouncements.PerformClick()
             End If
-            If String.IsNullOrEmpty(GetRegKey(Of String)("UID")) Then SetRegKey(Of String)("UID", "False")
-            If GetRegKey(Of String)("UID") = "False" Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("UID")) Then Helper.SetRegKey(Of String)("UID", "False")
+            If Helper.GetRegKey(Of String)("UID") = "False" Then
                 Dim client As New System.Net.WebClient()
                 Dim UIDSTRING As String = client.DownloadString("http://arks-layer.com/docs/client.php")
-                SetRegKey(Of String)("UID", UIDSTRING)
+                Helper.SetRegKey(Of String)("UID", UIDSTRING)
             End If
-            If GetRegKey(Of String)("Locale") <> "" Then
-                Dim Locale As String = GetRegKey(Of String)("Locale")
+            If Helper.GetRegKey(Of String)("Locale") <> "" Then
+                Dim Locale As String = Helper.GetRegKey(Of String)("Locale")
                 Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(Locale)
                 Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(Locale)
             End If
@@ -632,48 +632,48 @@ Public Class frmMain
             ButtonItem7.Text = My.Resources.strLaunchChrome
 
             Log("Load more settings...")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("StoryPatchVersion")) Then SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("ENPatchVersion")) Then SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("LargeFilesVersion")) Then SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("StoryPatchVersion")) Then Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ENPatchVersion")) Then Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("LargeFilesVersion")) Then Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
             Log("Loading style setting")
-            If GetRegKey(Of String)("Style") = "Blue" Then
+            If Helper.GetRegKey(Of String)("Style") = "Blue" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                 frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
             End If
-            If GetRegKey(Of String)("Style") = "Black" Then
+            If Helper.GetRegKey(Of String)("Style") = "Black" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
                 frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
             End If
-            If GetRegKey(Of String)("Style") = "Silver" Then
+            If Helper.GetRegKey(Of String)("Style") = "Silver" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
                 frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
             End If
 
-            If GetRegKey(Of String)("Style") = "Vista Glass" Then
+            If Helper.GetRegKey(Of String)("Style") = "Vista Glass" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
                 frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
             End If
 
-            If GetRegKey(Of String)("Style") = "2010 Silver" Then
+            If Helper.GetRegKey(Of String)("Style") = "2010 Silver" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
                 frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
             End If
 
-            If GetRegKey(Of String)("Style") = "Windows 7 Blue" Then
+            If Helper.GetRegKey(Of String)("Style") = "Windows 7 Blue" Then
                 StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
                 frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
             End If
             Log("Loading textbox settings")
-            If GetRegKey(Of String)("TextBoxBGColor") <> "" Then rtbDebug.BackColor = Color.FromArgb(GetRegKey(Of String)("TextboxBGColor"))
-            If GetRegKey(Of String)("TextBoxColor") <> "" Then rtbDebug.ForeColor = Color.FromArgb(GetRegKey(Of String)("TextboxColor"))
+            If Helper.GetRegKey(Of String)("TextBoxBGColor") <> "" Then rtbDebug.BackColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxBGColor"))
+            If Helper.GetRegKey(Of String)("TextBoxColor") <> "" Then rtbDebug.ForeColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxColor"))
             Log("Colors")
-            If GetRegKey(Of String)("Color") <> "" Then
-                StyleManager1.ManagerColorTint = Color.FromArgb(GetRegKey(Of String)("Color"))
-                frmPSO2Options.StyleManager1.ManagerColorTint = Color.FromArgb(GetRegKey(Of String)("Color"))
+            If Helper.GetRegKey(Of String)("Color") <> "" Then
+                StyleManager1.ManagerColorTint = Color.FromArgb(Helper.GetRegKey(Of String)("Color"))
+                frmPSO2Options.StyleManager1.ManagerColorTint = Color.FromArgb(Helper.GetRegKey(Of String)("Color"))
             End If
 
-            If GetRegKey(Of String)("FontColor") <> "" Then
-                Dim Color As System.Drawing.Color = Color.FromArgb(GetRegKey(Of String)("FontColor"))
+            If Helper.GetRegKey(Of String)("FontColor") <> "" Then
+                Dim Color As System.Drawing.Color = Color.FromArgb(Helper.GetRegKey(Of String)("FontColor"))
                 frmPSO2Options.TabControl1.ColorScheme.TabItemSelectedText = Color
                 frmPSO2Options.TabItem1.TextColor = Color
                 frmPSO2Options.TabItem2.TextColor = Color
@@ -711,17 +711,17 @@ Public Class frmMain
             Me.Text = ("PSO2 Tweaker ver " & My.Application.Info.Version.ToString)
             Application.DoEvents()
             Me.Show()
-            If String.IsNullOrEmpty(GetRegKey(Of String)("SeenDownloadMessage")) Then SetRegKey(Of String)("SeenDownloadMessage", "No")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SeenDownloadMessage")) Then Helper.SetRegKey(Of String)("SeenDownloadMessage", "No")
             If Application.StartupPath = GetDownloadsPath() Then
-                If GetRegKey(Of String)("SeenDownloadMessage") = "No" Then
+                If Helper.GetRegKey(Of String)("SeenDownloadMessage") = "No" Then
                     MsgBox("Please be aware - Due to various Windows 7/8 issues, this program might not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
-                    SetRegKey(Of String)("SeenDownloadMessage", "Yes")
+                    Helper.SetRegKey(Of String)("SeenDownloadMessage", "Yes")
                 End If
             End If
             LockGUI()
-            If String.IsNullOrEmpty(GetRegKey(Of String)("AlwaysOnTop")) Then SetRegKey(Of String)("AlwaysOnTop", "False")
-            Me.TopMost = GetRegKey(Of String)("AlwaysOnTop")
-            chkAlwaysOnTop.Checked = GetRegKey(Of Boolean)("AlwaysOnTop")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("AlwaysOnTop")) Then Helper.SetRegKey(Of String)("AlwaysOnTop", "False")
+            Me.TopMost = Helper.GetRegKey(Of String)("AlwaysOnTop")
+            chkAlwaysOnTop.Checked = Helper.GetRegKey(Of Boolean)("AlwaysOnTop")
             If File.Exists((Application.StartupPath & "\logfile.txt")) = True Then
                 Dim LogInfo As New FileInfo((Application.StartupPath & "\logfile.txt"))
                 If LogInfo.Length > 30720 Then
@@ -932,9 +932,9 @@ Public Class frmMain
             If File.Exists("Story MD5HashList.txt") = True Then File.Delete("Story MD5HashList.txt")
             UnlockGUI()
             ButtonItem6.Enabled = False
-            If String.IsNullOrEmpty(GetRegKey(Of String)("SidebarEnabled")) Then SetRegKey(Of String)("SidebarEnabled", "True")
-            If String.IsNullOrEmpty(GetRegKey(Of String)("RemoveCensor")) Then SetRegKey(Of String)("RemoveCensor", "True")
-            If GetRegKey(Of String)("SidebarEnabled") = "True" Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SidebarEnabled")) Then Helper.SetRegKey(Of String)("SidebarEnabled", "True")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("RemoveCensor")) Then Helper.SetRegKey(Of String)("RemoveCensor", "True")
+            If Helper.GetRegKey(Of String)("SidebarEnabled") = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
                 Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
                 t1.IsBackground = True
@@ -956,7 +956,7 @@ Public Class frmMain
             Application.DoEvents()
             CheckForPSO2Updates()
             WriteDebugInfoSameLine(My.Resources.strDone)
-            'WriteDebugInfo("Current PSO2 Version is: " & GetRegKey(Of String)("PSO2PatchlistMD5"))
+            'WriteDebugInfo("Current PSO2 Version is: " & Helper.GetRegKey(Of String)("PSO2PatchlistMD5"))
             Application.DoEvents()
             'Check for PSO2 Updates here, download the version.ver thingie
             'Check for PSO2 EN Patch updates here, parse the URL and see if it's different from the saved one
@@ -965,22 +965,22 @@ Public Class frmMain
             'Check for Story Patches (Done! :D)
             Application.DoEvents()
             CheckForStoryUpdates()
-            WriteDebugInfo(My.Resources.strCurrentStoryPatchis & GetRegKey(Of String)("StoryPatchVersion"))
+            WriteDebugInfo(My.Resources.strCurrentStoryPatchis & Helper.GetRegKey(Of String)("StoryPatchVersion"))
             Application.DoEvents()
             'Check for English Patches (Done! :D)
             CheckForENPatchUpdates()
-            WriteDebugInfo(My.Resources.strCurrentENPatchis & GetRegKey(Of String)("ENPatchVersion"))
+            WriteDebugInfo(My.Resources.strCurrentENPatchis & Helper.GetRegKey(Of String)("ENPatchVersion"))
             Application.DoEvents()
             'Check for LargeFiles Update (Work-In-Progress!)
             CheckForLargeFilesUpdates()
-            WriteDebugInfo(My.Resources.strCurrentLargeFilesis & GetRegKey(Of String)("LargeFilesVersion"))
+            WriteDebugInfo(My.Resources.strCurrentLargeFilesis & Helper.GetRegKey(Of String)("LargeFilesVersion"))
             Application.DoEvents()
             WriteDebugInfo(My.Resources.strIfAboveVersions)
             'DEBUGMYSHITDAWG:
-            If String.IsNullOrEmpty(GetRegKey(Of String)("UseItemTranslation")) Then
-                SetRegKey(Of String)("UseItemTranslation", "True")
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("UseItemTranslation")) Then
+                Helper.SetRegKey(Of String)("UseItemTranslation", "True")
             End If
-            UseItemTranslation = GetRegKey(Of String)("UseItemTranslation")
+            UseItemTranslation = Helper.GetRegKey(Of String)("UseItemTranslation")
             If UseItemTranslation = True Then
                 chkItemTranslation.Checked = True
                 DirectoryString = (lblDirectory.Text & "\data\win32")
@@ -1043,7 +1043,7 @@ DOWNLOADDLL2:
             'End If
             'GoTo DOWNLOADDLL2
         End Try
-        SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
+        Helper.SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
         'failednumbers = 0
         'DLWUA(DLLink2, (pso2launchpath & "\translation.bin"), True)
 DOWNLOADBIN2:
@@ -1148,7 +1148,7 @@ DOWNLOADBIN2:
             Dim time As DateTime = DateTime.Now
             TimeFormatted = time.ToString("G")
             System.IO.File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
-            If GetRegKey(Of String)("Pastebin") = True Then
+            If Helper.GetRegKey(Of String)("Pastebin") = True Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
                 If upload = MsgBoxResult.Yes Then
                     PasteBinUpload()
@@ -1466,7 +1466,7 @@ DOWNLOADBIN2:
     End Sub
     Public Sub CheckForStoryUpdates()
         Try
-            If GetRegKey(Of String)("StoryPatchVersion") = "Not Installed" Then Exit Sub
+            If Helper.GetRegKey(Of String)("StoryPatchVersion") = "Not Installed" Then Exit Sub
             DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt", True)
             Dim filedownloader As New Net.WebClient()
             Dim sBuffer As String
@@ -1482,10 +1482,10 @@ DOWNLOADBIN2:
             missingfiles.Clear()
             Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
                 sBuffer = oReader.ReadLine
-                SetRegKey(Of String)("NewVersionTemp", sBuffer.ToString)
-                SetRegKey(Of String)("NewStoryVersion", sBuffer.ToString)
+                Helper.SetRegKey(Of String)("NewVersionTemp", sBuffer.ToString)
+                Helper.SetRegKey(Of String)("NewStoryVersion", sBuffer.ToString)
                 'MsgBox(sBuffer.ToString & " is the current version. You have: " & My.Settings.LastCheckedStoryVersion)
-                If sBuffer.ToString <> GetRegKey(Of String)("StoryPatchVersion") Then
+                If sBuffer.ToString <> Helper.GetRegKey(Of String)("StoryPatchVersion") Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
                     Dim net As New Net.WebClient()
@@ -1504,8 +1504,8 @@ DOWNLOADBIN2:
                     strDownloadME = strDownloadME.Replace("</u>", "")
                     'MsgBox(strDownloadME)
                     'MsgBox(strDownloadME)
-                    'MsgBox(GetRegKey(Of String)("LatestStoryBase"))
-                    If strDownloadME <> GetRegKey(Of String)("LatestStoryBase") Then
+                    'MsgBox(Helper.GetRegKey(Of String)("LatestStoryBase"))
+                    If strDownloadME <> Helper.GetRegKey(Of String)("LatestStoryBase") Then
                         Dim MBVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it using the new story patch method?", MsgBoxStyle.YesNo)
                         If MBVisitLink = vbYes Then
                             btnStoryPatchNew.RaiseClick()
@@ -1550,21 +1550,21 @@ NEXTFILE1:
                 'MsgBox("Unfortunately, in order to keep this service active and speedy, you'll need to download the latest RAR from the http://arks-layer.com website. Install the Story Patch from that RAR, and THEN allow it to update.")
                 'Exit Sub
                 'End If
-                'If GetRegKey(Of String)("PatchServer") = "Patch Server #1" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #1 (Japan)")
+                'If Helper.GetRegKey(Of String)("PatchServer") = "Patch Server #1" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #1 (Japan)")
                 WriteDebugInfo("Downloading/Installing updates using Patch Server #4 (New York)")
-                'If GetRegKey(Of String)("PatchServer") = "Patch Server #2" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #2 (North America)")
-                'If GetRegKey(Of String)("PatchServer") = "Patch Server #3" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #3 (Germany)")
+                'If Helper.GetRegKey(Of String)("PatchServer") = "Patch Server #2" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #2 (North America)")
+                'If Helper.GetRegKey(Of String)("PatchServer") = "Patch Server #3" Then WriteDebugInfo("Downloading/Installing updates using Patch Server #3 (Germany)")
                 For Each downloadstring In missingfiles
                     'Download the missing files:
                     downloaded += 1
                     lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
                     Application.DoEvents()
                     Cancelled = False
-                    'MsgBox(GetRegKey(Of String)("PatchServer"))
+                    'MsgBox(Helper.GetRegKey(Of String)("PatchServer"))
                     'MsgBox("http://socket-hack.com:2312/patchfiles/" & downloadstring & ".7z")
-                    'If GetRegKey(Of String)("PatchServer") = "Patch Server #1" Then DLWUA(("http://socket-hack.com:2312/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
-                    'If GetRegKey(Of String)("PatchServer") = "Patch Server #2" Then DLWUA(("http://pso2.aeongames.net/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
-                    'If GetRegKey(Of String)("PatchServer") = "Patch Server #3" Then DLWUA(("http://cyberkitsune.net/aida/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
+                    'If Helper.GetRegKey(Of String)("PatchServer") = "Patch Server #1" Then DLWUA(("http://socket-hack.com:2312/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
+                    'If Helper.GetRegKey(Of String)("PatchServer") = "Patch Server #2" Then DLWUA(("http://pso2.aeongames.net/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
+                    'If Helper.GetRegKey(Of String)("PatchServer") = "Patch Server #3" Then DLWUA(("http://cyberkitsune.net/aida/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
                     DLWUA(("http://162.243.211.123/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
                     If Cancelled = True Then Exit Sub
                     'Delete the existing file FIRST
@@ -1595,8 +1595,8 @@ NEXTFILE1:
                 Next
                 'If missingfiles.Count = 0 Then WriteDebugInfo("You appear to have the latest story patch files!")
                 WriteDebugInfoAndOK(My.Resources.strStoryPatchUpdated)
-                SetRegKey(Of String)("StoryPatchVersion", GetRegKey(Of String)("NewVersionTemp"))
-                SetRegKey(Of String)("NewVersionTemp", "")
+                Helper.SetRegKey(Of String)("StoryPatchVersion", Helper.GetRegKey(Of String)("NewVersionTemp"))
+                Helper.SetRegKey(Of String)("NewVersionTemp", "")
                 Exit Sub
             End If
             If UpdateNeeded = False Then
@@ -1608,14 +1608,6 @@ NEXTFILE1:
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
-    End Sub
-
-    Public Function GetRegKey(Of T)(ByRef Key As String) As t
-        Return My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Nothing)
-    End Function
-
-    Public Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
-        My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
     End Sub
 
     Public Class MyWebClient
@@ -1648,10 +1640,10 @@ NEXTFILE1:
     Public Sub CheckForENPatchUpdates()
         Dim UpdateNeeded As Boolean
         Try
-            If GetRegKey(Of String)("ENPatchVersion") = "Not Installed" Then
+            If Helper.GetRegKey(Of String)("ENPatchVersion") = "Not Installed" Then
                 'Dim InstalledYesNo As MsgBoxResult = MsgBox("Do you have the English patch currently installed?", vbYesNo)
                 'If InstalledYesNo = vbYes Then
-                'SetRegKey(Of String)("EnPatchVersion", "Installed")
+                'Helper.SetRegKey(Of String)("EnPatchVersion", "Installed")
                 'End If
                 'If InstalledYesNo = MsgBoxResult.No Then Exit Sub
                 Exit Sub
@@ -1680,15 +1672,15 @@ NEXTFILE1:
             'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
             'strVersion = strVersion.Replace("http://dl.dropboxusercontent.com/u/12757141/", "")
             strVersion = strVersion.Replace(".rar", "")
-            SetRegKey(Of String)("NewENVersion", strVersion)
-            If strVersion <> GetRegKey(Of String)("ENPatchVersion") Then
+            Helper.SetRegKey(Of String)("NewENVersion", strVersion)
+            If strVersion <> Helper.GetRegKey(Of String)("ENPatchVersion") Then
                 UpdateNeeded = True
                 Dim UpdateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewENPatch, vbYesNo)
                 If UpdateStoryYesNo = vbNo Then UpdateNeeded = False
                 If UpdateNeeded = True Then
                     btnENPatch.RaiseClick()
-                    'SetRegKey(Of String)("ENPatchVersion", GetRegKey(Of String)("NewVersionTemp"))
-                    'SetRegKey(Of String)("NewVersionTemp", "")
+                    'Helper.SetRegKey(Of String)("ENPatchVersion", Helper.GetRegKey(Of String)("NewVersionTemp"))
+                    'Helper.SetRegKey(Of String)("NewVersionTemp", "")
                     Exit Sub
                 End If
             End If
@@ -1701,10 +1693,10 @@ NEXTFILE1:
     Public Sub CheckForLargeFilesUpdates()
         Dim UpdateNeeded As Boolean
         Try
-            If GetRegKey(Of String)("LargeFilesVersion") = "Not Installed" Then
+            If Helper.GetRegKey(Of String)("LargeFilesVersion") = "Not Installed" Then
                 'Dim InstalledYesNo As MsgBoxResult = MsgBox("Do you have the English patch currently installed?", vbYesNo)
                 'If InstalledYesNo = vbYes Then
-                'SetRegKey(Of String)("EnPatchVersion", "Installed")
+                'Helper.SetRegKey(Of String)("EnPatchVersion", "Installed")
                 'End If
                 'If InstalledYesNo = MsgBoxResult.No Then Exit Sub
                 Exit Sub
@@ -1731,15 +1723,15 @@ NEXTFILE1:
             'Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
             'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
             strVersion = strVersion.Replace(".rar", "")
-            SetRegKey(Of String)("NewLargeFilesVersion", strVersion)
-            If strVersion <> GetRegKey(Of String)("LargeFilesVersion") Then
+            Helper.SetRegKey(Of String)("NewLargeFilesVersion", strVersion)
+            If strVersion <> Helper.GetRegKey(Of String)("LargeFilesVersion") Then
                 UpdateNeeded = True
                 Dim UpdateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewLargeFiles, vbYesNo)
                 If UpdateStoryYesNo = vbNo Then UpdateNeeded = False
                 If UpdateNeeded = True Then
                     btnLargeFiles.RaiseClick()
-                    'SetRegKey(Of String)("ENPatchVersion", GetRegKey(Of String)("NewVersionTemp"))
-                    'SetRegKey(Of String)("NewVersionTemp", "")
+                    'Helper.SetRegKey(Of String)("ENPatchVersion", Helper.GetRegKey(Of String)("NewVersionTemp"))
+                    'Helper.SetRegKey(Of String)("NewVersionTemp", "")
                     Exit Sub
                 End If
             End If
@@ -1765,12 +1757,12 @@ NEXTFILE1:
     End Sub
     Public Sub CheckForPSO2Updates()
         Try
-            'If GetRegKey(Of String)("StoryPatchVersion") = "Not Installed" Then Exit Sub
+            'If Helper.GetRegKey(Of String)("StoryPatchVersion") = "Not Installed" Then Exit Sub
             'DLWUA("http://dl.dropboxusercontent.com/u/23005008/patchfiles/Story MD5HashList.txt", "Story MD5HashList.txt", True)
             Dim filedownloader As New Net.WebClient()
             Dim UpdateNeeded As Boolean
-            'If GetRegKey(Of String)("PSO2PatchlistMD5") = "" Then SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
-            'If GetRegKey(Of String)("PSO2PatchlistMD5") <> GetMD5("patchlist.txt") Then
+            'If Helper.GetRegKey(Of String)("PSO2PatchlistMD5") = "" Then Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            'If Helper.GetRegKey(Of String)("PSO2PatchlistMD5") <> GetMD5("patchlist.txt") Then
             Dim versionclient As New MyWebClient
             versionclient.timeout = 3000
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
@@ -1780,10 +1772,10 @@ NEXTFILE1:
             If ComingFromPrePatch = True Then GoTo StartPrePatch
 
             Dim FirstTimechecking As Boolean = False
-            If String.IsNullOrEmpty(GetRegKey(Of String)("PSO2PrecedeVersion")) Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2PrecedeVersion")) Then
                 Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
                 Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
-                SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
+                Helper.SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
                 FirstTimechecking = True
             End If
             'MsgBox("Change version now.")
@@ -1794,8 +1786,8 @@ NEXTFILE1:
 
             If PrecedeYesNo = "Yes" Then
                 'MsgBox("Precede available!")
-                'MsgBox(GetRegKey(Of String)("PSO2PrecedeVersion"))
-                If GetRegKey(Of String)("PSO2PrecedeVersion") <> precedeversionstring Or FirstTimechecking = True Then
+                'MsgBox(Helper.GetRegKey(Of String)("PSO2PrecedeVersion"))
+                If Helper.GetRegKey(Of String)("PSO2PrecedeVersion") <> precedeversionstring Or FirstTimechecking = True Then
                     'MsgBox("Version is different!")
                     Dim DownloadPrepatch As MsgBoxResult = MsgBox("New pre-patch data is available to download - Would you like to download it? This is optional, and will let you download some of a large patch now, as opposed to having a larger download all at once when it is released.", MsgBoxStyle.YesNo)
                     If DownloadPrepatch = vbYes Then
@@ -1920,7 +1912,7 @@ NEXTFILE1:
                         If missingfiles.Count <> 0 Then WriteDebugInfo("Precede data downloaded/updated!")
                         Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
                         Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
-                        SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
+                        Helper.SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
                         GoTo BackToCheckUpdates
                     End If
                 End If
@@ -1966,15 +1958,15 @@ BackToCheckUpdates:
             End If
 BackToCheckUpdates2:
             If ComingFromPrePatch = True Then Exit Sub
-            If String.IsNullOrEmpty(GetRegKey(Of String)("PSO2RemoteVersion")) Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2RemoteVersion")) Then
                 Dim lines2 = File.ReadAllLines("version.ver")
                 Dim RemoteVersion2 As String = lines2(0)
-                SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
+                Helper.SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
             End If
             'MsgBox("Change version now.")
             Dim lines = File.ReadAllLines("version.ver")
             Dim RemoteVersion As String = lines(0)
-            If GetRegKey(Of String)("PSO2RemoteVersion") <> RemoteVersion Then
+            If Helper.GetRegKey(Of String)("PSO2RemoteVersion") <> RemoteVersion Then
                 UpdateNeeded = True
 
                 Dim UpdateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewPSO2Update, vbYesNo)
@@ -2159,8 +2151,8 @@ BackToCheckUpdates2:
         't5.IsBackground = True
         't5.Start()
         'Fuck SEGA. Stupid jerks.
-        'If GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
-        'SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
+        'If Helper.GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
+        'Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
         Log("Check if PSO2 is running")
         If CheckIfRunning("pso2") = "Running" Then Exit Sub
         'If CheckIfRunning("pso2.exe") = "Running" Then Exit Sub
@@ -2220,22 +2212,22 @@ BackToCheckUpdates2:
                 End Try
                 'Log("Delete the check")
                 File.Delete("working.txt")
-                If GetMD5(pso2launchpath & "\translator.dll") <> GetRegKey(Of String)("DLLMD5") Then
+                If GetMD5(pso2launchpath & "\translator.dll") <> Helper.GetRegKey(Of String)("DLLMD5") Then
                     MsgBox(My.Resources.strTranslationFilesDontMatch)
                     Exit Sub
                 End If
             End If
             'If Environment.Is64BitOperatingSystem = True Then
-            'SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+            'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
             'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-            'SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+            'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
             'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'If it's 32-bit
             'If Environment.Is64BitOperatingSystem = False Then
-            'SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+            'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
             'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-            'SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+            'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
             'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'End Item Translation stuff
@@ -2299,17 +2291,17 @@ BackToCheckUpdates2:
             'AppInit_DLLs (string, pointing to the file)
             'If it's 64-bit
             'If Environment.Is64BitOperatingSystem = "True" Then
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'If it's 32-bit
             'If Environment.Is64BitOperatingSystem = "False" Then
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'End Item Translation stuff
             'End If
-            'If GetRegKey(Of String)("CloseAfterLaunch") = True Then btnExit.RaiseClick()
+            'If Helper.GetRegKey(Of String)("CloseAfterLaunch") = True Then btnExit.RaiseClick()
             Me.Close()
             'End If
             'If UseItemTranslation = True Then
@@ -2552,9 +2544,9 @@ SelectPSO2Folder:
             Log("Story mode RAR selected as: " & StoryLocation)
 STORYSTUFF:
 InstallStory:
-            If GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strWouldYouLikeBackupStory, vbYesNo)
-            If GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strWouldYouLikeBackupStory, vbYesNo)
+            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
             Log("Extracting story patch...")
             If System.IO.Directory.Exists("TEMPSTORYAIDAFOOL") = True Then
                 My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -2651,8 +2643,8 @@ InstallStory:
                 StoryPatchFilename = StoryPatchFilename.Replace("Story Patch ", "")
                 StoryPatchFilename = StoryPatchFilename.Replace(".rar", "")
                 StoryPatchFilename = StoryPatchFilename.Replace("-", "/")
-                SetRegKey(Of String)("StoryPatchVersion", StoryPatchFilename)
-                SetRegKey(Of String)("LatestStoryBase", StoryPatchFilename)
+                Helper.SetRegKey(Of String)("StoryPatchVersion", StoryPatchFilename)
+                Helper.SetRegKey(Of String)("LatestStoryBase", StoryPatchFilename)
                 WriteDebugInfo(My.Resources.strStoryPatchInstalled)
                 CheckForStoryUpdates()
             End If
@@ -2663,8 +2655,8 @@ InstallStory:
                 StoryPatchFilename = StoryPatchFilename.Replace("Story Patch ", "")
                 StoryPatchFilename = StoryPatchFilename.Replace(".rar", "")
                 StoryPatchFilename = StoryPatchFilename.Replace("-", "/")
-                SetRegKey(Of String)("StoryPatchVersion", StoryPatchFilename)
-                SetRegKey(Of String)("LatestStoryBase", StoryPatchFilename)
+                Helper.SetRegKey(Of String)("StoryPatchVersion", StoryPatchFilename)
+                Helper.SetRegKey(Of String)("LatestStoryBase", StoryPatchFilename)
                 WriteDebugInfo((My.Resources.strStoryPatchBackup & backupdir))
                 CheckForStoryUpdates()
             End If
@@ -2725,7 +2717,7 @@ DOWNLOADDLL2:
                 End If
                 GoTo DOWNLOADDLL2
             End Try
-            SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
+            Helper.SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
             failednumbers = 0
             'DLWUA(DLLink2, (pso2launchpath & "\translation.bin"), True)
 DOWNLOADBIN2:
@@ -2781,7 +2773,7 @@ DOWNLOADBIN2:
         End If
 
         UseItemTranslation = chkItemTranslation.Checked
-        SetRegKey(Of String)("UseItemTranslation", UseItemTranslation)
+        Helper.SetRegKey(Of String)("UseItemTranslation", UseItemTranslation)
     End Sub
 
     Private Sub ButtonItem5_Click(sender As Object, e As EventArgs) Handles ButtonItem5.Click
@@ -3013,33 +3005,33 @@ NEXTFILE1:
             System.IO.File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull = True Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
-            SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-            SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             If File.Exists("resume.txt") Then File.Delete("resume.txt")
             Dim lines2 = File.ReadAllLines("version.ver")
             Dim RemoteVersion2 As String = lines2(0)
-            SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
+            Helper.SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
             UnlockGUI()
 
-            If GetRegKey(Of String)("RemoveCensor") = True Then
+            If Helper.GetRegKey(Of String)("RemoveCensor") = True Then
                 If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
-            If GetRegKey(Of String)("ENPatchAfterInstall") = True Then
+            If Helper.GetRegKey(Of String)("ENPatchAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
                 btnENPatch.RaiseClick()
             End If
 
-            If GetRegKey(Of String)("LargeFilesAfterInstall") = True Then
+            If Helper.GetRegKey(Of String)("LargeFilesAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingLF)
                 btnLargeFiles.RaiseClick()
             End If
 
-            If GetRegKey(Of String)("StoryPatchAfterInstall") = True Then
+            If Helper.GetRegKey(Of String)("StoryPatchAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingStoryPatch)
                 btnStory.RaiseClick()
             End If
@@ -3214,15 +3206,15 @@ DOWNLOADFILES:
             If CancelledFull = True Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
 
-            SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-            SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             If File.Exists("resume.txt") Then File.Delete("resume.txt")
             Dim lines3 = File.ReadAllLines("version.ver")
             Dim RemoteVersion3 As String = lines3(0)
-            SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion3)
+            Helper.SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion3)
             UnlockGUI()
             WriteDebugInfoAndOK(My.Resources.strallDone)
             Exit Sub
@@ -4029,12 +4021,12 @@ DOWNLOADFILES:
             If chkAlwaysOnTop.Checked = True Then
                 frmOptions.TopMost = True
                 Me.TopMost = True
-                Me.SetRegKey(Of String)("AlwaysOnTop", "True")
+                Helper.SetRegKey(Of String)("AlwaysOnTop", "True")
             End If
             If chkAlwaysOnTop.Checked = False Then
                 frmOptions.TopMost = False
                 Me.TopMost = False
-                Me.SetRegKey(Of String)("AlwaysOnTop", "False")
+                Helper.SetRegKey(Of String)("AlwaysOnTop", "False")
             End If
         End If
     End Sub
@@ -4085,7 +4077,7 @@ DOWNLOADFILES:
             If Me.Width = 420 Then
                 Me.Width = 796
                 btnAnnouncements.Text = "<"
-                If GetRegKey(Of String)("SidebarEnabled") = "False" Then
+                If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
                     Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
                     t1.IsBackground = True
@@ -4103,7 +4095,7 @@ DOWNLOADFILES:
             If Me.Width = 560 Then
                 Me.Width = 1060
                 btnAnnouncements.Text = "<"
-                If GetRegKey(Of String)("SidebarEnabled") = "False" Then
+                If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
                     Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
                     t1.IsBackground = True
@@ -4190,7 +4182,7 @@ DOWNLOADFILES:
             If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch") = True Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch"), FileIO.DeleteDirectoryOption.DeleteAllContents)
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strENPatchUninstalled)
-            SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             '            System.IO.File.Delete("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
@@ -4256,7 +4248,7 @@ DOWNLOADFILES:
             If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreLargeFiles") = True Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreLargeFiles"), FileIO.DeleteDirectoryOption.DeleteAllContents)
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strLFUninstalled)
-            SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
             '            System.IO.File.Delete("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
@@ -4322,7 +4314,7 @@ DOWNLOADFILES:
             If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch") = True Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch"), FileIO.DeleteDirectoryOption.DeleteAllContents)
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strStoryPatchUninstalled)
-            SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
             '            System.IO.File.Delete("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
@@ -4343,12 +4335,12 @@ DOWNLOADFILES:
                 Button1.RaiseClick()
                 Exit Sub
             End If
-            If GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
-            If GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox("Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.", vbYesNo)
-            If GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox("Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.", vbYesNo)
+            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
             If predownloadedyesno = MsgBoxResult.No Then
                 WriteDebugInfo(My.Resources.strDownloading & "RU patch...")
                 Application.DoEvents()
@@ -4620,36 +4612,36 @@ DOWNLOADFILES:
             System.IO.File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull = True Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
-            SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-            SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+            Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
             DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", True)
             WriteDebugInfoSameLine(My.Resources.strDone)
-            SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             If File.Exists("resume.txt") Then File.Delete("resume.txt")
             Dim lines2 = File.ReadAllLines("version.ver")
             Dim RemoteVersion2 As String = lines2(0)
-            SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
+            Helper.SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
             UnlockGUI()
 
-            If GetRegKey(Of String)("RemoveCensor") = True Then
+            If Helper.GetRegKey(Of String)("RemoveCensor") = True Then
                 If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
 
-            If GetRegKey(Of String)("ENPatchAfterInstall") = True Then
+            If Helper.GetRegKey(Of String)("ENPatchAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
                 btnENPatch.RaiseClick()
             End If
 
-            If GetRegKey(Of String)("LargeFilesAfterInstall") = True Then
+            If Helper.GetRegKey(Of String)("LargeFilesAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingLF)
                 btnLargeFiles.RaiseClick()
             End If
 
-            If GetRegKey(Of String)("StoryPatchAfterInstall") = True Then
+            If Helper.GetRegKey(Of String)("StoryPatchAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingStoryPatch)
                 btnStory.RaiseClick()
             End If
@@ -4843,9 +4835,9 @@ SelectInstallFolder:
                     lblDirectory.Text = pso2_binfolder
                     My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
                     WriteDebugInfo(lblDirectory.Text & " " & My.Resources.strSetAsYourPSO2)
-                    If String.IsNullOrEmpty(GetRegKey(Of String)("StoryPatchVersion")) Then SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-                    If String.IsNullOrEmpty(GetRegKey(Of String)("ENPatchVersion")) Then SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-                    If String.IsNullOrEmpty(GetRegKey(Of String)("LargeFilesVersion")) Then SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
+                    If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("StoryPatchVersion")) Then Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
+                    If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ENPatchVersion")) Then Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+                    If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("LargeFilesVersion")) Then Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
 
                     'Check for PSO2 Updates~
                     ButtonItem5.RaiseClick()
@@ -4972,7 +4964,7 @@ SelectInstallFolder:
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
 
             FlashWindow(Me.Handle, 1)
-            SetRegKey(Of String)("LargeFilesVersion", strVersion)
+            Helper.SetRegKey(Of String)("LargeFilesVersion", strVersion)
             WriteDebugInfo("Large Files installed!")
 
 
@@ -5012,7 +5004,7 @@ SelectInstallFolder:
             'strVersion = strVersion.Replace("http://dl.dropboxusercontent.com/u/12757141/", "")
             'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
             strVersion = strVersion.Replace(".rar", "")
-            'If strVersion = GetRegKey(Of String)("EnPatchVersion") Then
+            'If strVersion = Helper.GetRegKey(Of String)("EnPatchVersion") Then
             'Dim InstallYesNo As MsgBoxResult = MsgBox("It seems like you have the latest version already - Would you still like to download and install the EN patch?")
             'If InstallYesNo = vbNo Then Exit Sub
             'End If
@@ -5088,7 +5080,7 @@ SelectInstallFolder:
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo("English patch installed!")
-            SetRegKey(Of String)("ENPatchVersion", strVersion)
+            Helper.SetRegKey(Of String)("ENPatchVersion", strVersion)
             System.IO.File.Delete("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
@@ -5136,12 +5128,12 @@ SelectInstallFolder:
                 Button1.RaiseClick()
                 Exit Sub
             End If
-            If GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
-            If GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox("Would you like to backup your files before applying the patch? This will erase all previous Pre-ES patch backups.", vbYesNo)
-            If GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox("Would you like to backup your files before applying the patch? This will erase all previous Pre-ES patch backups.", vbYesNo)
+            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
             If predownloadedyesno = MsgBoxResult.No Then
                 WriteDebugInfo(My.Resources.strDownloading & "ES patch...")
                 Application.DoEvents()
@@ -5271,12 +5263,12 @@ SelectInstallFolder:
             If backupyesno = MsgBoxResult.No Then
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo("Spanish patch " & My.Resources.strInstalledUpdated)
-                SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+                Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             End If
             If backupyesno = MsgBoxResult.Yes Then
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo(("Spanish patch " & My.Resources.strInstalledUpdatedBackup & backupdir))
-                SetRegKey(Of String)("ENPatchVersion", "Not Installed")
+                Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             End If
             System.IO.File.Delete("ESPatch.rar")
             UnlockGUI()
@@ -5650,7 +5642,7 @@ SelectInstallFolder:
             If Application.StartupPath <> lblDirectory.Text Then File.Move(Application.StartupPath & "\publickey.blob", lblDirectory.Text & "\publickey.blob")
             WriteDebugInfoSameLine(" Done!")
             WriteDebugInfo("All done! You should now be able to connect to " & ProxyName & ".")
-            SetRegKey(Of String)("ProxyEnabled", "True")
+            Helper.SetRegKey(Of String)("ProxyEnabled", "True")
         Catch ex As Exception
             WriteDebugInfoAndFAILED("ERROR - " & ex.Message)
             If ex.Message.ToString.Contains("is denied.") And ex.Message.ToString.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
@@ -5679,7 +5671,7 @@ SelectInstallFolder:
         WriteDebugInfoSameLine(" Done!")
         If File.Exists(lblDirectory.Text & "\publickey.blob") = True Then File.Delete(lblDirectory.Text & "\publickey.blob")
         WriteDebugInfoAndOK("All normal JP connection settings restored!")
-        SetRegKey(Of String)("ProxyEnabled", "False")
+        Helper.SetRegKey(Of String)("ProxyEnabled", "False")
     End Sub
 
     Private Sub btnNewShit_Click(sender As Object, e As EventArgs) Handles btnNewShit.Click
@@ -5880,8 +5872,8 @@ SelectInstallFolder:
 
         FlashWindow(Me.Handle, 1)
         'Story Patch 3-12-2014.rar
-        SetRegKey(Of String)("StoryPatchVersion", strStoryPatchLatestBase.Replace("-", "/"))
-        SetRegKey(Of String)("LatestStoryBase", strStoryPatchLatestBase.Replace("-", "/"))
+        Helper.SetRegKey(Of String)("StoryPatchVersion", strStoryPatchLatestBase.Replace("-", "/"))
+        Helper.SetRegKey(Of String)("LatestStoryBase", strStoryPatchLatestBase.Replace("-", "/"))
         WriteDebugInfo(My.Resources.strStoryPatchInstalled)
         CheckForStoryUpdates()
     End Sub
@@ -5925,7 +5917,7 @@ SelectInstallFolder:
             'MsgBox(("Moving" & (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
             FlashWindow(Me.Handle, 1)
-            'SetRegKey(Of String)("LargeFilesVersion", strVersion)
+            'Helper.SetRegKey(Of String)("LargeFilesVersion", strVersion)
             WriteDebugInfo("JP enemy names file " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
@@ -5974,7 +5966,7 @@ SelectInstallFolder:
             'MsgBox(("Moving" & (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
             FlashWindow(Me.Handle, 1)
-            'SetRegKey(Of String)("LargeFilesVersion", strVersion)
+            'Helper.SetRegKey(Of String)("LargeFilesVersion", strVersion)
             WriteDebugInfo("JP E-Trials file " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
@@ -6002,12 +5994,12 @@ SelectInstallFolder:
             Dim RARLocation As String = ""
             Dim strVersion As String = ""
 
-            If GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(msgBackup, vbYesNo)
-            If GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strBackupEN, vbYesNo)
-            If GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(msgBackup, vbYesNo)
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
+            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strBackupEN, vbYesNo)
+            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
+            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
 
             If predownloadedyesno = MsgBoxResult.No Then
                 WriteDebugInfo(My.Resources.strDownloading & PatchName & "...")
@@ -6126,12 +6118,12 @@ SelectInstallFolder:
             If backupyesno = MsgBoxResult.No Then
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo("English patch " & My.Resources.strInstalledUpdated)
-                SetRegKey(Of String)(VersionString, strVersion)
+                Helper.SetRegKey(Of String)(VersionString, strVersion)
             End If
             If backupyesno = MsgBoxResult.Yes Then
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo(("English patch " & My.Resources.strInstalledUpdatedBackup & backupdir))
-                SetRegKey(Of String)(VersionString, strVersion)
+                Helper.SetRegKey(Of String)(VersionString, strVersion)
             End If
             System.IO.File.Delete(PatchName)
             UnlockGUI()

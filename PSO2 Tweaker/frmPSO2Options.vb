@@ -43,12 +43,12 @@ Public Class frmPSO2Options
                 Me.Close()
                 Exit Sub
             End If
-            If frmMain.GetRegKey(Of String)("Style") = "Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-            If frmMain.GetRegKey(Of String)("Style") = "Black" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-            If frmMain.GetRegKey(Of String)("Style") = "Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
-            If frmMain.GetRegKey(Of String)("Style") = "Vista Glass" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-            If frmMain.GetRegKey(Of String)("Style") = "2010 Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-            If frmMain.GetRegKey(Of String)("Style") = "Windows 7 Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+            If Helper.GetRegKey(Of String)("Style") = "Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+            If Helper.GetRegKey(Of String)("Style") = "Black" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+            If Helper.GetRegKey(Of String)("Style") = "Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+            If Helper.GetRegKey(Of String)("Style") = "Vista Glass" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+            If Helper.GetRegKey(Of String)("Style") = "2010 Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+            If Helper.GetRegKey(Of String)("Style") = "Windows 7 Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
             TabControlPanel1.Style.BackColor1.Color = Me.BackColor
             TabControlPanel1.Style.BackColor2.Color = Me.BackColor
             TabControlPanel2.Style.BackColor1.Color = Me.BackColor
@@ -358,8 +358,8 @@ CONTINUEWIDTH:
             If CheckBoxX1.Checked = True Then
                 If ReadINISetting("X") <> "99999" Then
                     If ReadINISetting("Y") <> "99999" Then
-                        frmMain.SetRegKey(Of String)("OldX", ReadINISetting("X"))
-                        frmMain.SetRegKey(Of String)("OldY", ReadINISetting("Y"))
+                        Helper.SetRegKey(Of String)("OldX", ReadINISetting("X"))
+                        Helper.SetRegKey(Of String)("OldY", ReadINISetting("Y"))
                         SaveINISetting("X", "99999")
                         SaveINISetting("Y", "99999")
                     End If
@@ -369,8 +369,8 @@ CONTINUEWIDTH:
             If CheckBoxX1.Checked = False Then
                 If ReadINISetting("X") = "99999" Then
                     If ReadINISetting("Y") = "99999" Then
-                        SaveINISetting("X", frmMain.GetRegKey(Of String)("OldX"))
-                        SaveINISetting("Y", frmMain.GetRegKey(Of String)("OldY"))
+                        SaveINISetting("X", Helper.GetRegKey(Of String)("OldX"))
+                        SaveINISetting("Y", Helper.GetRegKey(Of String)("OldY"))
                     End If
                 End If
             End If
