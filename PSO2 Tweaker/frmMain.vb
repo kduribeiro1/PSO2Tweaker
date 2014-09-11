@@ -5904,7 +5904,9 @@ SelectInstallFolder:
             Dim myWebClient As New WebClient()
             'JSON should look like { "version": 1, "host": "0.0.0.0", "name": "Super cool proxy", "publickeyurl": "http://url.com" }
             Dim JSONURL As String = InputBox("Please input the URL of the configuration JSON:", "Configuration JSON", "")
-            WriteDebugInfo("Downloading configuration...")
+            '[AIDA] am i doin it rite sonicfreak?
+            If String.IsNullOrEmpty(JSONURL) Then Exit Sub
+            WriteDebugInfo("Downloading configuration...") Then
             myWebClient.DownloadFile(JSONURL, "ServerConfig.txt")
             Dim JSONCONTENTS As String = File.ReadAllText("ServerConfig.txt")
             Dim json As JObject = JObject.Parse(JSONCONTENTS)
