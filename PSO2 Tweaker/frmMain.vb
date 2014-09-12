@@ -83,107 +83,109 @@ Public Class frmMain
         Application.Exit()
     End Sub
 
-    Private Sub frmMain_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Me.KeyPress
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.G) Then
-            SystemUnlock = 1
-            lblStatus.Text = "Please enter the remaining commands to access Veda: *"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.U) And SystemUnlock = 1 Then
-            SystemUnlock = 2
-            lblStatus.Text = "Please enter the remaining commands to access Veda: **"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.N) And SystemUnlock = 2 Then
-            SystemUnlock = 3
-            lblStatus.Text = "Please enter the remaining commands to access Veda: ***"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.D) And SystemUnlock = 3 Then
-            SystemUnlock = 4
-            lblStatus.Text = "Please enter the remaining commands to access Veda: ****"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.A) And SystemUnlock = 4 Then
-            SystemUnlock = 5
-            lblStatus.Text = "Please enter the remaining commands to access Veda: *****"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.M) And SystemUnlock = 5 Then
-            SystemUnlock = 6
-            lblStatus.Text = "Please enter the remaining commands to access Veda: ******"
-            Application.DoEvents()
-            Threading.Thread.Sleep(2000)
-            lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
-            Application.DoEvents()
-            Threading.Thread.Sleep(2000)
-            VedaUnlocked = True
-            frmVEDA.Show()
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.M) Then
-            MileyCyrus = 1
-            lblStatus.Text = "Please enter the remaining commands: *"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.I) And MileyCyrus = 1 Then
-            MileyCyrus = 2
-            lblStatus.Text = "Please enter the remaining commands: **"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.L) And MileyCyrus = 2 Then
-            MileyCyrus = 3
-            lblStatus.Text = "Please enter the remaining commands: ***"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.E) And MileyCyrus = 3 Then
-            MileyCyrus = 4
-            lblStatus.Text = "Please enter the remaining commands: ****"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Y) And MileyCyrus = 4 Then
-            MileyCyrus = 5
-            lblStatus.Text = "Please enter the remaining commands: *****"
-            Application.DoEvents()
-            Threading.Thread.Sleep(2000)
-            lblStatus.Text = "[ACCESS GRANTED - PSO2 TWERKER]"
-            Application.DoEvents()
-            Threading.Thread.Sleep(2000)
-            Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
-            ButtonItem6.Text = "Twerk it!"
-            chkItemTranslation.Text = "Twerk on Robin Thicke"
-            'Dim lbl As Control
-            'For Each lbl In Me.Controls
-            'If TypeOf lbl Is Label Then
-            'lbl.Text.Replace("Tweaker", "Twerker")
-            'End If
-            'Next
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.K) Then
-            SteamUnlock = 1
-            lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.U) And SteamUnlock = 1 Then
-            SteamUnlock = 2
-            lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: **"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.M) And SteamUnlock = 2 Then
-            SteamUnlock = 3
-            lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ***"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.I) And SteamUnlock = 3 Then
-            SteamUnlock = 4
-            lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ****"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.H) And SteamUnlock = 4 Then
-            SteamUnlock = 5
-            lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *****"
-        End If
-        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.O) And SteamUnlock = 5 Then
-            SteamUnlock = 6
-            lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ******"
-            Application.DoEvents()
-            Threading.Thread.Sleep(2000)
-            lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
-            Application.DoEvents()
-            Threading.Thread.Sleep(2000)
-            frmOptions.ButtonX4.Visible = True
-            frmOptions.ButtonX5.Visible = True
-            frmOptions.LabelX13.Visible = True
-            frmOptions.TextBoxX1.Visible = True
-            frmOptions.ButtonX3.Visible = True
+    Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        If e.Shift Then
+            If e.KeyCode = Keys.G Then
+                SystemUnlock = 1
+                lblStatus.Text = "Please enter the remaining commands to access Veda: *"
+            End If
+            If e.KeyCode = Keys.U And SystemUnlock = 1 Then
+                SystemUnlock = 2
+                lblStatus.Text = "Please enter the remaining commands to access Veda: **"
+            End If
+            If e.KeyCode = Keys.N And SystemUnlock = 2 Then
+                SystemUnlock = 3
+                lblStatus.Text = "Please enter the remaining commands to access Veda: ***"
+            End If
+            If e.KeyCode = Keys.D And SystemUnlock = 3 Then
+                SystemUnlock = 4
+                lblStatus.Text = "Please enter the remaining commands to access Veda: ****"
+            End If
+            If e.KeyCode = Keys.A And SystemUnlock = 4 Then
+                SystemUnlock = 5
+                lblStatus.Text = "Please enter the remaining commands to access Veda: *****"
+            End If
+            If e.KeyCode = Keys.M And SystemUnlock = 5 Then
+                SystemUnlock = 6
+                lblStatus.Text = "Please enter the remaining commands to access Veda: ******"
+                Application.DoEvents()
+                Threading.Thread.Sleep(2000)
+                lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
+                Application.DoEvents()
+                Threading.Thread.Sleep(2000)
+                VedaUnlocked = True
+                frmVEDA.Show()
+            End If
+            If e.KeyCode = Keys.M Then
+                MileyCyrus = 1
+                lblStatus.Text = "Please enter the remaining commands: *"
+            End If
+            If e.KeyCode = Keys.I And MileyCyrus = 1 Then
+                MileyCyrus = 2
+                lblStatus.Text = "Please enter the remaining commands: **"
+            End If
+            If e.KeyCode = Keys.L And MileyCyrus = 2 Then
+                MileyCyrus = 3
+                lblStatus.Text = "Please enter the remaining commands: ***"
+            End If
+            If e.KeyCode = Keys.E And MileyCyrus = 3 Then
+                MileyCyrus = 4
+                lblStatus.Text = "Please enter the remaining commands: ****"
+            End If
+            If e.KeyCode = Keys.Y And MileyCyrus = 4 Then
+                MileyCyrus = 5
+                lblStatus.Text = "Please enter the remaining commands: *****"
+                Application.DoEvents()
+                Threading.Thread.Sleep(2000)
+                lblStatus.Text = "[ACCESS GRANTED - PSO2 TWERKER]"
+                Application.DoEvents()
+                Threading.Thread.Sleep(2000)
+                Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
+                ButtonItem6.Text = "Twerk it!"
+                chkItemTranslation.Text = "Twerk on Robin Thicke"
+                'Dim lbl As Control
+                'For Each lbl In Me.Controls
+                'If TypeOf lbl Is Label Then
+                'lbl.Text.Replace("Tweaker", "Twerker")
+                'End If
+                'Next
+            End If
+            If e.KeyCode = Keys.K Then
+                SteamUnlock = 1
+                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *"
+            End If
+            If e.KeyCode = Keys.U And SteamUnlock = 1 Then
+                SteamUnlock = 2
+                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: **"
+            End If
+            If e.KeyCode = Keys.M And SteamUnlock = 2 Then
+                SteamUnlock = 3
+                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ***"
+            End If
+            If e.KeyCode = Keys.I And SteamUnlock = 3 Then
+                SteamUnlock = 4
+                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ****"
+            End If
+            If e.KeyCode = Keys.H And SteamUnlock = 4 Then
+                SteamUnlock = 5
+                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *****"
+            End If
+            If e.KeyCode = Keys.O And SteamUnlock = 5 Then
+                SteamUnlock = 6
+                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ******"
+                Application.DoEvents()
+                Threading.Thread.Sleep(2000)
+                lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
+                Application.DoEvents()
+                Threading.Thread.Sleep(2000)
+                frmOptions.ButtonX4.Visible = True
+                frmOptions.ButtonX5.Visible = True
+                frmOptions.LabelX13.Visible = True
+                frmOptions.TextBoxX1.Visible = True
+                frmOptions.ButtonX3.Visible = True
 
-            frmVEDA.Show()
+                frmVEDA.Show()
+            End If
         End If
     End Sub
     Public Sub Form1_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
@@ -223,7 +225,7 @@ Public Class frmMain
     'Private Declare Function SetWindowLong Lib "user32" Alias _
     '"SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, _
     'ByVal dwNewLong As Long) As Long
-    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmMain_Loadz(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim g As Graphics = Me.CreateGraphics
         If g.DpiX.ToString = "120" Then
             DPISetting = "120"
