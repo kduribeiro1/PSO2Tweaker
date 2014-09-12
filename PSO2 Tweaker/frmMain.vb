@@ -224,6 +224,7 @@ Public Class frmMain
     '"SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, _
     'ByVal dwNewLong As Long) As Long
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'MessageBox.Show(Helper.SizeSuffix(83590295))
         Dim g As Graphics = Me.CreateGraphics
         If g.DpiX.ToString = "120" Then
             DPISetting = "120"
@@ -1191,7 +1192,6 @@ DOWNLOADBIN2:
 
     End Sub
     Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
-
         PB1.Value = 0
         PB1.Text = ""
     End Sub
@@ -1205,7 +1205,7 @@ DOWNLOADBIN2:
         'Dim Fichier As Byte()
         AddHandler DLS.DownloadProgressChanged, AddressOf OnDownloadProgressChanged
         AddHandler DLS.DownloadFileCompleted, AddressOf OnFileDownloadCompleted
-        Dim Continu As Integer = 5
+
         DLS.Headers.Add("user-agent", "AQUA_HTTP")
         DLS.timeout = 10000
 
@@ -5983,10 +5983,10 @@ SelectInstallFolder:
             Dim RARLocation As String = ""
             Dim strVersion As String = ""
 
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(msgBackup, vbYesNo)
+            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
             If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
             If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strBackupEN, vbYesNo)
+            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(msgBackup, vbYesNo)
             If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
             If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
 
@@ -6107,12 +6107,12 @@ SelectInstallFolder:
             If backupyesno = MsgBoxResult.No Then
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo("English patch " & My.Resources.strInstalledUpdated)
-                Helper.SetRegKey(Of String)(VersionString, strVersion)
+                If Not String.IsNullOrEmpty(VersionString) Then Helper.SetRegKey(Of String)(VersionString, strVersion)
             End If
             If backupyesno = MsgBoxResult.Yes Then
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo(("English patch " & My.Resources.strInstalledUpdatedBackup & backupstr))
-                Helper.SetRegKey(Of String)(VersionString, strVersion)
+                If Not String.IsNullOrEmpty(VersionString) Then Helper.SetRegKey(Of String)(VersionString, strVersion)
             End If
             System.IO.File.Delete(PatchName)
             UnlockGUI()

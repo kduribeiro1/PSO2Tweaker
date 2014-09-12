@@ -6,16 +6,20 @@ Public Class Helper
     Public Shared DefaltCultureInfo As CultureInfo = New System.Globalization.CultureInfo("en")
 
     Public Shared Function SizeSuffix(ByVal value As Long) As String
-        If (value = 0) Then
-            Return "0 bytes"
-        ElseIf (value < 0) Then
-            Return String.Concat("-", SizeSuffix(-value))
-        End If
+        If value < 0 Then Return "-" & SizeSuffix(-value)
+        If value = 0 Then Return "0.0 bytes"
 
-        Dim num As Integer = Math.Log(value, 1024)
-        Dim num1 As Decimal = value / (1 << (num * 10))
+        Dim pow As Long = 1
+        Dim index As Integer = 0
 
-        Return String.Format("{0:n2} {1}", num1, SizeSuffixes(num))
+        While pow <= value
+            pow <<= 10
+            index += 1
+        End While
+
+        pow >>= 10
+
+        Return String.Format("{0:n2} {1}", value / pow, SizeSuffixes(index - 1))
     End Function
 
     Public Shared Function GetRegKey(Of T)(ByRef Key As String) As T
