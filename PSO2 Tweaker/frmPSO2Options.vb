@@ -4,7 +4,7 @@ Imports System.Runtime.InteropServices
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
+    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
     Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplaySettingsA" (ByRef DEVMODE As DEVMODE, ByVal flags As Integer) As Integer
 
     <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
@@ -43,12 +43,12 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 Me.Close()
                 Exit Sub
             End If
-            If frmMain.LoadSetting("Style") = "Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-            If frmMain.LoadSetting("Style") = "Black" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-            If frmMain.LoadSetting("Style") = "Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
-            If frmMain.LoadSetting("Style") = "Vista Glass" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-            If frmMain.LoadSetting("Style") = "2010 Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-            If frmMain.LoadSetting("Style") = "Windows 7 Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+            If Helper.GetRegKey(Of String)("Style") = "Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+            If Helper.GetRegKey(Of String)("Style") = "Black" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+            If Helper.GetRegKey(Of String)("Style") = "Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+            If Helper.GetRegKey(Of String)("Style") = "Vista Glass" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+            If Helper.GetRegKey(Of String)("Style") = "2010 Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+            If Helper.GetRegKey(Of String)("Style") = "Windows 7 Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
             TabControlPanel1.Style.BackColor1.Color = Me.BackColor
             TabControlPanel1.Style.BackColor2.Color = Me.BackColor
             TabControlPanel2.Style.BackColor1.Color = Me.BackColor
@@ -118,7 +118,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 ComboBoxEx4.SelectedIndex = 2
                 'Disable resolution thingie
             End If
-            ComboBoxEx5.Text = ReadINISettingStartingAtLine("Width", 240) & "x" & ReadINISettingStartingAtLine("Height", 240)
+            ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
             If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text.ToString) = False Then ComboBoxEx5.SelectedIndex = 0
             CheckBoxX1.Checked = False
             If ReadINISetting("Y") = "99999" Then
@@ -131,12 +131,11 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
-    Public Function ReadINISetting(ByRef SettingToRead As String)
+    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
         Try
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim i As Integer
-            For i = 0 To TextLines.Count
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = LineToStartAt To TextLines.Count
                 'SettingToRead is FileType in the example
                 If i + 1 = TextLines.Count Then
                     Return "Setting not found"
@@ -144,7 +143,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 If TextLines(i).Contains(" " & SettingToRead & " ") Then
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(strReturn(1)) ' "png",
                     'MsgBox(strReturn(2)) ' 
@@ -159,41 +158,14 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
-    End Function
-    Public Function ReadINISettingStartingAtLine(ByRef SettingToRead As String, ByRef LineToStartAt As Integer)
-        Try
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            Dim i As Integer
-            For i = LineToStartAt To TextLines.Count
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
-                    Return "Setting not found"
-                End If
-                If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
-                    'MsgBox(strReturn(0)) 'Filetype
-                    'MsgBox(strReturn(1)) ' "png",
-                    'MsgBox(strReturn(2)) ' 
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
-                    FinalString = FinalString.Replace(" ", "")
-                    'MsgBox(FinalString)
-                    Return FinalString
-                End If
-            Next i
-        Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        End Try
+        ' TODO: Actually fix the function
+        Return ""
     End Function
     Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To TextLines.Count
@@ -204,7 +176,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -236,7 +208,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To TextLines.Count
@@ -254,7 +226,7 @@ Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySett
 CONTINUEHEIGHT:
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -286,7 +258,7 @@ CONTINUEHEIGHT:
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines() As String = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To TextLines.Count
@@ -304,7 +276,7 @@ CONTINUEHEIGHT:
 CONTINUEWIDTH:
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn() As String = strLine.Split("=")
+                    Dim strReturn As String() = strLine.Split("=")
                     'MsgBox(strReturn(0)) 'Filetype
                     'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -372,7 +344,7 @@ CONTINUEWIDTH:
             frmMain.Log("Saving Resolution...")
             If ComboBoxEx5.SelectedText <> "x" Then
                 Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString
-                Dim RealResolution() As String = StrResolution.Split("x")
+                Dim RealResolution As String() = StrResolution.Split("x")
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If
@@ -386,8 +358,8 @@ CONTINUEWIDTH:
             If CheckBoxX1.Checked = True Then
                 If ReadINISetting("X") <> "99999" Then
                     If ReadINISetting("Y") <> "99999" Then
-                        frmMain.SaveSetting("OldX", ReadINISetting("X"))
-                        frmMain.SaveSetting("OldY", ReadINISetting("Y"))
+                        Helper.SetRegKey(Of String)("OldX", ReadINISetting("X"))
+                        Helper.SetRegKey(Of String)("OldY", ReadINISetting("Y"))
                         SaveINISetting("X", "99999")
                         SaveINISetting("Y", "99999")
                     End If
@@ -397,8 +369,8 @@ CONTINUEWIDTH:
             If CheckBoxX1.Checked = False Then
                 If ReadINISetting("X") = "99999" Then
                     If ReadINISetting("Y") = "99999" Then
-                        SaveINISetting("X", frmMain.LoadSetting("OldX"))
-                        SaveINISetting("Y", frmMain.LoadSetting("OldY"))
+                        SaveINISetting("X", Helper.GetRegKey(Of String)("OldX"))
+                        SaveINISetting("Y", Helper.GetRegKey(Of String)("OldY"))
                     End If
                 End If
             End If

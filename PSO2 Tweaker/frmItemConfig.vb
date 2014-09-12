@@ -23,7 +23,7 @@ Public Class frmItemConfig
         Dim data As String()
         Dim NumberKey As String
         Dim UselessString As String = cmbToggleKey.SelectedItem
-        Dim SplitKey() As String = UselessString.Split("(")
+        Dim SplitKey As String() = UselessString.Split("(")
         lblToggle.Text = "Toggle item patch ON/OFF: Control + " & SplitKey(0).Replace("   (", "")
         NumberKey = SplitKey(1).Replace(")", "")
         If chkLogging.Checked = True Then
@@ -54,7 +54,7 @@ Public Class frmItemConfig
         'Semi-Colon   (186)
         Dim NumberKey As String
         Dim UselessString As String = cmbToggleKey.SelectedItem
-        Dim SplitKey() As String = UselessString.Split("(")
+        Dim SplitKey As String() = UselessString.Split("(")
         lblToggle.Text = "Toggle item patch ON/OFF: Control + " & SplitKey(0).Replace("   (", "")
         NumberKey = SplitKey(1).Replace(")", "")
     End Sub
