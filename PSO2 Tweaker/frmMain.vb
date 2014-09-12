@@ -224,7 +224,6 @@ Public Class frmMain
     '"SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, _
     'ByVal dwNewLong As Long) As Long
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'MessageBox.Show(Helper.SizeSuffix(83590295))
         Dim g As Graphics = Me.CreateGraphics
         If g.DpiX.ToString = "120" Then
             DPISetting = "120"
