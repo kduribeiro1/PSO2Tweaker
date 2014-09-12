@@ -43,8 +43,8 @@ Public Class frmMain
         Dim hProcess As Long
     End Structure
     Private Const SEE_MASK_INVOKEIDLIST As Long = &HC
-    Private Const SEE_MASK_NOCLOSEPROCESS As Long = &H40  ' ?????????????????
-    Private Const SEE_MASK_FLAG_NO_UI As Long = &H400 ' ?????????????????????
+    Private Const SEE_MASK_NOCLOSEPROCESS As Long = &H40  ' プロセスハンドルをクローズしない。
+    Private Const SEE_MASK_FLAG_NO_UI As Long = &H400 ' 失敗したときなどにダイアログを表示しない。
     Private Const SEE_MASK_UNICODE As Long = &H4000
     Dim DPISetting As String
     'Dim FreedomClient As MyWebClient
