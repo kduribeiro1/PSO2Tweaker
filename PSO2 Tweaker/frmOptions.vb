@@ -27,23 +27,39 @@ Public Class frmOptions
         Me.CMBStyle.SelectedIndex = -1
     End Sub
 
+    Private Function GetBackupMode(ByRef Key As String) As String
+        Dim Value As String = Helper.GetRegKey(Of String)(Key)
+        Select Case Value
+            Case "Ask"
+                Return "Ask every time"
+            Case "Always"
+                Return "Always backup"
+            Case "Never"
+                Return "Never backup"
+            Case Else
+                Return Nothing
+        End Select
+    End Function
+
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Color")) Then ColorPickerButton1.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("Color"))
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("FontColor")) Then ColorPickerButton2.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("FontColor"))
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("TextBoxBGColor")) Then ColorPickerButton4.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("TextboxBGColor"))
             If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("TextBoxColor")) Then ColorPickerButton3.SelectedColor = Color.FromArgb(Helper.GetRegKey(Of Integer)("TextboxColor"))
-            ' TODO: Split out into function
-            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Backup")) Then
-                If Helper.GetRegKey(Of String)("Backup") = "Ask" Then cmbBackupPreference.Text = "Ask every time"
-                If Helper.GetRegKey(Of String)("Backup") = "Always" Then cmbBackupPreference.Text = "Always backup"
-                If Helper.GetRegKey(Of String)("Backup") = "Never" Then cmbBackupPreference.Text = "Never backup"
+
+            Dim BackupMode As String
+
+            BackupMode = GetBackupMode("Backup")
+
+            If Not String.IsNullOrEmpty(BackupMode) Then
+                cmbBackupPreference.Text = BackupMode
             End If
-            ' TODO: Ditto
-            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PredownloadedRAR")) Then
-                If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then cmbPredownload.Text = "Ask every time"
-                If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then cmbPredownload.Text = "Always backup"
-                If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then cmbPredownload.Text = "Never backup"
+
+            BackupMode = GetBackupMode("PredownloadedRAR")
+
+            If Not String.IsNullOrEmpty(BackupMode) Then
+                cmbPredownload.Text = BackupMode
             End If
 
             ' Checks if the DPI greater or equal to 120, and sets accordingly.
@@ -260,7 +276,6 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbBackupPreference_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBackupPreference.SelectedIndexChanged
-        ' TODO: Make an enum for the strings below
         Select Case cmbBackupPreference.SelectedIndex
             Case 0
                 Helper.SetRegKey(Of String)("Backup", "Ask")
@@ -357,7 +372,10 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbPredownload_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPredownload.SelectedIndexChanged
-        If cmbPredownload.SelectedIndex = 0 Then Helper.SetRegKey(Of String)("PredownloadedRAR", "Ask")
-        If cmbPredownload.SelectedIndex = 1 Then Helper.SetRegKey(Of String)("PredownloadedRAR", "Never")
+        If cmbPredownload.SelectedIndex = 0 Then
+            Helper.SetRegKey(Of String)("PredownloadedRAR", "Ask")
+        ElseIf cmbPredownload.SelectedIndex = 1 Then
+            Helper.SetRegKey(Of String)("PredownloadedRAR", "Never")
+        End If
     End Sub
 End Class

@@ -866,6 +866,7 @@ Public Class frmMain
                 'chkSwapOP.Text = "Swap PC/Vita Openings (UNKNOWN)"
             End If
 
+            ' TODO: Why
             Application.DoEvents()
             If File.Exists("7za.exe") = False Then
                 WriteDebugInfo(My.Resources.strDownloading & "7za.exe...")
@@ -914,6 +915,7 @@ Public Class frmMain
                 System.IO.Directory.Delete("TEMPPATCHAIDAFOOL", True)
             End If
 
+            ' TODO: Oh boy oh man oh boy oh man
             If File.Exists("launcherlist.txt") = True Then File.Delete("launcherlist.txt")
             If File.Exists("patchlist.txt") = True Then File.Delete("patchlist.txt")
             If File.Exists("patchlist_old.txt") = True Then File.Delete("patchlist_old.txt")
@@ -1062,23 +1064,18 @@ DOWNLOADBIN2:
         End Try
         ItemDownloadingDone = True
     End Sub
-    Friend Function GetFolderAccess(ByVal sDirectory As String) As Boolean
+    Friend Function GetFolderAccess(ByVal Path As String) As Boolean
         Try
-            ' TODO: Using statements or better implementation in general
-            Dim fsw As New FileStream(sDirectory & "\test.test", FileMode.Create, FileAccess.Write)
-            Dim sw As New StreamWriter(fsw)
-            sw.Dispose()
+            Dim thing As AuthorizationRuleCollection = Directory.GetAccessControl(Path, AccessControlSections.All).GetAccessRules(True, True, GetType(NTAccount))
 
-            Dim fsr As New FileStream(sDirectory & "\test.test", FileMode.Open, FileAccess.Read)
-            Dim sr As New StreamReader(fsr)
-            sr.Dispose()
-
-            File.Delete(sDirectory & "\test.test")
-
-            Return True
-        Catch ex As Exception
+            For Each rule As FileSystemAccessRule In thing
+                If (rule.FileSystemRights And FileSystemRights.Write) = FileSystemRights.Write Then Return True
+            Next
+        Catch
             Return False
         End Try
+
+        Return True
     End Function
     Private Function GetFileSize(ByVal MyFilePath As String) As Long
         Dim MyFile As New FileInfo(MyFilePath)
@@ -2518,6 +2515,7 @@ SelectPSO2Folder:
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
+        DownloadPatch("http://162.243.211.123/patches/largefiles.txt", "Large Files", "LargeFiles.rar", "LargeFilesVersion", My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backupPreLargeFiles")
     End Sub
 
     Private Sub btnStory_Click(sender As Object, e As EventArgs) Handles btnStory.Click
@@ -2906,12 +2904,8 @@ NEXTFILE1:
                 'WHAT THE FUCK IS GOING ON HERE?
                 downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
-                If totaldownloaded < 1073741824 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
-                End If
-                If totaldownloaded > 1073741823 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB)"
-                End If
+
+                lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
                 Application.DoEvents()
                 Cancelled = False
@@ -3528,12 +3522,9 @@ DOWNLOADFILES:
                 Cancelled = False
                 downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
-                If totaldownloaded < 1073741824 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
-                End If
-                If totaldownloaded > 1073741823 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB)"
-                End If
+
+                lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
+
                 DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
                 Dim info7 As New FileInfo(downloadstring)
                 Dim length2 As Long
@@ -3581,12 +3572,9 @@ DOWNLOADFILES:
                     Cancelled = False
                     downloaded2 += 1
                     totaldownloaded2 = totaldownloaded2 + totalsize2
-                    If totaldownloaded2 < 1073741824 Then
-                        lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded2 / 1048576), "0.00") & "MB)"
-                    End If
-                    If totaldownloaded2 > 1073741823 Then
-                        lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Format((totaldownloaded2 / 1073741824), "0.00") & "GB)"
-                    End If
+
+                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Helper.SizeSuffix(totaldownloaded2) & ")"
+
                     DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring2 & ".pat"), downloadstring2, True)
                     Dim info7 As New FileInfo(downloadstring2)
                     Dim length2 As Long
@@ -4065,7 +4053,7 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnENPatch_Click(sender As Object, e As EventArgs) Handles btnENPatch.Click
-
+        DownloadPatch("http://162.243.211.123/patches/enpatch.txt", "EN Patch", "ENPatch.rar", "ENPatchVersion", My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR, "backupPreENPatch")
     End Sub
 
     Private Sub ButtonItem14_Click(sender As Object, e As EventArgs) Handles ButtonItem14.Click
@@ -4130,6 +4118,7 @@ DOWNLOADFILES:
         End If
     End Sub
 
+    ' TODO: Uninstall function
     Private Sub btnUninstallENPatch_Click(sender As Object, e As EventArgs) Handles btnUninstallENPatch.Click
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
@@ -4195,7 +4184,7 @@ DOWNLOADFILES:
             Exit Sub
         End Try
     End Sub
-
+    ' TODO: Uninstall function
     Private Sub btnUninstallLargeFiles_Click(sender As Object, e As EventArgs) Handles btnUninstallLargeFiles.Click
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
@@ -4261,7 +4250,7 @@ DOWNLOADFILES:
             Exit Sub
         End Try
     End Sub
-
+    ' TODO: Uninstall function
     Private Sub btnUninstallStory_Click(sender As Object, e As EventArgs) Handles btnUninstallStory.Click
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
@@ -4514,12 +4503,9 @@ DOWNLOADFILES:
                 'WHAT THE FUCK IS GOING ON HERE?v3
                 downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
-                If totaldownloaded < 1073741824 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
-                End If
-                If totaldownloaded > 1073741823 Then
-                    lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Format((totaldownloaded / 1073741824), "0.00") & "GB)"
-                End If
+
+                lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
+
                 Application.DoEvents()
                 Cancelled = False
                 DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
@@ -5491,12 +5477,9 @@ SelectInstallFolder:
         Dim downloaded As Long = 0
         Dim totaldownloaded As Long = 0
         totaldownloaded = totaldownloaded + totalsize2
-        If totaldownloaded < 1073741824 Then
-            lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Format((totaldownloaded / 1048576), "0.00") & "MB)"
-        End If
-        If totaldownloaded > 1073741823 Then
-            lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Format((totaldownloaded / 1073741824), "0.00") & "GB)"
-        End If
+
+        lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Helper.SizeSuffix(totaldownloaded) & ")"
+
         DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
         Dim info7 As New FileInfo(downloadstring)
         Dim length2 As Long
@@ -5986,7 +5969,7 @@ SelectInstallFolder:
         'test2
     End Sub
 
-    Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String, msgBackup As String, msgSelectArchive As String)
+    Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String, msgBackup As String, msgSelectArchive As String, BackupDir As String)
         CancelledFull = False
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
@@ -6080,15 +6063,15 @@ SelectInstallFolder:
             Application.DoEvents()
             If CancelledFull = True Then Exit Sub
 
-            Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
+            Dim backupstr As String = ((lblDirectory.Text & "\data\win32") & "\" & BackupDir)
             If backupyesno = MsgBoxResult.Yes Then
-                If System.IO.Directory.Exists(backupdir) = True Then
-                    My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
-                    System.IO.Directory.CreateDirectory(backupdir)
+                If System.IO.Directory.Exists(backupstr) = True Then
+                    My.Computer.FileSystem.DeleteDirectory(backupstr, FileIO.DeleteDirectoryOption.DeleteAllContents)
+                    System.IO.Directory.CreateDirectory(backupstr)
                     WriteDebugInfo(My.Resources.strErasingPreviousBackup)
                 End If
-                If System.IO.Directory.Exists(backupdir) = False Then
-                    System.IO.Directory.CreateDirectory(backupdir)
+                If System.IO.Directory.Exists(backupstr) = False Then
+                    System.IO.Directory.CreateDirectory(backupstr)
                     WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
                 End If
 
@@ -6107,7 +6090,7 @@ SelectInstallFolder:
 
                 If backupyesno = MsgBoxResult.Yes Then
                     If System.IO.File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) = True Then
-                        System.IO.File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupdir & "\" & dra.ToString))
+                        System.IO.File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupstr & "\" & dra.ToString))
 
                     End If
                 End If
@@ -6128,7 +6111,7 @@ SelectInstallFolder:
             End If
             If backupyesno = MsgBoxResult.Yes Then
                 FlashWindow(Me.Handle, 1)
-                WriteDebugInfo(("English patch " & My.Resources.strInstalledUpdatedBackup & backupdir))
+                WriteDebugInfo(("English patch " & My.Resources.strInstalledUpdatedBackup & backupstr))
                 Helper.SetRegKey(Of String)(VersionString, strVersion)
             End If
             System.IO.File.Delete(PatchName)
