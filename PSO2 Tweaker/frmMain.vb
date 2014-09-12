@@ -2232,6 +2232,7 @@ BackToCheckUpdates2:
             'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'End Item Translation stuff
+            If File.Exists(pso2launchpath & "\ddraw.dll") = True Then File.Delete(pso2launchpath & "\ddraw.dll")
             SaveToDisk("ddraw.dll", pso2launchpath & "\ddraw.dll")
             'Log("Start building the process")
             Dim startInfo As ProcessStartInfo
@@ -5521,6 +5522,8 @@ SelectInstallFolder:
             Dim myWebClient As New WebClient()
             'JSON should look like { "version": 1, "host": "0.0.0.0", "name": "Super cool proxy", "publickeyurl": "http://url.com" }
             Dim JSONURL As String = InputBox("Please input the URL of the configuration JSON:", "Configuration JSON", "")
+            '[AIDA] am i doin it rite sonicfreak?
+            If String.IsNullOrEmpty(JSONURL) Then Exit Sub
             WriteDebugInfo("Downloading configuration...")
             myWebClient.DownloadFile(JSONURL, "ServerConfig.txt")
             Dim JSONCONTENTS As String = File.ReadAllText("ServerConfig.txt")
