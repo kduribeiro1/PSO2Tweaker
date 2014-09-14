@@ -17,7 +17,7 @@ Public Class frmDiagnostic
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim TotalString As String = ""
         Dim CurrentLine As String = ""
-        Using xRead As New System.IO.StreamReader("C:\WINDOWS\system32\drivers\etc\hosts")
+        Using xRead As New StreamReader("C:\WINDOWS\system32\drivers\etc\hosts")
             Dim buffer As New List(Of String)
             Do Until xRead.EndOfStream
                 CurrentLine = xRead.ReadLine
