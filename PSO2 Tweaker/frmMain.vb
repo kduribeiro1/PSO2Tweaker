@@ -1613,7 +1613,7 @@ NEXTFILE1:
                     processStartInfo.Arguments = ("e -y " & downloadstring & ".7z")
                     processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
                     processStartInfo.UseShellExecute = True
-                    process = Process.Start(processStartInfo)
+                    process = process.Start(processStartInfo)
                     Do Until process.WaitForExit(1000)
                     Loop
                     If File.Exists(downloadstring) = False Then
@@ -2603,7 +2603,7 @@ InstallStory:
             'WriteDebugInfo("Name of the story RAR is: " & StoryLocation)
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = Process.Start(processStartInfo)
+            process = process.Start(processStartInfo)
             'WriteDebugInfo("Final step - Total: " & process.ToString)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             If CancelledFull = True Then Exit Sub
@@ -4411,7 +4411,7 @@ DOWNLOADFILES:
             If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & RARLocation & """" & " TEMPPATCHAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = Process.Start(processStartInfo)
+            process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             Do Until process.WaitForExit(1000)
             Loop
@@ -4827,7 +4827,7 @@ SelectInstallFolder:
                         processStartInfo.Verb = "runas"
                         processStartInfo.Arguments = "/Q"
                         processStartInfo.UseShellExecute = True
-                        process = Process.Start(processStartInfo)
+                        process = process.Start(processStartInfo)
                         Do Until process.WaitForExit(1000)
                         Loop
                         WriteDebugInfoSameLine("Done!")
@@ -4943,7 +4943,7 @@ SelectInstallFolder:
             processStartInfo.Arguments = ("e LargeFiles.rar " & "TEMPPATCHAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = Process.Start(processStartInfo)
+            process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             If CancelledFull = True Then Exit Sub
             Do Until process.WaitForExit(1000)
@@ -5058,7 +5058,7 @@ SelectInstallFolder:
             processStartInfo.Arguments = ("e ENPatch.rar " & "TEMPPATCHAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = Process.Start(processStartInfo)
+            process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             Do Until process.WaitForExit(1000)
             Loop
@@ -5218,7 +5218,7 @@ SelectInstallFolder:
             If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & RARLocation & """" & " TEMPPATCHAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = Process.Start(processStartInfo)
+            process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             Do Until process.WaitForExit(1000)
             Loop
@@ -5884,7 +5884,7 @@ SelectInstallFolder:
         ' MsgBox("Done!")
         processStartInfo.WindowStyle = ProcessWindowStyle.Normal
         processStartInfo.UseShellExecute = True
-        process = Process.Start(processStartInfo)
+        process = process.Start(processStartInfo)
         Do Until process.WaitForExit(1000)
         Loop
 
@@ -6001,6 +6001,7 @@ SelectInstallFolder:
         'test2
     End Sub
 
+    ' TODO: Do any necessary parsing BEFORE this function as opposed to inside. This'll make it compatible with other language patches.
     Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String, msgBackup As String, msgSelectArchive As String, BackupDir As String)
         CancelledFull = False
         Try
@@ -6015,12 +6016,31 @@ SelectInstallFolder:
             Dim RARLocation As String = ""
             Dim strVersion As String = ""
 
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(msgBackup, vbYesNo)
-            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+            ' Check the patch download method preference
+            Dim PatchPreference As String = Helper.GetRegKey(Of String)("PredownloadedRAR")
+            Select Case PatchPreference
+                Case "Ask"
+                    predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
+                Case "Always"
+                    predownloadedyesno = MsgBoxResult.Yes
+                Case "Never"
+                    predownloadedyesno = MsgBoxResult.No
+                Case Else
+                    predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
+            End Select
+
+            ' Check the backup preference
+            PatchPreference = Helper.GetRegKey(Of String)("Backup")
+            Select Case PatchPreference
+                Case "Ask"
+                    backupyesno = MsgBox(msgBackup, vbYesNo)
+                Case "Always"
+                    backupyesno = MsgBoxResult.Yes
+                Case "Never"
+                    backupyesno = MsgBoxResult.No
+                Case Else
+                    backupyesno = MsgBox(msgBackup, vbYesNo)
+            End Select
 
             If predownloadedyesno = MsgBoxResult.No Then
                 WriteDebugInfo(My.Resources.strDownloading & PatchName & "...")
@@ -6045,9 +6065,7 @@ SelectInstallFolder:
                 DLWUA(strDownloadME, PatchFile, True)
                 If Cancelled = True Then Exit Sub
                 WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            End If
-
-            If predownloadedyesno = MsgBoxResult.Yes Then
+            ElseIf predownloadedyesno = MsgBoxResult.Yes Then
                 OpenFileDialog1.Title = msgSelectArchive
                 OpenFileDialog1.FileName = "PSO2 " & PatchName & " RAR file"
                 OpenFileDialog1.Filter = "RAR Archives|*.rar|All Files (*.*) |*.*"
@@ -6080,7 +6098,7 @@ SelectInstallFolder:
             If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & RARLocation & """" & " TEMPPATCHAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = Process.Start(processStartInfo)
+            process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             Do Until process.WaitForExit(1000)
             Loop
