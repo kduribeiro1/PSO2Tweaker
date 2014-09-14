@@ -1,31 +1,24 @@
-﻿Imports System.Text.RegularExpressions
-Imports System.Net
+﻿Imports Microsoft.Win32
+Imports Newtonsoft.Json.Linq
 Imports System.IO
-Imports System.Runtime.InteropServices
-Imports System.Threading
+Imports System.Management
+Imports System.Net
+Imports System.Net.Sockets
 Imports System.Reflection
-Imports Microsoft.Win32
+Imports System.Runtime.InteropServices
 Imports System.Security.AccessControl
 Imports System.Security.Principal
-Imports System.Security.Permissions
-Imports System.Security
-Imports System.Net.Sockets
-Imports System.Management
 Imports System.Text
-Imports Newtonsoft.Json.Linq
+Imports System.Text.RegularExpressions
+Imports System.Threading
 
+' TODO: Make sure all the "For Each"s are in order
 ' TODO: Replace all redundant code with functions
-' TODO: Cache all read registry values in a structure
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Organize this form by order of member type (variable, function, etc)
 
 Public Class frmMain
 
-    Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-    <DllImport("user32.dll", EntryPoint:="FindWindow", SetLastError:=True, CharSet:=CharSet.Auto)>
-    Private Shared Function FindWindowByCaption(ByVal zero As IntPtr, ByVal lpWindowName As String) As IntPtr
-    End Function
-    Private Declare Function ShellExecuteExW Lib "shell32.dll" (ByRef lpExecInfo As SHELLEXECUTEINFOW) As Long
     Private Structure SHELLEXECUTEINFOW
         Dim cbSize As Long
         Dim fMask As Long
@@ -43,6 +36,7 @@ Public Class frmMain
         Dim hIcon As Long
         Dim hProcess As Long
     End Structure
+
     Private Const SEE_MASK_INVOKEIDLIST As Long = &HC
     Private Const SEE_MASK_NOCLOSEPROCESS As Long = &H40  ' プロセスハンドルをクローズしない。
     Private Const SEE_MASK_FLAG_NO_UI As Long = &H400 ' 失敗したときなどにダイアログを表示しない。
@@ -79,6 +73,37 @@ Public Class frmMain
     Dim ComingFromPrePatch As Boolean = False
     'Dim OldFileMD5 As String
     'Dim NewFileMD5 As String
+
+#Region "External Functions"
+
+    Private Declare Function FindWindowByCaption Lib "user32.dll" (ByVal zero As IntPtr, ByVal lpWindowName As String) As IntPtr
+
+    Private Declare Function ShellExecuteExW Lib "shell32.dll" (ByRef lpExecInfo As SHELLEXECUTEINFOW) As Long
+
+    Private Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
+
+    Private Declare Function ReadProcessMemory Lib "kernel32" (ByVal hProcess As Integer, ByVal lpBaseAddress As Integer, ByVal lpBuffer As String, ByVal nSize As Integer, ByRef lpNumberOfBytesWritten As Integer) As Integer
+
+    Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal lpLibFileName As String) As Integer
+
+    Private Declare Function VirtualAllocEx Lib "kernel32" (ByVal hProcess As Integer, ByVal lpAddress As Integer, ByVal dwSize As Integer, ByVal flAllocationType As Integer, ByVal flProtect As Integer) As Integer
+
+    Private Declare Function WriteProcessMemory Lib "kernel32" (ByVal hProcess As Integer, ByVal lpBaseAddress As Integer, ByVal lpBuffer As String, ByVal nSize As Integer, ByRef lpNumberOfBytesWritten As Integer) As Integer
+
+    Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Integer, ByVal lpProcName As String) As Integer
+
+    Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Integer
+
+    Private Declare Function CreateRemoteThread Lib "kernel32" (ByVal hProcess As Integer, ByVal lpThreadAttributes As Integer, ByVal dwStackSize As Integer, ByVal lpStartAddress As Integer, ByVal lpParameter As Integer, ByVal dwCreationFlags As Integer, ByRef lpThreadId As Integer) As Integer
+
+    Private Declare Function OpenProcess Lib "kernel32" (ByVal dwDesiredAccess As Integer, ByVal bInheritHandle As Integer, ByVal dwProcessId As Integer) As Integer
+
+    Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
+
+    Private Declare Function CloseHandle Lib "kernel32" Alias "CloseHandleA" (ByVal hObject As Integer) As Integer
+
+#End Region
+
 
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         Application.Exit()
@@ -144,12 +169,6 @@ Public Class frmMain
                 Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
                 ButtonItem6.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
-                'Dim lbl As Control
-                'For Each lbl In Me.Controls
-                'If TypeOf lbl Is Label Then
-                'lbl.Text.Replace("Tweaker", "Twerker")
-                'End If
-                'Next
             End If
             If e.KeyCode = Keys.K Then
                 SteamUnlock = 1
@@ -189,20 +208,7 @@ Public Class frmMain
             End If
         End If
     End Sub
-    Public Sub Form1_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseDown
-        'drag = True
-        'mousex = Windows.Forms.Cursor.Position.X - Me.Left
-        'mousey = Windows.Forms.Cursor.Position.Y - Me.Top
-    End Sub
-    Private Sub Form1_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseMove
-        'If drag Then
-        'Me.Top = Windows.Forms.Cursor.Position.Y - mousey
-        'Me.Left = Windows.Forms.Cursor.Position.X - mousex
-        'End If
-    End Sub
-    Private Sub Form1_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseUp
-        'drag = False
-    End Sub
+
     Public Structure SHELLEXECUTEINFO
         Public cbSize As Integer
         Public fMask As Integer
@@ -220,15 +226,8 @@ Public Class frmMain
         Public hIcon As IntPtr
         Public hProcess As IntPtr
     End Structure
-    'Const GWL_EXSTYLE = (-20)
-    'Const WS_EX_TRANSPARENT = &H20&
 
-    'Private Declare Function SetWindowLong Lib "user32" Alias _
-    '"SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, _
-    'ByVal dwNewLong As Long) As Long
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Dim watch As Stopwatch = New Stopwatch()
-        'watch.Start()
 
         Dim g As Graphics = Me.CreateGraphics
         If g.DpiX.ToString = "120" Then
@@ -514,28 +513,8 @@ Public Class frmMain
                         'End If
                         'End Item Translation stuff
                     End If
-                    'p = Process.GetProcessesByName("pso2.exe")
-                    'Do Until p.Count > 0
-                    'p = Process.GetProcessesByName("pso2.exe")
-                    'Loop
-                    'MsgBox("Found pso2.exe!")
-                    'p = Process.GetProcessesByName("pso2.exe")
-                    'Do Until p.Count = 0
-                    'p = Process.GetProcessesByName("pso2.exe")
-                    'Loop
+
                     Me.Close()
-                    'Dim pso2id As Integer
-                    'Dim p() As Process = Process.GetProcessesByName("nProtect")
-                    'For Each Process In p
-                    'If Process.ProcessName = "pso2" Then pso2id = Process.Id
-                    'Next
-                    'Dim hWnd As New IntPtr(0)
-                    'MsgBox(p.Count.ToString)
-                    'Do Until Process.GetProcessById(pso2id).HasExited = True
-                    'Do Until hWnd.Equals(IntPtr.Zero)
-                    'hWnd = FindWindowByCaption(IntPtr.Zero, "PHANTASY STAR ONLINE 2")
-                    'Loop
-                    'Me.Close()
                 End If
             Next
             'Normal Tweaker startup
@@ -817,38 +796,21 @@ Public Class frmMain
                 Dim xm As New Xml.XmlDocument
                 xm.LoadXml(source)
 
-                Dim currentVersion As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(0).InnerText.Trim
-                Dim currentLink As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(1).InnerText.Trim
-                Dim changelog As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(2).InnerText.Trim
-                Dim changelog2 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(3).InnerText.Trim
-                Dim changelog3 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(4).InnerText.Trim
-                Dim changelog4 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(5).InnerText.Trim
-                Dim changelog5 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(6).InnerText.Trim
-                Dim changelog6 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(7).InnerText.Trim
-                Dim changelog7 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(8).InnerText.Trim
-                Dim changelog8 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(9).InnerText.Trim
-                Dim changelog9 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(10).InnerText.Trim
-                Dim changelog10 As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(11).InnerText.Trim
+                Dim XMLNode = xm.SelectSingleNode("//CurrentVersion")
+                Dim currentVersion As String = XMLNode.ChildNodes(0).InnerText.Trim
+                'Dim currentLink As String = xm.SelectSingleNode("//CurrentVersion").ChildNodes(1).InnerText.Trim
+
                 Log("Checking for the latest version of the program...")
                 If localVersion = currentVersion Then
                     WriteDebugInfo((My.Resources.strYouhavethelatestversionoftheprogram & My.Application.Info.Version.ToString))
                 Else
-                    Dim changelogtotal As String = changelog
-                    'WriteDebugInfo("You are using an outdated version of the program.")
-                    'WriteDebugInfo(("version " & currentVersion & " can be downloaded at:"))
-                    'WriteDebugInfo(currentLink)
-                    'WriteDebugInfo("Changelog:")
-                    'WriteDebugInfo(changelog)
-                    'If changelog2 <> "" Then WriteDebugInfo(changelog2)
-                    If changelog2 <> "" Then changelogtotal += vbCrLf & changelog2
-                    If changelog3 <> "" Then changelogtotal += vbCrLf & changelog3
-                    If changelog4 <> "" Then changelogtotal += vbCrLf & changelog4
-                    If changelog5 <> "" Then changelogtotal += vbCrLf & changelog5
-                    If changelog6 <> "" Then changelogtotal += vbCrLf & changelog6
-                    If changelog7 <> "" Then changelogtotal += vbCrLf & changelog7
-                    If changelog8 <> "" Then changelogtotal += vbCrLf & changelog8
-                    If changelog9 <> "" Then changelogtotal += vbCrLf & changelog9
-                    If changelog10 <> "" Then changelogtotal += vbCrLf & changelog10
+                    Dim changelogtotal As String = ""
+
+                    For index As Integer = 2 To 11
+                        Dim innerText = XMLNode.ChildNodes(index).InnerText
+                        If Not String.IsNullOrWhiteSpace(innerText) Then changelogtotal &= vbCrLf & innerText
+                    Next
+
                     Dim updateyesno As MsgBoxResult = MsgBox(My.Resources.strYouareusinganoutdatedversionoftheprogram & My.Application.Info.Version.ToString & My.Resources.strAndthelatestis & currentVersion & My.Resources.strWouldyouliketodownloadthenewversion & vbCrLf & vbCrLf & My.Resources.strChanges & vbCrLf & changelogtotal, MsgBoxStyle.YesNo)
                     If updateyesno = MsgBoxResult.Yes Then
                         WriteDebugInfo(My.Resources.strDownloadingUpdate)
@@ -893,7 +855,7 @@ Public Class frmMain
                 'chkSwapOP.Text = "Swap PC/Vita Openings (UNKNOWN)"
             End If
 
-            ' TODO: Why
+            ' TODO: Shouldn't be doing this in this way
             Application.DoEvents()
             If File.Exists("7za.exe") = False Then
                 WriteDebugInfo(My.Resources.strDownloading & "7za.exe...")
@@ -945,6 +907,7 @@ Public Class frmMain
             File.Delete("launcherlist.txt")
             File.Delete("patchlist.txt")
             File.Delete("patchlist_old.txt")
+
             'Added in precede files. Stupid ass SEGA.
             File.Delete("patchlist0.txt")
             File.Delete("patchlist1.txt")
@@ -1237,6 +1200,8 @@ DOWNLOADBIN2:
 
         DLS.Headers.Add("user-agent", "AQUA_HTTP")
         DLS.timeout = 10000
+
+        ' TODO: Why would you do this T_T -Matthew
 
         For i As Integer = 1 To 5
             Try
@@ -1896,10 +1861,7 @@ NEXTFILE1:
                         Dim downloaded As Long = 0
                         Dim totaldownloaded As Long = 0
                         patching = True
-                        'If File.Exists("resume.txt") Then File.Delete("resume.txt")
-                        'For Each downloadstring In missingfiles
-                        'File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
-                        'Next
+
                         For Each downloadstring In missingfiles
                             If CancelledFull = True Then Exit Sub
                             'Download the missing files:
@@ -2301,15 +2263,12 @@ BackToCheckUpdates2:
             Me.Hide()
             'Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
             Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
+
             Do Until hWnd <> IntPtr.Zero
                 hWnd = FindWindow("Phantasy Star Online 2", Nothing)
-                'MsgBox(hWnd.ToString)
-                'Dim procs As Process() = Process.GetProcessesByName("pso2")
-                'For Each proc As Process In procs
-                'If proc.MainWindowTitle = "Phantasy Star Online 2" And proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then File.Delete(pso2launchpath & "\ddraw.dll")
-                'Next
                 Thread.Sleep(10)
             Loop
+
             File.Delete(pso2launchpath & "\ddraw.dll")
             'Loop
             'Check to see if the keys exist
@@ -2349,6 +2308,8 @@ BackToCheckUpdates2:
         End Try
     End Sub
     Public Sub SaveToDisk(ByVal resourceName As String, ByVal fileName As String)
+        ' TODO: WHAT IS THIS THING!~>??
+
         ' Get a reference to the running application.
         Dim assy As [Assembly] = [Assembly].GetExecutingAssembly()
 
@@ -3529,24 +3490,22 @@ DOWNLOADFILES:
                 Exit Sub
             End If
         End Using
+
         Dim result1 As DialogResult = MessageBox.Show(My.Resources.strWouldYouLikeToDownloadInstallMissing, "Download/Install?", MessageBoxButtons.YesNo)
+
         If result1 = Windows.Forms.DialogResult.No Then Exit Sub
+
         If result1 = Windows.Forms.DialogResult.Yes Then
-            'For Each downloadstring In missingfiles
-            'NumberofFiles += 1
-            'If NumberofFiles > 6000 Then
-            'MsgBox("Unfortuantely, you're missing more than 6000 files. In order to keep the service available for everyone, please use the built-in PSO2 downloader to recover your files. Thank you.")
-            'Exit Sub
-            'End If
-            'Next
             Log(My.Resources.strDownloading & My.Resources.strMissingFilesPart1)
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             Dim totaldownloaded As Long = 0
             If File.Exists("resume.txt") Then File.Delete("resume.txt")
+
             For Each downloadstring In missingfiles
                 File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
             Next
+
             For Each downloadstring In missingfiles
                 'Download the missing files:
                 Cancelled = False
@@ -3579,21 +3538,19 @@ DOWNLOADFILES:
                 'MsgBox(downloadstring)
                 If CancelledFull = True Then Exit Sub
             Next
-            'For Each downloadstring2 In missingfiles2
-            'NumberofFiles2 += 1
-            ' If NumberofFiles2 > 6000 Then
-            'MsgBox("Unfortuantely, you're missing more than 6000 files. In order to keep the service available for everyone, please use the built-in PSO2 downloader to recover your files. Thank you.")
-            'Exit Sub
-            'End If
-            'Next
+
             Log(My.Resources.strDownloading & My.Resources.strMissingFilesPart2)
+
             If File.Exists("resume.txt") Then File.Delete("resume.txt")
+
             For Each downloadstring2 In missingfiles2
                 File.AppendAllText("resume.txt", (downloadstring2 & vbCrLf))
             Next
+
             Dim totaldownload2 As String = missingfiles2.Count
             Dim downloaded2 As Long = 0
             Dim totaldownloaded2 As Long = 0
+
             For Each downloadstring2 In missingfiles2
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
@@ -3778,6 +3735,8 @@ DOWNLOADFILES:
             DLWUA("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", pso2launchpath & "\PSO2JP.ini", True)
             WriteDebugInfoSameLine(My.Resources.strDone)
             IO.File.Move("GameGuard.des", pso2launchpath & "\GameGuard.des")
+
+            ' TODO: look at what this is doing
             Dim foundKey As RegistryKey = My.Computer.Registry.LocalMachine.OpenSubKey("SYSTEM\CurrentControlSet\Services\npggsvc", True)
 
             If foundKey Is Nothing Then
@@ -3809,11 +3768,14 @@ DOWNLOADFILES:
             DirectoryString = (DirectoryString & "\")
             Cancelled = False
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
+
             Application.DoEvents()
             Dim procs As Process() = Process.GetProcessesByName("pso2launcher")
+
             For Each proc As Process In procs
                 If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" And proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
+
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled = True Then Exit Sub
             'If Application.StartupPath.Contains("\pso2_bin") = False And Application.StartupPath.Contains("\pso2_bin\") = True Or Application.StartupPath.Contains("pso2_bin") = False Then
@@ -5335,33 +5297,37 @@ SelectInstallFolder:
 
         'This isn't working at the moment. Let's just exit the sub for now.
         Exit Sub
-        Dim sock As TcpClient
-        Dim ip As String = "210.129.209.16"
-        Dim port As Int32 = 12200
 
-        Try
-            sock = New TcpClient()
-            sock.NoDelay = True
-            sock.Connect(ip, port)
-            Dim stream As NetworkStream = sock.GetStream()
-            ' Receive the TcpServer.response. 
-            Dim data As [Byte]()
-            ' Buffer to store the response bytes.
-            data = New [Byte](256) {}
+        ' The warnings were really bugging me, just uncomment when you want it back -Matthew
+        ' TODO: Fix this and uncomment
 
-            ' String to store the response ASCII representation. 
-            Dim responseData As [String] = [String].Empty
+        'Dim sock As TcpClient
+        'Dim ip As String = "210.129.209.16"
+        'Dim port As Int32 = 12200
 
-            ' Read the first batch of the TcpServer response bytes. 
-            Dim bytes As Int32 = stream.Read(data, 0, data.Length)
-            responseData = Encoding.ASCII.GetString(data, 0, bytes)
-            Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE")
-            stream.Close()
-            sock.Close()
+        'Try
+        '    sock = New TcpClient()
+        '    sock.NoDelay = True
+        '    sock.Connect(ip, port)
+        '    Dim stream As NetworkStream = sock.GetStream()
+        '    ' Receive the TcpServer.response. 
+        '    Dim data As [Byte]()
+        '    ' Buffer to store the response bytes.
+        '    data = New [Byte](256) {}
 
-        Catch ex As Exception
-            Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
-        End Try
+        '    ' String to store the response ASCII representation. 
+        '    Dim responseData As [String] = [String].Empty
+
+        '    ' Read the first batch of the TcpServer response bytes. 
+        '    Dim bytes As Int32 = stream.Read(data, 0, data.Length)
+        '    responseData = Encoding.ASCII.GetString(data, 0, bytes)
+        '    Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE")
+        '    stream.Close()
+        '    sock.Close()
+
+        'Catch ex As Exception
+        '    Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
+        'End Try
     End Sub
 
     Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
@@ -5400,57 +5366,6 @@ SelectInstallFolder:
     Public Const PROCESS_VM_OPERATION = (&H8)
     Public Const PROCESS_VM_WRITE = (&H20)
     Dim DLLFileName As String
-    Public Declare Function ReadProcessMemory Lib "kernel32" ( _
-    ByVal hProcess As Integer, _
-    ByVal lpBaseAddress As Integer, _
-    ByVal lpBuffer As String, _
-    ByVal nSize As Integer, _
-    ByRef lpNumberOfBytesWritten As Integer) As Integer
-
-    Public Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" ( _
-    ByVal lpLibFileName As String) As Integer
-
-    Public Declare Function VirtualAllocEx Lib "kernel32" ( _
-    ByVal hProcess As Integer, _
-    ByVal lpAddress As Integer, _
-    ByVal dwSize As Integer, _
-    ByVal flAllocationType As Integer, _
-    ByVal flProtect As Integer) As Integer
-
-    Public Declare Function WriteProcessMemory Lib "kernel32" ( _
-    ByVal hProcess As Integer, _
-    ByVal lpBaseAddress As Integer, _
-    ByVal lpBuffer As String, _
-    ByVal nSize As Integer, _
-    ByRef lpNumberOfBytesWritten As Integer) As Integer
-
-    Public Declare Function GetProcAddress Lib "kernel32" ( _
-    ByVal hModule As Integer, ByVal lpProcName As String) As Integer
-
-    Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" ( _
-    ByVal lpModuleName As String) As Integer
-
-    Public Declare Function CreateRemoteThread Lib "kernel32" ( _
-    ByVal hProcess As Integer, _
-    ByVal lpThreadAttributes As Integer, _
-    ByVal dwStackSize As Integer, _
-    ByVal lpStartAddress As Integer, _
-    ByVal lpParameter As Integer, _
-    ByVal dwCreationFlags As Integer, _
-    ByRef lpThreadId As Integer) As Integer
-
-    Public Declare Function OpenProcess Lib "kernel32" ( _
-    ByVal dwDesiredAccess As Integer, _
-    ByVal bInheritHandle As Integer, _
-    ByVal dwProcessId As Integer) As Integer
-
-    Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" ( _
-    ByVal lpClassName As String, _
-    ByVal lpWindowName As String) As Integer
-
-    Private Declare Function CloseHandle Lib "kernel32" Alias "CloseHandleA" ( _
-    ByVal hObject As Integer) As Integer
-
 
     Dim ExeName As String = IO.Path.GetFileNameWithoutExtension(Application.ExecutablePath)
 
@@ -5481,11 +5396,6 @@ SelectInstallFolder:
         Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
         Do Until hWnd <> IntPtr.Zero
             hWnd = FindWindow("Phantasy Star Online 2", Nothing)
-            'MsgBox(hWnd.ToString)
-            'Dim procs As Process() = Process.GetProcessesByName("pso2")
-            'For Each proc As Process In procs
-            'If proc.MainWindowTitle = "Phantasy Star Online 2" And proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then File.Delete(pso2launchpath & "\ddraw.dll")
-            'Next
             Thread.Sleep(10)
         Loop
         Dim TargetProcess As Process() = Process.GetProcessesByName("pso2")

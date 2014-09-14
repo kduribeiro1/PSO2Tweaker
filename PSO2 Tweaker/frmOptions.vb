@@ -9,21 +9,23 @@ Public Class frmOptions
 
     Dim DPISetting As String
 
-    Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
+    Private Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
 
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         SetLocale()
+
         ' Dim RestartYesNo As MsgBoxResult = MsgBox("The program will now restart in the selected language. Hit Cancel if you don't want to restart now.", MsgBoxStyle.OkCancel)
         ' If RestartYesNo = MsgBoxResult.Ok Then
         '    frmMain.CancelDownloadToolStripMenuItem.PerformClick()
-        '    If File.Exists("launcherlist.txt") = True Then File.Delete("launcherlist.txt")
-        '    If File.Exists("patchlist.txt") = True Then File.Delete("patchlist.txt")
-        '    If File.Exists("patchlist_old.txt") = True Then File.Delete("patchlist_old.txt")
-        '    If File.Exists("version.ver") = True Then File.Delete("version.ver")
-        '    If File.Exists("ALLOFTHETHINGS.txt") = True Then File.Delete("ALLOFTHETHINGS.txt")
-        '    If File.Exists("SOMEOFTHETHINGS.txt") = True Then File.Delete("SOMEOFTHETHINGS.txt")
+        '    File.Delete("launcherlist.txt")
+        '    File.Delete("patchlist.txt")
+        '    File.Delete("patchlist_old.txt")
+        '    File.Delete("version.ver")
+        '    File.Delete("ALLOFTHETHINGS.txt")
+        '    File.Delete("SOMEOFTHETHINGS.txt")
         '    Application.Restart()
         'End If
+
         Me.CMBStyle.SelectedIndex = -1
     End Sub
 
@@ -149,34 +151,9 @@ Public Class frmOptions
             End Select
         End If
 
-        'If CMBStyle.SelectedText = "Black" Then Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.Black
-        'If CMBStyle.SelectedText = "Blue" Then Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.Blue
-        'If CMBStyle.SelectedText = "Silver" Then Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.Silver
-        'If CMBStyle.SelectedText = "Vista Glass" Then Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.VistaGlass
-        'If CMBStyle.SelectedIndex <> -1 Then MsgBox("Style applied and saved!")
-        'Me.Refresh()
         '┻━┻ ︵ \(Ò_Ó \)
         '(╯°□°）╯︵ /(.□. \)
         '┯━┯ノ(º₋ºノ)
-    End Sub
-
-    Private Sub CMBStyle_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CMBStyle.SelectedIndexChanged
-        'If CMBStyle.SelectedText = "Black" Then
-        ' Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.Black
-        ' Helper.SetRegKey(Of String)("Style", "Black")
-        ' End If
-        ' If CMBStyle.SelectedText = "Blue" Then
-        ' Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.Blue
-        ' Helper.SetRegKey(Of String)("Style", "Blue")
-        ' End If
-        ' If CMBStyle.SelectedText = "Silver" Then
-        'Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.Silver
-        ' Helper.SetRegKey(Of String)("Style", "Silver")
-        ' End If
-        '  If CMBStyle.SelectedText = "Vista Glass" Then
-        ' Me.Office2007ColorTable = DevComponents.DotNetBar.Rendering.eOffice2007ColorScheme.VistaGlass
-        ' Helper.SetRegKey(Of String)("Style", "Vista Glass")
-        ' End If
     End Sub
 
     Private Sub ComboBoxEx1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx1.SelectedIndexChanged
@@ -295,34 +272,23 @@ Public Class frmOptions
         Process.Start("http://arks-layer.com/credits.php")
     End Sub
 
+    ' TODO: Name this function
+    Sub thing(key As String, str As String)
+        Dim value As String = str.Replace("Latest version: ", "").Replace("Last installed: ", "")
+        Helper.SetRegKey(Of String)(key, value)
+        MsgBox(value)
+    End Sub
+
     Private Sub cmbENOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbENOverride.SelectedIndexChanged
-        ' TODO: Split into function
-        Dim strENselection As String
-        strENselection = cmbENOverride.Text
-        strENselection = strENselection.Replace("Latest version: ", "")
-        strENselection = strENselection.Replace("Last installed: ", "")
-        MsgBox(strENselection)
-        Helper.SetRegKey(Of String)("ENPatchVersion", strENselection)
+        thing("ENPatchVersion", cmbENOverride.Text)
     End Sub
 
     Private Sub cmbLargeFilesOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLargeFilesOverride.SelectedIndexChanged
-        ' TODO: Split into function
-        Dim strLargeFilesselection As String
-        strLargeFilesselection = cmbLargeFilesOverride.Text
-        strLargeFilesselection = strLargeFilesselection.Replace("Latest version: ", "")
-        strLargeFilesselection = strLargeFilesselection.Replace("Last installed: ", "")
-        MsgBox(strLargeFilesselection)
-        Helper.SetRegKey(Of String)("LargeFilesVersion", strLargeFilesselection)
+        thing("LargeFilesVersion", cmbLargeFilesOverride.Text)
     End Sub
 
     Private Sub cmbStoryOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbStoryOverride.SelectedIndexChanged
-        ' TODO: Split into function
-        Dim strStoryPatchselection As String
-        strStoryPatchselection = cmbStoryOverride.Text
-        strStoryPatchselection = strStoryPatchselection.Replace("Latest version: ", "")
-        strStoryPatchselection = strStoryPatchselection.Replace("Last installed: ", "")
-        MsgBox(strStoryPatchselection)
-        Helper.SetRegKey(Of String)("StoryPatchVersion", strStoryPatchselection)
+        thing("StoryPatchVersion", cmbStoryOverride.Text)
     End Sub
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
@@ -346,21 +312,16 @@ Public Class frmOptions
     End Sub
 
     Private Sub ButtonX3_Click(sender As Object, e As EventArgs) Handles ButtonX3.Click
-        If Not String.IsNullOrEmpty(TextBoxX1.Text) Then
+        If Not String.IsNullOrWhiteSpace(TextBoxX1.Text) Then
             Dim UIDString As String = TextBoxX1.Text.Replace("steam://rungameid/", "")
-            MsgBox(UIDString)
             Helper.SetRegKey(Of String)("SteamUID", UIDString)
+            MsgBox(UIDString)
         End If
     End Sub
 
     Private Sub ButtonX5_Click(sender As Object, e As EventArgs) Handles ButtonX5.Click
-        Dim DirectoryString As String = frmMain.lblDirectory.Text
-        Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
         Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-        ' & 
-        'MsgBox(Helper.GetRegKey(Of String)("SteamEXE") & " -applaunch " & Helper.GetRegKey(Of String)("SteamUID"))
         ShellExecute(Handle, "open", ("steam://rungameID/" & Helper.GetRegKey(Of String)("SteamUID")), " +0x33aca2b9 -pso2", "", 0)
-        'ShellExecute(Handle, "open", Helper.GetRegKey(Of String)("SteamEXE"), " -applaunch " & Helper.GetRegKey(Of String)("SteamUID"), "", 0)
     End Sub
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged

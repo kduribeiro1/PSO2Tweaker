@@ -43,6 +43,9 @@ Public Class frmPSO2Options
                 Me.Close()
                 Exit Sub
             End If
+
+            ' TODO: Fix this
+
             If Helper.GetRegKey(Of String)("Style") = "Blue" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
             If Helper.GetRegKey(Of String)("Style") = "Black" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
             If Helper.GetRegKey(Of String)("Style") = "Silver" Then StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
