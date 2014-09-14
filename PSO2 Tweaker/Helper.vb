@@ -38,6 +38,6 @@ Public Class Helper
 
     Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
         RegistryCache(Key) = Value
-        RegistrySubKey.SetValue(Key, Value)
+        My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
     End Sub
 End Class
