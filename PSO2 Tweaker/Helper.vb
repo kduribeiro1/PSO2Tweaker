@@ -5,7 +5,7 @@ Imports Microsoft.Win32
 Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
     Private Shared RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
-    Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA")
+    Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
 
     Public Shared DefaltCultureInfo As CultureInfo = New System.Globalization.CultureInfo("en")
 
@@ -27,17 +27,18 @@ Public Class Helper
     End Function
 
     Public Shared Function GetRegKey(Of T)(ByRef Key As String) As T
-        If RegistryCache.ContainsKey(Key) Then Return RegistryCache(Key)
+        Dim returnValue As T
+        If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
 
-        Dim thing = RegistrySubKey.GetValue(Key, Nothing)
+        returnValue = RegistrySubKey.GetValue(Key, Nothing)
 
-        If thing <> Nothing Then RegistryCache.Add(Key, thing)
+        If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
 
-        Return thing
+        Return returnValue
     End Function
 
     Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
         RegistryCache(Key) = Value
-        My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
+        RegistrySubKey.SetValue(Key, Value)
     End Sub
 End Class
