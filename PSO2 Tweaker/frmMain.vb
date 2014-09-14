@@ -65,11 +65,11 @@ Public Class frmMain
 
 #Region "External Functions"
 
-    Private Declare Function FindWindowByCaption Lib "user32.dll" (ByVal zero As IntPtr, ByVal lpWindowName As String) As IntPtr
+    Private Declare Function FindWindowByCaption Lib "user32" (ByVal zero As IntPtr, ByVal lpWindowName As String) As IntPtr
 
-    Private Declare Function ShellExecuteExW Lib "shell32.dll" (ByRef lpExecInfo As SHELLEXECUTEINFOW) As Long
+    Private Declare Function ShellExecuteExW Lib "shell32" (ByRef lpExecInfo As SHELLEXECUTEINFOW) As Long
 
-    Private Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
+    Private Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
 
     Private Declare Function ReadProcessMemory Lib "kernel32" (ByVal hProcess As Integer, ByVal lpBaseAddress As Integer, ByVal lpBuffer As String, ByVal nSize As Integer, ByRef lpNumberOfBytesWritten As Integer) As Integer
 
@@ -90,6 +90,10 @@ Public Class frmMain
     Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
 
     Private Declare Function CloseHandle Lib "kernel32" Alias "CloseHandleA" (ByVal hObject As Integer) As Integer
+
+    Private Declare Function FlashWindow Lib "user32" (ByVal hwnd As Integer, ByVal bInvert As Integer) As Integer
+
+    Private Declare Function SHGetKnownFolderPath Lib "shell32" (ByRef id As Guid, flags As Integer, token As IntPtr, ByRef path As IntPtr) As Integer
 
 #End Region
 
@@ -1161,9 +1165,7 @@ DOWNLOADBIN2:
         PB1.Value = 0
         PB1.Text = ""
     End Sub
-    <DllImport("user32.dll", EntryPoint:="FlashWindow")> _
-    Public Shared Function FlashWindow(ByVal hwnd As Integer, ByVal bInvert As Integer) As Integer
-    End Function
+
     Public Function DLWUA(ByVal Address As String, ByVal Filename As String, ByVal Overwrite As String) As Boolean
         Overwrite = Application.StartupPath & "\" & Overwrite
         'Appeler la fonction avec: DLWUA(URL, Emplacement fichier, append ou overwrite (true ou false))
@@ -4644,14 +4646,6 @@ DOWNLOADFILES:
         Process.Start("chrome", "--no-sandbox")
     End Sub
 
-    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
-
-    End Sub
-
-    Private Sub btnDonate_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
     Private Sub btnClearSACache_Click(sender As Object, e As EventArgs) Handles btnClearSACache.Click
         Dim ClearYesNo As MsgBoxResult = MsgBox("This will clear all Symbol Arts from your ""History"" tab. Having 100 pages of Symbol Arts to load can sometimes cause slowdown.", vbYesNo)
         If ClearYesNo = vbNo Then
@@ -4682,9 +4676,8 @@ DOWNLOADFILES:
         path__1 = Path.Combine(path__1, "Downloads")
         Return path__1
     End Function
+
     Private Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
-    <DllImport("shell32.dll", CharSet:=CharSet.Auto)> Private Shared Function SHGetKnownFolderPath(ByRef id As Guid, flags As Integer, token As IntPtr, ByRef path As IntPtr) As Integer
-    End Function
 
     Private Sub btnInstallPSO2_Click(sender As Object, e As EventArgs) Handles btnInstallPSO2.Click
         Dim InstallFolder As String = ""
@@ -4894,29 +4887,25 @@ SelectInstallFolder:
             Dim dra As IO.FileInfo
             WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
             Application.DoEvents()
+
             'list the names of all files in the specified directory
+            ' TODO: Is clone(1)
             Log("Extracted " & diar1.Count & " files from the patch")
+
             If diar1.Count = 0 Then
                 WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
                 Exit Sub
             End If
+
             WriteDebugInfo(My.Resources.strInstallingPatch)
+
+
             For Each dra In diar1
                 If CancelledFull = True Then Exit Sub
-                'ListBox1.Items.Add(dra)
-                'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 File.Delete(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
                 File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " still exists! File was NOT overwritten!")
-                'End If
-                'End If
-                'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             Next
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
+
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
 
             FlashWindow(Me.Handle, 1)
@@ -4932,6 +4921,7 @@ SelectInstallFolder:
             Exit Sub
         End Try
     End Sub
+
     Public Sub SilentENpatch()
         CancelledFull = False
         Try
@@ -5010,30 +5000,26 @@ SelectInstallFolder:
             If CancelledFull = True Then Exit Sub
             'list the names of all files in the specified directory
             Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
+
+            ' TODO: Is clone(1)
             Log("Extracted " & diar1.Count & " files from the patch")
+
             If diar1.Count = 0 Then
                 WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
                 Exit Sub
             End If
+
             WriteDebugInfo(My.Resources.strInstallingPatch)
+
+
             For Each dra In diar1
                 If CancelledFull = True Then Exit Sub
-                'ListBox1.Items.Add(dra)
-                'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
-
                 File.Delete(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
                 File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " still exists! File was NOT overwritten!")
-                'End If
-                'End If
-                'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             Next
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
+
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
+
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo("English patch installed!")
             Helper.SetRegKey(Of String)("ENPatchVersion", strVersion)
@@ -5045,9 +5031,11 @@ SelectInstallFolder:
             Exit Sub
         End Try
     End Sub
+
     Private Sub btnConfigureItemTranslation_Click(sender As Object, e As EventArgs) Handles btnConfigureItemTranslation.Click
         frmItemConfig.Show()
     End Sub
+
     Public Function CheckLink(ByVal Url As String) As String
         Dim req As HttpWebRequest = TryCast(WebRequest.Create(Url), HttpWebRequest)
         req.Timeout = 5000
@@ -5084,6 +5072,8 @@ SelectInstallFolder:
                 Button1.RaiseClick()
                 Exit Sub
             End If
+
+            ' TODO: fix like the other that was like this
             If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
             If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
             If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
@@ -5234,6 +5224,7 @@ SelectInstallFolder:
             Exit Sub
         End Try
     End Sub
+
     Private Sub LoadSidebar()
         Try
             WebBrowser4.Navigate("http://162.243.211.123/freedom/tweaker.html")
@@ -5257,6 +5248,7 @@ SelectInstallFolder:
     Private Sub btnDonateToENPatchHost_Click(sender As Object, e As EventArgs) Handles btnDonateToENPatchHost.Click
         Process.Start("http://arghargh200.net/?page=donators")
     End Sub
+
     Public Sub setserverstatus(ByVal serverstatus As String)
         If serverstatus = "ONLINE" Then
             Label5.ForeColor = Color.Green
@@ -5267,6 +5259,7 @@ SelectInstallFolder:
             Label5.Text = "OFFLINE"
         End If
     End Sub
+
     Private Sub IsServerOnline()
 
         'This isn't working at the moment. Let's just exit the sub for now.
@@ -5304,10 +5297,6 @@ SelectInstallFolder:
         'End Try
     End Sub
 
-    Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
-
-    End Sub
-
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
         Dim Oldstatus As String = Label5.Text
         Dim t5 As New Threading.Thread(AddressOf IsServerOnline)
@@ -5327,19 +5316,17 @@ SelectInstallFolder:
             Application.Restart()
         End If
     End Sub
+
     Private TargetProcessHandle As Integer
     Private pfnStartAddr As Integer
     Private pszLibFileRemote As String
     Private TargetBufferSize As Integer
+    Private Const MEM_COMMIT = 4096
+    Private Const PAGE_READWRITE = 4
+    Private Const PROCESS_CREATE_THREAD = (&H2)
+    Private Const PROCESS_VM_OPERATION = (&H8)
+    Private Const PROCESS_VM_WRITE = (&H20)
 
-    Public Const PROCESS_VM_READ = &H10
-    Public Const TH32CS_SNAPPROCESS = &H2
-    Public Const MEM_COMMIT = 4096
-    Public Const PAGE_READWRITE = 4
-    Public Const PROCESS_CREATE_THREAD = (&H2)
-    Public Const PROCESS_VM_OPERATION = (&H8)
-    Public Const PROCESS_VM_WRITE = (&H20)
-    Dim DLLFileName As String
 
     Dim ExeName As String = IO.Path.GetFileNameWithoutExtension(Application.ExecutablePath)
 
@@ -5364,8 +5351,8 @@ SelectInstallFolder:
         OFDSweetFX.Filter = "DLL (*.dll) |*.dll|(*.*) |*.*"
         OFDSweetFX.ShowDialog()
         Dim DllFileName As String = OFDSweetFX.FileName
-        'Me.TextBox2.Text = (DllFileName)
     End Sub
+
     Private Sub Injectstuff()
         Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
         Do Until hWnd <> IntPtr.Zero
@@ -5410,10 +5397,6 @@ SelectInstallFolder:
     Private Sub btnDownloadPrepatch_Click(sender As Object, e As EventArgs) Handles btnDownloadPrepatch.Click
         ComingFromPrePatch = True
         CheckForPSO2Updates()
-    End Sub
-
-    Private Sub btnCopyInfo_Click(sender As Object, e As EventArgs)
-
     End Sub
 
     Private Sub btnCopyInfo_Click_1(sender As Object, e As EventArgs) Handles btnCopyInfo.Click
@@ -5879,10 +5862,6 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
-    End Sub
-
-    Private Sub lblStatus_Click(sender As Object, e As EventArgs) Handles lblStatus.Click
-        'test2
     End Sub
 
     ' TODO: Do any necessary parsing BEFORE this function as opposed to inside. This'll make it compatible with other language patches.
