@@ -37,21 +37,13 @@ Public Class frmMain
         Dim hProcess As Long
     End Structure
 
-    Private Const SEE_MASK_INVOKEIDLIST As Long = &HC
-    Private Const SEE_MASK_NOCLOSEPROCESS As Long = &H40  ' プロセスハンドルをクローズしない。
-    Private Const SEE_MASK_FLAG_NO_UI As Long = &H400 ' 失敗したときなどにダイアログを表示しない。
-    Private Const SEE_MASK_UNICODE As Long = &H4000
     Dim DPISetting As String
-    'Dim FreedomClient As MyWebClient
     Dim ComingFromOldFiles As Boolean = False
     Dim testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
     Dim testfile_Size As Double = 1.91992 'MB
     Dim timer_start As Integer
     Dim time_for_download As Integer
     Dim velocity As Double
-    Dim drag As Boolean
-    Dim mousex As Integer
-    Dim mousey As Integer
     Dim SystemUnlock As Integer
     Dim MileyCyrus As Integer
     Dim SteamUnlock As Integer
@@ -60,19 +52,16 @@ Public Class frmMain
     Dim CancelledFull As Boolean
     Dim UseItemTranslation As Boolean = False
     Dim VedaUnlocked As Boolean = False
-    Dim CommandLineArgs As System.Collections.ObjectModel.ReadOnlyCollection(Of String) = My.Application.CommandLineArgs
+    Dim CommandLineArgs As String() = Environment.GetCommandLineArgs()
     Dim Override As Boolean = False
     Dim TransOverride As Boolean = False
     Dim DoneDownloading As Boolean = False
-    Dim totaldownloaded As Long
     Dim patching As Boolean = False
     Dim totalsize2 As Integer
     Dim Restartplz As Boolean
     Dim ItemDownloadingDone As Boolean
     Dim nodiag As Boolean = False
     Dim ComingFromPrePatch As Boolean = False
-    'Dim OldFileMD5 As String
-    'Dim NewFileMD5 As String
 
 #Region "External Functions"
 
@@ -276,55 +265,40 @@ Public Class frmMain
             DirectoryString = lblDirectory.Text
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             If File.Exists(pso2launchpath & "ddraw.dll") Then File.Delete(pso2launchpath & "ddraw.dll")
-            For i As Integer = 0 To CommandLineArgs.Count - 1
-                'MsgBox(CommandLineArgs(i).ToString)
-                If CommandLineArgs(i).ToString = "-fuck_you_misaki_stop_trying_to_decompile_my_shit" Then
+
+            For i As Integer = 1 To CommandLineArgs.Length - 1
+                If CommandLineArgs(i) = "-fuck_you_misaki_stop_trying_to_decompile_my_shit" Then
                     Log("Fuck you, Misaki")
                     MsgBox("Why are you trying to decompile my program? Get outta here!")
                 End If
-                If CommandLineArgs(i).ToString = "-nodllcheck" Then
+                If CommandLineArgs(i) = "-nodllcheck" Then
                     TransOverride = True
                 End If
-                If CommandLineArgs(i).ToString = "-steam" Then
+                If CommandLineArgs(i) = "-steam" Then
                     Log("Detected -steam argument")
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SteamUID")) Then
                         MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
                     End If
-                    'Dim lngResult As Long
-                    'Dim udtSHELLEXECUTEINFO As SHELLEXECUTEINFOW
+
                     Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
                     ShellExecute(Handle, "open", (pso2launchpath & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
-                    'With udtSHELLEXECUTEINFO
-                    '.cbSize = Len(udtSHELLEXECUTEINFO)
-                    '.fMask = SEE_MASK_NOCLOSEPROCESS Or _
-                    '         SEE_MASK_INVOKEIDLIST Or _
-                    '         SEE_MASK_FLAG_NO_UI Or _
-                    ' SEE_MASK_UNICODE()
-                    ' .hWnd = Me.Handle
-                    ' .lpVerb = "open"
-                    ' .lpFile = (pso2launchpath & "\pso2.exe")
-                    ' .lpParameters = "+0x33aca2b9 -pso2"
-                    ' .lpDirectory = 0
-                    ' .nShow = 0
-                    ' .hInstApp = 0
-                    ' .lpIDList = 0
-                    ' End With
+
                     Log("Deleting item cache")
                     If File.Exists(Dir() & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat") Then File.Delete(Dir() & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
                     Log("Launching PSO2 with -steam")
-                    'lngResult = ShellExecuteExW(udtSHELLEXECUTEINFO)
+
                     Me.Close()
                 End If
-                If CommandLineArgs(i).ToString = "-item" Then
+                If CommandLineArgs(i) = "-item" Then
                     Log("Detected command argument -item")
                     UseItemTranslation = True
                 End If
-                If CommandLineArgs(i).ToString = "-nodiag" Then
+                If CommandLineArgs(i) = "-nodiag" Then
                     Log("Detected command argument -nodiag")
                     Log("Bypassing OS detection to fix compatibility!")
                     nodiag = True
                 End If
-                If CommandLineArgs(i).ToString = "-bypass" Then
+                If CommandLineArgs(i) = "-bypass" Then
                     Log("Detected command argument -bypass")
                     Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
                     MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
@@ -366,7 +340,7 @@ Public Class frmMain
                     Loop
                     Me.Close()
                 End If
-                If CommandLineArgs(i).ToString = "-pso2" Then
+                If CommandLineArgs(i) = "-pso2" Then
                     Log("Detected command argument -pso2")
                     'Fuck SEGA. Fuck them hard.
                     'If Helper.GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
