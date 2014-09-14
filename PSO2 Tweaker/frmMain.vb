@@ -246,7 +246,7 @@ Public Class frmMain
             Dim pso2launchpath As String
             Dim sBuffer As String
 
-            If String.IsNullOrEmpty(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing)) Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 Dim AlreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
                 If AlreadyInstalled = vbNo Then
                     btnInstallPSO2.RaiseClick()
@@ -255,18 +255,18 @@ Public Class frmMain
 
 
             Log("Attempting to auto-load pso2_bin directory from settings")
-            If String.IsNullOrEmpty(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing)) Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
             Else
-                lblDirectory.Text = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
+                lblDirectory.Text = Helper.GetRegKey(Of String)("PSO2Dir")
                 Log("Loaded pso2_bin directory from settings")
             End If
             If lblDirectory.Text.Contains("\pso2_bin\data\win32") = True Then
                 If File.Exists(lblDirectory.Text.Replace("\data\win32", "") & "\pso2.exe") = True Then
                     Log("win32 folder selected instead of pso2_bin folder - Fixing!")
                     lblDirectory.Text = lblDirectory.Text.Replace("\data\win32", "")
-                    My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
+                    Helper.SetRegKey(Of String)("PSO2Dir", lblDirectory.Text)
                     Log(lblDirectory.Text & " " & My.Resources.strSetAsYourPSO2)
                 End If
             End If
@@ -337,17 +337,17 @@ Public Class frmMain
                     DirectoryString = (lblDirectory.Text & "\data\win32")
                     pso2launchpath = DirectoryString.Replace("\data\win32", "")
                     'If Environment.Is64BitOperatingSystem = True Then
-                    'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-                    'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                    'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-                    'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+                    'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                    'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+                    'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                    'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                     'End If
                     'If it's 32-bit
                     'If Environment.Is64BitOperatingSystem = False Then
-                    'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-                    'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                    'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-                    'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+                    'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                    'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+                    'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                    'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                     'End If
                     'End Item Translation stuff
                     SaveToDisk("ddraw.dll", pso2launchpath & "\ddraw.dll")
@@ -444,17 +444,17 @@ Public Class frmMain
                         Next
 
                         'If Environment.Is64BitOperatingSystem = True Then
-                        'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                        'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+                        'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+                        'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'If it's 32-bit
                         'If Environment.Is64BitOperatingSystem = False Then
-                        'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-                        'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+                        'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+                        'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'End Item Translation stuff
                         SaveToDisk("ddraw.dll", pso2launchpath & "\ddraw.dll")
@@ -504,13 +504,13 @@ Public Class frmMain
                         'AppInit_DLLs (string, pointing to the file)
                         'If it's 64-bit
                         'If Environment.Is64BitOperatingSystem = "True" Then
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'If it's 32-bit
                         'If Environment.Is64BitOperatingSystem = "False" Then
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-                        'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+                        'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
                         'End If
                         'End Item Translation stuff
                     End If
@@ -877,11 +877,11 @@ Public Class frmMain
             Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
             Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
             Application.DoEvents()
-            If String.IsNullOrEmpty(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", Nothing)) Then
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 MsgBox(My.Resources.strPleaseSelectPSO2win32dir)
                 Button1.RaiseClick()
             Else
-                lblDirectory.Text = My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
+                lblDirectory.Text = Helper.GetRegKey(Of String)("PSO2Dir")
             End If
             If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = True And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = True Then
                 If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 And GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
@@ -2248,17 +2248,17 @@ BackToCheckUpdates2:
                 End If
             End If
             'If Environment.Is64BitOperatingSystem = True Then
-            'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-            'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+            'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+            'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'If it's 32-bit
             'If Environment.Is64BitOperatingSystem = False Then
-            'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
-            'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
+            'Helper.SetRegKey(Of String)("AppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Nothing))
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", "Translator.dll", Microsoft.Win32.RegistryValueKind.String)
+            'Helper.SetRegKey(Of Integer)("LoadAppInit_DLLs_backup", Helper.GetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Nothing))
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'End Item Translation stuff
             File.Delete(pso2launchpath & "\ddraw.dll")
@@ -2322,13 +2322,13 @@ BackToCheckUpdates2:
             'AppInit_DLLs (string, pointing to the file)
             'If it's 64-bit
             'If Environment.Is64BitOperatingSystem = "True" Then
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'If it's 32-bit
             'If Environment.Is64BitOperatingSystem = "False" Then
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
-            'My.Computer.Registry.SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs", Helper.GetRegKey(Of String)("AppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.String)
+            'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", Helper.GetRegKey(Of Integer)("LoadAppInit_DLLs_backup"), Microsoft.Win32.RegistryValueKind.DWord)
             'End If
             'End Item Translation stuff
             'End If
@@ -2517,7 +2517,7 @@ SelectPSO2Folder:
                 If File.Exists(MyFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") = True Then
                     WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
                     lblDirectory.Text = MyFolderBrowser.SelectedPath.Replace("\data\win32", "")
-                    My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
+                    Helper.SetRegKey(Of String)("PSO2Dir", lblDirectory.Text)
                     WriteDebugInfoAndOK(lblDirectory.Text & " " & My.Resources.strSetAsYourPSO2)
                     Exit Sub
                 End If
@@ -2526,7 +2526,7 @@ SelectPSO2Folder:
             ' MsgBox("Are you SURE you selected the pso2_bin folder? The program was unable to locate pso2.exe - Please verify the location and try again.")
             ' GoTo SelectPSO2Folder
             ' End If
-            My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", MyFolderBrowser.SelectedPath)
+            Helper.SetRegKey(Of String)("PSO2Dir", MyFolderBrowser.SelectedPath)
             lblDirectory.Text = MyFolderBrowser.SelectedPath
             'If DirectoryString.Contains("\data\win32") = False Then
             'MsgBox(My.Resources.strAreYouSurewin32 & " Please click ""Select PSO2 win32 directory"" and try again!")
@@ -4853,7 +4853,7 @@ SelectInstallFolder:
 
                     'set the lbldirectory.text to the install patch
                     lblDirectory.Text = pso2_binfolder
-                    My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", "PSO2Dir", lblDirectory.Text)
+                    Helper.SetRegKey(Of String)("PSO2Dir", lblDirectory.Text)
                     WriteDebugInfo(lblDirectory.Text & " " & My.Resources.strSetAsYourPSO2)
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("StoryPatchVersion")) Then Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ENPatchVersion")) Then Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
