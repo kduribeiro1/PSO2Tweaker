@@ -226,6 +226,9 @@ Public Class frmMain
     '"SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, _
     'ByVal dwNewLong As Long) As Long
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Dim watch As Stopwatch = New Stopwatch()
+        'watch.Start()
+
         Dim g As Graphics = Me.CreateGraphics
         If g.DpiX.ToString = "120" Then
             DPISetting = "120"
@@ -640,34 +643,43 @@ Public Class frmMain
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("StoryPatchVersion")) Then Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ENPatchVersion")) Then Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("LargeFilesVersion")) Then Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            Log("Loading style setting")
-            If Helper.GetRegKey(Of String)("Style") = "Blue" Then
-                StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-                frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-            End If
-            If Helper.GetRegKey(Of String)("Style") = "Black" Then
-                StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-                frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-            End If
-            If Helper.GetRegKey(Of String)("Style") = "Silver" Then
-                StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
-                frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+
+            Dim style As String = Helper.GetRegKey(Of String)("Style")
+
+            If Not String.IsNullOrEmpty(style) Then
+                Select Case style
+                    Case "Blue"
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+
+                    Case "Silver"
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+
+                    Case "Black"
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+
+                    Case "Vista Glass"
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+
+                    Case "2010 Silver"
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+
+                    Case "Windows 7 Blue"
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+
+                    Case Else
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                End Select
             End If
 
-            If Helper.GetRegKey(Of String)("Style") = "Vista Glass" Then
-                StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-                frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-            End If
+            ' TODO: neeeds some doing
 
-            If Helper.GetRegKey(Of String)("Style") = "2010 Silver" Then
-                StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-                frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-            End If
-
-            If Helper.GetRegKey(Of String)("Style") = "Windows 7 Blue" Then
-                StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
-                frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
-            End If
             Log("Loading textbox settings")
             If Helper.GetRegKey(Of String)("TextBoxBGColor") <> "" Then rtbDebug.BackColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxBGColor"))
             If Helper.GetRegKey(Of String)("TextBoxColor") <> "" Then rtbDebug.ForeColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxColor"))
@@ -1030,6 +1042,9 @@ Public Class frmMain
         WriteDebugInfo(My.Resources.strAllDoneSystemReady)
         ButtonItem6.Enabled = True
         'btnPSO2Options.RaiseClick()
+
+        'watch.Stop()
+        'MessageBox.Show(watch.ElapsedMilliseconds.ToString())
 
     End Sub
     Public Sub DownloadItemTranslationFiles()
