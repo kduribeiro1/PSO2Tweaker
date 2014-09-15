@@ -5404,7 +5404,6 @@ SelectInstallFolder:
         End Try
     End Sub
 
-    ' TODO: Do any necessary parsing BEFORE this function as opposed to inside. This'll make it compatible with other language patches.
     Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String, msgBackup As String, msgSelectArchive As String, BackupDir As String)
         CancelledFull = False
         Try
