@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Enums\eStyle.vb" />
     <Compile Include="Enums\Languages.vb" />
     <Compile Include="frmDiagnostic.Designer.vb">
       <DependentUpon>frmDiagnostic.vb</DependentUpon>
@@ -225,6 +226,9 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="MyWebClient.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Settings.vb" />
   </ItemGroup>
@@ -340,7 +344,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ddraw.dll" />
+    <None Include="ddraw.dll" />
     <Content Include="pso2 icon 512.ico" />
   </ItemGroup>
   <ItemGroup>

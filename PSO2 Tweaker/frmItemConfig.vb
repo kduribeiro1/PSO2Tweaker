@@ -18,7 +18,7 @@ Public Class frmItemConfig
         Dim pso2launchpath As String
         DirectoryString = frmMain.lblDirectory.Text
         pso2launchpath = DirectoryString.Replace("\data\win32", "")
-        If File.Exists(pso2launchpath & "\translation.cfg") Then File.Delete(pso2launchpath & "\translation.cfg")
+        File.Delete(pso2launchpath & "\translation.cfg")
         Dim delay As Integer = NUDDelay.Value * 1000
         Dim data As String()
         Dim NumberKey As String
@@ -40,7 +40,7 @@ Public Class frmItemConfig
         Dim pso2launchpath As String
         DirectoryString = frmMain.lblDirectory.Text
         pso2launchpath = DirectoryString.Replace("\data\win32", "")
-        If File.Exists(pso2launchpath & "\itemlog.txt") Then File.Delete(pso2launchpath & "\itemlog.txt")
+        File.Delete(pso2launchpath & "\itemlog.txt")
         MsgBox("Please only turn this feature on if you are specifically asked to. If AIDA didn't tell you to turn it on, don't.")
     End Sub
 
