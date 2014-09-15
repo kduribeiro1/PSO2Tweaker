@@ -2294,7 +2294,15 @@ SelectPSO2Folder:
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
-        DownloadPatch("http://162.243.211.123/patches/largefiles.txt", "Large Files", "LargeFiles.rar", "LargeFilesVersion", My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backupPreLargeFiles")
+        ' Here we parse the text file before passing it to the DownloadPatch function.
+        ' The Using statement will dispose "net" as soon as we're done with it.
+        Using net As New Net.WebClient()
+            ' TODO: Check the string to make sure it's a valid URL before passing it into the function.
+            ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
+            ' Furthermore, we could also parse it from within the function.
+            Dim url As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
+            DownloadPatch(url, "Large Files", "LargeFiles.rar", "LargeFilesVersion", My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backupPreLargeFiles")
+        End Using
     End Sub
 
     Private Sub btnStory_Click(sender As Object, e As EventArgs) Handles btnStory.Click
@@ -3843,7 +3851,15 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnENPatch_Click(sender As Object, e As EventArgs) Handles btnENPatch.Click
-        DownloadPatch("http://162.243.211.123/patches/enpatch.txt", "EN Patch", "ENPatch.rar", "ENPatchVersion", My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR, "backupPreENPatch")
+        ' Here we parse the text file before passing it to the DownloadPatch function.
+        ' The Using statement will dispose "net" as soon as we're done with it.
+        Using net As New Net.WebClient()
+            ' TODO: Check the string to make sure it's a valid URL before passing it into the function.
+            ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
+            ' Furthermore, we could also parse it from within the function.
+            Dim url As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
+            DownloadPatch(url, "EN Patch", "ENPatch.rar", "ENPatchVersion", My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR, "backupPreENPatch")
+        End Using
     End Sub
 
     Private Sub ButtonItem14_Click(sender As Object, e As EventArgs) Handles ButtonItem14.Click
@@ -4108,147 +4124,9 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
-        CancelledFull = False
-        Try
-            Dim backupyesno As MsgBoxResult
-            Dim predownloadedyesno As MsgBoxResult
-            Dim RARLocation As String = ""
-            Dim strVersion As String = ""
-            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox("Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.", vbYesNo)
-            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
-            If predownloadedyesno = MsgBoxResult.No Then
-                WriteDebugInfo(My.Resources.strDownloading & "RU patch...")
-                Application.DoEvents()
-                If CheckLink("http://46.150.76.126/pso2/rupatch.rar") <> "OK" Then
-                    WriteDebugInfoAndFAILED("Failed to contact RU Patch website - Patch install canceled!")
-                    WriteDebugInfo("Please visit http://vk.com/pso2rus for more information!")
-                    Exit Sub
-                End If
-                DLWUA("http://46.150.76.126/pso2/rupatch.rar", "RUPatch.rar", True)
-                If Cancelled = True Then Exit Sub
-                'My.Computer.Network.DownloadFile(strDownloadME, "ENPatch.rar", vbNullString, vbNullString, True, 5000, True)
-                'net.DownloadFile(strDownloadME, "ENPatch.rar")
-                WriteDebugInfo(My.Resources.strDownloadCompleteDownloaded & "http://46.150.76.126/pso2/rupatch.rar")
-            End If
-            If predownloadedyesno = MsgBoxResult.Yes Then
-                OpenFileDialog1.Title = "Please select the pre-downloaded RU Patch RAR file"
-                OpenFileDialog1.FileName = "PSO2 RU Patch RAR file"
-                OpenFileDialog1.Filter = "RAR Archives|*.rar|All Files (*.*) |*.*"
-                Dim result = OpenFileDialog1.ShowDialog()
-                If result = DialogResult.Cancel Then
-                    Exit Sub
-                End If
-                RARLocation = OpenFileDialog1.FileName.ToString()
-                MsgBox(RARLocation)
-                strVersion = OpenFileDialog1.SafeFileName
-                strVersion = strVersion.Replace(".rar", "")
-            End If
-            Application.DoEvents()
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = True Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
-            Dim UnRarLocation As String
-            UnRarLocation = (Application.StartupPath & "\unrar.exe")
-            UnRarLocation = UnRarLocation.Replace("\\", "\")
-            processStartInfo.FileName = UnRarLocation
-            processStartInfo.Verb = "runas"
-            If predownloadedyesno = MsgBoxResult.No Then processStartInfo.Arguments = ("e RUPatch.rar " & "TEMPPATCHAIDAFOOL")
-            If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & RARLocation & """" & " TEMPPATCHAIDAFOOL")
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
-            process = process.Start(processStartInfo)
-            WriteDebugInfo(My.Resources.strWaitingforPatch)
-            Do Until process.WaitForExit(1000)
-            Loop
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-                WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New IO.DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
-            Application.DoEvents()
-            If CancelledFull = True Then Exit Sub
-            'list the names of all files in the specified directory
-            Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreRUPatch")
-            If backupyesno = MsgBoxResult.Yes Then
-                If Directory.Exists(backupdir) = True Then
-                    My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
-                    Directory.CreateDirectory(backupdir)
-                    WriteDebugInfo(My.Resources.strErasingPreviousBackup)
-                End If
-                If Directory.Exists(backupdir) = False Then
-                    Directory.CreateDirectory(backupdir)
-                    WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
-                End If
-                'MsgBox(backupdir)
-            End If
-            Log("Extracted " & diar1.Count & " files from the patch")
-            If diar1.Count = 0 Then
-                WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
-                Exit Sub
-            End If
-            WriteDebugInfo(My.Resources.strInstallingPatch)
-            For Each dra In diar1
-                If CancelledFull = True Then Exit Sub
-                'ListBox1.Items.Add(dra)
-                'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
-                If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) = True Then
-                        File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupdir & "\" & dra.ToString))
-                        'MsgBox(("Moving" & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " to " & (backupdir & "\" & dra.ToString)))
-                        'MsgBox(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                    End If
-                End If
-                If backupyesno = MsgBoxResult.No Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) = True Then
-                        DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                    End If
-                End If
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " still exists! File was NOT overwritten!")
-                'End If
-                'End If
-                'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-            Next
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
-            My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-            If backupyesno = MsgBoxResult.No Then
-                FlashWindow(Me.Handle, 1)
-                WriteDebugInfo("Russian patch " & My.Resources.strInstalledUpdated)
-            End If
-            If backupyesno = MsgBoxResult.Yes Then
-                FlashWindow(Me.Handle, 1)
-                WriteDebugInfo(("Russian patch " & My.Resources.strInstalledUpdatedBackup & backupdir))
-            End If
-            DeleteFile("RUPatch.rar")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        DownloadPatch("http://46.150.76.126/pso2/rupatch.rar", "RU Patch", "RUPatch.rar", Nothing,
+                      "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
+                      "Please select the pre-downloaded RU Patch RAR file", "backupPreRUPatch")
     End Sub
 
     Private Sub Office2007StartButton1_Click(sender As Object, e As EventArgs) Handles Office2007StartButton1.Click
@@ -4884,168 +4762,20 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
-        CancelledFull = False
-        Try
-            Dim backupyesno As MsgBoxResult
-            Dim predownloadedyesno As MsgBoxResult
-            Dim RARLocation As String = ""
-            Dim strVersion As String = ""
-            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If
+        Using net As New Net.WebClient()
+            Dim page As String = net.DownloadString("http://162.243.211.123/pso2patches/espatch.html")
+            Dim match As Match = Regex.Match(page, "<b>(.{1,})</b>")
 
-            ' TODO: fix like the other that was like this
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Ask" Then predownloadedyesno = MsgBox(My.Resources.strWouldYouLikeToUse, vbYesNo)
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Always" Then predownloadedyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("PredownloadedRAR") = "Never" Then predownloadedyesno = MsgBoxResult.No
-            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox("Would you like to backup your files before applying the patch? This will erase all previous Pre-ES patch backups.", vbYesNo)
-            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
-            If predownloadedyesno = MsgBoxResult.No Then
-                WriteDebugInfo(My.Resources.strDownloading & "ES patch...")
-                Application.DoEvents()
-                Dim net As New Net.WebClient()
-                Dim src As String
-                'http://162.243.211.123/pso2patches/upload.html
-                src = net.DownloadString("http://162.243.211.123/pso2patches/espatch.html")
-                'MsgBox(src.ToString)
-                ' Create a match using regular exp<b></b>ressions
-                'http://arks-layer.com/Story%20Patch%208-8-2013.rar.torrent
-                'Dim m As Match = Regex.Match(src, "Story Patch (.*?).rar.torrent")
-                Dim m As Match = Regex.Match(src, "<b>.*?</b>")
-                'MsgBox(m.Value)
-                ' Spit out the value plucked from the code
-                txtHTML.Text = m.Value
-                Dim strDownloadME As String = txtHTML.Text
-                strDownloadME = strDownloadME.Replace("<b>", "")
-                strDownloadME = strDownloadME.Replace("</b>", "")
-                strDownloadME = "http://162.243.211.123/pso2patches/uploads/" & strDownloadME
-                'http://162.243.211.123/pso2patches/espatch.html
-                'If CheckLink("Link here") <> "OK" Then
-                ' WriteDebugInfoAndFAILED("Failed to contact ES Patch website - Patch install canceled!")
-                ' WriteDebugInfo("Please visit https://www.facebook.com/pso2es?ref=hl for more information!")
-                ' Exit Sub
-                'End If
-                DLWUA(strDownloadME, "ESPatch.rar", True)
-                If Cancelled = True Then Exit Sub
-                'My.Computer.Network.DownloadFile(strDownloadME, "ENPatch.rar", vbNullString, vbNullString, True, 5000, True)
-                'net.DownloadFile(strDownloadME, "ENPatch.rar")
-                WriteDebugInfoSameLine(" Done!")
+            If (match.Success) Then
+                Dim url As String = "http://162.243.211.123/pso2patches/uploads/" & match.Groups(1).Value
+
+                DownloadPatch(url, "ES Patch", "ESPatch.rar", Nothing,
+                      "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
+                      "Please select the pre-downloaded ES Patch RAR file", "backupPreESPatch")
+            Else
+                MessageBox.Show("An error occurred while trying to parse the ES Patch page.", "Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
-            If predownloadedyesno = MsgBoxResult.Yes Then
-                OpenFileDialog1.Title = "Please select the pre-downloaded ES Patch RAR file"
-                OpenFileDialog1.FileName = "PSO2 ES Patch RAR file"
-                OpenFileDialog1.Filter = "RAR Archives|*.rar|All Files (*.*) |*.*"
-                Dim result = OpenFileDialog1.ShowDialog()
-                If result = DialogResult.Cancel Then
-                    Exit Sub
-                End If
-                RARLocation = OpenFileDialog1.FileName.ToString()
-                MsgBox(RARLocation)
-                strVersion = OpenFileDialog1.SafeFileName
-                strVersion = strVersion.Replace(".rar", "")
-            End If
-            Application.DoEvents()
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = True Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
-            Dim UnRarLocation As String
-            UnRarLocation = (Application.StartupPath & "\unrar.exe")
-            UnRarLocation = UnRarLocation.Replace("\\", "\")
-            processStartInfo.FileName = UnRarLocation
-            processStartInfo.Verb = "runas"
-            If predownloadedyesno = MsgBoxResult.No Then processStartInfo.Arguments = ("e ESPatch.rar " & "TEMPPATCHAIDAFOOL")
-            If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & RARLocation & """" & " TEMPPATCHAIDAFOOL")
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
-            process = process.Start(processStartInfo)
-            WriteDebugInfo(My.Resources.strWaitingforPatch)
-            Do Until process.WaitForExit(1000)
-            Loop
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-                WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New IO.DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
-            Application.DoEvents()
-            If CancelledFull = True Then Exit Sub
-            'list the names of all files in the specified directory
-            Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreESPatch")
-            If backupyesno = MsgBoxResult.Yes Then
-                If Directory.Exists(backupdir) = True Then
-                    My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
-                    Directory.CreateDirectory(backupdir)
-                    WriteDebugInfo(My.Resources.strErasingPreviousBackup)
-                End If
-                If Directory.Exists(backupdir) = False Then
-                    Directory.CreateDirectory(backupdir)
-                    WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
-                End If
-                'MsgBox(backupdir)
-            End If
-            Log("Extracted " & diar1.Count & " files from the patch")
-            If diar1.Count = 0 Then
-                WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
-                Exit Sub
-            End If
-            WriteDebugInfo(My.Resources.strInstallingPatch)
-            For Each dra In diar1
-                If CancelledFull = True Then Exit Sub
-                'ListBox1.Items.Add(dra)
-                'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
-                If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) = True Then
-                        File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupdir & "\" & dra.ToString))
-                        'MsgBox(("Moving" & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " to " & (backupdir & "\" & dra.ToString)))
-                        'MsgBox(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                    End If
-                End If
-                If backupyesno = MsgBoxResult.No Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) = True Then
-                        DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                    End If
-                End If
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " still exists! File was NOT overwritten!")
-                'End If
-                'End If
-                'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-            Next
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
-            My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-            If backupyesno = MsgBoxResult.No Then
-                FlashWindow(Me.Handle, 1)
-                WriteDebugInfo("Spanish patch " & My.Resources.strInstalledUpdated)
-                Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            End If
-            If backupyesno = MsgBoxResult.Yes Then
-                FlashWindow(Me.Handle, 1)
-                WriteDebugInfo(("Spanish patch " & My.Resources.strInstalledUpdatedBackup & backupdir))
-                Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            End If
-            DeleteFile("ESPatch.rar")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        End Using
     End Sub
 
     Private Sub LoadSidebar()
@@ -5718,26 +5448,24 @@ SelectInstallFolder:
             If predownloadedyesno = MsgBoxResult.No Then
                 WriteDebugInfo(My.Resources.strDownloading & PatchName & "...")
                 Application.DoEvents()
-                Dim net As New Net.WebClient()
-                Dim src As String = net.DownloadString(PatchURL)
-                Dim strDownloadME As String = src
 
+                ' TODO: Switch to a Uri class.
                 ' Get the filename from the downloaded Path
-                Dim Lastfilename As String() = strDownloadME.Split("/"c)
+                Dim Lastfilename As String() = PatchURL.Split("/"c)
                 strVersion = Lastfilename(Lastfilename.Length - 1)
                 strVersion = Path.GetFileNameWithoutExtension(strVersion) ' We're using this so that it's not format-specific.
 
                 Cancelled = False
 
-                If CheckLink(strDownloadME) <> "OK" Then
+                If CheckLink(PatchURL) <> "OK" Then
                     WriteDebugInfoAndFAILED("Failed to contact " & PatchName & " website - Patch install/update canceled!")
                     WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
                     Exit Sub
                 End If
 
-                DLWUA(strDownloadME, PatchFile, True)
+                DLWUA(PatchURL, PatchFile, True)
                 If Cancelled = True Then Exit Sub
-                WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
+                WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & PatchURL & ")"))
             ElseIf predownloadedyesno = MsgBoxResult.Yes Then
                 OpenFileDialog1.Title = msgSelectArchive
                 OpenFileDialog1.FileName = "PSO2 " & PatchName & " RAR file"
