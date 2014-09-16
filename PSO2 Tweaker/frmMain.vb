@@ -237,7 +237,6 @@ Public Class frmMain
                 End If
             End If
 
-
             Log("Attempting to auto-load pso2_bin directory from settings")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -667,17 +666,16 @@ Public Class frmMain
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("AlwaysOnTop")) Then Helper.SetRegKey(Of String)("AlwaysOnTop", "False")
             Me.TopMost = Helper.GetRegKey(Of String)("AlwaysOnTop")
             chkAlwaysOnTop.Checked = Helper.GetRegKey(Of Boolean)("AlwaysOnTop")
-            If File.Exists((Application.StartupPath & "\logfile.txt")) = True Then
-                Dim LogInfo As New FileInfo((Application.StartupPath & "\logfile.txt"))
+            If File.Exists("logfile.txt") = True Then
+                Dim LogInfo As New FileInfo("logfile.txt")
                 If LogInfo.Length > 30720 Then
                     'Dim ClearLog As MsgBoxResult = MsgBox(My.Resources.strYourLogFileisHUGE, MsgBoxStyle.YesNo, "Log file")
                     'If ClearLog = MsgBoxResult.Yes Then
-                    File.WriteAllText((Application.StartupPath & "\logfile.txt"), "")
+                    File.WriteAllText("logfile.txt", "")
                     'End If
                 End If
             End If
 
-            Application.DoEvents()
             Application.DoEvents()
 
             If nodiag = False Then
@@ -689,13 +687,13 @@ Public Class frmMain
                 Log(My.Resources.strIsTheCurrentOS64bit & Environment.Is64BitOperatingSystem)
                 Log(My.Resources.strRunDirectory & Application.StartupPath)
                 Log(My.Resources.strSelectedPSO2win32directory & lblDirectory.Text)
-                Log(My.Resources.strIsUnrarAvailable & File.Exists(Application.StartupPath & "\UnRar.exe"))
+                Log(My.Resources.strIsUnrarAvailable & File.Exists("UnRar.exe"))
                 Dim identity = WindowsIdentity.GetCurrent()
                 Dim principal = New WindowsPrincipal(identity)
                 Dim isElevated As Boolean = principal.IsInRole(WindowsBuiltInRole.Administrator)
                 Log("Run as Administrator: " & isElevated)
                 Log("Folder Read/Write: " & GetFolderAccess(Application.StartupPath))
-                Log("Is 7zip available: " & File.Exists(Application.StartupPath & "\7za.exe"))
+                Log("Is 7zip available: " & File.Exists("7za.exe"))
                 Log("----------------------------------------")
             End If
 
@@ -719,7 +717,7 @@ Public Class frmMain
             wc.timeout = 10000
             wc.Proxy = Nothing
             Dim source As String = String.Empty
-            DeleteFile(Application.StartupPath & "\version.xml")
+            DeleteFile("version.xml")
             'WriteDebugInfo("If startup loads forever, right click the progress bar and hit ""Cancel process"".")
             WriteDebugInfo(My.Resources.strCheckingforupdatesPleasewaitamoment)
             'http://arks-layer.com/aida/tweaker/
@@ -1015,7 +1013,7 @@ DOWNLOADBIN2:
             Dim TimeFormatted As String
             Dim time As DateTime = DateTime.Now
             TimeFormatted = time.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
+            File.AppendAllText("logfile.txt", TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
 
@@ -1027,7 +1025,7 @@ DOWNLOADBIN2:
             Dim TimeFormatted As String
             Dim time As DateTime = DateTime.Now
             TimeFormatted = time.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
+            File.AppendAllText("logfile.txt", TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
 
@@ -1043,7 +1041,7 @@ DOWNLOADBIN2:
             Dim TimeFormatted As String
             Dim time As DateTime = DateTime.Now
             TimeFormatted = time.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [OK!]") & vbCrLf)
+            File.AppendAllText("logfile.txt", TimeFormatted & " " & (AddThisText & " [OK!]") & vbCrLf)
         End If
     End Sub
 
@@ -1059,7 +1057,7 @@ DOWNLOADBIN2:
             Dim TimeFormatted As String
             Dim time As DateTime = DateTime.Now
             TimeFormatted = time.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [WARNING!]") & vbCrLf)
+            File.AppendAllText("logfile.txt", TimeFormatted & " " & (AddThisText & " [WARNING!]") & vbCrLf)
         End If
     End Sub
 
@@ -1077,7 +1075,7 @@ DOWNLOADBIN2:
             Dim TimeFormatted As String
             Dim time As DateTime = DateTime.Now
             TimeFormatted = time.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
+            File.AppendAllText("logfile.txt", TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
             If Helper.GetRegKey(Of String)("Pastebin") = True Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
                 If upload = MsgBoxResult.Yes Then
@@ -1208,13 +1206,13 @@ DOWNLOADBIN2:
     End Sub
 
     Public Sub Log(ByRef Text As String)
-        File.AppendAllText((Application.StartupPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
+        File.AppendAllText("logfile.txt", DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
     End Sub
 
     Public Function PasteBinUpload() As String
         ServicePointManager.Expect100Continue = False
         Dim pr As Integer = 0
-        Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText((Application.StartupPath & "\logfile.txt"))
+        Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText("logfile.txt")
         Dim w As New WebClient()
         w.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
         Dim pd As Byte() = Encoding.ASCII.GetBytes(fi)
@@ -5065,7 +5063,7 @@ SelectInstallFolder:
             WriteDebugInfoSameLine(" Done!")
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
-            myWebClient.DownloadFile(PublickeyUrl, Application.StartupPath & "\publickey.blob")
+            myWebClient.DownloadFile(PublickeyUrl, "publickey.blob")
             If File.Exists(lblDirectory.Text & "\publickey.blob") = True And Application.StartupPath <> lblDirectory.Text Then DeleteFile(lblDirectory.Text & "\publickey.blob")
             If Application.StartupPath <> lblDirectory.Text Then File.Move(Application.StartupPath & "\publickey.blob", lblDirectory.Text & "\publickey.blob")
             WriteDebugInfoSameLine(" Done!")
