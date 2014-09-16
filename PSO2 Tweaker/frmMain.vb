@@ -1267,7 +1267,7 @@ Public Class frmMain
         Dim truefilename As String
 
         Using objWriter As New StreamWriter("ALLOFTHEPREPATCHES.txt")
-            For i As Integer = 1 To 5
+            For i As Integer = 0 To 5
                 objWriter.Write(File.ReadAllText("patchlist" & i & ".txt"))
             Next
             objWriter.WriteLine()
