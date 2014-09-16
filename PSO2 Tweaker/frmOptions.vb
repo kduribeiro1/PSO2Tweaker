@@ -93,8 +93,6 @@ Public Class frmOptions
             LabelX2.Text = My.Resources.strChooseALanguage
             LabelX3.Text = My.Resources.strChooseABackgroundImage
 
-            'Me.BackgroundImage = Nothing
-
             CheckBoxX1.Checked = Helper.GetRegKey(Of Boolean)("Pastebin")
             CheckBoxX2.Checked = Helper.GetRegKey(Of Boolean)("ENPatchAfterInstall")
             CheckBoxX3.Checked = Helper.GetRegKey(Of Boolean)("LargeFilesAfterInstall")

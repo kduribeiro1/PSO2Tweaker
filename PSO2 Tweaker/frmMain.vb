@@ -12,7 +12,6 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
-' TODO: Make sure all the "For Each"s are in order
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Organize this form by order of member type (variable, function, etc)
@@ -957,32 +956,21 @@ Public Class frmMain
         Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
         Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
         Dim client As New WebClient
-        'Dim failednumbers As Integer = 0
-DOWNLOADDLL2:
+
         Try
             client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
         Catch ex As Exception
-            'failednumbers += 1
-            'If failednumbers = 4 Then
             MsgBox("Failed to download translation files! (" & ex.Message & ")")
-            Exit Try
-            'End If
-            'GoTo DOWNLOADDLL2
         End Try
+
         Helper.SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
-        'failednumbers = 0
-        'DLWUA(DLLink2, (pso2launchpath & "\translation.bin"), True)
-DOWNLOADBIN2:
+
         Try
             client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
         Catch ex As Exception
-            'failednumbers += 1
-            'If failednumbers = 4 Then
             MsgBox("Failed to download translation files! (" & ex.Message & ")")
-            Exit Try
-            'End If
-            'GoTo DOWNLOADBIN2
         End Try
+
         ItemDownloadingDone = True
     End Sub
 
@@ -1255,8 +1243,6 @@ DOWNLOADBIN2:
         objWriter.Close()
 
         Dim sr3 = New StreamReader("ALLOFTHETHINGS.txt")
-
-
         Dim sw3 = New StreamWriter("SOMEOFTHETHINGS.txt")
         Dim MyArray As New ArrayList
         Dim strLine As String
@@ -1277,39 +1263,17 @@ DOWNLOADBIN2:
 
     Public Sub MergePrePatches()
 
-        ' TODO: Should probably be using File.Read stuff instead of ReadToEnd
-
         Dim filename As String()
         Dim truefilename As String
-        Dim sr As StreamReader = File.OpenText("patchlist0.txt")
 
-        ' Store it in a string variable for now
-        Dim strTemp As String = sr.ReadToEnd
-        sr.Close()
+        Using objWriter As New StreamWriter("ALLOFTHEPREPATCHES.txt")
+            For i As Integer = 1 To 5
+                objWriter.Write(File.ReadAllText("patchlist" & i & ".txt"))
+            Next
+            objWriter.WriteLine()
+        End Using
 
-        Dim sr2 As StreamReader = File.OpenText("patchlist1.txt")
-        Dim strTemp2 As String = sr2.ReadToEnd
-        sr2.Close()
-
-        Dim sr33 As StreamReader = File.OpenText("patchlist2.txt")
-        Dim strTemp3 As String = sr33.ReadToEnd
-        sr33.Close()
-
-        Dim sr4 As StreamReader = File.OpenText("patchlist3.txt")
-        Dim strTemp4 As String = sr4.ReadToEnd
-        sr4.Close()
-
-        Dim sr5 As StreamReader = File.OpenText("patchlist4.txt")
-        Dim strTemp5 As String = sr5.ReadToEnd
-        sr5.Close()
-
-        Dim sr6 As StreamReader = File.OpenText("patchlist5.txt")
-        Dim strTemp6 As String = sr6.ReadToEnd
-        sr6.Close()
-
-        Dim objWriter As New StreamWriter("ALLOFTHEPREPATCHES.txt")
-        objWriter.WriteLine((strTemp & strTemp2 & strTemp3 & strTemp4 & strTemp5 & strTemp6))
-        objWriter.Close()
+        ' TODO: Needs a bit of a redo
 
         Dim sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
         Dim sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
@@ -1522,37 +1486,17 @@ NEXTFILE1:
     Public Sub CheckForENPatchUpdates()
         Dim UpdateNeeded As Boolean
         Try
-            If Helper.GetRegKey(Of String)("ENPatchVersion") = "Not Installed" Then
-                'Dim InstalledYesNo As MsgBoxResult = MsgBox("Do you have the English patch currently installed?", vbYesNo)
-                'If InstalledYesNo = vbYes Then
-                'Helper.SetRegKey(Of String)("EnPatchVersion", "Installed")
-                'End If
-                'If InstalledYesNo = MsgBoxResult.No Then Exit Sub
-                Exit Sub
-            End If
+            If Helper.GetRegKey(Of String)("ENPatchVersion") = "Not Installed" Then Exit Sub
+
             Application.DoEvents()
             Dim net As MyWebClient = New MyWebClient()
             net.timeout = 10000
-            Dim src As String
-            'If CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") <> "OK" Then
-            'WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
-            'WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
-            'Exit Sub
-            'End If
-            src = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
-            ' Create a match using regular exp<b></b>ressions
-            'http://pso2.arghargh200.net/pso2/patch_2013_04_24.rar
-            'Dim m As Match = Regex.Match(src, "<br /><a href="".*?.rar")
-            ' Spit out the value plucked from the code
-            'txtHTML.Text = m.Value
+
+            Dim src As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
             Dim strDownloadME As String = src
-            'strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
-            'http://dl.dropboxusercontent.com/u/12757141/patch_2013_10_09.rar
             Dim Lastfilename As String() = strDownloadME.Split("/")
             Dim strVersion As String = Lastfilename(Lastfilename.Count - 1)
-            'Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
-            'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
-            'strVersion = strVersion.Replace("http://dl.dropboxusercontent.com/u/12757141/", "")
+
             strVersion = strVersion.Replace(".rar", "")
             Helper.SetRegKey(Of String)("NewENVersion", strVersion)
             If strVersion <> Helper.GetRegKey(Of String)("ENPatchVersion") Then
@@ -1561,8 +1505,6 @@ NEXTFILE1:
                 If UpdateStoryYesNo = vbNo Then UpdateNeeded = False
                 If UpdateNeeded = True Then
                     btnENPatch.RaiseClick()
-                    'Helper.SetRegKey(Of String)("ENPatchVersion", Helper.GetRegKey(Of String)("NewVersionTemp"))
-                    'Helper.SetRegKey(Of String)("NewVersionTemp", "")
                     Exit Sub
                 End If
             End If
@@ -1734,6 +1676,7 @@ NEXTFILE1:
                             If CancelledFull = True Then Exit Sub
                             'Download the missing files:
                             'WHAT THE FUCK IS GOING ON HERE?
+                            ' TODO: Is clone(3)
                             downloaded += 1
                             totaldownloaded += totalsize2
 
@@ -1751,21 +1694,12 @@ NEXTFILE1:
                             End If
 
                             If Cancelled = True Then Exit Sub
-                            'filedownloader.DownloadFile(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
-                            'DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", True)
-                            'Delete the existing file FIRST
+
                             DeleteFile(((lblDirectory.Text & "\_precede\data\win32") & "\" & downloadstring))
                             File.Move(downloadstring, ((lblDirectory.Text & "\_precede\data\win32") & "\" & downloadstring))
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadstring & ".")
-                            'Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
-                            'Remove the line to delete, e.g.
-                            'linesList.Remove(downloadstring)
-
-                            'File.WriteAllLines("resume.txt", linesList.ToArray())
-                            'MsgBox("removed this line - " & downloadstring)
                             Application.DoEvents()
-                            'MsgBox(downloadstring)
                         Next
                         patching = False
                         If missingfiles.Count = 0 Then WriteDebugInfo("Your precede data is up to date!")
@@ -1773,6 +1707,7 @@ NEXTFILE1:
                         Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
                         Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
                         Helper.SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
+                        ' TODO: does this GoTo even do anything, doesn't it just go to what it was about to anyway?
                         GoTo BackToCheckUpdates
                     End If
                 End If
@@ -1823,7 +1758,7 @@ BackToCheckUpdates2:
                 Dim RemoteVersion2 As String = lines2(0)
                 Helper.SetRegKey(Of String)("PSO2RemoteVersion", RemoteVersion2)
             End If
-            'MsgBox("Change version now.")
+
             Dim lines = File.ReadAllLines("version.ver")
             Dim RemoteVersion As String = lines(0)
             If Helper.GetRegKey(Of String)("PSO2RemoteVersion") <> RemoteVersion Then
@@ -2188,6 +2123,7 @@ BackToCheckUpdates2:
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
         ' TODO: Make function use SizeSuffix and whatever else needs doing
+        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
@@ -2237,6 +2173,7 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
+        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
@@ -2246,6 +2183,7 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
+        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
@@ -2387,7 +2325,6 @@ InstallStory:
                     Directory.CreateDirectory(backupdir)
                     WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
                 End If
-                'MsgBox(backupdir)
             End If
             Log("Extracted " & diar1.Count & " files from the patch")
             If diar1.Count = 0 Then
@@ -2397,15 +2334,9 @@ InstallStory:
             WriteDebugInfo(My.Resources.strInstallingPatch)
             For Each dra In diar1
                 If CancelledFull = True Then Exit Sub
-                'ListBox1.Items.Add(dra)
-                'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 If backupyesno = MsgBoxResult.Yes Then
                     If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) = True Then
                         File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupdir & "\" & dra.ToString))
-                        'MsgBox(("Moving" & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " to " & (backupdir & "\" & dra.ToString)))
-                        'MsgBox(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
                     End If
                 End If
                 If backupyesno = MsgBoxResult.No Then
@@ -2414,12 +2345,6 @@ InstallStory:
                     End If
                 End If
                 File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString) & " still exists! File was NOT overwritten!")
-                'End If
-                'End If
-                'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             Next
             'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -2450,30 +2375,9 @@ InstallStory:
             Exit Sub
         End If
         If Downloaded = MsgBoxResult.No Then
-            'Dim DownloadStoryQuestionMark As MsgBoxResult = MsgBox("Would you like the Tweaker to download the story patch for you? If not, you can also use get the torrent link or direct download link by hitting No.", vbYesNo)
-            'If DownloadStoryQuestionMark = vbNo Then
             WriteDebugInfo(My.Resources.strDownloadStoryPatch)
             Exit Sub
-            'End If
-            'If DownloadStoryQuestionMark = vbYes Then
-            'WriteDebugInfo("Downloading story patch...")
-            'Dim net As New Net.WebClient()
-            'Dim src As String
-            'src = net.DownloadString("http://arks-layer.com/storypatchlink/")
-            'Dim strDownloadME As String = src.ToString
-            'strDownloadME = strDownloadME.Replace("<HTML>" & vbCrLf & "<HEAD><meta HTTP-EQUIV=""REFRESH"" content=""0; url=", "")
-            'strDownloadME = strDownloadME.Replace("""></HEAD>" & vbCrLf & "</HTML>", "")
-            'DLWUA(strDownloadME, "StoryPatch.rar", True)
-            'WriteDebugInfoSameLine(My.Resources.strDone)
-            'StoryLocation = Application.StartupPath & "/StoryPatch.rar"
-            'GoTo STORYSTUFF
-            'End If
         End If
-        'Catch ex As Exception
-        'Log(ex.Message)
-        'WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        'Exit Sub
-        'End Try
     End Sub
 
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
@@ -2532,10 +2436,10 @@ DOWNLOADBIN2:
                 BuiltFile += CurrentLine & vbNewLine
             Loop
             objReader.Close()
-            'MsgBox(BuiltFile)
             File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
             WriteDebugInfoSameLine(My.Resources.strDone)
         End If
+
         If chkItemTranslation.Checked = False Then
             WriteDebugInfoAndOK(My.Resources.strDeletingItemCache)
             Dim dir As String
@@ -2545,6 +2449,7 @@ DOWNLOADBIN2:
             Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
             Dim CurrentLine As String = ""
             Dim BuiltFile As String = ""
+
             Do While objReader.Peek() <> -1
 
                 CurrentLine = objReader.ReadLine()
@@ -2553,9 +2458,8 @@ DOWNLOADBIN2:
 
                 BuiltFile += CurrentLine & vbNewLine
             Loop
-            objReader.Close()
 
-            'MsgBox(BuiltFile)
+            objReader.Close()
             File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
         End If
 
@@ -2565,12 +2469,13 @@ DOWNLOADBIN2:
 
     Private Sub ButtonItem5_Click(sender As Object, e As EventArgs) Handles ButtonItem5.Click
         CancelledFull = False
-        'Try
+
         If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
         End If
+
         Dim filedownloader As New Net.WebClient()
         Dim sBuffer As String = Nothing
         Dim filename As String() = Nothing
@@ -2585,43 +2490,52 @@ DOWNLOADBIN2:
         Dim totalfilesize As Long = 0
         Dim testfilesize As String()
         lblStatus.Text = ""
+
         If Directory.Exists(((lblDirectory.Text & "\data\win32") & "\backupPreENPatch")) = True Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             Override = True
             btnRestoreENBackup.RaiseClick()
             Override = False
         End If
+
         If Directory.Exists(((lblDirectory.Text & "\data\win32") & "\backupPreLargeFiles")) = True Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             Override = True
             btnRestoreLargeFilesBackup.RaiseClick()
             Override = False
         End If
+
         If Directory.Exists(((lblDirectory.Text & "\data\win32") & "\backupPreSTORYPatch")) = True Then
             WriteDebugInfo(My.Resources.strStoryBackupFound)
             Override = True
             btnRestoreStoryBackup.RaiseClick()
             Override = False
         End If
+
+        ' Why is the UI being disabled here, is there something I'm missing? -Matthew
         LockGUI()
         WriteDebugInfo(My.Resources.strDownloadingPatchFile1)
+
         Application.DoEvents()
         DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile2)
+
         Application.DoEvents()
         DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile3)
+
         Application.DoEvents()
         DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
+
         Application.DoEvents()
         Dim versionclient As New MyWebClient
         versionclient.timeout = 3000
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-        'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
+
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
         UnlockGUI()
@@ -2638,6 +2552,7 @@ DOWNLOADBIN2:
             WriteDebugInfo(My.Resources.strCheckingforNewContent)
             NumberofChecks = 0
             missingfiles.Clear()
+
             Using oReader As StreamReader = File.OpenText("patchlist.txt")
                 If CancelledFull = True Then Exit Sub
                 While Not (oReader.EndOfStream)
@@ -2653,17 +2568,11 @@ DOWNLOADBIN2:
                             GoTo NextFile1
                         End If
                         If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
-                            'MsgBox((lblDirectory.Text & "\data\win32"))
-                            'MsgBox("\")
-                            'MsgBox(truefilename)
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
                         End If
                         If GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                            'MsgBox((lblDirectory.Text & "\data\win32"))
-                            'MsgBox("\")
-                            'MsgBox(truefilename)
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
@@ -2675,18 +2584,22 @@ NEXTFILE1:
                     Application.DoEvents()
                 End While
             End Using
+
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             Dim totaldownloaded As Long = 0
             patching = True
             DeleteFile("resume.txt")
+
             For Each downloadstring In missingfiles
                 File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
             Next
+
             For Each downloadstring In missingfiles
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
+                ' TODO: Is clone(3)
                 downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
 
@@ -2704,9 +2617,6 @@ NEXTFILE1:
                 End If
 
                 If Cancelled = True Then Exit Sub
-                'filedownloader.DownloadFile(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
-                'DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", True)
-                'Delete the existing file FIRST
                 DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 If VedaUnlocked = True Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadstring & ".")
@@ -2716,10 +2626,9 @@ NEXTFILE1:
                 linesList.Remove(downloadstring)
 
                 File.WriteAllLines("resume.txt", linesList.ToArray())
-                'MsgBox("removed this line - " & downloadstring)
                 Application.DoEvents()
-                'MsgBox(downloadstring)
             Next
+
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New Net.WebClient()
@@ -2733,7 +2642,7 @@ NEXTFILE1:
             Dim versionclient2 As New MyWebClient
             versionclient2.timeout = 3000
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-            'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
+
             If Cancelled = True Then Exit Sub
             Dim DirectoryString2 As String
             DirectoryString2 = (lblDirectory.Text & "\data\win32")
@@ -2741,7 +2650,7 @@ NEXTFILE1:
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
-            'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
+
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
             Dim procs As Process()
@@ -2766,9 +2675,7 @@ NEXTFILE1:
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
-            'Dim NumberofDownloads As Integer = 0
-            'DLPSO2EXE:
-            'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
+
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
             procs = Process.GetProcessesByName("pso2")
             For Each proc As Process In procs
@@ -2776,14 +2683,7 @@ NEXTFILE1:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled = True Then Exit Sub
-            'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
-            ' NumberofDownloads += 1
-            ' WriteDebugInfoAndWarning("It appears PSO2.EXE did not download correctly... Retrying...")
-            ' If NumberofDownloads < 6 Then GoTo DLPSO2EXE
-            ' If NumberofDownloads > 6 Then
-            ' WriteDebugInfoAndFAILED("Failed to download pso2.exe correctly!")
-            ' Exit Sub
-            'End If
+
             If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull = True Then Exit Sub
@@ -2806,6 +2706,7 @@ NEXTFILE1:
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
+
             If Helper.GetRegKey(Of String)("ENPatchAfterInstall") = True Then
                 WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
                 btnENPatch.RaiseClick()
@@ -2828,10 +2729,7 @@ NEXTFILE1:
 CHECKFOROLDFILES:
             ComingFromOldFiles = False
             If CancelledFull = True Then Exit Sub
-            'Const NewFiles As String = "patchlist.txt"
-            'WriteDebugInfoAndOK("Getting ready...")
             MergePatches()
-            'MsgBox("Making the program wait~")
             WriteDebugInfo(My.Resources.strCheckingforAllFiles)
             Using oReader As StreamReader = File.OpenText("SOMEOFTHETHINGS.txt")
                 If CancelledFull = True Then Exit Sub
@@ -2839,12 +2737,7 @@ CHECKFOROLDFILES:
                     If CancelledFull = True Then Exit Sub
                     sBuffer = oReader.ReadLine
                     If String.IsNullOrEmpty(sBuffer) Then GoTo DOWNLOADFILES
-                    'MsgBox(sBuffer.ToString)
                     filename = Regex.Split(sBuffer, ".pat")
-                    'MsgBox(filename(1))
-                    'MsgBox(testfilesize(1))
-                    'MsgBox(totalfilesize.ToString & "before addition")
-                    'MsgBox(totalfilesize.ToString & "after adding " & Convert.ToInt32(testfilesize(1)))
                     truefilename = filename(0).Replace("data/win32/", "")
                     MD5 = Regex.Split(filename(1), vbTab)
                     TrueMD5 = MD5(2)
@@ -2853,23 +2746,18 @@ CHECKFOROLDFILES:
                             PSO2EXEMD5 = TrueMD5
                             GoTo NextFile2
                         End If
+
                         If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
-                            'MsgBox((lblDirectory.Text & "\data\win32"))
-                            'MsgBox("\")
-                            'MsgBox(truefilename)
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & My.Resources.strIsMissing)
                             testfilesize = Regex.Split(filename(1), "	")
                             totalfilesize += Convert.ToInt32(testfilesize(1))
                             missingfiles2.Add(truefilename)
                             GoTo NEXTFILE2
                         End If
+
                         Dim TempMD5 As String = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
+
                         If GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                            'MsgBox((lblDirectory.Text & "\data\win32"))
-                            'MsgBox("\")
-                            'MsgBox((truefilename & "'s hash should not be " & GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) & ". It should be " & TrueMD5))
-                            'If NewFiles.Contains(truefilename) = True Then MsgBox("Both files contain " & truefilename)
-                            'If NewFiles.Contains(truefilename) = False Then
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                             testfilesize = Regex.Split(filename(1), "	")
                             totalfilesize += Convert.ToInt32(testfilesize(1))
@@ -2899,6 +2787,7 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
+                ' TODO: Is clone(3)
                 downloaded2 += 1
                 totaldownloaded += totalsize2
 
@@ -2919,7 +2808,7 @@ DOWNLOADFILES:
                     DeleteFile(downloadstring)
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, False)
                 End If
-                'filedownloader.DownloadFile(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
+
                 If File.Exists(downloadstring) = True Then
                     DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                     File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
@@ -2930,11 +2819,8 @@ DOWNLOADFILES:
                     linesList.Remove(downloadstring)
 
                     File.WriteAllLines("resume.txt", linesList.ToArray())
-                    'MsgBox("removed this line - " & downloadstring)
                     Application.DoEvents()
-                    'MsgBox(downloadstring)
                 Else
-                    'WriteDebugInfoAndFAILED("Couldn't download " & downloadstring)
                     Application.DoEvents()
                 End If
             Next
@@ -2953,11 +2839,11 @@ DOWNLOADFILES:
             Dim versionclient2 As New MyWebClient
             versionclient2.timeout = 3000
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-            'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
+
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
-            'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
+
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
@@ -2972,20 +2858,11 @@ DOWNLOADFILES:
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
             Application.DoEvents()
-            'Dim NumberofDownloads As Integer = 0
-            'DLPSO2EXE:
-            'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
+
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled = True Then Exit Sub
-            'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
-            ' NumberofDownloads += 1
-            ' WriteDebugInfoAndWarning("It appears PSO2.EXE did not download correctly... Retrying...")
-            ' If NumberofDownloads < 6 Then GoTo DLPSO2EXE
-            ' If NumberofDownloads > 6 Then
-            ' WriteDebugInfoAndFAILED("Failed to download pso2.exe correctly!")
-            ' Exit Sub
-            'End If
+
             If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull = True Then Exit Sub
@@ -3004,20 +2881,15 @@ DOWNLOADFILES:
             WriteDebugInfoAndOK(My.Resources.strallDone)
             Exit Sub
         End If
-        'Catch ex As Exception
-        ' Log(ex.Message)
-        ' If ex.Message <> "Arithmetic operation resulted in an overflow." Then
-        ' WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        ' Exit Sub
-        ' End If
-        'End Try
     End Sub
 
     Private Sub DeleteFile(path As String)
         Try
             File.Delete(path)
-        Catch
+        Catch ex As Exception
             ' TODO: Aida put whatever you see fit here plz
+            Log(ex.Message)
+            WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -3432,23 +3304,19 @@ DOWNLOADFILES:
         ' ping gs016.pso2gs.net
         ' ping www.google.com
         ' network speed test
-        'Me.Label2.Text = testfile_Size & " MB"
         WriteDebugInfo(My.Resources.strCheckingConnection)
         WriteDebugInfo(Ping("download.pso2.jp"))
         WriteDebugInfoSameLine("/" & Ping("download.pso2.jp"))
         WriteDebugInfoSameLine("/" & Ping("download.pso2.jp"))
         WriteDebugInfoSameLine("/" & Ping("download.pso2.jp"))
         WriteDebugInfo(My.Resources.strIfTheAboveNumbers)
-        'WriteDebugInfo("Checking connection to Ship 02 Server...")
-        'WriteDebugInfo(Ping("gs016.pso2gs.net"))
         WriteDebugInfo(My.Resources.strTestingDownloadSpeeds)
         WriteDebugInfo(My.Resources.strDownloadingTestFile & testfile & "...")
+
         Me.timer_start = 0
-        'Me.Label3.Text = Nothing
-        'Me.Label4.Text = Nothing
         Me.WebBrowser1.Navigate(testfile)
         Me.seconds.Start()
-        'Me.Label1.Text = testfile
+
         Dim query As Management.ManagementObjectSearcher
         Dim Qc As Management.ManagementObjectCollection
         Dim Oq As Management.ObjectQuery
@@ -3456,6 +3324,7 @@ DOWNLOADFILES:
         Dim Co As Management.ConnectionOptions
         Dim Mo As Management.ManagementObject
         Dim signalStrength As Double
+
         Try
             Co = New Management.ConnectionOptions
             Ms = New Management.ManagementScope("root\wmi")
@@ -3465,14 +3334,13 @@ DOWNLOADFILES:
             signalStrength = 0
 
             For Each Mo In query.Get
-
                 signalStrength = Convert.ToDouble(Mo("Ndis80211ReceivedSignalStrength"))
-
             Next
         Catch exp As Exception
             ' Indicate no signal
             signalStrength = -1
         End Try
+
         If signalStrength <> -1 Then
             WriteDebugInfo("Current Signal Strength is: " & signalStrength.ToString)
             WriteDebugInfo("Any strength below 60 may be an issue!")
@@ -4144,7 +4012,9 @@ DOWNLOADFILES:
             WriteDebugInfo(My.Resources.strCannotFindResume)
             Exit Sub
         End If
+
         CancelledFull = False
+
         Try
             Dim sBuffer As String = Nothing
             Dim missingfiles As New List(Of String)
@@ -4168,6 +4038,7 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?v3
+                ' TODO: Is clone(3)
                 downloaded += 1
                 totaldownloaded = totaldownloaded + totalsize2
 
@@ -4194,11 +4065,8 @@ DOWNLOADFILES:
 
                 'Remove the line to delete, e.g.
                 linesList.Remove(downloadstring)
-
                 File.WriteAllLines("resume.txt", linesList.ToArray())
-                'MsgBox("removed this line - " & downloadstring)
                 Application.DoEvents()
-                'MsgBox(downloadstring)
             Next
             DeleteFile("resume.txt")
             patching = False
@@ -4252,19 +4120,14 @@ DOWNLOADFILES:
             'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
             procs = Process.GetProcessesByName("pso2")
+
             For Each proc As Process In procs
                 If proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
+
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled = True Then Exit Sub
-            'If PSO2EXEMD5 <> GetMD5((DirectoryString & "pso2.exe")) Then
-            ' NumberofDownloads += 1
-            ' WriteDebugInfoAndWarning("It appears PSO2.EXE did not download correctly... Retrying...")
-            ' If NumberofDownloads < 6 Then GoTo DLPSO2EXE
-            ' If NumberofDownloads > 6 Then
-            ' WriteDebugInfoAndFAILED("Failed to download pso2.exe correctly!")
-            ' Exit Sub
-            'End If
+
             If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull = True Then Exit Sub
@@ -4534,13 +4397,8 @@ SelectInstallFolder:
             Dim strDownloadME As String = txtHTML.Text
             Dim Lastfilename As String() = strDownloadME.Split("/")
             strVersion = Lastfilename(Lastfilename.Count - 1)
-            'strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
-            ''http://dl.dropboxusercontent.com/u/12757141/patch_2013_10_09.rar
-            'strVersion = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
-            'strVersion = strVersion.Replace("http://dl.dropboxusercontent.com/u/12757141/", "")
-            'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
             strVersion = strVersion.Replace(".rar", "")
-            'MsgBox(strVersion)
+
             Cancelled = False
             If CheckLink(strDownloadME) <> "OK" Then
                 WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
@@ -4635,24 +4493,19 @@ SelectInstallFolder:
                 Exit Sub
             End If
             src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
+
             ' Create a match using regular exp<b></b>ressions
             'http://pso2.arghargh200.net/pso2/patch_2013_04_24.rar
             Dim m As Match = Regex.Match(src, "<br /><a href="".*?.rar")
+
             ' Spit out the value plucked from the code
             txtHTML.Text = m.Value
             Dim strDownloadME As String = txtHTML.Text
             strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
             Dim Lastfilename As String() = strDownloadME.Split("/")
             strVersion = Lastfilename(Lastfilename.Count - 1)
-            'http://dl.dropboxusercontent.com/u/12757141/patch_2013_10_09.rar
-            'strVersion = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
-            'strVersion = strVersion.Replace("http://dl.dropboxusercontent.com/u/12757141/", "")
-            'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
             strVersion = strVersion.Replace(".rar", "")
-            'If strVersion = Helper.GetRegKey(Of String)("EnPatchVersion") Then
-            'Dim InstallYesNo As MsgBoxResult = MsgBox("It seems like you have the latest version already - Would you still like to download and install the EN patch?")
-            'If InstallYesNo = vbNo Then Exit Sub
-            'End If
+
             Cancelled = False
             If CheckLink(strDownloadME) <> "OK" Then
                 WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
@@ -4661,8 +4514,7 @@ SelectInstallFolder:
             End If
             DLWUA(strDownloadME, "ENPatch.rar", True)
             If Cancelled = True Then Exit Sub
-            'My.Computer.Network.DownloadFile(strDownloadME, "ENPatch.rar", vbNullString, vbNullString, True, 5000, True)
-            'net.DownloadFile(strDownloadME, "ENPatch.rar")
+
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
             Application.DoEvents()
             If Directory.Exists("TEMPPATCHAIDAFOOL") = True Then
@@ -4869,20 +4721,24 @@ SelectInstallFolder:
     End Sub
 
     Private Sub Inject()
-        On Error GoTo 1 ' If error occurs, app will close without any error messages
-        Dim TargetProcess As Process() = Process.GetProcessesByName("pso2")
-        TargetProcessHandle = OpenProcess(PROCESS_CREATE_THREAD Or PROCESS_VM_OPERATION Or PROCESS_VM_WRITE, False, TargetProcess(0).Id)
-        pszLibFileRemote = OFDSweetFX.FileName()
-        pfnStartAddr = GetProcAddress(GetModuleHandle("Kernel32"), "LoadLibraryA")
-        TargetBufferSize = 1 + Len(pszLibFileRemote)
-        Dim Rtn As Integer
-        Dim LoadLibParamAdr As Integer
-        LoadLibParamAdr = VirtualAllocEx(TargetProcessHandle, 0, TargetBufferSize, MEM_COMMIT, PAGE_READWRITE)
-        Rtn = WriteProcessMemory(TargetProcessHandle, LoadLibParamAdr, pszLibFileRemote, TargetBufferSize, 0)
-        CreateRemoteThread(TargetProcessHandle, 0, 0, pfnStartAddr, LoadLibParamAdr, 0, 0)
-        CloseHandle(TargetProcessHandle)
-        MsgBox("Injected!")
-1:      Me.Show()
+        Try
+            Dim TargetProcess As Process() = Process.GetProcessesByName("pso2")
+            TargetProcessHandle = OpenProcess(PROCESS_CREATE_THREAD Or PROCESS_VM_OPERATION Or PROCESS_VM_WRITE, False, TargetProcess(0).Id)
+            pszLibFileRemote = OFDSweetFX.FileName()
+            pfnStartAddr = GetProcAddress(GetModuleHandle("Kernel32"), "LoadLibraryA")
+            TargetBufferSize = 1 + Len(pszLibFileRemote)
+            Dim Rtn As Integer
+            Dim LoadLibParamAdr As Integer
+            LoadLibParamAdr = VirtualAllocEx(TargetProcessHandle, 0, TargetBufferSize, MEM_COMMIT, PAGE_READWRITE)
+            Rtn = WriteProcessMemory(TargetProcessHandle, LoadLibParamAdr, pszLibFileRemote, TargetBufferSize, 0)
+            CreateRemoteThread(TargetProcessHandle, 0, 0, pfnStartAddr, LoadLibParamAdr, 0, 0)
+            CloseHandle(TargetProcessHandle)
+            MsgBox("Injected!")
+        Catch
+
+        End Try
+
+        Me.Show()
     End Sub
 
     Private Sub btnSelectSweetFX_Click(sender As Object, e As EventArgs) Handles btnSelectSweetFX.Click

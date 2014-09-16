@@ -35,6 +35,7 @@ Public Class frmPSO2Options
         Public dmDisplayFlags As Integer
         Public dmDisplayFrequency As Integer
     End Structure
+
     Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If File.Exists(usersettingsfile) = False Then
@@ -134,6 +135,7 @@ Public Class frmPSO2Options
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
+
     Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
         Try
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
@@ -164,6 +166,7 @@ Public Class frmPSO2Options
         ' TODO: Actually fix the function
         Return ""
     End Function
+
     Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
         Try
             TextBoxX1.Text = ""
@@ -207,6 +210,7 @@ Public Class frmPSO2Options
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
+
     Public Sub SaveResolutionHeight(ByRef Value As String)
         Try
             TextBoxX1.Text = ""
@@ -223,10 +227,10 @@ Public Class frmPSO2Options
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Height =") Then
                             i = i + x
-                            GoTo CONTINUEHEIGHT
+                            Exit For
                         End If
                     Next x
-CONTINUEHEIGHT:
+
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
@@ -257,6 +261,7 @@ CONTINUEHEIGHT:
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
+
     Public Sub SaveResolutionWidth(ByRef Value As String)
         Try
             TextBoxX1.Text = ""
@@ -269,37 +274,32 @@ CONTINUEHEIGHT:
                 If i + 1 = TextLines.Count Then
                     Exit Sub
                 End If
+
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Width =") Then
                             i = i + x
-                            GoTo CONTINUEWIDTH
+                            Exit For
                         End If
                     Next x
-CONTINUEWIDTH:
+
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
-                    'MsgBox(strReturn(0)) 'Filetype
-                    'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
                     FinalString = FinalString.Replace(",", "")
-                    'MsgBox(TextLines(i).ToString)
-                    'MsgBox(FinalString)
-                    'MsgBox(Value)
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
+
                     For j = 0 To TextLines.Count
                         If j + 1 = TextLines.Count Then
                             TextBoxX1.AppendText("}")
-                            'MsgBox(usersettingsfile)
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
                         TextBoxX1.AppendText(TextLines(j) & vbCrLf)
-                        'Return FinalString
                     Next j
-                    'MsgBox(My.Resources.strDone)
+
                 End If
             Next i
         Catch ex As Exception
@@ -307,6 +307,7 @@ CONTINUEWIDTH:
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
+
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
         Try
             frmMain.Log("Saving Draw Level...")
