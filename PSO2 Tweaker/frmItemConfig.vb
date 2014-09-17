@@ -9,11 +9,9 @@ Imports System.Security.AccessControl
 Imports System.Security.Principal
 Imports System.Security.Permissions
 Imports System.Security
+
 Public Class frmItemConfig
-    Dim Detecting As String
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        'MsgBox("This feature was originally going to be used to enable logging - But since the DLL is working again, this won't do anything yet. In the future (within the next 1 - 2 days), you'll be able to configure your Item Translation keys here. Thank you for your patience!")
-        'Exit Sub
         Dim DirectoryString As String
         Dim pso2launchpath As String
         DirectoryString = frmMain.lblDirectory.Text
@@ -26,11 +24,13 @@ Public Class frmItemConfig
         Dim SplitKey As String() = UselessString.Split("(")
         lblToggle.Text = "Toggle item patch ON/OFF: Control + " & SplitKey(0).Replace("   (", "")
         NumberKey = SplitKey(1).Replace(")", "")
+
         If chkLogging.Checked = True Then
             data = {"Delay:" & delay, "TranslationPath:translation.bin", "TranslationCachePath:", "LogPath:itemlog.txt", "LogLines:0", "KeyToggle:17", "KeyToggleCancel:16", "KeyDisable:" & NumberKey, "KeyDisableTree:114", "KeyDisableToggle:113"}
         Else
             data = {"Delay:" & delay, "TranslationPath:translation.bin", "TranslationCachePath:", "LogPath:", "LogLines:500", "KeyToggle:17", "KeyToggleCancel:16", "KeyDisable:" & NumberKey, "KeyDisableTree:114", "KeyDisableToggle:113"}
         End If
+
         File.WriteAllLines(pso2launchpath & "\translation.cfg", data)
         Me.Hide()
     End Sub
@@ -49,9 +49,7 @@ Public Class frmItemConfig
     End Sub
 
     Private Sub cmbToggleKey_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbToggleKey.SelectedIndexChanged
-        'F12   (123)
-        'Numpad Add   (107)
-        'Semi-Colon   (186)
+        ' What's this thing doing with NumberKey at the end? -Matthew
         Dim NumberKey As String
         Dim UselessString As String = cmbToggleKey.SelectedItem
         Dim SplitKey As String() = UselessString.Split("(")

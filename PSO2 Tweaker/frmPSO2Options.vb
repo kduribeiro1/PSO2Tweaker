@@ -149,13 +149,9 @@ Public Class frmPSO2Options
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
-                    'MsgBox(strReturn(0)) 'Filetype
-                    'MsgBox(strReturn(1)) ' "png",
-                    'MsgBox(strReturn(2)) ' 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
                     FinalString = FinalString.Replace(",", "")
                     FinalString = FinalString.Replace(" ", "")
-                    'MsgBox(FinalString)
                     Return FinalString
                 End If
             Next i
@@ -234,26 +230,18 @@ Public Class frmPSO2Options
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
-                    'MsgBox(strReturn(0)) 'Filetype
-                    'MsgBox(Value) ' "png", 
                     Dim FinalString As String = strReturn(1).Replace("""", "")
                     FinalString = FinalString.Replace(",", "")
-                    'MsgBox(TextLines(i).ToString)
-                    'MsgBox(FinalString)
-                    'MsgBox(Value)
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
                     For j = 0 To TextLines.Count
                         If j + 1 = TextLines.Count Then
                             TextBoxX1.AppendText("}")
-                            'MsgBox(usersettingsfile)
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
                         TextBoxX1.AppendText(TextLines(j) & vbCrLf)
-                        'Return FinalString
                     Next j
-                    'MsgBox(My.Resources.strDone)
                 End If
             Next i
         Catch ex As Exception
@@ -312,7 +300,6 @@ Public Class frmPSO2Options
         Try
             frmMain.Log("Saving Draw Level...")
             SaveINISetting("DrawLevel", Slider1.Value.ToString)
-            'MsgBox(ComboBoxEx1.SelectedIndex)
             frmMain.Log("Saving Texture Resolution...")
             SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex)
             frmMain.Log("Saving Interface Size...")
@@ -323,28 +310,30 @@ Public Class frmPSO2Options
             frmMain.Log("Saving Movie Play...")
             If ComboBoxEx3.SelectedIndex = 0 Then SaveINISetting("MoviePlay", "true")
             If ComboBoxEx3.SelectedIndex = 1 Then SaveINISetting("MoviePlay", "false")
+
             frmMain.Log("Saving Window Mode (Windowed)...")
             If ComboBoxEx4.SelectedIndex = 0 Then
                 SaveINISetting("FullScreen", "false")
                 SaveINISetting("VirtualFullScreen", "false")
-                'MsgBox("Windowed!")
             End If
+
             frmMain.Log("Saving Window Mode (Fullscreen)...")
             If ComboBoxEx4.SelectedIndex = 1 Then
                 SaveINISetting("FullScreen", "true")
                 SaveINISetting("VirtualFullScreen", "false")
-                'MsgBox("Fullscreen!")
             End If
+
             frmMain.Log("Saving Window Mode (Virtual Fullscreen)...")
             If ComboBoxEx4.SelectedIndex = 2 Then
                 SaveINISetting("FullScreen", "false")
                 SaveINISetting("VirtualFullScreen", "true")
-                'MsgBox("Virtual Fullscreen!")
             End If
+
             If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) = False Then
                 MsgBox("Please select a supported resolution!")
                 Exit Sub
             End If
+
             frmMain.Log("Saving Resolution...")
             If ComboBoxEx5.SelectedText <> "x" Then
                 Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString
@@ -352,13 +341,14 @@ Public Class frmPSO2Options
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If
-            'MsgBox("Width should be " & RealResolution(0) & " and Height should be " & RealResolution(1))
+
             Dim FPS As String = ComboBoxEx6.SelectedItem.ToString
             FPS = FPS.Replace(" FPS", "")
             FPS = FPS.Replace("Unlimited", "0")
             frmMain.Log("Saving FPS...")
             SaveINISetting("FrameKeep", FPS)
             frmMain.Log("Disabling Interface...")
+
             If CheckBoxX1.Checked = True Then
                 If ReadINISetting("X") <> "99999" Then
                     If ReadINISetting("Y") <> "99999" Then
@@ -369,6 +359,7 @@ Public Class frmPSO2Options
                     End If
                 End If
             End If
+
             frmMain.Log("Enabling Interface...")
             If CheckBoxX1.Checked = False Then
                 If ReadINISetting("X") = "99999" Then
@@ -378,14 +369,12 @@ Public Class frmPSO2Options
                     End If
                 End If
             End If
+
             MsgBox("Settings saved!")
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
-    End Sub
-
-    Private Sub TabControlPanel1_Click(sender As Object, e As EventArgs) Handles TabControlPanel1.Click
     End Sub
 
     Private Sub ComboBoxEx4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx4.SelectedIndexChanged
