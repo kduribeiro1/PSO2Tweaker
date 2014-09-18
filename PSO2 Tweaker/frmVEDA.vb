@@ -1,36 +1,6 @@
 ﻿Imports System.IO
 
 Public Class frmVEDA
-
-    ' TODO: why are there two GetMD5 functions?
-    Public Function GetMD5(ByVal fichier As String) As String
-        If IO.File.Exists(fichier) Then
-            Dim st As FileStream = Nothing
-            Try
-                Dim check As New System.Security.Cryptography.MD5CryptoServiceProvider
-                st = File.Open(fichier, FileMode.Open, FileAccess.Read)
-                Dim somme As Byte() = check.ComputeHash(st)
-                Dim ret As String = ""
-                For Each a As Byte In somme
-                    If (a < 16) Then
-                        ret &= "0" & a.ToString("X")
-                    Else
-                        ret &= a.ToString("X")
-                    End If
-                Next
-                Return ret
-            Catch ex As Exception
-                Exit Try
-            Finally
-                If st IsNot Nothing Then st.Close()
-            End Try
-        Else
-            Return ""
-        End If
-
-        Return ""
-    End Function
-
     Private Sub WriteDebugInfo(ByVal AddThisText As String)
         rtbStatus.Text = rtbStatus.Text & vbCrLf & AddThisText
         Log(AddThisText)
@@ -158,7 +128,7 @@ Public Class frmVEDA
         OpenFileDialog1.FileName = "File"
         OpenFileDialog1.ShowDialog()
         Dim StoryLocation As String = OpenFileDialog1.FileName.ToString()
-        WriteDebugInfo("The MD5 of that file is: " & GetMD5(StoryLocation))
+        WriteDebugInfo("The MD5 of that file is: " & Helper.GetMD5(StoryLocation))
     End Sub
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
@@ -269,7 +239,7 @@ Public Class frmVEDA
 
         'list the names of all files in the specified directory
         For Each dra In diar1
-            File.AppendAllText(DirectoryString & " \Story MD5HashList.txt", (dra.ToString & "," & GetMD5(DirectoryString & " \" & dra.ToString) & vbCrLf))
+            File.AppendAllText(DirectoryString & " \Story MD5HashList.txt", (dra.ToString & "," & Helper.GetMD5(DirectoryString & " \" & dra.ToString) & vbCrLf))
         Next
         WriteDebugInfo("Done.")
         Process.Start("explorer.exe " & DirectoryString)

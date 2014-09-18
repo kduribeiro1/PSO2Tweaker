@@ -60,13 +60,7 @@ Public Class frmMain
 
 #Region "External Functions"
 
-    Private Declare Function FindWindowByCaption Lib "user32" (ByVal zero As IntPtr, ByVal lpWindowName As String) As IntPtr
-
     Private Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-
-    Private Declare Function ReadProcessMemory Lib "kernel32" (ByVal hProcess As Integer, ByVal lpBaseAddress As Integer, ByVal lpBuffer As String, ByVal nSize As Integer, ByRef lpNumberOfBytesWritten As Integer) As Integer
-
-    Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal lpLibFileName As String) As Integer
 
     Private Declare Function VirtualAllocEx Lib "kernel32" (ByVal hProcess As Integer, ByVal lpAddress As Integer, ByVal dwSize As Integer, ByVal flAllocationType As Integer, ByVal flProtect As Integer) As Integer
 
@@ -770,19 +764,19 @@ Public Class frmMain
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
             End If
 
-            If GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
+            If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
                 WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
             End If
 
-            If GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
+            If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
                 WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
             End If
 
-            If GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
+            If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
                 WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
@@ -794,19 +788,19 @@ Public Class frmMain
                 DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
             End If
 
-            If GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
+            If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
                 WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
             End If
 
-            If GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
+            If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
                 WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
             End If
 
-            If GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
+            If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
                 WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
@@ -952,7 +946,7 @@ Public Class frmMain
             MsgBox("Failed to download translation files! (" & ex.Message & ")")
         End Try
 
-        Helper.SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
+        Helper.SetRegKey(Of String)("DLLMD5", Helper.GetMD5(pso2launchpath & "\translator.dll"))
 
         Try
             client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
@@ -1142,36 +1136,6 @@ Public Class frmMain
         End While
 
         Return True
-    End Function
-
-    Public Function GetMD5(ByVal fichier As String) As String
-        ' TODO: Should redo to be faster, with hex table and char array etc
-
-        If File.Exists(fichier) Then
-            Dim st As FileStream = Nothing
-            Try
-                Dim check As New System.Security.Cryptography.MD5CryptoServiceProvider
-                st = File.Open(fichier, FileMode.Open, FileAccess.Read)
-                Dim somme As Byte() = check.ComputeHash(st)
-                Dim ret As String = ""
-                For Each a As Byte In somme
-                    If (a < 16) Then
-                        ret &= "0" & a.ToString("X")
-                    Else
-                        ret &= a.ToString("X")
-                    End If
-                Next
-                Return ret
-            Catch ex As Exception
-                Exit Try
-            Finally
-                If st IsNot Nothing Then st.Close()
-            End Try
-        Else
-            Return ""
-        End If
-
-        Return ""
     End Function
 
     Private Sub LockGUI()
@@ -1393,8 +1357,8 @@ Public Class frmMain
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
                         End If
-                        If GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                            'MsgBox("GetMD5 gave me: " & GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) & " and the MD5 it should match is " & TrueMD5)
+                        If Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
+                            'MsgBox("Helper.GetMD5 gave me: " & Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) & " and the MD5 it should match is " & TrueMD5)
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
                         End If
@@ -1642,7 +1606,7 @@ StartPrePatch:
                                         missingfiles.Add(truefilename)
                                         GoTo NEXTFILE1
                                     End If
-                                    If GetMD5(((lblDirectory.Text & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
+                                    If Helper.GetMD5(((lblDirectory.Text & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
 
                                         If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                                         missingfiles.Add(truefilename)
@@ -1985,7 +1949,7 @@ BackToCheckUpdates2:
                 End Try
                 'Log("Delete the check")
                 DeleteFile("working.txt")
-                If GetMD5(pso2launchpath & "\translator.dll") <> Helper.GetRegKey(Of String)("DLLMD5") Then
+                If Helper.GetMD5(pso2launchpath & "\translator.dll") <> Helper.GetRegKey(Of String)("DLLMD5") Then
                     MsgBox(My.Resources.strTranslationFilesDontMatch)
                     Exit Sub
                 End If
@@ -2384,7 +2348,7 @@ DOWNLOADDLL2:
                 End If
                 GoTo DOWNLOADDLL2
             End Try
-            Helper.SetRegKey(Of String)("DLLMD5", GetMD5(pso2launchpath & "\translator.dll"))
+            Helper.SetRegKey(Of String)("DLLMD5", Helper.GetMD5(pso2launchpath & "\translator.dll"))
             failednumbers = 0
             'DLWUA(DLLink2, (pso2launchpath & "\translation.bin"), True)
 DOWNLOADBIN2:
@@ -2548,7 +2512,7 @@ DOWNLOADBIN2:
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
                         End If
-                        If GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
+                        If Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
@@ -2668,7 +2632,7 @@ NEXTFILE1:
             Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
             ' TODO: Is clone(4)
-            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
             Dim lines2 = File.ReadAllLines("version.ver")
@@ -2730,9 +2694,9 @@ NEXTFILE1:
                             GoTo NEXTFILE2
                         End If
 
-                        Dim TempMD5 As String = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
+                        Dim TempMD5 As String = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
 
-                        If GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
+                        If Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
                             If VedaUnlocked = True Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                             testfilesize = Regex.Split(filename(1), "	")
                             totalfilesize += Convert.ToInt32(testfilesize(1))
@@ -2846,7 +2810,7 @@ DOWNLOADFILES:
             Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
             Dim lines3 = File.ReadAllLines("version.ver")
@@ -3799,8 +3763,8 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
+                'OldFileMD5 = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                'NewFileMD5 = Helper.GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'DeleteFile(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'Download JP file
                 lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
@@ -3811,7 +3775,7 @@ DOWNLOADFILES:
                 DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
+                'If OldFileMD5 = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
                 'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & downloadstring) & " still exists! File was NOT overwritten!")
                 'End If
                 'End If
@@ -3865,8 +3829,8 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
+                'OldFileMD5 = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                'NewFileMD5 = Helper.GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'DeleteFile(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'Download JP file
                 lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
@@ -3877,7 +3841,7 @@ DOWNLOADFILES:
                 DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
+                'If OldFileMD5 = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
                 'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & downloadstring) & " still exists! File was NOT overwritten!")
                 'End If
                 'End If
@@ -3931,8 +3895,8 @@ DOWNLOADFILES:
                 If CancelledFull = True Then Exit Sub
                 'ListBox1.Items.Add(dra)
                 'MsgBox(dra.ToString)
-                'OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                'NewFileMD5 = GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
+                'OldFileMD5 = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                'NewFileMD5 = Helper.GetMD5(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'DeleteFile(("TEMPPATCHAIDAFOOL\" & dra.ToString))
                 'Download JP file
                 lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
@@ -3943,7 +3907,7 @@ DOWNLOADFILES:
                 DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 'If OldFileMD5 <> NewFileMD5 Then
-                'If OldFileMD5 = GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
+                'If OldFileMD5 = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & downloadstring)) Then
                 'WriteDebugInfoAndFAILED("Old file " & ((lblDirectory.Text & "\data\win32") & "\" & downloadstring) & " still exists! File was NOT overwritten!")
                 'End If
                 'End If
@@ -4109,7 +4073,7 @@ DOWNLOADFILES:
             DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", True)
             WriteDebugInfoSameLine(My.Resources.strDone)
             ' TODO: Is clone(4)
-            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", GetMD5("patchlist.txt"))
+            Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
             Dim lines2 = File.ReadAllLines("version.ver")
@@ -4977,7 +4941,7 @@ SelectInstallFolder:
             For Each dra In diar1
                 Filename = dra.Name
                 filesize = dra.Length
-                File.AppendAllText("old_patchlist.txt", "data/win32/" & Filename & ".pat" & vbTab & filesize & vbTab & GetMD5(lblDirectory.Text & "\data\win32\" & Filename) & vbNewLine)
+                File.AppendAllText("old_patchlist.txt", "data/win32/" & Filename & ".pat" & vbTab & filesize & vbTab & Helper.GetMD5(lblDirectory.Text & "\data\win32\" & Filename) & vbNewLine)
                 count += 1
                 lblStatus.Text = "Building first time list of win32 files (" & count & "/" & CStr(totalfiles.Count) & ")"
                 Application.DoEvents()
