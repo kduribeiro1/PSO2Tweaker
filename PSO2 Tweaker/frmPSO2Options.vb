@@ -349,7 +349,7 @@ Public Class frmPSO2Options
             SaveINISetting("FrameKeep", FPS)
             frmMain.Log("Disabling Interface...")
 
-            If CheckBoxX1.Checked = True Then
+            If CheckBoxX1.Checked Then
                 If ReadINISetting("X") <> "99999" Then
                     If ReadINISetting("Y") <> "99999" Then
                         Helper.SetRegKey(Of String)("OldX", ReadINISetting("X"))
