@@ -1,6 +1,6 @@
-﻿Imports System.Globalization
+﻿Imports Microsoft.Win32
 Imports System.Collections.Generic
-Imports Microsoft.Win32
+Imports System.Globalization
 Imports System.IO
 
 Public Class Helper
@@ -9,6 +9,7 @@ Public Class Helper
     Private Shared RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
     Private Shared MD5Provider As New System.Security.Cryptography.MD5CryptoServiceProvider
+
     Public Shared DefaltCultureInfo As CultureInfo = New System.Globalization.CultureInfo("en")
 
     Public Shared Function GetMD5(ByVal path As String) As String
@@ -18,15 +19,16 @@ Public Class Helper
                 Return String.Join("", HexTable(hash(0)), HexTable(hash(1)), HexTable(hash(2)), HexTable(hash(3)), HexTable(hash(4)), HexTable(hash(5)), HexTable(hash(6)), HexTable(hash(7)), HexTable(hash(8)), HexTable(hash(9)), HexTable(hash(10)), HexTable(hash(11)), HexTable(hash(12)), HexTable(hash(13)), HexTable(hash(14)), HexTable(hash(15)))
             End Using
         Catch
-            Return ""
         End Try
+
+        Return ""
     End Function
 
     Public Shared Function SizeSuffix(ByVal value As Long) As String
         If value < 0 Then Return "-" & SizeSuffix(-value)
-        If value = 0 Then Return "0.0 bytes"
+        If value = 0 Then Return "0 bytes"
 
-        Dim pow As Long = 1
+        Dim pow As ULong = 1
         Dim index As Integer = 0
 
         While pow <= value
@@ -51,7 +53,7 @@ Public Class Helper
     End Function
 
     Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
-        RegistryCache(Key) = Value
         RegistrySubKey.SetValue(Key, Value)
+        RegistryCache(Key) = Value
     End Sub
 End Class

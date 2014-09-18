@@ -109,31 +109,31 @@ Public Class frmOptions
 
             Select Case CMBStyle.Text
                 Case "Blue"
-                    StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Silver"
-                    StyleManager1.ManagerStyle = eStyle.Office2007Silver
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Black"
-                    StyleManager1.ManagerStyle = eStyle.Office2007Black
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Vista Glass"
-                    StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "2010 Silver"
-                    StyleManager1.ManagerStyle = eStyle.Office2010Silver
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Windows 7 Blue"
-                    StyleManager1.ManagerStyle = eStyle.Windows7Blue
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case Else
-                    StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                     Helper.SetRegKey(Of String)("Style", "Blue")
             End Select
         End If

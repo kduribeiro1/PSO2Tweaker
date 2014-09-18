@@ -473,10 +473,12 @@ Public Class frmMain
                 Dim UIDSTRING As String = client.DownloadString("http://arks-layer.com/docs/client.php")
                 Helper.SetRegKey(Of String)("UID", UIDSTRING)
             End If
-            If Helper.GetRegKey(Of String)("Locale") <> "" Then
-                Dim Locale As String = Helper.GetRegKey(Of String)("Locale")
-                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(Locale)
-                Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(Locale)
+
+            Dim locale = Helper.GetRegKey(Of String)("Locale")
+
+            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Locale")) Then
+                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(locale)
+                Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
             End If
 
             Me.BackgroundImage = Nothing
@@ -540,32 +542,32 @@ Public Class frmMain
             If Not String.IsNullOrEmpty(style) Then
                 Select Case style
                     Case "Blue"
-                        StyleManager1.ManagerStyle = eStyle.Office2007Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
 
                     Case "Silver"
-                        StyleManager1.ManagerStyle = eStyle.Office2007Silver
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Silver
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
 
                     Case "Black"
-                        StyleManager1.ManagerStyle = eStyle.Office2007Black
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Black
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
 
                     Case "Vista Glass"
-                        StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
 
                     Case "2010 Silver"
-                        StyleManager1.ManagerStyle = eStyle.Office2010Silver
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2010Silver
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
 
                     Case "Windows 7 Blue"
-                        StyleManager1.ManagerStyle = eStyle.Windows7Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Windows7Blue
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
 
                     Case Else
-                        StyleManager1.ManagerStyle = eStyle.Office2007Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                 End Select
             End If
 
@@ -1472,34 +1474,16 @@ NEXTFILE1:
         Dim UpdateNeeded As Boolean
         Try
             If Helper.GetRegKey(Of String)("LargeFilesVersion") = "Not Installed" Then
-                'Dim InstalledYesNo As MsgBoxResult = MsgBox("Do you have the English patch currently installed?", vbYesNo)
-                'If InstalledYesNo = vbYes Then
-                'Helper.SetRegKey(Of String)("EnPatchVersion", "Installed")
-                'End If
-                'If InstalledYesNo = MsgBoxResult.No Then Exit Sub
                 Exit Sub
             End If
             Application.DoEvents()
             Dim net As MyWebClient = New MyWebClient()
             net.timeout = 10000
             Dim src As String
-            'If CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") <> "OK" Then
-            ' WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
-            ' WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
-            'Exit Sub
-            'End If
             src = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
-            ' Create a match using regular exp<b></b>ressions
-            'http://pso2.arghargh200.net/pso2/2013_05_22_largefiles.rar
-            'Dim m As Match = Regex.Match(src, "http://pso2.arghargh200.net/pso2/.*?.rar")
-            ' Spit out the value plucked from the code
-            'txtHTML.Text = m.NextMatch.ToString
             Dim strDownloadME As String = src
-            'Get the current version, save as NewVersionTemp
             Dim Lastfilename As String() = strDownloadME.Split("/")
             Dim strVersion As String = Lastfilename(Lastfilename.Count - 1)
-            'Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
-            'strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
             strVersion = strVersion.Replace(".rar", "")
             Helper.SetRegKey(Of String)("NewLargeFilesVersion", strVersion)
             If strVersion <> Helper.GetRegKey(Of String)("LargeFilesVersion") Then
@@ -1508,8 +1492,6 @@ NEXTFILE1:
                 If UpdateStoryYesNo = vbNo Then UpdateNeeded = False
                 If UpdateNeeded Then
                     btnLargeFiles.RaiseClick()
-                    'Helper.SetRegKey(Of String)("ENPatchVersion", Helper.GetRegKey(Of String)("NewVersionTemp"))
-                    'Helper.SetRegKey(Of String)("NewVersionTemp", "")
                     Exit Sub
                 End If
             End If
@@ -1660,12 +1642,10 @@ NEXTFILE1:
                         Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
                         Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
                         Helper.SetRegKey(Of String)("PSO2PrecedeVersion", PrecedeVersion2(1))
-                        ' TODO: does this GoTo even do anything, doesn't it just go to what it was about to anyway?
-                        GoTo BackToCheckUpdates
                     End If
                 End If
             End If
-BackToCheckUpdates:
+
             'Check whether or not to apply pre-patch shit. Ugh.
             If Directory.Exists(lblDirectory.Text & "\_precede\") Then
                 versionclient.DownloadFile("http://162.243.211.123/freedom/precede_apply.txt", "precede_apply.txt")
@@ -2033,7 +2013,6 @@ BackToCheckUpdates2:
     Private Sub CancelDownloadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CancelDownloadToolStripMenuItem.Click
         DLS.CancelAsync()
         WriteDebugInfo(My.Resources.strDownloadwasCancelled)
-        'btnCancelDownload.Visible = False
         Cancelled = True
         PB1.Value = 0
         PB1.Text = ""
@@ -3347,7 +3326,6 @@ DOWNLOADFILES:
             WriteDebugInfoSameLine(My.Resources.strDone)
             File.Move("GameGuard.des", pso2launchpath & "\GameGuard.des")
 
-            ' TODO: look at what this is doing
             Dim foundKey As RegistryKey = My.Computer.Registry.LocalMachine.OpenSubKey("SYSTEM\CurrentControlSet\Services\npggsvc", True)
 
             If foundKey Is Nothing Then
@@ -3629,10 +3607,8 @@ DOWNLOADFILES:
     Private Sub ButtonItem9_Click(sender As Object, e As EventArgs) Handles btnPSO2Options.Click
         Try
             frmPSO2Options.TopMost = Me.TopMost
-            'frmPSO2Options.Bounds = Me.Bounds
             frmPSO2Options.Top = frmPSO2Options.Top + 50
             frmPSO2Options.Left = frmPSO2Options.Left + 50
-            'If Me.TopMost Then frmOptions.TopMost = True
             frmPSO2Options.ShowDialog()
         Catch ex As Exception
             Log(ex.Message)
@@ -3927,10 +3903,6 @@ DOWNLOADFILES:
         DownloadPatch("http://46.150.76.126/pso2/rupatch.rar", "RU Patch", "RUPatch.rar", Nothing,
                       "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
                       "Please select the pre-downloaded RU Patch RAR file", "backupPreRUPatch")
-    End Sub
-
-    Private Sub Office2007StartButton1_Click(sender As Object, e As EventArgs) Handles Office2007StartButton1.Click
-
     End Sub
 
     Private Sub tsmRestartDownload_Click(sender As Object, e As EventArgs) Handles tsmRestartDownload.Click
@@ -4661,6 +4633,7 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnSelectSweetFX_Click(sender As Object, e As EventArgs) Handles btnSelectSweetFX.Click
+        ' TODO: Why does this open a dialog and not use anything from it?
         OFDSweetFX.Filter = "DLL (*.dll) |*.dll|(*.*) |*.*"
         OFDSweetFX.ShowDialog()
         Dim DllFileName As String = OFDSweetFX.FileName
@@ -4715,10 +4688,8 @@ SelectInstallFolder:
     Private Sub btnCopyInfo_Click_1(sender As Object, e As EventArgs) Handles btnCopyInfo.Click
         Try
             frmDiagnostic.TopMost = Me.TopMost
-            'frmPSO2Options.Bounds = Me.Bounds
             frmDiagnostic.Top = frmDiagnostic.Top + 50
             frmDiagnostic.Left = frmDiagnostic.Left + 50
-            'If Me.TopMost Then frmOptions.TopMost = True
             frmDiagnostic.ShowDialog()
         Catch ex As Exception
             Log(ex.Message)
@@ -4857,12 +4828,14 @@ SelectInstallFolder:
         Dim CurrentLine As String = ""
         Dim objReader As New StreamReader(FILE_NAME)
 
+        ' TODO: Change this to not use Peek
+
         Do While objReader.Peek() <> -1
 
             CurrentLine = objReader.ReadLine()
 
-            If CurrentLine.Contains("pso2gs.net") Then CurrentLine = ""
-            If CurrentLine <> "" Then BuiltFile += CurrentLine & vbNewLine
+            If CurrentLine.Contains("pso2gs.net") Then Continue Do
+            If String.IsNullOrEmpty(CurrentLine) Then BuiltFile += CurrentLine & vbNewLine
         Loop
 
         objReader.Close()
@@ -5130,7 +5103,6 @@ SelectInstallFolder:
 
     Private Sub btnJPETrials_Click(sender As Object, e As EventArgs) Handles btnJPETrials.Click
         Try
-            'LockGUI()
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
