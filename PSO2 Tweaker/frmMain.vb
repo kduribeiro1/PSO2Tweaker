@@ -188,24 +188,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Public Structure SHELLEXECUTEINFO
-        Public cbSize As Integer
-        Public fMask As Integer
-        Public hwnd As IntPtr
-        <MarshalAs(UnmanagedType.LPTStr)> Public lpVerb As String
-        <MarshalAs(UnmanagedType.LPTStr)> Public lpFile As String
-        <MarshalAs(UnmanagedType.LPTStr)> Public lpParameters As String
-        <MarshalAs(UnmanagedType.LPTStr)> Public lpDirectory As String
-        Dim nShow As Integer
-        Dim hInstApp As IntPtr
-        Dim lpIDList As IntPtr
-        <MarshalAs(UnmanagedType.LPTStr)> Public lpClass As String
-        Public hkeyClass As IntPtr
-        Public dwHotKey As Integer
-        Public hIcon As IntPtr
-        Public hProcess As IntPtr
-    End Structure
-
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' TODO: Fix this Mike plz
         Dim g As Graphics = Me.CreateGraphics
@@ -908,10 +890,12 @@ Public Class frmMain
                 Dim t4 As New Threading.Thread(AddressOf DownloadItemTranslationFiles)
                 t4.IsBackground = True
                 t4.Start()
+
                 Do Until ItemDownloadingDone = True
                     Application.DoEvents()
-                    ' TODO: should probably be a thread.sleep for about 16 to 32 ms here
+                    Thread.Sleep(16)
                 Loop
+
                 WriteDebugInfoSameLine(My.Resources.strDone)
             End If
         Catch ex As Exception
@@ -4729,9 +4713,7 @@ SelectInstallFolder:
                     Exit For
                 End If
             Next
-            'MsgBox(Version & vbCrLf & Host & vbCrLf & ProxyName & vbCrLf & PublickeyUrl)
             WriteDebugInfoSameLine(" Done!")
-
 
             Dim FILE_NAME As String = Environment.SystemDirectory & "\drivers\etc\hosts"
             Dim BuiltFile As String = ""
@@ -4743,6 +4725,8 @@ SelectInstallFolder:
             Do While objReader.Peek() <> -1
 
                 CurrentLine = objReader.ReadLine()
+
+                ' TODO: Should this be a switch?
 
                 If CurrentLine.Contains("gs001.pso2gs.net") Then
                     CurrentLine = Host & " gs001.pso2gs.net #" & ProxyName & " Ship 01"
@@ -4784,7 +4768,7 @@ SelectInstallFolder:
                     CurrentLine = Host & " gs136.pso2gs.net #" & ProxyName & " Ship 10"
                     AlreadyModified = True
                 End If
-                BuiltFile += CurrentLine & vbNewLine
+                BuiltFile &= CurrentLine & vbNewLine
             Loop
             objReader.Close()
 
@@ -4823,25 +4807,21 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnRevertPSO2ProxyToJP_Click(sender As Object, e As EventArgs) Handles btnRevertPSO2ProxyToJP.Click
-        Dim FILE_NAME As String = Environment.SystemDirectory & "\drivers\etc\hosts"
-        Dim BuiltFile As String = ""
-        Dim CurrentLine As String = ""
-        Dim objReader As New StreamReader(FILE_NAME)
+        Dim hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
+        Dim builtFile = New List(Of String)
 
-        ' TODO: Change this to not use Peek
+        Using reader As New StreamReader(hostsFilePath)
+            Dim currentLine As String = ""
 
-        Do While objReader.Peek() <> -1
-
-            CurrentLine = objReader.ReadLine()
-
-            If CurrentLine.Contains("pso2gs.net") Then Continue Do
-            If String.IsNullOrEmpty(CurrentLine) Then BuiltFile += CurrentLine & vbNewLine
-        Loop
-
-        objReader.Close()
+            Do
+                currentLine = reader.ReadLine()
+                If currentLine Is Nothing Then Exit Do
+                If Not currentLine.Contains("pso2gs.net") Then builtFile.Add(currentLine)
+            Loop
+        End Using
 
         WriteDebugInfo("Modifying HOSTS file...")
-        File.WriteAllText(Environment.SystemDirectory & "\drivers\etc\hosts", BuiltFile)
+        File.WriteAllLines(hostsFilePath, builtFile.ToArray())
         WriteDebugInfoSameLine(" Done!")
         DeleteFile(lblDirectory.Text & "\publickey.blob")
         WriteDebugInfoAndOK("All normal JP connection settings restored!")
