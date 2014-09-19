@@ -15,7 +15,6 @@ Imports System.Threading
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Organize this form by order of member type (variable, function, etc)
-' TODO: There are still a lot of [<> "" Then] that need removeing
 ' TODO: There are a lot of [.Replace("\data\win32", "")], assumeing this is always the PSO2 path we should just do it once and save it
 
 Public Class frmMain
@@ -294,7 +293,7 @@ Public Class frmMain
                     'Helper.SetRegKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "LoadAppInit_DLLs", 1, Microsoft.Win32.RegistryValueKind.DWord)
                     'End If
                     'End Item Translation stuff
-                    SaveToDisk(My.Resources.ddraw, pso2launchpath & "\ddraw.dll")
+                    File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
                     Log("Setting environment variable")
                     Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
                     Log("Launching PSO2")
@@ -383,7 +382,7 @@ Public Class frmMain
                             End Try
                         Next
 
-                        SaveToDisk(My.Resources.ddraw, pso2launchpath & "\ddraw.dll")
+                        File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
                     End If
 
                     Log("Setting environment variable")
@@ -557,17 +556,17 @@ Public Class frmMain
 
             Log("Loading textbox settings")
 
-            If Helper.GetRegKey(Of String)("TextBoxBGColor") <> "" Then rtbDebug.BackColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxBGColor"))
-            If Helper.GetRegKey(Of String)("TextBoxColor") <> "" Then rtbDebug.ForeColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxColor"))
+            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("TextBoxBGColor")) Then rtbDebug.BackColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxBGColor"))
+            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("TextBoxColor")) Then rtbDebug.ForeColor = Color.FromArgb(Helper.GetRegKey(Of String)("TextboxColor"))
 
             Log("Colors")
 
-            If Helper.GetRegKey(Of String)("Color") <> "" Then
+            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Color")) Then
                 StyleManager1.ManagerColorTint = Color.FromArgb(Helper.GetRegKey(Of String)("Color"))
                 frmPSO2Options.StyleManager1.ManagerColorTint = Color.FromArgb(Helper.GetRegKey(Of String)("Color"))
             End If
 
-            If Helper.GetRegKey(Of String)("FontColor") <> "" Then
+            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("FontColor")) Then
                 Dim Color As System.Drawing.Color = Color.FromArgb(Helper.GetRegKey(Of String)("FontColor"))
                 frmPSO2Options.TabControl1.ColorScheme.TabItemSelectedText = Color
                 frmPSO2Options.TabItem1.TextColor = Color
@@ -1224,7 +1223,7 @@ Public Class frmMain
             filename = Regex.Split(strLine, ".pat")
             truefilename = filename(0).Replace("data/win32/", "")
 
-            If MyArray.Contains(truefilename) = False And truefilename <> "" Then
+            If MyArray.Contains(truefilename) = False And (Not String.IsNullOrEmpty(truefilename)) Then
                 MyArray.Add(truefilename)
                 sw3.WriteLine(strLine)
             End If
@@ -1646,9 +1645,9 @@ NEXTFILE1:
                     If ApplyPrePatchYesNo = vbYes Then
                         WriteDebugInfo("Installing prepatch, please wait...")
                         Application.DoEvents()
-                        Dim di As New IO.DirectoryInfo(lblDirectory.Text & "\_precede\data\win32\")
-                        Dim diar1 As IO.FileInfo() = di.GetFiles()
-                        Dim dra As IO.FileInfo
+                        Dim di As New DirectoryInfo(lblDirectory.Text & "\_precede\data\win32\")
+                        Dim diar1 As FileInfo() = di.GetFiles()
+                        Dim dra As FileInfo
 
                         'list the names of all files in the specified directory
                         Dim downloadstring As String = ""
@@ -1933,7 +1932,7 @@ BackToCheckUpdates2:
             'End If
             'End Item Translation stuff
             DeleteFile(pso2launchpath & "\ddraw.dll")
-            SaveToDisk(My.Resources.ddraw, pso2launchpath & "\ddraw.dll")
+            File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
             Dim startInfo As ProcessStartInfo
             startInfo = New ProcessStartInfo
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
@@ -1974,11 +1973,6 @@ BackToCheckUpdates2:
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
-    End Sub
-
-    Public Sub SaveToDisk(ByVal array As Byte(), ByVal fileName As String)
-        ' TODO: Remove this function
-        File.WriteAllBytes(fileName, array)
     End Sub
 
     Private Sub PB1_Click(sender As Object, e As MouseEventArgs) Handles PB1.Click
@@ -2103,7 +2097,7 @@ BackToCheckUpdates2:
             Log("Selecting PSO2 Directory...")
             Dim MyFolderBrowser As New FolderBrowserDialog
             ' Description that displays above the dialog box control. 
-            If lblDirectory.Text <> "" Then MyFolderBrowser.SelectedPath = lblDirectory.Text
+            If Not String.IsNullOrEmpty(lblDirectory.Text) Then MyFolderBrowser.SelectedPath = lblDirectory.Text
             MyFolderBrowser.Description = My.Resources.strSelectPSO2win32folder2
             ' Sets the root folder where the browsing starts from 
             MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
@@ -2210,9 +2204,9 @@ BackToCheckUpdates2:
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
-            Dim di As New IO.DirectoryInfo("TEMPSTORYAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
+            Dim di As New DirectoryInfo("TEMPSTORYAIDAFOOL")
+            Dim diar1 As FileInfo() = di.GetFiles()
+            Dim dra As FileInfo
             WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
             Application.DoEvents()
             'list the names of all files in the specified directory
@@ -2336,7 +2330,7 @@ DOWNLOADBIN2:
 
                 If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:translation.bin"
 
-                BuiltFile += CurrentLine & vbNewLine
+                BuiltFile &= CurrentLine & vbNewLine
             Loop
             objReader.Close()
             File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
@@ -2359,7 +2353,7 @@ DOWNLOADBIN2:
 
                 If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:"
 
-                BuiltFile += CurrentLine & vbNewLine
+                BuiltFile &= CurrentLine & vbNewLine
             Loop
 
             objReader.Close()
@@ -2813,10 +2807,9 @@ DOWNLOADFILES:
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & ((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                     Exit Sub
                 End If
-                Dim di As New IO.DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
-                'MsgBox((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
-                Dim diar1 As IO.FileInfo() = di.GetFiles()
-                Dim dra As IO.FileInfo
+                Dim di As New DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
+                Dim diar1 As FileInfo() = di.GetFiles()
+                Dim dra As FileInfo
                 WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & (lblDirectory.Text & "\data\win32")))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
@@ -2859,10 +2852,9 @@ DOWNLOADFILES:
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & ((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                     Exit Sub
                 End If
-                Dim di As New IO.DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
-                'MsgBox((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
-                Dim diar1 As IO.FileInfo() = di.GetFiles()
-                Dim dra As IO.FileInfo
+                Dim di As New DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
+                Dim diar1 As FileInfo() = di.GetFiles()
+                Dim dra As FileInfo
                 WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & (lblDirectory.Text & "\data\win32")))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
@@ -3257,9 +3249,9 @@ DOWNLOADFILES:
             Dim pso2launchpath As String
             DirectoryString = (lblDirectory.Text & "\data\win32")
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
-            If IO.Directory.Exists(pso2launchpath & "\Gameguard\") Then
+            If Directory.Exists(pso2launchpath & "\Gameguard\") Then
                 WriteDebugInfo("Removing Gameguard Directory...")
-                IO.Directory.Delete(pso2launchpath & "\Gameguard\", True)
+                Directory.Delete(pso2launchpath & "\Gameguard\", True)
                 WriteDebugInfoSameLine(My.Resources.strDone)
             End If
             If File.Exists(pso2launchpath & "\GameGuard.des") Then
@@ -3414,10 +3406,10 @@ DOWNLOADFILES:
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & ((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                     Exit Sub
                 End If
-                Dim di As New IO.DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
+                Dim di As New DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                 'MsgBox((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
-                Dim diar1 As IO.FileInfo() = di.GetFiles()
-                Dim dra As IO.FileInfo
+                Dim diar1 As FileInfo() = di.GetFiles()
+                Dim dra As FileInfo
                 WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & (lblDirectory.Text & "\data\win32")))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
@@ -4204,7 +4196,7 @@ SelectInstallFolder:
                         WriteDebugInfo("DirectX installation failed! Please install it later if neccessary!")
                     End Try
                     'Make a data folder, and a win32 folder under that
-                    IO.Directory.CreateDirectory(pso2_binfolder & "\data\win32\")
+                    Directory.CreateDirectory(pso2_binfolder & "\data\win32\")
                     'Download required pso2 stuff
                     WriteDebugInfo("Downloading PSO2 required files...")
                     DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", pso2_binfolder & "\pso2launcher.exe", True)
@@ -4256,8 +4248,6 @@ SelectInstallFolder:
     Public Sub SilentLargeFiles()
         CancelledFull = False
         Try
-            ' Unused?
-            'Dim RARLocation As String
             Dim strVersion As String
             WriteDebugInfo(My.Resources.strDownloading & "Large Files....")
             Application.DoEvents()
@@ -4317,9 +4307,9 @@ SelectInstallFolder:
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
-            Dim di As New IO.DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
+            Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
+            Dim diar1 As FileInfo() = di.GetFiles()
+            Dim dra As FileInfo
             WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
             Application.DoEvents()
 
@@ -4419,9 +4409,9 @@ SelectInstallFolder:
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
-            Dim di As New IO.DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
+            Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
+            Dim diar1 As FileInfo() = di.GetFiles()
+            Dim dra As FileInfo
             WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
             Application.DoEvents()
             If CancelledFull Then Exit Sub
@@ -4775,20 +4765,19 @@ SelectInstallFolder:
             If AlreadyModified Then WriteDebugInfo("Modifying HOSTS file...")
 
             If AlreadyModified = False Then
-                BuiltFile += Host & " gs001.pso2gs.net #" & ProxyName & " Ship 01" & vbNewLine
-                BuiltFile += Host & " gs016.pso2gs.net #" & ProxyName & " Ship 02" & vbNewLine
-                BuiltFile += Host & " gs031.pso2gs.net #" & ProxyName & " Ship 03" & vbNewLine
-                BuiltFile += Host & " gs046.pso2gs.net #" & ProxyName & " Ship 04" & vbNewLine
-                BuiltFile += Host & " gs061.pso2gs.net #" & ProxyName & " Ship 05" & vbNewLine
-                BuiltFile += Host & " gs076.pso2gs.net #" & ProxyName & " Ship 06" & vbNewLine
-                BuiltFile += Host & " gs091.pso2gs.net #" & ProxyName & " Ship 07" & vbNewLine
-                BuiltFile += Host & " gs106.pso2gs.net #" & ProxyName & " Ship 08" & vbNewLine
-                BuiltFile += Host & " gs121.pso2gs.net #" & ProxyName & " Ship 09" & vbNewLine
-                BuiltFile += Host & " gs136.pso2gs.net #" & ProxyName & " Ship 10" & vbNewLine
+                BuiltFile &= Host & " gs001.pso2gs.net #" & ProxyName & " Ship 01" & vbNewLine
+                BuiltFile &= Host & " gs016.pso2gs.net #" & ProxyName & " Ship 02" & vbNewLine
+                BuiltFile &= Host & " gs031.pso2gs.net #" & ProxyName & " Ship 03" & vbNewLine
+                BuiltFile &= Host & " gs046.pso2gs.net #" & ProxyName & " Ship 04" & vbNewLine
+                BuiltFile &= Host & " gs061.pso2gs.net #" & ProxyName & " Ship 05" & vbNewLine
+                BuiltFile &= Host & " gs076.pso2gs.net #" & ProxyName & " Ship 06" & vbNewLine
+                BuiltFile &= Host & " gs091.pso2gs.net #" & ProxyName & " Ship 07" & vbNewLine
+                BuiltFile &= Host & " gs106.pso2gs.net #" & ProxyName & " Ship 08" & vbNewLine
+                BuiltFile &= Host & " gs121.pso2gs.net #" & ProxyName & " Ship 09" & vbNewLine
+                BuiltFile &= Host & " gs136.pso2gs.net #" & ProxyName & " Ship 10" & vbNewLine
                 WriteDebugInfo("Previous modifications not found, creating new entries...")
             End If
-            'http://162.243.211.123/test.json
-            'MsgBox(BuiltFile)
+
             File.WriteAllText(Environment.SystemDirectory & "\drivers\etc\hosts", BuiltFile)
             WriteDebugInfoSameLine(" Done!")
 
@@ -4870,9 +4859,9 @@ SelectInstallFolder:
             Dim Filename As String = ""
             Dim filesize As Long = 0
             WriteDebugInfo("Building file list... ")
-            Dim di As New IO.DirectoryInfo(lblDirectory.Text & "\data\win32\")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
+            Dim di As New DirectoryInfo(lblDirectory.Text & "\data\win32\")
+            Dim diar1 As FileInfo() = di.GetFiles()
+            Dim dra As FileInfo
 
             For Each dra In diar1
                 Filename = dra.Name
@@ -4914,20 +4903,18 @@ SelectInstallFolder:
         Dim SEGALine As String = ""
         Dim LocalLine As String = ""
         Dim SplitSEGALine As String()
-        'Dim SplitLocalLine() As String
         Dim SEGAFilename As String = ""
-        ' Unused?
-        'Dim SEGAFilesize As Long
         Dim missingfiles As New List(Of String)
         Dim sr1 As StreamReader = File.OpenText("SOMEOFTHETHINGS.txt")
         Dim sr2 As StreamReader = New StreamReader("old_patchlist.txt")
         Dim oldarray As New List(Of String)
         Dim Contains As Boolean = False
         count = 0
+
         Do While sr2.Peek <> -1
             oldarray.Add(sr2.ReadLine)
         Loop
-        'MsgBox(sr1.ReadLine)
+
         Do While sr1.Peek <> -1
             SEGALine = sr1.ReadLine()
             If String.IsNullOrEmpty(sr1.ReadLine) Then
@@ -4935,17 +4922,12 @@ SelectInstallFolder:
                 ' Mike: Why was this here? It never executed!
                 'count -= 1
             End If
-            'MsgBox(SEGALine)
+
             SplitSEGALine = Regex.Split(SEGALine, ".pat")
             SEGAFilename = SplitSEGALine(0).Replace("data/win32/", "")
-            'SplitSEGALine = Regex.Split(SplitSEGALine(1), "	")
-            'SEGAFilesize = Convert.ToInt32(SplitSEGALine(1))
-            'MsgBox("Filename is: " & SEGAFilename & vbNewLine & "Filesize is: " & SEGAFilesize)
             lblStatus.Text = "Checking file " & count & " / " & CStr(totalfiles.Count)
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
-            'MsgBox(truefilename)
-            'MsgBox("Found a mismatched filed! Name: " & SEGAFilename & vbNewLine & "Filesize should be: " & SEGAFilesize & vbNewLine & "but is: " & SplitLocalLine(1).ToString)
             If oldarray.Contains(SEGALine) = False Then missingfiles.Add(SEGAFilename)
             count += 2
         Loop
@@ -4966,17 +4948,12 @@ SelectInstallFolder:
         Dim win32 As String = lblDirectory.Text & "\data\win32"
         Dim strStoryPatchLatestBase As String = ""
         Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch")
-
         Dim net As New Net.WebClient()
         Dim src As String
         src = net.DownloadString("http://arks-layer.com/story.php")
-        'MsgBox(src.ToString)
 
         ' Create a match using regular exp<b></b>ressions
-        'http://arks-layer.com/Story%20Patch%208-8-2013.rar.torrent
-        'Dim m As Match = Regex.Match(src, "Story Patch (.*?).rar.torrent")
         Dim m As Match = Regex.Match(src, "<u>.*?</u>")
-        'MsgBox(m.Value)
 
         ' Spit out the value plucked from the code
         txtHTML.Text = m.Value
@@ -4987,18 +4964,10 @@ SelectInstallFolder:
         strStoryPatchLatestBase = strDownloadME
         strStoryPatchLatestBase = strStoryPatchLatestBase.Replace("/", "-")
 
-        'MsgBox(strStoryPatchLatestBase)
-
         WriteDebugInfoAndOK("Downloading story patch info... ")
         DLWUA("http://162.243.211.123/freedom/pso2.stripped.db", "pso2.stripped.db", True)
         WriteDebugInfoAndOK("Downloading Trans-Am tool... ")
         DLWUA("http://162.243.211.123/freedom/pso2-transam.exe", "pso2-transam.exe", True)
-
-        'If Directory.Exists(backupdir) Then
-        ' My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
-        ' Directory.CreateDirectory(backupdir)
-        ' WriteDebugInfo(My.Resources.strErasingPreviousBackup)
-        ' End If
 
         'execute pso2-transam stuff with -b flag for backup
         Dim process As Process = Nothing
@@ -5013,8 +4982,7 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
             processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
         End If
-        'Clipboard.SetText(processStartInfo.Arguments.ToString)
-        ' MsgBox("Done!")
+
         processStartInfo.WindowStyle = ProcessWindowStyle.Normal
         processStartInfo.UseShellExecute = True
         process = process.Start(processStartInfo)
@@ -5034,33 +5002,19 @@ SelectInstallFolder:
 
     Private Sub btnJPEnemyNames_Click(sender As Object, e As EventArgs) Handles btnJPEnemyNames.Click
         Try
-            'LockGUI()
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
             End If
-            'Dim backupyesno As MsgBoxResult = MsgBox(My.Resources.strWouldYouLikeToBackupLargeFiles, vbYesNo)
             WriteDebugInfo(My.Resources.strDownloading & "JP enemy names file....")
             Application.DoEvents()
-            'Dim net As New Net.WebClient()
-            'Dim src As String
-            'src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
-            ' Create a match using regular exp<b></b>ressions
-            'http://pso2.arghargh200.net/pso2/2013_06_12/ceffe0e2386e8d39f188358303a92a7d
-            'Dim m As Match = Regex.Match(src, "http://pso2.arghargh200.net/pso2/.*ceffe0e2386e8d39f188358303a92a7d")
-            ' Spit out the value plucked from the code
-            'txtHTML.Text = m.NextMatch.ToString()
             Dim strDownloadME As String = GrabLink("ceffe0e2386e8d39f188358303a92a7d")
             Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
             strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
-            'strVersion = strVersion.Replace("/ceffe0e2386e8d39f188358303a92a7d", "")
-            'MsgBox(strVersion)
             Cancelled = False
             DLWUA(strDownloadME, "ceffe0e2386e8d39f188358303a92a7d", True)
             If Cancelled Then Exit Sub
-            'My.Computer.Network.DownloadFile(strDownloadME, "LargeFiles.rar", vbNullString, vbNullString, True, 5000, True)
-            'net.DownloadFile(, "LargeFiles.rar")
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
             If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then
                 If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
@@ -5068,10 +5022,7 @@ SelectInstallFolder:
             End If
             Application.DoEvents()
             File.Move("ceffe0e2386e8d39f188358303a92a7d", ((lblDirectory.Text & "\data\win32") & "\ceffe0e2386e8d39f188358303a92a7d"))
-            'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
             FlashWindow(Me.Handle, 1)
-            'Helper.SetRegKey(Of String)("LargeFilesVersion", strVersion)
             WriteDebugInfo("JP enemy names file " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
@@ -5088,27 +5039,14 @@ SelectInstallFolder:
                 Button1.RaiseClick()
                 Exit Sub
             End If
-            'Dim backupyesno As MsgBoxResult = MsgBox(My.Resources.strWouldYouLikeToBackupLargeFiles, vbYesNo)
             WriteDebugInfo(My.Resources.strDownloading & "JP E-Trials file....")
             Application.DoEvents()
-            'Dim net As New Net.WebClient()
-            'Dim src As String
-            'src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
-            ' Create a match using regular exp<b></b>ressions
-            'http://pso2.arghargh200.net/pso2/2013_06_12/057aa975bdd2b372fe092614b0f4399e
-            'Dim m As Match = Regex.Match(src, "http://pso2.arghargh200.net/pso2/.*057aa975bdd2b372fe092614b0f4399e")
-            ' Spit out the value plucked from the code
-            'txtHTML.Text = m.NextMatch.ToString()
             Dim strDownloadME As String = GrabLink("057aa975bdd2b372fe092614b0f4399e")
             Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
             strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
-            'strVersion = strVersion.Replace("/ceffe0e2386e8d39f188358303a92a7d", "")
-            'MsgBox(strVersion)
             Cancelled = False
             DLWUA(strDownloadME, "057aa975bdd2b372fe092614b0f4399e", True)
             If Cancelled Then Exit Sub
-            'My.Computer.Network.DownloadFile(strDownloadME, "LargeFiles.rar", vbNullString, vbNullString, True, 5000, True)
-            'net.DownloadFile(, "LargeFiles.rar")
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
             If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then
                 If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
@@ -5116,10 +5054,7 @@ SelectInstallFolder:
             End If
             Application.DoEvents()
             File.Move("057aa975bdd2b372fe092614b0f4399e", ((lblDirectory.Text & "\data\win32") & "\057aa975bdd2b372fe092614b0f4399e"))
-            'MsgBox(("Moving" & (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\TEMPPATCH\" & dra.ToString) & " to " & ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
             FlashWindow(Me.Handle, 1)
-            'Helper.SetRegKey(Of String)("LargeFilesVersion", strVersion)
             WriteDebugInfo("JP E-Trials file " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
@@ -5231,9 +5166,9 @@ SelectInstallFolder:
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
-            Dim di As New IO.DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As IO.FileInfo() = di.GetFiles()
-            Dim dra As IO.FileInfo
+            Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
+            Dim diar1 As FileInfo() = di.GetFiles()
+            Dim dra As FileInfo
             WriteDebugInfoAndOK((My.Resources.strExtractingTo & (lblDirectory.Text & "\data\win32")))
             Application.DoEvents()
             If CancelledFull Then Exit Sub
