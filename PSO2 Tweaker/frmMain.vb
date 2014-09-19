@@ -113,10 +113,10 @@ Public Class frmMain
                 SystemUnlock = 6
                 lblStatus.Text = "Please enter the remaining commands to access Veda: ******"
                 Application.DoEvents()
-                Threading.Thread.Sleep(2000)
+                Thread.Sleep(2000)
                 lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
                 Application.DoEvents()
-                Threading.Thread.Sleep(2000)
+                Thread.Sleep(2000)
                 VedaUnlocked = True
                 frmVEDA.Show()
             End If
@@ -140,10 +140,10 @@ Public Class frmMain
                 MileyCyrus = 5
                 lblStatus.Text = "Please enter the remaining commands: *****"
                 Application.DoEvents()
-                Threading.Thread.Sleep(2000)
+                Thread.Sleep(2000)
                 lblStatus.Text = "[ACCESS GRANTED - PSO2 TWERKER]"
                 Application.DoEvents()
-                Threading.Thread.Sleep(2000)
+                Thread.Sleep(2000)
                 Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
                 ButtonItem6.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
@@ -172,10 +172,10 @@ Public Class frmMain
                 SteamUnlock = 6
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ******"
                 Application.DoEvents()
-                Threading.Thread.Sleep(2000)
+                Thread.Sleep(2000)
                 lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
                 Application.DoEvents()
-                Threading.Thread.Sleep(2000)
+                Thread.Sleep(2000)
                 frmOptions.ButtonX4.Visible = True
                 frmOptions.ButtonX5.Visible = True
                 frmOptions.LabelX13.Visible = True
@@ -705,7 +705,7 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
-        Dim t3 As New Threading.Thread(AddressOf IsServerOnline)
+        Dim t3 As New Thread(AddressOf IsServerOnline)
         t3.IsBackground = True
         t3.Start()
 
@@ -818,7 +818,7 @@ Public Class frmMain
 
             If Helper.GetRegKey(Of String)("SidebarEnabled") = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
-                Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
+                Dim t1 As New Thread(AddressOf LoadSidebar)
                 t1.IsBackground = True
                 t1.Start()
 
@@ -878,7 +878,7 @@ Public Class frmMain
                 pso2launchpath = DirectoryString.Replace("\data\win32", "")
                 WriteDebugInfo(My.Resources.strDownloadingItemTranslationFiles)
                 ItemDownloadingDone = False
-                Dim t4 As New Threading.Thread(AddressOf DownloadItemTranslationFiles)
+                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles)
                 t4.IsBackground = True
                 t4.Start()
 
@@ -1090,7 +1090,7 @@ Public Class frmMain
                 Application.DoEvents()
                 Exit For
             Catch ex As Exception
-                If i = 4 Then Threading.Thread.Sleep(5000)
+                If i = 4 Then Thread.Sleep(5000)
                 If i = 5 Then Return False
             End Try
         Next
@@ -1828,7 +1828,7 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub ButtonItem6_Click(sender As Object, e As EventArgs) Handles ButtonItem6.Click
-        'Dim t5 As New Threading.Thread(AddressOf Injectstuff)
+        'Dim t5 As New Thread(AddressOf Injectstuff)
         't5.IsBackground = True
         't5.Start()
         'Fuck SEGA. Stupid jerks.
@@ -1934,7 +1934,7 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub PB1_Click(sender As Object, e As MouseEventArgs) Handles PB1.Click
-        If e.Button = Windows.Forms.MouseButtons.Right Then
+        If e.Button = MouseButtons.Right Then
             If DLS.IsBusy Then
                 CancelDownloadToolStripMenuItem.Visible = True
                 ContextMenuStrip1.Show(CType(sender, Control), e.Location)
@@ -2060,7 +2060,7 @@ BackToCheckUpdates2:
             ' Sets the root folder where the browsing starts from 
             MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
             Dim dlgResult As DialogResult = MyFolderBrowser.ShowDialog()
-            If dlgResult = Windows.Forms.DialogResult.Cancel Then
+            If dlgResult = DialogResult.Cancel Then
                 WriteDebugInfo("pso2_bin folder selection cancelled!")
                 Exit Sub
             End If
@@ -3012,9 +3012,9 @@ DOWNLOADFILES:
 
         Dim result1 As DialogResult = MessageBox.Show(My.Resources.strWouldYouLikeToDownloadInstallMissing, "Download/Install?", MessageBoxButtons.YesNo)
 
-        If result1 = Windows.Forms.DialogResult.No Then Exit Sub
+        If result1 = DialogResult.No Then Exit Sub
 
-        If result1 = Windows.Forms.DialogResult.Yes Then
+        If result1 = DialogResult.Yes Then
             Log(My.Resources.strDownloading & My.Resources.strMissingFilesPart1)
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
@@ -3160,19 +3160,19 @@ DOWNLOADFILES:
         Me.WebBrowser1.Navigate(testfile)
         Me.seconds.Start()
 
-        Dim query As Management.ManagementObjectSearcher
-        Dim Qc As Management.ManagementObjectCollection
-        Dim Oq As Management.ObjectQuery
-        Dim Ms As Management.ManagementScope
-        Dim Co As Management.ConnectionOptions
-        Dim Mo As Management.ManagementObject
+        Dim query As ManagementObjectSearcher
+        Dim Qc As ManagementObjectCollection
+        Dim Oq As ObjectQuery
+        Dim Ms As ManagementScope
+        Dim Co As ConnectionOptions
+        Dim Mo As ManagementObject
         Dim signalStrength As Double
 
         Try
-            Co = New Management.ConnectionOptions
-            Ms = New Management.ManagementScope("root\wmi")
-            Oq = New Management.ObjectQuery("SELECT * FROM MSNdis_80211_ReceivedSignalStrength Where active=true")
-            query = New Management.ManagementObjectSearcher(Ms, Oq)
+            Co = New ConnectionOptions
+            Ms = New ManagementScope("root\wmi")
+            Oq = New ObjectQuery("SELECT * FROM MSNdis_80211_ReceivedSignalStrength Where active=true")
+            query = New ManagementObjectSearcher(Ms, Oq)
             Qc = query.Get
             signalStrength = 0
 
@@ -3579,7 +3579,7 @@ DOWNLOADFILES:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
+                    Dim t1 As New Thread(AddressOf LoadSidebar)
                     t1.IsBackground = True
                     t1.Start()
                 End If
@@ -3597,7 +3597,7 @@ DOWNLOADFILES:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
+                    Dim t1 As New Thread(AddressOf LoadSidebar)
                     t1.IsBackground = True
                     t1.Start()
                 End If
@@ -3615,7 +3615,7 @@ DOWNLOADFILES:
         If Me.Visible Then
             If e.Url.ToString <> "http://162.243.211.123/freedom/tweaker.html" Then
                 Process.Start(e.Url.ToString())
-                Dim t1 As New Threading.Thread(AddressOf LoadSidebar)
+                Dim t1 As New Thread(AddressOf LoadSidebar)
                 t1.IsBackground = True
                 t1.Start()
             End If
@@ -4044,10 +4044,10 @@ SelectInstallFolder:
             MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
             Dim dlgResult As DialogResult = MyFolderBrowser.ShowDialog()
 
-            If dlgResult = Windows.Forms.DialogResult.OK Then
+            If dlgResult = DialogResult.OK Then
                 InstallFolder = MyFolderBrowser.SelectedPath
             End If
-            If dlgResult = Windows.Forms.DialogResult.Cancel Then
+            If dlgResult = DialogResult.Cancel Then
                 WriteDebugInfo("Installation cancelled by user!")
                 Exit Sub
             End If
@@ -4472,7 +4472,7 @@ SelectInstallFolder:
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
         Dim Oldstatus As String = Label5.Text
-        Dim t5 As New Threading.Thread(AddressOf IsServerOnline)
+        Dim t5 As New Thread(AddressOf IsServerOnline)
         t5.IsBackground = True
         t5.Start()
         If Label5.Text <> Oldstatus Then
