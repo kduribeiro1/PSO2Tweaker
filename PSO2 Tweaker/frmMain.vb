@@ -1271,12 +1271,12 @@ Public Class frmMain
         Try
             If Helper.GetRegKey(Of String)("StoryPatchVersion") = "Not Installed" Then Exit Sub
             DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt", True)
-            Dim filedownloader As New Net.WebClient()
+            Dim filedownloader As New WebClient()
             Dim sBuffer As String
             Dim filename As String()
             Dim truefilename As String
             Dim missingfiles As New List(Of String)
-            Dim filedownloader2 As New Net.WebClient()
+            Dim filedownloader2 As New WebClient()
             Dim missingfiles2 As New List(Of String)
             Dim NumberofChecks As Integer
             Dim TrueMD5 As String
@@ -1291,7 +1291,7 @@ Public Class frmMain
                 If sBuffer.ToString <> Helper.GetRegKey(Of String)("StoryPatchVersion") Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
-                    Dim net As New Net.WebClient()
+                    Dim net As New WebClient()
                     Dim src As String
                     src = net.DownloadString("http://arks-layer.com/story.php")
                     'MsgBox(src.ToString)
@@ -1465,7 +1465,7 @@ NEXTFILE1:
 
     Public Sub CheckForPSO2Updates()
         Try
-            Dim filedownloader As New Net.WebClient()
+            Dim filedownloader As New WebClient()
             Dim UpdateNeeded As Boolean
             Dim versionclient As New MyWebClient
             versionclient.timeout = 3000
@@ -1499,7 +1499,7 @@ StartPrePatch:
                         Dim filename As String() = Nothing
                         Dim truefilename As String = Nothing
                         Dim missingfiles As New List(Of String)
-                        Dim filedownloader2 As New Net.WebClient()
+                        Dim filedownloader2 As New WebClient()
                         Dim missingfiles2 As New List(Of String)
                         Dim NumberofChecks As Integer = 0
                         Dim MD5 As String() = Nothing
@@ -1957,7 +1957,7 @@ BackToCheckUpdates2:
     End Sub
 
     Private Function GrabLink(ByRef urlIdentifier As String)
-        Dim net As New Net.WebClient()
+        Dim net As New WebClient()
         Dim src As String
         src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
         Dim regx As New Regex("http://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?", RegexOptions.IgnoreCase)
@@ -1991,12 +1991,12 @@ BackToCheckUpdates2:
 
     Public Function Ping(ByVal server As String) As String
         'Switch is a class already, for what it is worth
-        Dim Response As Net.NetworkInformation.PingReply
-        Dim SendPing As New Net.NetworkInformation.Ping
+        Dim Response As NetworkInformation.PingReply
+        Dim SendPing As New NetworkInformation.Ping
 
         Try
             Response = SendPing.Send(server)
-            If Response.Status = Net.NetworkInformation.IPStatus.Success Then
+            If Response.Status = NetworkInformation.IPStatus.Success Then
                 Return Response.RoundtripTime.ToString
             End If
         Catch ex As Exception
@@ -2088,7 +2088,7 @@ BackToCheckUpdates2:
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
-        Using net As New Net.WebClient()
+        Using net As New WebClient()
             ' TODO: Check the string to make sure it's a valid URL before passing it into the function.
             ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
             ' Furthermore, we could also parse it from within the function.
@@ -2323,12 +2323,12 @@ DOWNLOADBIN2:
             Exit Sub
         End If
 
-        Dim filedownloader As New Net.WebClient()
+        Dim filedownloader As New WebClient()
         Dim sBuffer As String = Nothing
         Dim filename As String() = Nothing
         Dim truefilename As String = Nothing
         Dim missingfiles As New List(Of String)
-        Dim filedownloader2 As New Net.WebClient()
+        Dim filedownloader2 As New WebClient()
         Dim missingfiles2 As New List(Of String)
         Dim NumberofChecks As Integer = 0
         Dim MD5 As String() = Nothing
@@ -2478,7 +2478,7 @@ NEXTFILE1:
 
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
-            Dim filedownloader3 As New Net.WebClient()
+            Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String
             DirectoryString = (lblDirectory.Text & "\data\win32")
             DirectoryString = DirectoryString.Replace("\data\win32", "")
@@ -2671,7 +2671,7 @@ DOWNLOADFILES:
             Next
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
-            Dim filedownloader3 As New Net.WebClient()
+            Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String
             DirectoryString = (lblDirectory.Text & "\data\win32")
             DirectoryString = DirectoryString.Replace("\data\win32", "")
@@ -2875,12 +2875,12 @@ DOWNLOADFILES:
             Button1.RaiseClick()
             Exit Sub
         End If
-        Dim filedownloader As New Net.WebClient()
+        Dim filedownloader As New WebClient()
         Dim sBuffer As String
         Dim filename As String()
         Dim truefilename As String
         Dim missingfiles As New List(Of String)
-        Dim filedownloader2 As New Net.WebClient()
+        Dim filedownloader2 As New WebClient()
         Dim sBuffer2 As String
         Dim filename2 As String()
         Dim truefilename2 As String
@@ -3275,7 +3275,7 @@ DOWNLOADFILES:
                 Button1.RaiseClick()
                 Exit Sub
             End If
-            Dim filedownloader As New Net.WebClient()
+            Dim filedownloader As New WebClient()
             Dim DirectoryString As String
             DirectoryString = (lblDirectory.Text & "\data\win32")
             DirectoryString = DirectoryString.Replace("\data\win32", "")
@@ -3555,7 +3555,7 @@ DOWNLOADFILES:
     Private Sub btnENPatch_Click(sender As Object, e As EventArgs) Handles btnENPatch.Click
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
-        Using net As New Net.WebClient()
+        Using net As New WebClient()
             ' TODO: Check the string to make sure it's a valid URL before passing it into the function.
             ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
             ' Furthermore, we could also parse it from within the function.
@@ -3866,7 +3866,7 @@ DOWNLOADFILES:
             DeleteFile("resume.txt")
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
-            Dim filedownloader3 As New Net.WebClient()
+            Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String
             DirectoryString = (lblDirectory.Text & "\data\win32")
             DirectoryString = DirectoryString.Replace("\data\win32", "")
@@ -4168,7 +4168,7 @@ SelectInstallFolder:
             Dim strVersion As String
             WriteDebugInfo(My.Resources.strDownloading & "Large Files....")
             Application.DoEvents()
-            Dim net As New Net.WebClient()
+            Dim net As New WebClient()
             Dim src As String
             If CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") <> "OK" Then
                 WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
@@ -4258,7 +4258,7 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strDownloading & "EN patch...")
             Application.DoEvents()
             Dim strVersion As String
-            Dim net As New Net.WebClient()
+            Dim net As New WebClient()
             Dim src As String
             If CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") <> "OK" Then
                 WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
@@ -4382,7 +4382,7 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
-        Using net As New Net.WebClient()
+        Using net As New WebClient()
             Dim page As String = net.DownloadString("http://162.243.211.123/pso2patches/espatch.html")
             Dim match As Match = Regex.Match(page, "<b>(.{1,})</b>")
 
@@ -4852,7 +4852,7 @@ SelectInstallFolder:
         Dim win32 As String = lblDirectory.Text & "\data\win32"
         Dim strStoryPatchLatestBase As String = ""
         Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch")
-        Dim net As New Net.WebClient()
+        Dim net As New WebClient()
         Dim src As String
         src = net.DownloadString("http://arks-layer.com/story.php")
 
