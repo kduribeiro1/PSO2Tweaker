@@ -253,23 +253,22 @@ Public Class frmOptions
         Process.Start("http://arks-layer.com/credits.php")
     End Sub
 
-    ' TODO: Name this function
-    Sub thing(key As String, str As String)
+    Private Sub UpdateVersion(key As String, str As String)
         Dim value As String = str.Replace("Latest version: ", "").Replace("Last installed: ", "")
         Helper.SetRegKey(Of String)(key, value)
         MsgBox(value)
     End Sub
 
     Private Sub cmbENOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbENOverride.SelectedIndexChanged
-        thing("ENPatchVersion", cmbENOverride.Text)
+        UpdateVersion("ENPatchVersion", cmbENOverride.Text)
     End Sub
 
     Private Sub cmbLargeFilesOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLargeFilesOverride.SelectedIndexChanged
-        thing("LargeFilesVersion", cmbLargeFilesOverride.Text)
+        UpdateVersion("LargeFilesVersion", cmbLargeFilesOverride.Text)
     End Sub
 
     Private Sub cmbStoryOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbStoryOverride.SelectedIndexChanged
-        thing("StoryPatchVersion", cmbStoryOverride.Text)
+        UpdateVersion("StoryPatchVersion", cmbStoryOverride.Text)
     End Sub
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
