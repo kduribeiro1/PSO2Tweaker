@@ -12,6 +12,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
+' TODO: should probably remove the Inject stuff
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Organize this form by order of member type (variable, function, etc)
@@ -455,7 +456,7 @@ Public Class frmMain
 
             Dim locale = Helper.GetRegKey(Of String)("Locale")
 
-            If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Locale")) Then
+            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Locale")) Then
                 Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(locale)
                 Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
             End If
