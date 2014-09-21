@@ -4457,7 +4457,6 @@ SelectInstallFolder:
                 sock.Close()
             End Using
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
             Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
         End Try
     End Sub
