@@ -387,7 +387,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="lblDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 72</value>
@@ -597,7 +597,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnApplyChanges.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="ButtonItem6.Location" type="System.Drawing.Point, System.Drawing">
     <value>254, 219</value>
@@ -7584,16 +7584,13 @@
     <value>Microsoft Sans Serif, 9pt, style=Bold</value>
   </data>
   <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>198, 34</value>
+    <value>339, 55</value>
   </data>
   <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 18</value>
+    <value>67, 18</value>
   </data>
   <data name="Label5.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
-  </data>
-  <data name="Label5.Text" xml:space="preserve">
-    <value>PLEASE WAIT</value>
   </data>
   <data name="&gt;&gt;Label5.Name" xml:space="preserve">
     <value>Label5</value>
@@ -7605,22 +7602,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="LabelX1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="LabelX1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>54, 34</value>
+    <value>238, 55</value>
   </data>
   <data name="LabelX1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 15</value>
+    <value>102, 15</value>
   </data>
   <data name="LabelX1.TabIndex" type="System.Int32, mscorlib">
     <value>78</value>
   </data>
   <data name="LabelX1.Text" xml:space="preserve">
-    <value>PSO2 server appears to be:</value>
+    <value>PSO2 Server status:</value>
   </data>
   <data name="&gt;&gt;LabelX1.Name" xml:space="preserve">
     <value>LabelX1</value>
@@ -7632,7 +7629,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>1</value>
   </data>
   <metadata name="tmrCheckServerStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>273, 45</value>

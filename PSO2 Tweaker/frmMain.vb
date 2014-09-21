@@ -3795,7 +3795,7 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
-        DownloadPatch("http://46.150.76.126/pso2/rupatch.rar", "RU Patch", "RUPatch.rar", Nothing,
+        DownloadPatch("http://dl.cyberman.me/pso2/rupatch.rar", "RU Patch", "RUPatch.rar", Nothing,
                       "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
                       "Please select the pre-downloaded RU Patch RAR file", "backupPreRUPatch")
     End Sub
@@ -4425,9 +4425,9 @@ SelectInstallFolder:
     End Sub
 
     Public Sub setserverstatus(ByVal serverstatus As String)
-        If serverstatus = "ONLINE" Then
+        If serverstatus = "ONLINE!" Then
             Label5.ForeColor = Color.Green
-            Label5.Text = "ONLINE"
+            Label5.Text = "ONLINE!"
         End If
         If serverstatus = "OFFLINE" Then
             Label5.ForeColor = Color.Red
@@ -4453,7 +4453,7 @@ SelectInstallFolder:
                     Throw New Exception("Unable to connect!")
                 End If
 
-                Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE")
+                Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE!")
                 sock.Close()
             End Using
         Catch ex As Exception
