@@ -12,19 +12,6 @@ Public Class frmOptions
 
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         SetLocale()
-
-        ' Dim RestartYesNo As MsgBoxResult = MsgBox("The program will now restart in the selected language. Hit Cancel if you don't want to restart now.", MsgBoxStyle.OkCancel)
-        ' If RestartYesNo = MsgBoxResult.Ok Then
-        '    frmMain.CancelDownloadToolStripMenuItem.PerformClick()
-        '    File.Delete("launcherlist.txt")
-        '    File.Delete("patchlist.txt")
-        '    File.Delete("patchlist_old.txt")
-        '    File.Delete("version.ver")
-        '    File.Delete("ALLOFTHETHINGS.txt")
-        '    File.Delete("SOMEOFTHETHINGS.txt")
-        '    Application.Restart()
-        'End If
-
         Me.CMBStyle.SelectedIndex = -1
     End Sub
 
@@ -74,7 +61,6 @@ Public Class frmOptions
             End Using
 
             ' Here we pull the locale setting from registry and apply it to the form.
-
             ' Reads locale from registry and converts from LangCode (e.g "en") to Language (e.g "English")
             Dim Locale As Language = [Enum].Parse(GetType(LangCode), Helper.GetRegKey(Of String)("Locale"))
 
@@ -93,8 +79,6 @@ Public Class frmOptions
             LabelX2.Text = My.Resources.strChooseALanguage
             LabelX3.Text = My.Resources.strChooseABackgroundImage
 
-            'Me.BackgroundImage = Nothing
-
             CheckBoxX1.Checked = Helper.GetRegKey(Of Boolean)("Pastebin")
             CheckBoxX2.Checked = Helper.GetRegKey(Of Boolean)("ENPatchAfterInstall")
             CheckBoxX3.Checked = Helper.GetRegKey(Of Boolean)("LargeFilesAfterInstall")
@@ -102,7 +86,6 @@ Public Class frmOptions
             CheckBoxX5.Checked = Helper.GetRegKey(Of Boolean)("SidebarEnabled")
 
             chkAutoRemoveCensor.Checked = Helper.GetRegKey(Of Boolean)("RemoveCensor")
-
             CMBStyle.Text = Helper.GetRegKey(Of String)("Style")
 
             ComboItem33.Text = "Last installed: " & Helper.GetRegKey(Of String)("StoryPatchVersion")
@@ -119,40 +102,41 @@ Public Class frmOptions
 
     Private Sub CMBStyle_SelectedValueChanged(sender As Object, e As EventArgs) Handles CMBStyle.SelectedValueChanged
         If Not String.IsNullOrEmpty(CMBStyle.Text) Then
+
+            '┻━┻ ︵ \(Ò_Ó \)
+            '(╯°□°）╯︵ /(.□. \)
+            '┯━┯ノ(º₋ºノ)
+
             Select Case CMBStyle.Text
                 Case "Blue"
-                    StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Silver"
-                    StyleManager1.ManagerStyle = eStyle.Office2007Silver
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Black"
-                    StyleManager1.ManagerStyle = eStyle.Office2007Black
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Vista Glass"
-                    StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "2010 Silver"
-                    StyleManager1.ManagerStyle = eStyle.Office2010Silver
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case "Windows 7 Blue"
-                    StyleManager1.ManagerStyle = eStyle.Windows7Blue
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
                     Helper.SetRegKey(Of String)("Style", CMBStyle.Text)
 
                 Case Else
-                    StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                     Helper.SetRegKey(Of String)("Style", "Blue")
             End Select
         End If
-
-        '┻━┻ ︵ \(Ò_Ó \)
-        '(╯°□°）╯︵ /(.□. \)
-        '┯━┯ノ(º₋ºノ)
     End Sub
 
     Private Sub ComboBoxEx1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx1.SelectedIndexChanged
@@ -206,6 +190,7 @@ Public Class frmOptions
         If CheckBoxX1.Checked = False Then
             MsgBox("PLEASE BE CAUTIOUS - If you turn this function off, the program will not automatically upload your logfile to pastebin, so you can report the bug to AIDA. This means that you'll need to provide the logfile yourself, or the likelyhood of your issue being resolved is very, very, slim.")
         End If
+
         Helper.SetRegKey(Of String)("Pastebin", CheckBoxX1.Checked.ToString)
     End Sub
 
@@ -232,11 +217,8 @@ Public Class frmOptions
         frmMain.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
+
         Helper.SetRegKey(Of Integer)("FontColor", (ColorPickerButton2.SelectedColor.ToArgb))
-    End Sub
-
-    Private Sub LabelX6_Click(sender As Object, e As EventArgs) Handles LabelX6.Click
-
     End Sub
 
     Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
@@ -271,23 +253,22 @@ Public Class frmOptions
         Process.Start("http://arks-layer.com/credits.php")
     End Sub
 
-    ' TODO: Name this function
-    Sub thing(key As String, str As String)
+    Private Sub UpdateVersion(key As String, str As String)
         Dim value As String = str.Replace("Latest version: ", "").Replace("Last installed: ", "")
         Helper.SetRegKey(Of String)(key, value)
         MsgBox(value)
     End Sub
 
     Private Sub cmbENOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbENOverride.SelectedIndexChanged
-        thing("ENPatchVersion", cmbENOverride.Text)
+        UpdateVersion("ENPatchVersion", cmbENOverride.Text)
     End Sub
 
     Private Sub cmbLargeFilesOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLargeFilesOverride.SelectedIndexChanged
-        thing("LargeFilesVersion", cmbLargeFilesOverride.Text)
+        UpdateVersion("LargeFilesVersion", cmbLargeFilesOverride.Text)
     End Sub
 
     Private Sub cmbStoryOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbStoryOverride.SelectedIndexChanged
-        thing("StoryPatchVersion", cmbStoryOverride.Text)
+        UpdateVersion("StoryPatchVersion", cmbStoryOverride.Text)
     End Sub
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
@@ -302,6 +283,7 @@ Public Class frmOptions
 
     Private Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
         Dim YesNo As MsgBoxResult = MsgBox("This will tell the Tweaker you have the latest version of PSO2 installed - Be aware that this cannot be undone, and should only be used if you update the game outside of the Tweaker. Do you want to continue?", vbYesNo)
+
         If YesNo = vbYes Then
             Dim lines3 = File.ReadAllLines("version.ver")
             Dim RemoteVersion3 As String = lines3(0)

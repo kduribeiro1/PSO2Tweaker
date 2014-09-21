@@ -50,7 +50,6 @@ Partial Class frmMain
         Me.tsmRestartDownload = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelProcessToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DirectoryEntry1 = New System.DirectoryServices.DirectoryEntry()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.seconds = New System.Windows.Forms.Timer(Me.components)
         Me.Label4 = New System.Windows.Forms.Label()
@@ -142,7 +141,6 @@ Partial Class frmMain
         Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
         Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
         Me.OFDSweetFX = New System.Windows.Forms.OpenFileDialog()
-        Me.tmrInject = New System.Windows.Forms.Timer(Me.components)
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -991,7 +989,6 @@ Partial Class frmMain
     Friend WithEvents ButtonItem6 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CancelDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents DirectoryEntry1 As System.DirectoryServices.DirectoryEntry
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents seconds As System.Windows.Forms.Timer
     Friend WithEvents Label4 As System.Windows.Forms.Label
@@ -1019,7 +1016,6 @@ Partial Class frmMain
     Friend WithEvents LabelX1 As DevComponents.DotNetBar.LabelX
     Friend WithEvents tmrCheckServerStatus As System.Windows.Forms.Timer
     Friend WithEvents OFDSweetFX As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents tmrInject As System.Windows.Forms.Timer
     Friend WithEvents ItemContainer3 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents Button1 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
