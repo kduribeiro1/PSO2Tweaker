@@ -4463,7 +4463,6 @@ SelectInstallFolder:
     End Sub
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
-        MessageBox.Show("sdfsdfsdggs")
         Dim Oldstatus As String = Label5.Text
         Dim t5 As New Thread(AddressOf IsServerOnline)
         t5.IsBackground = True
