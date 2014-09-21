@@ -629,6 +629,15 @@
   <metadata name="ContextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>426, 17</value>
   </metadata>
+  <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 70</value>
+  </data>
+  <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
+    <value>ContextMenuStrip1</value>
+  </data>
+  <data name="&gt;&gt;ContextMenuStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="tsmRestartDownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
   </data>
@@ -646,15 +655,6 @@
   </data>
   <data name="CancelProcessToolStripMenuItem.Text" xml:space="preserve">
     <value>Cancel process</value>
-  </data>
-  <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 70</value>
-  </data>
-  <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
-    <value>ContextMenuStrip1</value>
-  </data>
-  <data name="&gt;&gt;ContextMenuStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -6988,11 +6988,116 @@
   <data name="RibbonControl1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 2</value>
   </data>
+  <data name="Office2007StartButton1.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="LabelItem1.Text" xml:space="preserve">
+    <value>Click the ORB to access the menu</value>
+  </data>
+  <data name="RibbonControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>796, 52</value>
+  </data>
+  <data name="RibbonControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="RibbonControl1.Text" xml:space="preserve">
+    <value>RibbonControl1</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.Name" xml:space="preserve">
+    <value>RibbonControl1</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.RibbonControl, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
+    <value>31</value>
+  </data>
   <data name="Button1.Text" xml:space="preserve">
     <value>Select pso2_bin folder...</value>
   </data>
   <data name="Button1.Tooltip" xml:space="preserve">
     <value>Use this to select your pso2_bin folder... duh!</value>
+  </data>
+  <data name="ButtonInstall.Text" xml:space="preserve">
+    <value>Install/Update Patches</value>
+  </data>
+  <data name="btnRestoreBackups.Text" xml:space="preserve">
+    <value>Restore Backup of JP Files</value>
+  </data>
+  <data name="ButtonItem1.Text" xml:space="preserve">
+    <value>Redownload Original JP Files</value>
+  </data>
+  <data name="ButtonItem2.Text" xml:space="preserve">
+    <value>Troubleshooting</value>
+  </data>
+  <data name="btnOtherStuff.Text" xml:space="preserve">
+    <value>Other Tasks</value>
+  </data>
+  <data name="ButtonItem3.Text" xml:space="preserve">
+    <value>Web Links</value>
+  </data>
+  <data name="btnDonations.Text" xml:space="preserve">
+    <value>Donation Links</value>
+  </data>
+  <data name="btnSelectSweetFX.Text" xml:space="preserve">
+    <value>Select SweetFX File</value>
+  </data>
+  <data name="btnNewShit.Text" xml:space="preserve">
+    <value>Check for PSO2 Updates (New method test)</value>
+  </data>
+  <data name="btnNewShit.Tooltip" xml:space="preserve">
+    <value>Checks for any files that need to be updated</value>
+  </data>
+  <data name="ButtonItem5.Text" xml:space="preserve">
+    <value>Check for PSO2 Updates</value>
+  </data>
+  <data name="ButtonItem5.Tooltip" xml:space="preserve">
+    <value>Checks for any files that need to be updated</value>
+  </data>
+  <data name="btnDownloadPrepatch.Text" xml:space="preserve">
+    <value>Check for Pre-Patch data</value>
+  </data>
+  <data name="btnCheckForStoryUpdates.Text" xml:space="preserve">
+    <value>Check for Story Patch Updates</value>
+  </data>
+  <data name="btnCheckForStoryUpdates.Tooltip" xml:space="preserve">
+    <value>Trigger a check for out-of-date story patch files</value>
+  </data>
+  <data name="chkAlwaysOnTop.Text" xml:space="preserve">
+    <value>Always on Top</value>
+  </data>
+  <data name="chkAlwaysOnTop.Tooltip" xml:space="preserve">
+    <value>Determine whether the PSO2 Tweaker will stay on top of other programs or not</value>
+  </data>
+  <data name="chkItemTranslation.Text" xml:space="preserve">
+    <value>Translate Items</value>
+  </data>
+  <data name="chkItemTranslation.Tooltip" xml:space="preserve">
+    <value>Sets whether or not items are translated in-game</value>
+  </data>
+  <data name="btnConfigureItemTranslation.Text" xml:space="preserve">
+    <value>Configure Item Translation</value>
+  </data>
+  <data name="btnPSO2Options.Text" xml:space="preserve">
+    <value>PSO2 Options</value>
+  </data>
+  <data name="btnPSO2Options.Tooltip" xml:space="preserve">
+    <value>Change certain in-game PSO2 options</value>
+  </data>
+  <data name="btnOptions.Text" xml:space="preserve">
+    <value>Opt&amp;ions</value>
+  </data>
+  <data name="btnOptions.Tooltip" xml:space="preserve">
+    <value>Change options relating to the PSO2 Tweaker</value>
+  </data>
+  <data name="ButtonItem14.Text" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="ButtonItem14.Tooltip" xml:space="preserve">
+    <value>Exit the PSO2 Tweaker</value>
   </data>
   <data name="btnENPatch.Text" xml:space="preserve">
     <value>English Patch</value>
@@ -7042,9 +7147,6 @@
   <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
     <value>Patch enemy names to be in Japanese</value>
   </data>
-  <data name="ButtonInstall.Text" xml:space="preserve">
-    <value>Install/Update Patches</value>
-  </data>
   <data name="btnRestoreENBackup.Text" xml:space="preserve">
     <value>English Patch</value>
   </data>
@@ -7075,9 +7177,6 @@
   <data name="btnRestoreJPETrials.Tooltip" xml:space="preserve">
     <value>Restore a backup of the JP e-codes patch (if it exists)</value>
   </data>
-  <data name="btnRestoreBackups.Text" xml:space="preserve">
-    <value>Restore Backup of JP Files</value>
-  </data>
   <data name="btnUninstallENPatch.Text" xml:space="preserve">
     <value>English Patch</value>
   </data>
@@ -7095,9 +7194,6 @@
   </data>
   <data name="btnUninstallStory.Tooltip" xml:space="preserve">
     <value>Uninstall the English Story Patch</value>
-  </data>
-  <data name="ButtonItem1.Text" xml:space="preserve">
-    <value>Redownload Original JP Files</value>
   </data>
   <data name="btnAnalyze.Text" xml:space="preserve">
     <value>Analyze Install for Issues</value>
@@ -7177,9 +7273,6 @@
   <data name="btnTerminate.Tooltip" xml:space="preserve">
     <value>Forcibly ends PSO2 - Bye bye!</value>
   </data>
-  <data name="ButtonItem2.Text" xml:space="preserve">
-    <value>Troubleshooting</value>
-  </data>
   <data name="ButtonItem7.Text" xml:space="preserve">
     <value>Launch Chrome in PSO2 Compatibility Mode</value>
   </data>
@@ -7209,9 +7302,6 @@
   </data>
   <data name="btnInstallPSO2.Text" xml:space="preserve">
     <value>Install Phantasy Star Online 2</value>
-  </data>
-  <data name="btnOtherStuff.Text" xml:space="preserve">
-    <value>Other Tasks</value>
   </data>
   <data name="btnBumped.Text" xml:space="preserve">
     <value>Bumped.org (PSO2 News Site)</value>
@@ -7243,9 +7333,6 @@
   <data name="btnEXPFULL.Text" xml:space="preserve">
     <value>The Ship 2 Voice Chat (EXPFULL)</value>
   </data>
-  <data name="ButtonItem3.Text" xml:space="preserve">
-    <value>Web Links</value>
-  </data>
   <data name="btnDonateToBumped.Text" xml:space="preserve">
     <value>Bumped.org Donation Link</value>
   </data>
@@ -7257,93 +7344,6 @@
   </data>
   <data name="btnDonateToTweaker.Text" xml:space="preserve">
     <value>PSO2 Tweaker Donation Link</value>
-  </data>
-  <data name="btnDonations.Text" xml:space="preserve">
-    <value>Donation Links</value>
-  </data>
-  <data name="btnSelectSweetFX.Text" xml:space="preserve">
-    <value>Select SweetFX File</value>
-  </data>
-  <data name="btnNewShit.Text" xml:space="preserve">
-    <value>Check for PSO2 Updates (New method test)</value>
-  </data>
-  <data name="btnNewShit.Tooltip" xml:space="preserve">
-    <value>Checks for any files that need to be updated</value>
-  </data>
-  <data name="ButtonItem5.Text" xml:space="preserve">
-    <value>Check for PSO2 Updates</value>
-  </data>
-  <data name="ButtonItem5.Tooltip" xml:space="preserve">
-    <value>Checks for any files that need to be updated</value>
-  </data>
-  <data name="btnDownloadPrepatch.Text" xml:space="preserve">
-    <value>Check for Pre-Patch data</value>
-  </data>
-  <data name="btnCheckForStoryUpdates.Text" xml:space="preserve">
-    <value>Check for Story Patch Updates</value>
-  </data>
-  <data name="btnCheckForStoryUpdates.Tooltip" xml:space="preserve">
-    <value>Trigger a check for out-of-date story patch files</value>
-  </data>
-  <data name="chkAlwaysOnTop.Text" xml:space="preserve">
-    <value>Always on Top</value>
-  </data>
-  <data name="chkAlwaysOnTop.Tooltip" xml:space="preserve">
-    <value>Determine whether the PSO2 Tweaker will stay on top of other programs or not</value>
-  </data>
-  <data name="chkItemTranslation.Text" xml:space="preserve">
-    <value>Translate Items</value>
-  </data>
-  <data name="chkItemTranslation.Tooltip" xml:space="preserve">
-    <value>Sets whether or not items are translated in-game</value>
-  </data>
-  <data name="btnConfigureItemTranslation.Text" xml:space="preserve">
-    <value>Configure Item Translation</value>
-  </data>
-  <data name="btnPSO2Options.Text" xml:space="preserve">
-    <value>PSO2 Options</value>
-  </data>
-  <data name="btnPSO2Options.Tooltip" xml:space="preserve">
-    <value>Change certain in-game PSO2 options</value>
-  </data>
-  <data name="btnOptions.Text" xml:space="preserve">
-    <value>Opt&amp;ions</value>
-  </data>
-  <data name="btnOptions.Tooltip" xml:space="preserve">
-    <value>Change options relating to the PSO2 Tweaker</value>
-  </data>
-  <data name="ButtonItem14.Text" xml:space="preserve">
-    <value>E&amp;xit</value>
-  </data>
-  <data name="ButtonItem14.Tooltip" xml:space="preserve">
-    <value>Exit the PSO2 Tweaker</value>
-  </data>
-  <data name="Office2007StartButton1.Text" xml:space="preserve">
-    <value>&amp;File</value>
-  </data>
-  <data name="LabelItem1.Text" xml:space="preserve">
-    <value>Click the ORB to access the menu</value>
-  </data>
-  <data name="RibbonControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>796, 52</value>
-  </data>
-  <data name="RibbonControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>70</value>
-  </data>
-  <data name="RibbonControl1.Text" xml:space="preserve">
-    <value>RibbonControl1</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.Name" xml:space="preserve">
-    <value>RibbonControl1</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.RibbonControl, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
-    <value>31</value>
   </data>
   <metadata name="StyleManager2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>145, 45</value>
@@ -7584,7 +7584,7 @@
     <value>Microsoft Sans Serif, 9pt, style=Bold</value>
   </data>
   <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>451, 148</value>
+    <value>198, 34</value>
   </data>
   <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 18</value>
@@ -7594,9 +7594,6 @@
   </data>
   <data name="Label5.Text" xml:space="preserve">
     <value>PLEASE WAIT</value>
-  </data>
-  <data name="Label5.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="&gt;&gt;Label5.Name" xml:space="preserve">
     <value>Label5</value>
@@ -7614,7 +7611,7 @@
     <value>True</value>
   </data>
   <data name="LabelX1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>454, 94</value>
+    <value>54, 34</value>
   </data>
   <data name="LabelX1.Size" type="System.Drawing.Size, System.Drawing">
     <value>138, 15</value>
@@ -7624,9 +7621,6 @@
   </data>
   <data name="LabelX1.Text" xml:space="preserve">
     <value>PSO2 server appears to be:</value>
-  </data>
-  <data name="LabelX1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="&gt;&gt;LabelX1.Name" xml:space="preserve">
     <value>LabelX1</value>

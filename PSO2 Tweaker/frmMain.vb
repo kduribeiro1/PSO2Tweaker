@@ -189,6 +189,7 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        tmrCheckServerStatus.Start()
         ' TODO: Fix this Mike plz
         Using g As Graphics = Me.CreateGraphics
             If g.DpiX = 120 Then
@@ -4436,42 +4437,33 @@ SelectInstallFolder:
 
     Private Sub IsServerOnline()
 
-        'This isn't working at the moment. Let's just exit the sub for now.
-        Exit Sub
+        'TODO: CK needs to recode this to actually parse the ship statuses from the packet to be more accurate.
 
-        ' The warnings were really bugging me, just uncomment when you want it back -Matthew
-        ' TODO: Fix this and uncomment
+        Dim ip As String = "gs016.pso2gs.net" ' Incase they need to use the proxy
+        Dim port As Int32 = 12200
 
-        'Dim sock As TcpClient
-        'Dim ip As String = "210.129.209.16"
-        'Dim port As Int32 = 12200
+        Try
+            Using sock As New TcpClient()
+                sock.NoDelay = True
+                sock.ReceiveTimeout = 1000
+                'sock.Connect(ip, port)
+                Dim result = sock.BeginConnect(ip, port, Nothing, Nothing)
+                result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1))
+                If Not sock.Connected Then
+                    Throw New Exception("Unable to connect!")
+                End If
 
-        'Try
-        '    sock = New TcpClient()
-        '    sock.NoDelay = True
-        '    sock.Connect(ip, port)
-        '    Dim stream As NetworkStream = sock.GetStream()
-        '    ' Receive the TcpServer.response. 
-        '    Dim data As [Byte]()
-        '    ' Buffer to store the response bytes.
-        '    data = New [Byte](256) {}
-
-        '    ' String to store the response ASCII representation. 
-        '    Dim responseData As [String] = [String].Empty
-
-        '    ' Read the first batch of the TcpServer response bytes. 
-        '    Dim bytes As Int32 = stream.Read(data, 0, data.Length)
-        '    responseData = Encoding.ASCII.GetString(data, 0, bytes)
-        '    Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE")
-        '    stream.Close()
-        '    sock.Close()
-
-        'Catch ex As Exception
-        '    Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
-        'End Try
+                Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE")
+                sock.Close()
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+            Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
+        End Try
     End Sub
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
+        MessageBox.Show("sdfsdfsdggs")
         Dim Oldstatus As String = Label5.Text
         Dim t5 As New Thread(AddressOf IsServerOnline)
         t5.IsBackground = True
