@@ -54,7 +54,6 @@ Partial Class frmMain
         Me.seconds = New System.Windows.Forms.Timer(Me.components)
         Me.Label4 = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
-        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.RibbonControl1 = New DevComponents.DotNetBar.RibbonControl()
@@ -389,10 +388,6 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
         Me.WebBrowser1.Name = "WebBrowser1"
-        '
-        'NotifyIcon1
-        '
-        resources.ApplyResources(Me.NotifyIcon1, "NotifyIcon1")
         '
         'WebBrowser2
         '
@@ -989,7 +984,6 @@ Partial Class frmMain
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents CancelProcessToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents NotifyIcon1 As System.Windows.Forms.NotifyIcon
     Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
     Friend WithEvents WebBrowser3 As System.Windows.Forms.WebBrowser
     Friend WithEvents RibbonControl1 As DevComponents.DotNetBar.RibbonControl

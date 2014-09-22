@@ -2007,16 +2007,6 @@ BackToCheckUpdates2:
         UnlockGUI()
     End Sub
 
-    Private Sub NotifyIcon1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
-        Try
-            Me.Show()
-            Me.WindowState = FormWindowState.Normal
-            NotifyIcon1.Visible = False
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
     Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
         ' TODO: Is clone(2)
         Me.seconds.Stop()
