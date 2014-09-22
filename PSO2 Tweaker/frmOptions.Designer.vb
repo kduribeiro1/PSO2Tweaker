@@ -24,7 +24,6 @@ Partial Class frmOptions
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOptions))
         Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
-        Me.btnBlack = New DevComponents.AdvTree.ColumnHeader()
         Me.CMBStyle = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem1 = New DevComponents.Editors.ComboItem()
         Me.ComboItem2 = New DevComponents.Editors.ComboItem()
@@ -86,7 +85,6 @@ Partial Class frmOptions
         Me.TextBoxX1 = New DevComponents.DotNetBar.Controls.TextBoxX()
         Me.ButtonX3 = New DevComponents.DotNetBar.ButtonX()
         Me.ButtonX4 = New DevComponents.DotNetBar.ButtonX()
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ButtonX5 = New DevComponents.DotNetBar.ButtonX()
         Me.CheckBoxX5 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkAutoRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -105,12 +103,6 @@ Partial Class frmOptions
         '
         Me.LabelX1.BackgroundStyle.Class = ""
         Me.LabelX1.Name = "LabelX1"
-        '
-        'btnBlack
-        '
-        Me.btnBlack.Name = "btnBlack"
-        resources.ApplyResources(Me.btnBlack, "btnBlack")
-        Me.btnBlack.Width.Absolute = 150
         '
         'CMBStyle
         '
@@ -544,10 +536,6 @@ Partial Class frmOptions
         Me.ButtonX4.Name = "ButtonX4"
         Me.ButtonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
         'ButtonX5
         '
         Me.ButtonX5.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
@@ -661,7 +649,6 @@ Partial Class frmOptions
 
     End Sub
     Friend WithEvents LabelX1 As DevComponents.DotNetBar.LabelX
-    Friend WithEvents btnBlack As DevComponents.AdvTree.ColumnHeader
     Friend WithEvents CMBStyle As DevComponents.DotNetBar.Controls.ComboBoxEx
     Friend WithEvents ComboItem1 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem2 As DevComponents.Editors.ComboItem
@@ -722,7 +709,6 @@ Partial Class frmOptions
     Friend WithEvents TextBoxX1 As DevComponents.DotNetBar.Controls.TextBoxX
     Friend WithEvents ButtonX3 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents ButtonX4 As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents ButtonX5 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents CheckBoxX5 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkAutoRemoveCensor As DevComponents.DotNetBar.Controls.CheckBoxX
