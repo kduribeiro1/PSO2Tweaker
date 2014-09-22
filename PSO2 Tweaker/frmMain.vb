@@ -12,7 +12,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
-' TODO: should probably remove the Inject stuff
+' TODO: Should move the new thread calls to use the thread pool instead
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Organize this form by order of member type (variable, function, etc)
@@ -1144,6 +1144,7 @@ Public Class frmMain
     End Function
 
     Public Sub MergePatches()
+        ' TODO: Should remove ReadToEnd and use File.Readall instead
         Dim filename As String()
         Dim truefilename As String
         Dim sr As StreamReader = File.OpenText("patchlist.txt")
