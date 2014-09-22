@@ -3414,24 +3414,9 @@ DOWNLOADFILES:
         ' ping gs016.pso2gs.net
         ' ping www.google.com
         ' network speed test
-        'Me.Label2.Text = testfile_Size & " MB"
-        'WriteDebugInfo("Checking connection to Patch Server #1...")
-        'WriteDebugInfo(Ping("socket-hack.com:2312/"))
-        'WriteDebugInfoSameLine("/" & Ping("socket-hack.com:2312/"))
-        'WriteDebugInfoSameLine("/" & Ping("socket-hack.com:2312/"))
-        'WriteDebugInfoSameLine("/" & Ping("socket-hack.com:2312/"))
-        'WriteDebugInfo("Checking connection to Patch Server #2...")
-        'WriteDebugInfo(Ping("pso2.aeongames.net"))
-        'WriteDebugInfoSameLine("/" & Ping("pso2.aeongames.net"))
-        'WriteDebugInfoSameLine("/" & Ping("pso2.aeongames.net"))
-        'WriteDebugInfoSameLine("/" & Ping("pso2.aeongames.net"))
-        'WriteDebugInfo("Checking connection to Ship 02 Server...")
-        'WriteDebugInfo(Ping("gs016.pso2gs.net"))
         WriteDebugInfo("Testing download speeds for Patch Server #1 (Japan)...")
         WriteDebugInfo("Downloading Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler...")
         Me.timer_start = 0
-        'Me.Label3.Text = Nothing
-        'Me.Label4.Text = Nothing
         Me.WebBrowser1.Navigate("http://socket-hack.com:2312/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler.mp3")
         Me.seconds.Start()
         Do While WebBrowser1.ReadyState <> WebBrowserReadyState.Complete
@@ -3440,9 +3425,6 @@ DOWNLOADFILES:
         WriteDebugInfo("Testing download speeds for Patch Server #2 (North America)...")
         WriteDebugInfo("Downloading Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler...")
         Me.timer_start = 0
-        'Me.Label3.Text = Nothing
-        'Me.Label4.Text = Nothing
-        'Me.WebBrowser1.Navigate("http://cyberkitsune.net/aida/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler(2).mp3")
         Me.WebBrowser2.Navigate("http://pso2.aeongames.net/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler(1).mp3")
         Me.seconds.Start()
     End Sub

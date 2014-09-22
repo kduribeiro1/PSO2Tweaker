@@ -4,36 +4,6 @@ Imports System.Runtime.InteropServices
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
-
-    <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
-        <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmDeviceName As String
-        Public dmSpecVersion As Short
-        Public dmDriverVersion As Short
-        Public dmSize As Short
-        Public dmDriverExtra As Short
-        Public dmFields As Integer
-        Public dmOrientation As Short
-        Public dmPaperSize As Short
-        Public dmPaperLength As Short
-        Public dmPaperWidth As Short
-        Public dmScale As Short
-        Public dmCopies As Short
-        Public dmDefaultSource As Short
-        Public dmPrintQuality As Short
-        Public dmColor As Short
-        Public dmDuplex As Short
-        Public dmYResolution As Short
-        Public dmTTOption As Short
-        Public dmCollate As Short
-        <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmFormName As String
-        Public dmUnusedPadding As Short
-        Public dmBitsPerPel As Short
-        Public dmPelsWidth As Integer
-        Public dmPelsHeight As Integer
-        Public dmDisplayFlags As Integer
-        Public dmDisplayFrequency As Integer
-    End Structure
 
     Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
@@ -60,7 +30,6 @@ Public Class frmPSO2Options
             End Select
 
             Dim backColor = Me.BackColor
-
             TabControlPanel1.Style.BackColor1.Color = backColor
             TabControlPanel1.Style.BackColor2.Color = backColor
             TabControlPanel2.Style.BackColor1.Color = backColor
@@ -85,20 +54,12 @@ Public Class frmPSO2Options
             TabControlPanel3.StyleMouseOver.BackColor2.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
-            Dim DevM As DEVMODE
-            DevM.dmDeviceName = New [String](New Char(32) {})
-            DevM.dmFormName = New [String](New Char(32) {})
-            DevM.dmSize = CShort(Marshal.SizeOf(GetType(DEVMODE)))
 
-            Dim modeIndex As Integer = 0
-            ' 0 = The first mode
-            While EnumDisplaySettings(Nothing, modeIndex, DevM)
-                ' Mode found
-                If ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) = False Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
+            For Each screen As Screen In screen.AllScreens
+                Dim bounds = screen.Bounds
+                If Not ComboBoxEx5.Items.Contains(bounds.Width & "x" & bounds.Height) Then ComboBoxEx5.Items.Add(bounds.Width & "x" & bounds.Height)
+            Next
 
-                ' The next mode
-                modeIndex += 1
-            End While
             Slider1.Value = ReadINISetting("DrawLevel")
             ComboBoxEx1.SelectedIndex = ReadINISetting("TextureResolution")
             ComboBoxEx7.SelectedIndex = ReadINISetting("InterfaceSize")
