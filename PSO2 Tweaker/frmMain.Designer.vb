@@ -140,7 +140,6 @@ Partial Class frmMain
         Me.Label5 = New System.Windows.Forms.Label()
         Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
         Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
-        Me.OFDSweetFX = New System.Windows.Forms.OpenFileDialog()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -914,10 +913,6 @@ Partial Class frmMain
         Me.tmrCheckServerStatus.Enabled = True
         Me.tmrCheckServerStatus.Interval = 120000
         '
-        'OFDSweetFX
-        '
-        Me.OFDSweetFX.FileName = "OFDSweetFX"
-        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -1015,7 +1010,6 @@ Partial Class frmMain
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents LabelX1 As DevComponents.DotNetBar.LabelX
     Friend WithEvents tmrCheckServerStatus As System.Windows.Forms.Timer
-    Friend WithEvents OFDSweetFX As System.Windows.Forms.OpenFileDialog
     Friend WithEvents ItemContainer3 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents Button1 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
