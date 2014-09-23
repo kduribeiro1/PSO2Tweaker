@@ -315,8 +315,7 @@ Public Class frmMain
                     pso2launchpath = DirectoryString.Replace("\data\win32", "")
 
                     If UseItemTranslation Then
-                        Dim dir As String
-                        dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                        Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                         Log("Deleting item cache...")
                         DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
                         Log("Checking to see if the item translation works with PSO2...")
@@ -885,8 +884,7 @@ Public Class frmMain
         DLWUA("http://162.243.211.123/freedom/working.txt", "working.txt", True)
 
         Using oReader As StreamReader = File.OpenText("working.txt")
-            Dim sBuffer As String
-            sBuffer = oReader.ReadLine
+            Dim sBuffer As String = oReader.ReadLine
             WriteDebugInfo(My.Resources.strDoesItemPatchWork & sBuffer.ToString)
         End Using
 
@@ -946,9 +944,7 @@ Public Class frmMain
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfo), Text)
         Else
             rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
@@ -958,9 +954,7 @@ Public Class frmMain
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfoSameLine), Text)
         Else
             rtbDebug.Text = rtbDebug.Text & " " & AddThisText
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
@@ -974,9 +968,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = Color.Green
             rtbDebug.AppendText(" [OK!]")
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [OK!]") & vbCrLf)
         End If
     End Sub
@@ -990,9 +982,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(" [WARNING!]")
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [WARNING!]") & vbCrLf)
         End If
     End Sub
@@ -1008,9 +998,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(My.Resources.strFAILED)
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
             If Helper.GetRegKey(Of String)("Pastebin") Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
@@ -1354,8 +1342,7 @@ NEXTFILE1:
                     End If
                     DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                     Dim process As Process = Nothing
-                    Dim processStartInfo As ProcessStartInfo
-                    processStartInfo = New ProcessStartInfo()
+                    Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
                     Dim UnRarLocation As String = (Application.StartupPath & "\7za.exe")
                     processStartInfo.FileName = UnRarLocation
                     processStartInfo.Verb = "runas"
@@ -1833,10 +1820,8 @@ BackToCheckUpdates2:
                 Exit Sub
             End If
 
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+            Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
 
             If File.Exists(pso2launchpath & "\pso2.exe") = False Then
                 WriteDebugInfoAndFAILED(My.Resources.strCouldNotFindPSO2EXE)
@@ -1849,9 +1834,7 @@ BackToCheckUpdates2:
             PB1.Text = ""
             WriteDebugInfo(My.Resources.strLaunchingPSO2)
 
-            Dim dir As String
-            dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-
+            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
 
             If chkItemTranslation.Checked Then
@@ -1880,14 +1863,12 @@ BackToCheckUpdates2:
             'End Item Translation stuff
             DeleteFile(pso2launchpath & "\ddraw.dll")
             File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
-            Dim startInfo As ProcessStartInfo
-            startInfo = New ProcessStartInfo
+            Dim startInfo As ProcessStartInfo = New ProcessStartInfo
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
             startInfo.FileName = (pso2launchpath & "\pso2.exe")
             startInfo.Arguments = "+0x33aca2b9"
             startInfo.UseShellExecute = False
-            Dim shell As Process
-            shell = New Process
+            Dim shell As Process = New Process
             shell.StartInfo = startInfo
 
             Try
@@ -1895,9 +1876,7 @@ BackToCheckUpdates2:
             Catch ex As Exception
                 WriteDebugInfo(My.Resources.strItSeemsThereWasAnError)
                 DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
-                Dim DirectoryString2 As String
-                DirectoryString2 = (lblDirectory.Text & "\data\win32")
-                DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
+                Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
                 If File.Exists((DirectoryString2 & "\pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
                 File.Move("pso2.exe", (DirectoryString2 & "\pso2.exe"))
                 WriteDebugInfoSameLine(My.Resources.strDone)
@@ -1947,8 +1926,7 @@ BackToCheckUpdates2:
 
     Private Function GrabLink(ByRef urlIdentifier As String)
         Dim net As New WebClient()
-        Dim src As String
-        src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
+        Dim src As String = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
         Dim regx As New Regex("http://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?", RegexOptions.IgnoreCase)
         Dim mactches As MatchCollection = regx.Matches(src)
         Dim returnURL As String = ""
@@ -2116,8 +2094,7 @@ BackToCheckUpdates2:
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
             End If
             Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
@@ -2213,10 +2190,8 @@ BackToCheckUpdates2:
         End If
         If chkItemTranslation.Checked Then
             'WriteDebugInfoAndOK(My.Resources.strItemTranslationEnabled)
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+            Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
 
             WriteDebugInfoAndOK(My.Resources.strDownloadingLatestItemTranslationFiles)
             'Download translator.dll and translation.bin
@@ -2269,8 +2244,7 @@ DOWNLOADBIN2:
 
         If chkItemTranslation.Checked = False Then
             WriteDebugInfoAndOK(My.Resources.strDeletingItemCache)
-            Dim dir As String
-            dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
             Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
@@ -2459,10 +2433,7 @@ NEXTFILE1:
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
@@ -2471,9 +2442,7 @@ NEXTFILE1:
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
@@ -2652,17 +2621,11 @@ DOWNLOADFILES:
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            Dim versionclient2 As New MyWebClient
-            versionclient2.timeout = 3000
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
@@ -2738,12 +2701,11 @@ DOWNLOADFILES:
                 End If
                 Dim di As New DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                 Dim diar1 As FileInfo() = di.GetFiles()
-                Dim dra As FileInfo
                 WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & (lblDirectory.Text & "\data\win32")))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
                 Dim win32 As String = (lblDirectory.Text & "\data\win32")
-                For Each dra In diar1
+                For Each dra As FileInfo In diar1
                     If File.Exists(win32 & "\" & dra.ToString) Then
                         DeleteFile(win32 & "\" & dra.ToString)
                     End If
@@ -2830,10 +2792,8 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnAnalyze_Click(sender As Object, e As EventArgs) Handles btnAnalyze.Click
-        Dim DirectoryString As String
-        Dim pso2launchpath As String
-        DirectoryString = (lblDirectory.Text & "\data\win32")
-        pso2launchpath = DirectoryString.Replace("data\win32", "")
+        Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+        Dim pso2launchpath As String = DirectoryString.Replace("data\win32", "")
         WriteDebugInfo(My.Resources.strCheckingForNecessaryFiles)
         If File.Exists(pso2launchpath & "Gameguard.DES") = False Then WriteDebugInfoAndWarning("Missing GameGuard.DES file! " & My.Resources.strPleaseFixGG)
         If File.Exists(pso2launchpath & "pso2.exe") = False Then WriteDebugInfoAndWarning("Missing pso2.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
@@ -2928,9 +2888,6 @@ DOWNLOADFILES:
                     Dim length2 As Long
                     If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename) Then length2 = info7.Length
                     If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
-                        'MsgBox((lblDirectory.Text & "\data\win32"))
-                        'MsgBox("\")
-                        'MsgBox(truefilename)
                         WriteDebugInfo(truefilename & My.Resources.strIsMissing)
                         missingfiles.Add(truefilename)
                     End If
@@ -2961,9 +2918,6 @@ DOWNLOADFILES:
                     Dim length2 As Long
                     If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename2) Then length2 = info7.Length
                     If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename2)) = False Then
-                        'MsgBox((lblDirectory.Text & "\data\win32"))
-                        'MsgBox("\")
-                        'MsgBox(truefilename)
                         If missingfiles.Contains(truefilename2) Then
                             'Do nothing
                         Else
@@ -3174,10 +3128,9 @@ DOWNLOADFILES:
         Try
             Dim systempath As String
             MsgBox(My.Resources.strPleaseBeAwareGG)
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+            Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
+
             If Directory.Exists(pso2launchpath & "\Gameguard\") Then
                 WriteDebugInfo("Removing Gameguard Directory...")
                 Directory.Delete(pso2launchpath & "\Gameguard\", True)
@@ -3256,10 +3209,7 @@ DOWNLOADFILES:
                 Exit Sub
             End If
             Dim filedownloader As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             Cancelled = False
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
 
@@ -3272,9 +3222,7 @@ DOWNLOADFILES:
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
             If File.Exists((DirectoryString & "pso2launcher.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
@@ -3367,10 +3315,7 @@ DOWNLOADFILES:
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2updater.exe" /e /g "AIDA":F
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2predownload.exe" /e /g "AIDA":F
             MsgBox(My.Resources.strFixPermissionIssuesText)
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             'MsgBox("cacls.exe" & (DirectoryString & "pso2.exe") & " /e /g """ & SystemInformation.UserName & """:F")
             WriteDebugInfo(My.Resources.strFixingPermissionsFor & "pso2.exe...")
             Application.DoEvents()
@@ -3847,10 +3792,7 @@ DOWNLOADFILES:
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
@@ -3859,17 +3801,14 @@ DOWNLOADFILES:
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
             'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
-            Dim procs As Process()
-            procs = Process.GetProcessesByName("pso2launcher")
+            Dim procs = Process.GetProcessesByName("pso2launcher")
             For Each proc As Process In procs
                 If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" And proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
@@ -4278,8 +4217,7 @@ SelectInstallFolder:
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
             Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation = (Application.StartupPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
@@ -4780,8 +4718,7 @@ SelectInstallFolder:
         Dim strStoryPatchLatestBase As String = ""
         Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch")
         Dim net As New WebClient()
-        Dim src As String
-        src = net.DownloadString("http://arks-layer.com/story.php")
+        Dim src As String = net.DownloadString("http://arks-layer.com/story.php")
 
         ' Create a match using regular exp<b></b>ressions
         Dim m As Match = Regex.Match(src, "<u>.*?</u>")
@@ -4802,8 +4739,7 @@ SelectInstallFolder:
 
         'execute pso2-transam stuff with -b flag for backup
         Dim process As Process = Nothing
-        Dim processStartInfo As ProcessStartInfo
-        processStartInfo = New ProcessStartInfo()
+        Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
         processStartInfo.FileName = "pso2-transam.exe"
         processStartInfo.Verb = "runas"
 
@@ -4978,8 +4914,7 @@ SelectInstallFolder:
             End If
 
             Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
