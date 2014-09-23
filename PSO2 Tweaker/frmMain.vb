@@ -410,7 +410,7 @@ Public Class frmMain
 
             DirectoryString = (lblDirectory.Text & "\data\win32")
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
-            If Not File.Exists(pso2launchpath & "\ddraw.dll") AndAlso TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
+            If File.Exists(pso2launchpath & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2launchpath & "\ddraw.dll")
             Log("Loading settings...")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PatchServer")) Then Helper.SetRegKey(Of String)("PatchServer", "Patch Server #1")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SeenFuckSEGAMessage")) Then Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "False")
@@ -1768,7 +1768,6 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub ButtonItem6_Click(sender As Object, e As EventArgs) Handles ButtonItem6.Click
-
         'Fuck SEGA. Stupid jerks.
         Log("Check if PSO2 is running")
         If CheckIfRunning("pso2") = "Running" Then Exit Sub
