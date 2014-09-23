@@ -692,8 +692,7 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
-        Dim t3 As New Thread(AddressOf IsServerOnline)
-        t3.IsBackground = True
+        Dim t3 As New Thread(AddressOf IsServerOnline) With {.IsBackground = True}
         t3.Start()
 
         Try
@@ -805,8 +804,7 @@ Public Class frmMain
 
             If Helper.GetRegKey(Of String)("SidebarEnabled") = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
-                Dim t1 As New Thread(AddressOf LoadSidebar)
-                t1.IsBackground = True
+                Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                 t1.Start()
 
                 If DPISetting = 96 Then Me.Width = 796
@@ -865,8 +863,7 @@ Public Class frmMain
                 pso2launchpath = DirectoryString.Replace("\data\win32", "")
                 WriteDebugInfo(My.Resources.strDownloadingItemTranslationFiles)
                 ItemDownloadingDone = False
-                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles)
-                t4.IsBackground = True
+                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
                 t4.Start()
 
                 Do Until ItemDownloadingDone = True
@@ -1443,8 +1440,7 @@ NEXTFILE1:
         Try
             Dim filedownloader As New WebClient()
             Dim UpdateNeeded As Boolean
-            Dim versionclient As New MyWebClient
-            versionclient.timeout = 3000
+            Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
             versionclient.DownloadFile("http://162.243.211.123/freedom/precede.txt", "precede.txt")
@@ -1804,9 +1800,7 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub ButtonItem6_Click(sender As Object, e As EventArgs) Handles ButtonItem6.Click
-        'Dim t5 As New Thread(AddressOf Injectstuff)
-        't5.IsBackground = True
-        't5.Start()
+
         'Fuck SEGA. Stupid jerks.
         'If Helper.GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
         'Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
@@ -1863,13 +1857,9 @@ BackToCheckUpdates2:
             'End Item Translation stuff
             DeleteFile(pso2launchpath & "\ddraw.dll")
             File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
-            Dim startInfo As ProcessStartInfo = New ProcessStartInfo
+            Dim startInfo As ProcessStartInfo = New ProcessStartInfo With {.FileName = (pso2launchpath & "\pso2.exe"), .Arguments = "+0x33aca2b9", .UseShellExecute = False}
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
-            startInfo.FileName = (pso2launchpath & "\pso2.exe")
-            startInfo.Arguments = "+0x33aca2b9"
-            startInfo.UseShellExecute = False
-            Dim shell As Process = New Process
-            shell.StartInfo = startInfo
+            Dim shell As Process = New Process With {.StartInfo = startInfo}
 
             Try
                 shell.Start()
@@ -2333,8 +2323,7 @@ DOWNLOADBIN2:
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
 
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
         WriteDebugInfoSameLine(My.Resources.strDone)
@@ -2437,8 +2426,7 @@ NEXTFILE1:
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
-            Dim versionclient2 As New MyWebClient
-            versionclient2.timeout = 3000
+            Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             If Cancelled Then Exit Sub
@@ -2842,8 +2830,7 @@ DOWNLOADFILES:
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
         'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
@@ -3063,8 +3050,7 @@ DOWNLOADFILES:
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
         'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
@@ -3504,8 +3490,7 @@ DOWNLOADFILES:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Thread(AddressOf LoadSidebar)
-                    t1.IsBackground = True
+                    Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                     t1.Start()
                 End If
                 Exit Sub
@@ -3522,8 +3507,7 @@ DOWNLOADFILES:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Thread(AddressOf LoadSidebar)
-                    t1.IsBackground = True
+                    Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                     t1.Start()
                 End If
                 Exit Sub
@@ -3540,8 +3524,7 @@ DOWNLOADFILES:
         If Me.Visible Then
             If e.Url.ToString <> "http://162.243.211.123/freedom/tweaker.html" Then
                 Process.Start(e.Url.ToString())
-                Dim t1 As New Thread(AddressOf LoadSidebar)
-                t1.IsBackground = True
+                Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                 t1.Start()
             End If
         End If
@@ -3796,8 +3779,7 @@ DOWNLOADFILES:
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
-            Dim versionclient As New MyWebClient
-            versionclient.timeout = 3000
+            Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
             If Cancelled Then Exit Sub
@@ -3957,10 +3939,7 @@ DOWNLOADFILES:
         If InstallYesNo = vbYes Then
             MsgBox("This will install Phantasy Star Online EPISODE 2! Please select a folder to install into." & vbCrLf & "A folder called PHANTASYSTARONLINE2 will be created inside the folder you choose." & vbCrLf & "(For example, if you choose the C drive, it will install to C:\PHANTASYSTARONLINE2\)" & vbCrLf & "It is HIGHLY RECOMMENDED that you do NOT install into the Program Files folder, but a normal folder like C:\PHANTASYSTARONLINE\")
 SelectInstallFolder:
-            Dim MyFolderBrowser As New FolderBrowserDialog
-            MyFolderBrowser.Description = "Please select a folder (or drive) to install PSO2 into"
-            ' Sets the root folder where the browsing starts from 
-            MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+            Dim MyFolderBrowser As New FolderBrowserDialog With {.RootFolder = Environment.SpecialFolder.MyComputer, .Description = "Please select a folder (or drive) to install PSO2 into"}
             Dim dlgResult As DialogResult = MyFolderBrowser.ShowDialog()
 
             If dlgResult = DialogResult.OK Then
@@ -4012,8 +3991,7 @@ SelectInstallFolder:
                     Me.TopMost = False
                     Application.DoEvents()
                     WriteDebugInfo("Checking/Installing DirectX...")
-                    Dim client As New MyWebClient
-                    client.timeout = 10000
+                    Dim client As New MyWebClient With {.timeout = 10000}
                     Try
                         client.DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
                         Dim process As Process
@@ -4379,8 +4357,7 @@ SelectInstallFolder:
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
         Dim Oldstatus As String = Label5.Text
-        Dim t5 As New Thread(AddressOf IsServerOnline)
-        t5.IsBackground = True
+        Dim t5 As New Thread(AddressOf IsServerOnline) With {.IsBackground = True}
         t5.Start()
         If Label5.Text <> Oldstatus Then
             MsgBox("The server is now " & Label5.Text & "!")
@@ -4659,8 +4636,7 @@ SelectInstallFolder:
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
@@ -4739,9 +4715,7 @@ SelectInstallFolder:
 
         'execute pso2-transam stuff with -b flag for backup
         Dim process As Process = Nothing
-        Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-        processStartInfo.FileName = "pso2-transam.exe"
-        processStartInfo.Verb = "runas"
+        Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
 
         If Directory.Exists(backupdir) Then processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
         If Directory.Exists(backupdir) = False Then
