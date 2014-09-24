@@ -1145,7 +1145,7 @@ Public Class frmMain
 
         Do While sr3.Peek <> -1
             strLine = sr3.ReadLine()
-            filename = Regex.Split(strLine, ".pat")
+            filename = strLine.Split(".pat")
             truefilename = filename(0).Replace("data/win32/", "")
 
             If Not MyArray.Contains(truefilename) Then
@@ -1178,7 +1178,7 @@ Public Class frmMain
 
         Do While sr3.Peek <> -1
             strLine = sr3.ReadLine()
-            filename = Regex.Split(strLine, ".pat")
+            filename = strLine.Split(".pat")
             truefilename = filename(0).Replace("data/win32/", "")
 
             If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
@@ -1281,7 +1281,8 @@ Public Class frmMain
                     WriteDebugInfo(My.Resources.strBeginningStoryModeUpdate)
                     While Not (oReader.EndOfStream)
                         sBuffer = oReader.ReadLine
-                        filename = Regex.Split(sBuffer, ",")
+                        MessageBox.Show(sBuffer)
+                        filename = sBuffer.Split(","c)
                         truefilename = filename(0)
                         TrueMD5 = filename(1)
                         If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) Then
@@ -1476,9 +1477,9 @@ StartPrePatch:
                             While Not (oReader.EndOfStream)
                                 If CancelledFull Then Exit Sub
                                 sBuffer = oReader.ReadLine
-                                filename = Regex.Split(sBuffer, ".pat")
+                                filename = sBuffer.Split(".pat")
                                 truefilename = filename(0).Replace("data/win32/", "")
-                                MD5 = Regex.Split(filename(1), vbTab)
+                                MD5 = filename(1).Split(vbTab)
                                 TrueMD5 = MD5(2)
                                 If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                                     If truefilename = "pso2.exe" Then
@@ -1512,7 +1513,6 @@ NEXTFILE1:
                             If CancelledFull Then Exit Sub
                             'Download the missing files:
                             'WHAT THE FUCK IS GOING ON HERE?
-                            ' TODO: Is clone(3)
                             downloaded += 1
                             totaldownloaded += totalsize2
 
@@ -1900,7 +1900,6 @@ BackToCheckUpdates2:
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
         ' TODO: Make function use SizeSuffix and whatever else needs doing
-        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
@@ -1938,7 +1937,6 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
-        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
@@ -1948,7 +1946,6 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
-        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
@@ -2296,9 +2293,9 @@ DOWNLOADBIN2:
                 While Not (oReader.EndOfStream)
                     If CancelledFull Then Exit Sub
                     sBuffer = oReader.ReadLine
-                    filename = Regex.Split(sBuffer, ".pat")
+                    filename = sBuffer.Split(".pat")
                     truefilename = filename(0).Replace("data/win32/", "")
-                    MD5 = Regex.Split(filename(1), vbTab)
+                    MD5 = filename(1).Split(vbTab)
                     TrueMD5 = MD5(2)
                     If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                         If truefilename = "pso2.exe" Then
@@ -2337,7 +2334,6 @@ NEXTFILE1:
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
-                ' TODO: Is clone(3)
                 downloaded += 1
                 totaldownloaded += totalsize2
 
@@ -2423,7 +2419,6 @@ NEXTFILE1:
             Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            ' TODO: Is clone(4)
             Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
@@ -2468,9 +2463,9 @@ NEXTFILE1:
                     If CancelledFull Then Exit Sub
                     sBuffer = oReader.ReadLine
                     If String.IsNullOrEmpty(sBuffer) Then GoTo DOWNLOADFILES
-                    filename = Regex.Split(sBuffer, ".pat")
+                    filename = sBuffer.Split(".pat")
                     truefilename = filename(0).Replace("data/win32/", "")
-                    MD5 = Regex.Split(filename(1), vbTab)
+                    MD5 = filename(1).Split(vbTab)
                     TrueMD5 = MD5(2)
                     If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                         If truefilename = "pso2.exe" Then
@@ -2480,7 +2475,7 @@ NEXTFILE1:
 
                         If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) Then
                             If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & My.Resources.strIsMissing)
-                            testfilesize = Regex.Split(filename(1), "	")
+                            testfilesize = filename(1).Split(vbTab)
                             totalfilesize += Convert.ToInt32(testfilesize(1))
                             missingfiles2.Add(truefilename)
                             GoTo NEXTFILE2
@@ -2490,13 +2485,14 @@ NEXTFILE1:
 
                         If Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
                             If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
-                            testfilesize = Regex.Split(filename(1), "	")
+                            testfilesize = filename(1).Split(vbTab)
                             totalfilesize += Convert.ToInt32(testfilesize(1))
                             missingfiles2.Add(truefilename)
                             GoTo NEXTFILE2
                         End If
 NEXTFILE2:
                         NumberofChecks += 1
+                        ' TODO: fsgihofnhogsdfjngdfgdfgjodm
                         lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
                         Application.DoEvents()
                     End If
@@ -2517,7 +2513,6 @@ DOWNLOADFILES:
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
-                ' TODO: Is clone(3)
                 downloaded2 += 1
                 totaldownloaded += totalsize2
 
@@ -2814,7 +2809,7 @@ DOWNLOADFILES:
             While Not (oReader.EndOfStream)
                 If CancelledFull Then Exit Sub
                 sBuffer = oReader.ReadLine
-                filename = Regex.Split(sBuffer, ".pat")
+                filename = sBuffer.Split(".pat")
                 truefilename = filename(0).Replace("data/win32/", "")
                 If truefilename <> "GameGuard.des" AndAlso truefilename <> "edition.txt" AndAlso truefilename <> "gameversion.ver" AndAlso truefilename <> "pso2.exe" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                     Dim info7 As New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
@@ -2843,7 +2838,7 @@ DOWNLOADFILES:
             While Not (oReader.EndOfStream)
                 If CancelledFull Then Exit Sub
                 sBuffer2 = oReader.ReadLine
-                filename2 = Regex.Split(sBuffer2, ".pat")
+                filename2 = sBuffer2.Split(".pat")
                 truefilename2 = filename2(0).Replace("data/win32/", "")
                 If truefilename2 <> "GameGuard.des" AndAlso truefilename2 <> "pso2.exe" AndAlso truefilename2 <> "PSO2JP.ini" AndAlso truefilename2 <> "script/user_default.pso2" AndAlso truefilename2 <> "script/user_intel.pso2" Then
                     Dim info7 As New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename2))
@@ -3652,7 +3647,6 @@ DOWNLOADFILES:
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?v3
-                ' TODO: Is clone(3)
                 downloaded += 1
                 totaldownloaded += totalsize2
 
@@ -3737,7 +3731,6 @@ DOWNLOADFILES:
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
             DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", True)
             WriteDebugInfoSameLine(My.Resources.strDone)
-            ' TODO: Is clone(4)
             Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
@@ -4014,7 +4007,6 @@ SelectInstallFolder:
             Application.DoEvents()
 
             'list the names of all files in the specified directory
-            ' TODO: Is clone(1)
             Log("Extracted " & diar1.Count & " files from the patch")
 
             If diar1.Count = 0 Then
@@ -4114,7 +4106,6 @@ SelectInstallFolder:
             'list the names of all files in the specified directory
             Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
 
-            ' TODO: Is clone(1)
             Log("Extracted " & diar1.Count & " files from the patch")
 
             If diar1.Count = 0 Then
@@ -4561,7 +4552,7 @@ SelectInstallFolder:
                 'count -= 1
             End If
 
-            SplitSEGALine = Regex.Split(SEGALine, ".pat")
+            SplitSEGALine = SEGALine.Split(".pat")
             SEGAFilename = SplitSEGALine(0).Replace("data/win32/", "")
             lblStatus.Text = "Checking file " & count & " / " & CStr(totalfiles.Count)
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"

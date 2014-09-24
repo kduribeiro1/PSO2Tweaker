@@ -150,7 +150,6 @@ Public Class frmVEDA
         frmMain.MergePatches()
     End Sub
 
-    ' TODO: Is clone(4)
     Private Sub btnListDir_Click(sender As Object, e As EventArgs) Handles btnListDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
@@ -172,7 +171,6 @@ Public Class frmVEDA
         frmMain.PasteBinUploadFile("PSO2 Folder Contents.txt")
     End Sub
 
-    ' TODO: Is clone(4)
     Private Sub btnAnyDir_Click(sender As Object, e As EventArgs) Handles btnAnyDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
@@ -207,7 +205,6 @@ Public Class frmVEDA
         frmMain.PasteBinUploadFile("Folder Contents.txt")
     End Sub
 
-    ' TODO: Is clone(4)
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
