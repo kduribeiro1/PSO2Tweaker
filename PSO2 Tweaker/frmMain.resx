@@ -1134,10 +1134,10 @@
   <data name="btnOptions.Tooltip" xml:space="preserve">
     <value>Change options relating to the PSO2 Tweaker</value>
   </data>
-  <data name="ButtonItem14.Text" xml:space="preserve">
+  <data name="btnExit.Text" xml:space="preserve">
     <value>E&amp;xit</value>
   </data>
-  <data name="ButtonItem14.Tooltip" xml:space="preserve">
+  <data name="btnExit.Tooltip" xml:space="preserve">
     <value>Exit the PSO2 Tweaker</value>
   </data>
   <data name="Office2007StartButton1.Text" xml:space="preserve">
@@ -8120,10 +8120,10 @@
   <data name="&gt;&gt;btnOptions.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;ButtonItem14.Name" xml:space="preserve">
-    <value>ButtonItem14</value>
+  <data name="&gt;&gt;btnExit.Name" xml:space="preserve">
+    <value>btnExit</value>
   </data>
-  <data name="&gt;&gt;ButtonItem14.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnExit.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;LabelItem1.Name" xml:space="preserve">

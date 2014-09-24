@@ -129,7 +129,7 @@ Partial Class frmMain
         Me.ItemContainer4 = New DevComponents.DotNetBar.ItemContainer()
         Me.btnPSO2Options = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
-        Me.ButtonItem14 = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
         Me.LabelItem1 = New DevComponents.DotNetBar.LabelItem()
         Me.StyleManager2 = New DevComponents.DotNetBar.StyleManager()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
@@ -821,7 +821,7 @@ Partial Class frmMain
         Me.ItemContainer4.BackgroundStyle.Class = "RibbonFileMenuBottomContainer"
         Me.ItemContainer4.HorizontalItemAlignment = DevComponents.DotNetBar.eHorizontalItemsAlignment.Right
         Me.ItemContainer4.Name = "ItemContainer4"
-        Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPSO2Options, Me.btnOptions, Me.ButtonItem14})
+        Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPSO2Options, Me.btnOptions, Me.btnExit})
         '
         'btnPSO2Options
         '
@@ -839,13 +839,13 @@ Partial Class frmMain
         Me.btnOptions.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnOptions, "btnOptions")
         '
-        'ButtonItem14
+        'btnExit
         '
-        Me.ButtonItem14.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.ButtonItem14.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.ButtonItem14.Name = "ButtonItem14"
-        Me.ButtonItem14.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.ButtonItem14, "ButtonItem14")
+        Me.btnExit.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnExit, "btnExit")
         '
         'LabelItem1
         '
@@ -992,7 +992,7 @@ Partial Class frmMain
     Friend WithEvents ItemContainer2 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents ItemContainer4 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents btnOptions As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents ButtonItem14 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnExit As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents StyleManager2 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents btnPSO2Options As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnAnnouncements As DevComponents.DotNetBar.ButtonX

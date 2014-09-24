@@ -479,7 +479,7 @@ Public Class frmMain
             chkItemTranslation.Text = My.Resources.strTranslateItems
             btnPSO2Options.Text = My.Resources.strPSO2Options
             btnOptions.Text = My.Resources.strOptions
-            ButtonItem14.Text = My.Resources.strExit
+            btnExit.Text = My.Resources.strExit
             btnAnalyze.Text = My.Resources.strAnalyzeInstallforIssues
             Button2.Text = My.Resources.strCheckforDeletedMissingFiles
             ButtonItem10.Text = My.Resources.strCheckForOldMissingFiles
@@ -1143,7 +1143,12 @@ Public Class frmMain
         Dim MyArray As New ArrayList
         Dim strLine As String
 
+        ' TODO: add this to the RESX stuffs
+        lblStatus.Text = "Listing files to patch..."
+        Cursor = Cursors.WaitCursor
+
         Do While sr3.Peek <> -1
+            Application.DoEvents()
             strLine = sr3.ReadLine()
             filename = strLine.Split(".pat")
             truefilename = filename(0).Replace("data/win32/", "")
@@ -1155,6 +1160,7 @@ Public Class frmMain
         Loop
         sr3.Close()
         sw3.Close()
+        Cursor = Cursors.Default
     End Sub
 
     Public Sub MergePrePatches()
@@ -3345,7 +3351,8 @@ DOWNLOADFILES:
         End If
     End Sub
 
-    Private Sub ButtonItem9_Click(sender As Object, e As EventArgs) Handles btnPSO2Options.Click
+    Private Sub btnPSO2Options_Click(sender As Object, e As EventArgs) Handles btnPSO2Options.Click
+        Cursor = Cursors.WaitCursor
         Try
             frmPSO2Options.TopMost = Me.TopMost
             frmPSO2Options.Top += 50
@@ -3354,10 +3361,13 @@ DOWNLOADFILES:
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Cursor = Cursors.Default
         End Try
     End Sub
 
-    Private Sub ButtonItem13_Click(sender As Object, e As EventArgs) Handles btnOptions.Click
+    Private Sub btnOptions_Click(sender As Object, e As EventArgs) Handles btnOptions.Click
+        Cursor = Cursors.WaitCursor
         Try
             frmOptions.CMBStyle.SelectedIndex = -1
             frmOptions.TopMost = Me.TopMost
@@ -3368,6 +3378,8 @@ DOWNLOADFILES:
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Cursor = Cursors.Default
         End Try
     End Sub
 
@@ -3383,7 +3395,7 @@ DOWNLOADFILES:
         End Using
     End Sub
 
-    Private Sub ButtonItem14_Click(sender As Object, e As EventArgs) Handles ButtonItem14.Click
+    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
         Me.Close()
     End Sub
 
