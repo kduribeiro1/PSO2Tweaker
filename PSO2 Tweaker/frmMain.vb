@@ -56,7 +56,7 @@ Public Class frmMain
     Dim pfnStartAddr As Integer
     Dim pszLibFileRemote As String
     Dim TargetBufferSize As Integer
-    Dim p() As Process
+    Dim processes As Process()
 
 #Region "External Functions"
 
@@ -132,7 +132,7 @@ Public Class frmMain
                 Application.DoEvents()
                 Thread.Sleep(2000)
                 Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
-                ButtonItem6.Text = "Twerk it!"
+                btnLaunchPSO2.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
             End If
             If e.KeyCode = Keys.K Then
@@ -465,7 +465,7 @@ Public Class frmMain
             btnApplyChanges.Text = My.Resources.strApplySelectedChanges
             CancelDownloadToolStripMenuItem.Text = My.Resources.strCancelCurrentDownload
             ButtonItem5.Text = My.Resources.strCheckforPSO2Updates
-            ButtonItem6.Text = My.Resources.strLaunchPSO2
+            btnLaunchPSO2.Text = My.Resources.strLaunchPSO2
             Button6.Text = My.Resources.strFixPSO2EXEs
             btnFixPermissions.Text = My.Resources.strFixPSO2Permissions
             LabelItem1.Text = My.Resources.strClickOrb
@@ -790,7 +790,7 @@ Public Class frmMain
             DeleteFile("Story MD5HashList.txt")
 
             UnlockGUI()
-            ButtonItem6.Enabled = False
+            btnLaunchPSO2.Enabled = False
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SidebarEnabled")) Then Helper.SetRegKey(Of String)("SidebarEnabled", "True")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("RemoveCensor")) Then Helper.SetRegKey(Of String)("RemoveCensor", "True")
@@ -883,7 +883,7 @@ Public Class frmMain
         DeleteFile("Story MD5HashList.txt")
         DeleteFile("PSO2 Tweaker Updater.exe")
         WriteDebugInfo(My.Resources.strAllDoneSystemReady)
-        ButtonItem6.Enabled = True
+        btnLaunchPSO2.Enabled = True
     End Sub
 
     Public Sub DownloadItemTranslationFiles()
@@ -1016,10 +1016,6 @@ Public Class frmMain
     Private Sub rtbDebug_TextChanged(sender As Object, e As EventArgs) Handles rtbDebug.TextChanged
         rtbDebug.SelectionStart = rtbDebug.Text.Length
     End Sub
-
-    Public Function Split(ByVal input As String, ByVal ParamArray delimiter As String()) As String()
-        Return input.Split(delimiter, StringSplitOptions.None)
-    End Function
 
     Private Sub OnDownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressChangedEventArgs)
         Dim totalSize As Long = e.TotalBytesToReceive
@@ -1198,13 +1194,13 @@ Public Class frmMain
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
         ' TODO: should change what this returns
-        p = Process.GetProcessesByName(ProcessName)
+        processes = Process.GetProcessesByName(ProcessName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
         Dim x As Integer = 0
         If ProcessName = "PSO2 Tweaker" Then x = 1
 
-        If p.Count > x Then
+        If processes.Count > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("It seems that " & ProcessName.Replace(".exe", "") & " is already running. Would you like to close it?", vbYesNo)
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)
@@ -1620,7 +1616,6 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub btnApplyChanges_Click(sender As Object, e As EventArgs) Handles btnApplyChanges.Click
-        ' TODO: Oh boy this is going to be fun
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -1774,7 +1769,7 @@ BackToCheckUpdates2:
         End Try
     End Sub
 
-    Private Sub ButtonItem6_Click(sender As Object, e As EventArgs) Handles ButtonItem6.Click
+    Private Sub btnLaunchPSO2_Click(sender As Object, e As EventArgs) Handles btnLaunchPSO2.Click
         'Fuck SEGA. Stupid jerks.
         Log("Check if PSO2 is running")
         If CheckIfRunning("pso2") = "Running" Then Exit Sub
@@ -1955,7 +1950,6 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
         Try
             Log("Selecting PSO2 Directory...")
             Dim MyFolderBrowser As New FolderBrowserDialog
@@ -2027,10 +2021,16 @@ BackToCheckUpdates2:
             End If
 
             Log("Story mode RAR selected as: " & StoryLocation)
-            ' TODO: should be a switch
-            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strWouldYouLikeBackupStory, vbYesNo)
-            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+
+            Select Case Helper.GetRegKey(Of String)("Backup")
+                Case "Ask"
+                    backupyesno = MsgBox(My.Resources.strWouldYouLikeBackupStory, vbYesNo)
+                Case "Always"
+                    backupyesno = MsgBoxResult.Yes
+                Case "Never"
+                    backupyesno = MsgBoxResult.No
+            End Select
+
             Log("Extracting story patch...")
             If Directory.Exists("TEMPSTORYAIDAFOOL") Then
                 My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -2492,7 +2492,6 @@ NEXTFILE1:
                         End If
 NEXTFILE2:
                         NumberofChecks += 1
-                        ' TODO: fsgihofnhogsdfjngdfgdfgjodm
                         lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
                         Application.DoEvents()
                     End If
@@ -3780,11 +3779,11 @@ DOWNLOADFILES:
 
     Private Sub ButtonItem7_Click(sender As Object, e As EventArgs) Handles ButtonItem7.Click
         Dim ProcessName As String = "chrome"
-        p = Process.GetProcessesByName("chrome")
+        processes = Process.GetProcessesByName("chrome")
         Dim currentProcess As Process = Process.GetCurrentProcess()
         Dim x As Integer = 0
 
-        If p.Count > x Then
+        If processes.Count > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("You need to have all Chrome windows closed before launching in this mode. Would you like to close all open Chrome windows now?", vbYesNo)
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)

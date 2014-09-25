@@ -45,7 +45,7 @@ Partial Class frmMain
         Me.chkRestoreNVidia = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestoreSEGA = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.btnApplyChanges = New DevComponents.DotNetBar.ButtonX()
-        Me.ButtonItem6 = New DevComponents.DotNetBar.ButtonX()
+        Me.btnLaunchPSO2 = New DevComponents.DotNetBar.ButtonX()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tsmRestartDownload = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -341,14 +341,14 @@ Partial Class frmMain
         Me.btnApplyChanges.Name = "btnApplyChanges"
         Me.btnApplyChanges.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'ButtonItem6
+        'btnLaunchPSO2
         '
-        Me.ButtonItem6.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonItem6.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonItem6.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonItem6, "ButtonItem6")
-        Me.ButtonItem6.Name = "ButtonItem6"
-        Me.ButtonItem6.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.btnLaunchPSO2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.btnLaunchPSO2.BackColor = System.Drawing.Color.Transparent
+        Me.btnLaunchPSO2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        resources.ApplyResources(Me.btnLaunchPSO2, "btnLaunchPSO2")
+        Me.btnLaunchPSO2.Name = "btnLaunchPSO2"
+        Me.btnLaunchPSO2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'ContextMenuStrip1
         '
@@ -926,7 +926,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.ButtonItem6)
+        Me.Controls.Add(Me.btnLaunchPSO2)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.lblDirectory)
         Me.Controls.Add(Me.chkRestoreSEGA)
@@ -977,7 +977,7 @@ Partial Class frmMain
     Friend WithEvents chkRestoreNVidia As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestoreSEGA As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents btnApplyChanges As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents ButtonItem6 As DevComponents.DotNetBar.ButtonX
+    Friend WithEvents btnLaunchPSO2 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CancelDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Label3 As System.Windows.Forms.Label

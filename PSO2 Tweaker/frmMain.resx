@@ -599,31 +599,31 @@
   <data name="&gt;&gt;btnApplyChanges.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="ButtonItem6.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="btnLaunchPSO2.Location" type="System.Drawing.Point, System.Drawing">
     <value>254, 219</value>
   </data>
-  <data name="ButtonItem6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnLaunchPSO2.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 24</value>
   </data>
-  <data name="ButtonItem6.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnLaunchPSO2.TabIndex" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
-  <data name="ButtonItem6.Text" xml:space="preserve">
+  <data name="btnLaunchPSO2.Text" xml:space="preserve">
     <value>Launch PSO2</value>
   </data>
-  <data name="ButtonItem6.Tooltip" xml:space="preserve">
+  <data name="btnLaunchPSO2.Tooltip" xml:space="preserve">
     <value>Launch the game! o/</value>
   </data>
-  <data name="&gt;&gt;ButtonItem6.Name" xml:space="preserve">
-    <value>ButtonItem6</value>
+  <data name="&gt;&gt;btnLaunchPSO2.Name" xml:space="preserve">
+    <value>btnLaunchPSO2</value>
   </data>
-  <data name="&gt;&gt;ButtonItem6.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnLaunchPSO2.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;ButtonItem6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnLaunchPSO2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;ButtonItem6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnLaunchPSO2.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
   <metadata name="ContextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
