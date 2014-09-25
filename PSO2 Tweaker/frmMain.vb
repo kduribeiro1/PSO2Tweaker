@@ -1197,6 +1197,7 @@ Public Class frmMain
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
+        ' TODO: should change what this returns
         p = Process.GetProcessesByName(ProcessName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
@@ -1900,11 +1901,10 @@ BackToCheckUpdates2:
     End Function
 
     Private Sub seconds_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles seconds.Tick
-        Me.seconds.Interval = 10
         Me.timer_start += 1
     End Sub
 
-    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
+    Private Sub DocumentCompleted()
         ' TODO: Make function use SizeSuffix and whatever else needs doing
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
@@ -1912,6 +1912,18 @@ BackToCheckUpdates2:
         WriteDebugInfoSameLine(" Done!")
         WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
         DoneDownloading = True
+    End Sub
+
+    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
+        DocumentCompleted()
+    End Sub
+
+    Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
+        DocumentCompleted()
+    End Sub
+
+    Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
+        DocumentCompleted()
     End Sub
 
     Public Function Ping(ByVal server As String) As String
@@ -1940,24 +1952,6 @@ BackToCheckUpdates2:
         CancelledFull = True
         WriteDebugInfo(My.Resources.strProcessWasCancelled)
         UnlockGUI()
-    End Sub
-
-    Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
-        Me.seconds.Stop()
-        Me.time_for_download = timer_start * 10
-        Me.velocity = testfile_Size / time_for_download * 1000
-        WriteDebugInfoSameLine(" Done!")
-        WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
-        DoneDownloading = True
-    End Sub
-
-    Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
-        Me.seconds.Stop()
-        Me.time_for_download = timer_start * 10
-        Me.velocity = testfile_Size / time_for_download * 1000
-        WriteDebugInfoSameLine(" Done!")
-        WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
-        DoneDownloading = True
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -3904,7 +3898,7 @@ SelectInstallFolder:
                         client.DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
                         Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "dxwebsetup.exe", .Verb = "runas", .Arguments = "/Q", .UseShellExecute = True}
                         Dim process As Process = process.Start(processStartInfo)
-                        Do Until Process.WaitForExit(1000)
+                        Do Until process.WaitForExit(1000)
                         Loop
                         WriteDebugInfoSameLine("Done!")
 

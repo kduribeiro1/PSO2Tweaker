@@ -378,6 +378,7 @@ Partial Class frmMain
         '
         'seconds
         '
+        Me.seconds.Interval = 10
         '
         'Label4
         '
