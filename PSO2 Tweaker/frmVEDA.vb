@@ -158,9 +158,9 @@ Public Class frmVEDA
         Dim pso2launchpath As String
         DirectoryString = frmMain.lblDirectory.Text
         pso2launchpath = DirectoryString.Replace("\data\win32", "")
-        Dim di As New IO.DirectoryInfo(pso2launchpath)
-        Dim diar1 As IO.FileInfo() = di.GetFiles()
-        Dim dra As IO.FileInfo
+        Dim di As New DirectoryInfo(pso2launchpath)
+        Dim diar1 As FileInfo() = di.GetFiles()
+        Dim dra As FileInfo
         File.Delete("PSO2 Folder Contents.txt")
 
         'list the names of all files in the specified directory
@@ -192,9 +192,9 @@ Public Class frmVEDA
             Exit Sub
         End If
 
-        Dim di As New IO.DirectoryInfo(DirectoryString)
-        Dim diar1 As IO.FileInfo() = di.GetFiles()
-        Dim dra As IO.FileInfo
+        Dim di As New DirectoryInfo(DirectoryString)
+        Dim diar1 As FileInfo() = di.GetFiles()
+        Dim dra As FileInfo
         File.Delete("Folder Contents.txt")
 
         'list the names of all files in the specified directory
@@ -226,13 +226,13 @@ Public Class frmVEDA
             Exit Sub
         End If
 
-        Dim di As New IO.DirectoryInfo(DirectoryString)
-        Dim diar1 As IO.FileInfo() = di.GetFiles()
-        Dim dra As IO.FileInfo
+        Dim di As New DirectoryInfo(DirectoryString)
+        Dim diar1 As FileInfo() = di.GetFiles()
+        Dim dra As FileInfo
 
         'Dim strToday As String = Format(Date.Now(), "dd-MM-yyyy")
         'strToday.Replace("/", "-")
-        If IO.File.Exists("Story MD5HashList.txt") Then IO.File.Delete("Story MD5HashList.txt")
+        If File.Exists("Story MD5HashList.txt") Then File.Delete("Story MD5HashList.txt")
 
         'list the names of all files in the specified directory
         For Each dra In diar1

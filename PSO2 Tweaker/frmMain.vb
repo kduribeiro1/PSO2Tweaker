@@ -1124,8 +1124,23 @@ Public Class frmMain
         Array.Copy(strTemp, lines, strTemp.Length)
         Array.Copy(strTemp2, 0, lines, strTemp.Length, strTemp2.Length)
 
-        Dim hashSet = New HashSet(Of String)(lines)
-        File.WriteAllLines("SOMEOFTHETHINGS.txt", hashSet.ToArray())
+        Dim files = New Dictionary(Of String, String)
+
+        For index As Integer = 0 To (lines.Length - 1)
+            Dim currentLine = lines(index)
+            If String.IsNullOrEmpty(currentLine) Then Continue For
+
+            Dim filename = currentLine.Split(".pat")
+            If String.IsNullOrEmpty(filename(0)) Then Continue For
+
+            Dim key = filename(0).Replace("data/win32/", "")
+
+            If Not files.ContainsKey(key) Then
+                files.Add(key, currentLine)
+            End If
+        Next
+
+        File.WriteAllLines("SOMEOFTHETHINGS.txt", files.Values)
     End Sub
 
     Public Sub MergePrePatches()
