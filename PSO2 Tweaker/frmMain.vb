@@ -709,7 +709,7 @@ Public Class frmMain
                 End If
             End If
 
-            ' TODO: Shouldn't be doing this in this way
+            ' Shouldn't be doing this in this way
             Application.DoEvents()
 
             If Not File.Exists("7za.exe") Then
@@ -1117,46 +1117,15 @@ Public Class frmMain
     End Function
 
     Public Sub MergePatches()
-        ' TODO: Should remove ReadToEnd and use File.Readall instead
-        Dim filename As String()
-        Dim truefilename As String
-        Dim sr As StreamReader = File.OpenText("patchlist.txt")
+        Dim strTemp As String() = File.ReadAllLines("patchlist.txt")
+        Dim strTemp2 As String() = File.ReadAllLines("patchlist_old.txt")
+        Dim lines(strTemp.Length + strTemp2.Length) As String
 
-        ' Store it in a string variable for now
-        Dim strTemp As String = sr.ReadToEnd
-        sr.Close()
+        Array.Copy(strTemp, lines, strTemp.Length)
+        Array.Copy(strTemp2, 0, lines, strTemp.Length, strTemp2.Length)
 
-        Dim sr2 As StreamReader = File.OpenText("patchlist_old.txt")
-        Dim strTemp2 As String = sr2.ReadToEnd
-        sr2.Close()
-
-        Dim objWriter As New StreamWriter("ALLOFTHETHINGS.txt")
-        objWriter.WriteLine((strTemp & strTemp2))
-        objWriter.Close()
-
-        Dim sr3 = New StreamReader("ALLOFTHETHINGS.txt")
-        Dim sw3 = New StreamWriter("SOMEOFTHETHINGS.txt")
-        Dim MyArray As New ArrayList
-        Dim strLine As String
-
-        ' TODO: add this to the RESX stuffs
-        lblStatus.Text = "Listing files to patch..."
-        Cursor = Cursors.WaitCursor
-
-        Do While sr3.Peek <> -1
-            Application.DoEvents()
-            strLine = sr3.ReadLine()
-            filename = strLine.Split(".pat")
-            truefilename = filename(0).Replace("data/win32/", "")
-
-            If Not MyArray.Contains(truefilename) Then
-                MyArray.Add(truefilename)
-                sw3.WriteLine(strLine)
-            End If
-        Loop
-        sr3.Close()
-        sw3.Close()
-        Cursor = Cursors.Default
+        Dim hashSet = New HashSet(Of String)(lines)
+        File.WriteAllLines("SOMEOFTHETHINGS.txt", hashSet.ToArray())
     End Sub
 
     Public Sub MergePrePatches()
@@ -1173,23 +1142,23 @@ Public Class frmMain
 
         ' TODO: Needs a bit of a redo
 
-        Dim sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
-        Dim sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
-        Dim MyArray As New ArrayList
-        Dim strLine As String
+        Using sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
+            Using sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
+                Dim MyArray As New ArrayList
+                Dim strLine As String
 
-        Do While sr3.Peek <> -1
-            strLine = sr3.ReadLine()
-            filename = strLine.Split(".pat")
-            truefilename = filename(0).Replace("data/win32/", "")
+                Do While sr3.Peek <> -1
+                    strLine = sr3.ReadLine()
+                    filename = strLine.Split(".pat")
+                    truefilename = filename(0).Replace("data/win32/", "")
 
-            If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
-                MyArray.Add(truefilename)
-                sw3.WriteLine(strLine)
-            End If
-        Loop
-        sr3.Close()
-        sw3.Close()
+                    If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
+                        MyArray.Add(truefilename)
+                        sw3.WriteLine(strLine)
+                    End If
+                Loop
+            End Using
+        End Using
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
@@ -4223,7 +4192,7 @@ SelectInstallFolder:
         'TODO: CK needs to recode this to actually parse the ship statuses from the packet to be more accurate.
 
         Dim ip As String = "gs016.pso2gs.net" ' Incase they need to use the proxy
-        Dim port As Int32 = 12200
+        Dim port As Integer = 12200
 
         Try
             Using sock As New TcpClient()
@@ -4439,7 +4408,7 @@ SelectInstallFolder:
 
             Do
                 currentLine = reader.ReadLine()
-                If currentLine Is Nothing Then Exit Do
+                If (currentLine Is Nothing) Then Exit Do
                 If Not currentLine.Contains("pso2gs.net") Then builtFile.Add(currentLine)
             Loop
         End Using
