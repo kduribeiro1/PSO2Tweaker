@@ -56,6 +56,7 @@ Public Class frmMain
     Dim pfnStartAddr As Integer
     Dim pszLibFileRemote As String
     Dim TargetBufferSize As Integer
+    Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
     Dim processes As Process()
 
 #Region "External Functions"
@@ -1130,7 +1131,7 @@ Public Class frmMain
             Dim currentLine = lines(index)
             If String.IsNullOrEmpty(currentLine) Then Continue For
 
-            Dim filename = currentLine.Split(".pat")
+            Dim filename = Regex.Split(currentLine, ".pat")
             If String.IsNullOrEmpty(filename(0)) Then Continue For
 
             Dim key = filename(0).Replace("data/win32/", "")
@@ -1140,7 +1141,7 @@ Public Class frmMain
             End If
         Next
 
-        File.WriteAllLines("SOMEOFTHETHINGS.txt", files.Values)
+        SOMEOFTHETHINGS = files
     End Sub
 
     Public Sub MergePrePatches()
@@ -1164,7 +1165,7 @@ Public Class frmMain
 
                 Do While sr3.Peek <> -1
                     strLine = sr3.ReadLine()
-                    filename = strLine.Split(".pat")
+                    filename = Regex.Split(strLine, ".pat")
                     truefilename = filename(0).Replace("data/win32/", "")
 
                     If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
@@ -1464,7 +1465,7 @@ StartPrePatch:
                             While Not (oReader.EndOfStream)
                                 If CancelledFull Then Exit Sub
                                 sBuffer = oReader.ReadLine
-                                filename = sBuffer.Split(".pat")
+                                filename = Regex.Split(sBuffer, ".pat")
                                 truefilename = filename(0).Replace("data/win32/", "")
                                 MD5 = filename(1).Split(vbTab)
                                 TrueMD5 = MD5(2)
@@ -2277,7 +2278,7 @@ DOWNLOADBIN2:
                 While Not (oReader.EndOfStream)
                     If CancelledFull Then Exit Sub
                     sBuffer = oReader.ReadLine
-                    filename = sBuffer.Split(".pat")
+                    filename = Regex.Split(sBuffer, ".pat")
                     truefilename = filename(0).Replace("data/win32/", "")
                     MD5 = filename(1).Split(vbTab)
                     TrueMD5 = MD5(2)
@@ -2441,47 +2442,55 @@ NEXTFILE1:
             If CancelledFull Then Exit Sub
             MergePatches()
             WriteDebugInfo(My.Resources.strCheckingforAllFiles)
-            Using oReader As StreamReader = File.OpenText("SOMEOFTHETHINGS.txt")
-                If CancelledFull Then Exit Sub
-                While Not (oReader.EndOfStream)
-                    If CancelledFull Then Exit Sub
-                    sBuffer = oReader.ReadLine
-                    If String.IsNullOrEmpty(sBuffer) Then GoTo DOWNLOADFILES
-                    filename = sBuffer.Split(".pat")
-                    truefilename = filename(0).Replace("data/win32/", "")
-                    MD5 = filename(1).Split(vbTab)
-                    TrueMD5 = MD5(2)
-                    If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
-                        If truefilename = "pso2.exe" Then
-                            PSO2EXEMD5 = TrueMD5
-                            GoTo NextFile2
-                        End If
 
-                        If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) Then
-                            If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & My.Resources.strIsMissing)
-                            testfilesize = filename(1).Split(vbTab)
-                            totalfilesize += Convert.ToInt32(testfilesize(1))
-                            missingfiles2.Add(truefilename)
-                            GoTo NEXTFILE2
-                        End If
+            SOMEOFTHETHINGS.Remove("GameGuard.des")
+            SOMEOFTHETHINGS.Remove("PSO2JP.ini")
+            SOMEOFTHETHINGS.Remove("script/user_default.pso2")
+            SOMEOFTHETHINGS.Remove("script/user_intel.pso2")
+            SOMEOFTHETHINGS.Remove("")
+            Dim dataPath = lblDirectory.Text & "\data\win32\"
+            Dim length = SOMEOFTHETHINGS.Count
+            Dim oldmax = PB1.Maximum
+            PB1.Maximum = length
 
-                        Dim TempMD5 As String = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
+            For Each kvp In SOMEOFTHETHINGS
+                lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
+                PB1.Text = NumberofChecks & " / " & length
+                Application.DoEvents()
+                NumberofChecks += 1
+                PB1.Value += 1
 
-                        If Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                            If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
-                            testfilesize = filename(1).Split(vbTab)
-                            totalfilesize += Convert.ToInt32(testfilesize(1))
-                            missingfiles2.Add(truefilename)
-                            GoTo NEXTFILE2
-                        End If
-NEXTFILE2:
-                        NumberofChecks += 1
-                        lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
-                        Application.DoEvents()
-                    End If
-                End While
-            End Using
-DOWNLOADFILES:
+                If kvp.Key = "pso2.exe" Then
+                    PSO2EXEMD5 = kvp.Value.Substring(kvp.Value.LastIndexOf(vbTab) + 1)
+                    Continue For
+                End If
+
+                Dim filePath = dataPath & kvp.Key
+
+                If Not File.Exists(filePath) Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & filePath & My.Resources.strIsMissing)
+                    testfilesize = kvp.Value.Split(vbTab)
+                    totalfilesize += Convert.ToInt32(testfilesize(1))
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+
+                Dim tempMD5 As String = Helper.GetMD5(filePath)
+                testfilesize = kvp.Value.Split(vbTab)
+                TrueMD5 = testfilesize(2)
+
+                If tempMD5 <> TrueMD5 Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
+                    totalfilesize += Convert.ToInt32(testfilesize(1))
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+            Next
+
+            PB1.Text = ""
+            PB1.Value = 0
+            PB1.Maximum = oldmax
+            SOMEOFTHETHINGS = Nothing
             Dim totaldownload2 As String = missingfiles2.Count
             Dim downloaded2 As Long = 0
             Dim info As FileInfo
@@ -2792,7 +2801,7 @@ DOWNLOADFILES:
             While Not (oReader.EndOfStream)
                 If CancelledFull Then Exit Sub
                 sBuffer = oReader.ReadLine
-                filename = sBuffer.Split(".pat")
+                filename = Regex.Split(sBuffer, ".pat")
                 truefilename = filename(0).Replace("data/win32/", "")
                 If truefilename <> "GameGuard.des" AndAlso truefilename <> "edition.txt" AndAlso truefilename <> "gameversion.ver" AndAlso truefilename <> "pso2.exe" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                     Dim info7 As New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
@@ -2821,7 +2830,7 @@ DOWNLOADFILES:
             While Not (oReader.EndOfStream)
                 If CancelledFull Then Exit Sub
                 sBuffer2 = oReader.ReadLine
-                filename2 = sBuffer2.Split(".pat")
+                filename2 = Regex.Split(sBuffer2, ".pat")
                 truefilename2 = filename2(0).Replace("data/win32/", "")
                 If truefilename2 <> "GameGuard.des" AndAlso truefilename2 <> "pso2.exe" AndAlso truefilename2 <> "PSO2JP.ini" AndAlso truefilename2 <> "script/user_default.pso2" AndAlso truefilename2 <> "script/user_intel.pso2" Then
                     Dim info7 As New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename2))
@@ -4541,7 +4550,7 @@ SelectInstallFolder:
                 'count -= 1
             End If
 
-            SplitSEGALine = SEGALine.Split(".pat")
+            SplitSEGALine = Regex.Split(SEGALine, ".pat")
             SEGAFilename = SplitSEGALine(0).Replace("data/win32/", "")
             lblStatus.Text = "Checking file " & count & " / " & CStr(totalfiles.Count)
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
