@@ -47,7 +47,7 @@ Public Class Helper
             If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
 
             returnValue = RegistrySubKey.GetValue(Key, Nothing)
-            MessageBox.Show("sdasad")
+            'MessageBox.Show("sdasad")
             If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
 
             Return returnValue
