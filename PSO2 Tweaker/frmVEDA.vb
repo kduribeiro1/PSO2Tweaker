@@ -150,7 +150,6 @@ Public Class frmVEDA
         frmMain.MergePatches()
     End Sub
 
-    ' TODO: Is clone(4)
     Private Sub btnListDir_Click(sender As Object, e As EventArgs) Handles btnListDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
@@ -159,9 +158,9 @@ Public Class frmVEDA
         Dim pso2launchpath As String
         DirectoryString = frmMain.lblDirectory.Text
         pso2launchpath = DirectoryString.Replace("\data\win32", "")
-        Dim di As New IO.DirectoryInfo(pso2launchpath)
-        Dim diar1 As IO.FileInfo() = di.GetFiles()
-        Dim dra As IO.FileInfo
+        Dim di As New DirectoryInfo(pso2launchpath)
+        Dim diar1 As FileInfo() = di.GetFiles()
+        Dim dra As FileInfo
         File.Delete("PSO2 Folder Contents.txt")
 
         'list the names of all files in the specified directory
@@ -172,7 +171,6 @@ Public Class frmVEDA
         frmMain.PasteBinUploadFile("PSO2 Folder Contents.txt")
     End Sub
 
-    ' TODO: Is clone(4)
     Private Sub btnAnyDir_Click(sender As Object, e As EventArgs) Handles btnAnyDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
@@ -194,9 +192,9 @@ Public Class frmVEDA
             Exit Sub
         End If
 
-        Dim di As New IO.DirectoryInfo(DirectoryString)
-        Dim diar1 As IO.FileInfo() = di.GetFiles()
-        Dim dra As IO.FileInfo
+        Dim di As New DirectoryInfo(DirectoryString)
+        Dim diar1 As FileInfo() = di.GetFiles()
+        Dim dra As FileInfo
         File.Delete("Folder Contents.txt")
 
         'list the names of all files in the specified directory
@@ -207,7 +205,6 @@ Public Class frmVEDA
         frmMain.PasteBinUploadFile("Folder Contents.txt")
     End Sub
 
-    ' TODO: Is clone(4)
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
@@ -229,13 +226,13 @@ Public Class frmVEDA
             Exit Sub
         End If
 
-        Dim di As New IO.DirectoryInfo(DirectoryString)
-        Dim diar1 As IO.FileInfo() = di.GetFiles()
-        Dim dra As IO.FileInfo
+        Dim di As New DirectoryInfo(DirectoryString)
+        Dim diar1 As FileInfo() = di.GetFiles()
+        Dim dra As FileInfo
 
         'Dim strToday As String = Format(Date.Now(), "dd-MM-yyyy")
         'strToday.Replace("/", "-")
-        If IO.File.Exists("Story MD5HashList.txt") Then IO.File.Delete("Story MD5HashList.txt")
+        If File.Exists("Story MD5HashList.txt") Then File.Delete("Story MD5HashList.txt")
 
         'list the names of all files in the specified directory
         For Each dra In diar1

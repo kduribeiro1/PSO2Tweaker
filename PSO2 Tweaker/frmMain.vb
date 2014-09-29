@@ -12,7 +12,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
-' TODO: should probably remove the Inject stuff
+' TODO: Should move the new thread calls to use the thread pool instead
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Organize this form by order of member type (variable, function, etc)
@@ -56,27 +56,14 @@ Public Class frmMain
     Dim pfnStartAddr As Integer
     Dim pszLibFileRemote As String
     Dim TargetBufferSize As Integer
-    Dim p() As Process
+    Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
+    Dim processes As Process()
 
 #Region "External Functions"
 
     Private Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
 
-    Private Declare Function VirtualAllocEx Lib "kernel32" (ByVal hProcess As Integer, ByVal lpAddress As Integer, ByVal dwSize As Integer, ByVal flAllocationType As Integer, ByVal flProtect As Integer) As Integer
-
-    Private Declare Function WriteProcessMemory Lib "kernel32" (ByVal hProcess As Integer, ByVal lpBaseAddress As Integer, ByVal lpBuffer As String, ByVal nSize As Integer, ByRef lpNumberOfBytesWritten As Integer) As Integer
-
-    Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Integer, ByVal lpProcName As String) As Integer
-
-    Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Integer
-
-    Private Declare Function CreateRemoteThread Lib "kernel32" (ByVal hProcess As Integer, ByVal lpThreadAttributes As Integer, ByVal dwStackSize As Integer, ByVal lpStartAddress As Integer, ByVal lpParameter As Integer, ByVal dwCreationFlags As Integer, ByRef lpThreadId As Integer) As Integer
-
-    Private Declare Function OpenProcess Lib "kernel32" (ByVal dwDesiredAccess As Integer, ByVal bInheritHandle As Integer, ByVal dwProcessId As Integer) As Integer
-
     Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
-
-    Private Declare Function CloseHandle Lib "kernel32" Alias "CloseHandleA" (ByVal hObject As Integer) As Integer
 
     Private Declare Function FlashWindow Lib "user32" (ByVal hwnd As Integer, ByVal bInvert As Integer) As Integer
 
@@ -94,23 +81,23 @@ Public Class frmMain
                 SystemUnlock = 1
                 lblStatus.Text = "Please enter the remaining commands to access Veda: *"
             End If
-            If e.KeyCode = Keys.U And SystemUnlock = 1 Then
+            If e.KeyCode = Keys.U AndAlso SystemUnlock = 1 Then
                 SystemUnlock = 2
                 lblStatus.Text = "Please enter the remaining commands to access Veda: **"
             End If
-            If e.KeyCode = Keys.N And SystemUnlock = 2 Then
+            If e.KeyCode = Keys.N AndAlso SystemUnlock = 2 Then
                 SystemUnlock = 3
                 lblStatus.Text = "Please enter the remaining commands to access Veda: ***"
             End If
-            If e.KeyCode = Keys.D And SystemUnlock = 3 Then
+            If e.KeyCode = Keys.D AndAlso SystemUnlock = 3 Then
                 SystemUnlock = 4
                 lblStatus.Text = "Please enter the remaining commands to access Veda: ****"
             End If
-            If e.KeyCode = Keys.A And SystemUnlock = 4 Then
+            If e.KeyCode = Keys.A AndAlso SystemUnlock = 4 Then
                 SystemUnlock = 5
                 lblStatus.Text = "Please enter the remaining commands to access Veda: *****"
             End If
-            If e.KeyCode = Keys.M And SystemUnlock = 5 Then
+            If e.KeyCode = Keys.M AndAlso SystemUnlock = 5 Then
                 SystemUnlock = 6
                 lblStatus.Text = "Please enter the remaining commands to access Veda: ******"
                 Application.DoEvents()
@@ -125,19 +112,19 @@ Public Class frmMain
                 MileyCyrus = 1
                 lblStatus.Text = "Please enter the remaining commands: *"
             End If
-            If e.KeyCode = Keys.I And MileyCyrus = 1 Then
+            If e.KeyCode = Keys.I AndAlso MileyCyrus = 1 Then
                 MileyCyrus = 2
                 lblStatus.Text = "Please enter the remaining commands: **"
             End If
-            If e.KeyCode = Keys.L And MileyCyrus = 2 Then
+            If e.KeyCode = Keys.L AndAlso MileyCyrus = 2 Then
                 MileyCyrus = 3
                 lblStatus.Text = "Please enter the remaining commands: ***"
             End If
-            If e.KeyCode = Keys.E And MileyCyrus = 3 Then
+            If e.KeyCode = Keys.E AndAlso MileyCyrus = 3 Then
                 MileyCyrus = 4
                 lblStatus.Text = "Please enter the remaining commands: ****"
             End If
-            If e.KeyCode = Keys.Y And MileyCyrus = 4 Then
+            If e.KeyCode = Keys.Y AndAlso MileyCyrus = 4 Then
                 MileyCyrus = 5
                 lblStatus.Text = "Please enter the remaining commands: *****"
                 Application.DoEvents()
@@ -146,30 +133,30 @@ Public Class frmMain
                 Application.DoEvents()
                 Thread.Sleep(2000)
                 Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
-                ButtonItem6.Text = "Twerk it!"
+                btnLaunchPSO2.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
             End If
             If e.KeyCode = Keys.K Then
                 SteamUnlock = 1
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *"
             End If
-            If e.KeyCode = Keys.U And SteamUnlock = 1 Then
+            If e.KeyCode = Keys.U AndAlso SteamUnlock = 1 Then
                 SteamUnlock = 2
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: **"
             End If
-            If e.KeyCode = Keys.M And SteamUnlock = 2 Then
+            If e.KeyCode = Keys.M AndAlso SteamUnlock = 2 Then
                 SteamUnlock = 3
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ***"
             End If
-            If e.KeyCode = Keys.I And SteamUnlock = 3 Then
+            If e.KeyCode = Keys.I AndAlso SteamUnlock = 3 Then
                 SteamUnlock = 4
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ****"
             End If
-            If e.KeyCode = Keys.H And SteamUnlock = 4 Then
+            If e.KeyCode = Keys.H AndAlso SteamUnlock = 4 Then
                 SteamUnlock = 5
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *****"
             End If
-            If e.KeyCode = Keys.O And SteamUnlock = 5 Then
+            If e.KeyCode = Keys.O AndAlso SteamUnlock = 5 Then
                 SteamUnlock = 6
                 lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ******"
                 Application.DoEvents()
@@ -299,8 +286,8 @@ Public Class frmMain
                     Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
                         procs = Process.GetProcessesByName("pso2")
                         For Each proc As Process In procs
-                            If proc.MainWindowTitle = "Phantasy Star Online 2" And proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then
-                                If TransOverride = False Then DeleteFile(pso2launchpath & "\ddraw.dll")
+                            If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then
+                                If Not TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
                             End If
                         Next
                         Thread.Sleep(1000)
@@ -312,13 +299,6 @@ Public Class frmMain
                     Log("Detected command argument -pso2")
 
                     'Fuck SEGA. Fuck them hard.
-                    'If Helper.GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
-                    'Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
-                    'Log("Checking if PSO2 is running")
-                    'If CheckIfRunning("pso2") = "Running" Then Exit Sub
-                    'If CheckIfRunning("pso2.exe") = "Running" Then Exit Sub
-                    'Try
-
                     If (Directory.Exists(lblDirectory.Text) = False OrElse lblDirectory.Text = "lblDirectory") Then
                         MsgBox(My.Resources.strPleaseSelectwin32Dir)
                         Button1.RaiseClick()
@@ -329,8 +309,7 @@ Public Class frmMain
                     pso2launchpath = DirectoryString.Replace("\data\win32", "")
 
                     If UseItemTranslation Then
-                        Dim dir As String
-                        dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                        Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                         Log("Deleting item cache...")
                         DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
                         Log("Checking to see if the item translation works with PSO2...")
@@ -395,8 +374,8 @@ Public Class frmMain
                         Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
                             procs = Process.GetProcessesByName("pso2")
                             For Each proc As Process In procs
-                                If proc.MainWindowTitle = "Phantasy Star Online 2" And proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then
-                                    If TransOverride = False Then DeleteFile(pso2launchpath & "\ddraw.dll")
+                                If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then
+                                    If Not TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
                                 End If
                             Next
                             Thread.Sleep(1000)
@@ -432,7 +411,7 @@ Public Class frmMain
 
             DirectoryString = (lblDirectory.Text & "\data\win32")
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
-            If File.Exists(pso2launchpath & "\ddraw.dll") And TransOverride = False Then DeleteFile(pso2launchpath & "\ddraw.dll")
+            If File.Exists(pso2launchpath & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2launchpath & "\ddraw.dll")
             Log("Loading settings...")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PatchServer")) Then Helper.SetRegKey(Of String)("PatchServer", "Patch Server #1")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SeenFuckSEGAMessage")) Then Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "False")
@@ -487,7 +466,7 @@ Public Class frmMain
             btnApplyChanges.Text = My.Resources.strApplySelectedChanges
             CancelDownloadToolStripMenuItem.Text = My.Resources.strCancelCurrentDownload
             ButtonItem5.Text = My.Resources.strCheckforPSO2Updates
-            ButtonItem6.Text = My.Resources.strLaunchPSO2
+            btnLaunchPSO2.Text = My.Resources.strLaunchPSO2
             Button6.Text = My.Resources.strFixPSO2EXEs
             btnFixPermissions.Text = My.Resources.strFixPSO2Permissions
             LabelItem1.Text = My.Resources.strClickOrb
@@ -501,7 +480,7 @@ Public Class frmMain
             chkItemTranslation.Text = My.Resources.strTranslateItems
             btnPSO2Options.Text = My.Resources.strPSO2Options
             btnOptions.Text = My.Resources.strOptions
-            ButtonItem14.Text = My.Resources.strExit
+            btnExit.Text = My.Resources.strExit
             btnAnalyze.Text = My.Resources.strAnalyzeInstallforIssues
             Button2.Text = My.Resources.strCheckforDeletedMissingFiles
             ButtonItem10.Text = My.Resources.strCheckForOldMissingFiles
@@ -629,7 +608,7 @@ Public Class frmMain
 
             Application.DoEvents()
 
-            If nodiag = False Then
+            If Not nodiag Then
                 Log(vbCrLf)
                 Log("----------------------------------------")
                 Log(My.Resources.strProgramOpeningRunningDiagnostics)
@@ -699,7 +678,7 @@ Public Class frmMain
                 End If
             End If
 
-            If source.Contains("<VersionHistory>") = False Then
+            If Not source.Contains("<VersionHistory>") Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToGetUpdateInfo)
             End If
         Catch ex As Exception
@@ -707,8 +686,7 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
-        Dim t3 As New Thread(AddressOf IsServerOnline)
-        t3.IsBackground = True
+        Dim t3 As New Thread(AddressOf IsServerOnline) With {.IsBackground = True}
         t3.Start()
 
         Try
@@ -723,19 +701,19 @@ Public Class frmMain
                 lblDirectory.Text = Helper.GetRegKey(Of String)("PSO2Dir")
             End If
 
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 And GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
+                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strNotSwapped & ")"
                 End If
-                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 And GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strSwapped & ")"
                 End If
             End If
 
-            ' TODO: Shouldn't be doing this in this way
+            ' Shouldn't be doing this in this way
             Application.DoEvents()
 
-            If File.Exists("7za.exe") = False Then
+            If Not File.Exists("7za.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "7za.exe...")
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
@@ -759,7 +737,7 @@ Public Class frmMain
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
             End If
 
-            If File.Exists("UnRar.exe") = False Then
+            If Not File.Exists("UnRar.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "UnRar.exe...")
                 Application.DoEvents()
                 DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
@@ -813,15 +791,14 @@ Public Class frmMain
             DeleteFile("Story MD5HashList.txt")
 
             UnlockGUI()
-            ButtonItem6.Enabled = False
+            btnLaunchPSO2.Enabled = False
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SidebarEnabled")) Then Helper.SetRegKey(Of String)("SidebarEnabled", "True")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("RemoveCensor")) Then Helper.SetRegKey(Of String)("RemoveCensor", "True")
 
             If Helper.GetRegKey(Of String)("SidebarEnabled") = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
-                Dim t1 As New Thread(AddressOf LoadSidebar)
-                t1.IsBackground = True
+                Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                 t1.Start()
 
                 If DPISetting = 96 Then Me.Width = 796
@@ -880,8 +857,7 @@ Public Class frmMain
                 pso2launchpath = DirectoryString.Replace("\data\win32", "")
                 WriteDebugInfo(My.Resources.strDownloadingItemTranslationFiles)
                 ItemDownloadingDone = False
-                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles)
-                t4.IsBackground = True
+                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
                 t4.Start()
 
                 Do Until ItemDownloadingDone = True
@@ -899,8 +875,7 @@ Public Class frmMain
         DLWUA("http://162.243.211.123/freedom/working.txt", "working.txt", True)
 
         Using oReader As StreamReader = File.OpenText("working.txt")
-            Dim sBuffer As String
-            sBuffer = oReader.ReadLine
+            Dim sBuffer As String = oReader.ReadLine
             WriteDebugInfo(My.Resources.strDoesItemPatchWork & sBuffer.ToString)
         End Using
 
@@ -909,7 +884,7 @@ Public Class frmMain
         DeleteFile("Story MD5HashList.txt")
         DeleteFile("PSO2 Tweaker Updater.exe")
         WriteDebugInfo(My.Resources.strAllDoneSystemReady)
-        ButtonItem6.Enabled = True
+        btnLaunchPSO2.Enabled = True
     End Sub
 
     Public Sub DownloadItemTranslationFiles()
@@ -960,9 +935,7 @@ Public Class frmMain
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfo), Text)
         Else
             rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
@@ -972,9 +945,7 @@ Public Class frmMain
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfoSameLine), Text)
         Else
             rtbDebug.Text = rtbDebug.Text & " " & AddThisText
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
@@ -988,9 +959,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = Color.Green
             rtbDebug.AppendText(" [OK!]")
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [OK!]") & vbCrLf)
         End If
     End Sub
@@ -1004,9 +973,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(" [WARNING!]")
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [WARNING!]") & vbCrLf)
         End If
     End Sub
@@ -1022,9 +989,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(My.Resources.strFAILED)
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim TimeFormatted As String
-            Dim time As DateTime = DateTime.Now
-            TimeFormatted = time.ToString("G")
+            Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
             If Helper.GetRegKey(Of String)("Pastebin") Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
@@ -1053,10 +1018,6 @@ Public Class frmMain
         rtbDebug.SelectionStart = rtbDebug.Text.Length
     End Sub
 
-    Public Function Split(ByVal input As String, ByVal ParamArray delimiter As String()) As String()
-        Return input.Split(delimiter, StringSplitOptions.None)
-    End Function
-
     Private Sub OnDownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressChangedEventArgs)
         Dim totalSize As Long = e.TotalBytesToReceive
         totalsize2 = totalSize
@@ -1065,7 +1026,6 @@ Public Class frmMain
         PB1.Value = percentage
         PB1.Text = (My.Resources.strDownloaded & Helper.SizeSuffix(downloadedBytes) & " / " & Helper.SizeSuffix(totalSize) & " (" & percentage & "%) - " & My.Resources.strRightClickforOptions)
         'Put your progress UI here, you can cancel download by uncommenting the line below
-        'wc.CancelAsync()
     End Sub
 
     Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
@@ -1107,7 +1067,7 @@ Public Class frmMain
                 End While
                 DLS.DownloadFileAsync((New Uri(Address)), Filename)
             End If
-            If Me.Visible = False Then
+            If Not Me.Visible Then
                 DLS.CancelAsync()
                 Cancelled = True
                 Application.Exit()
@@ -1158,39 +1118,30 @@ Public Class frmMain
     End Function
 
     Public Sub MergePatches()
-        Dim filename As String()
-        Dim truefilename As String
-        Dim sr As StreamReader = File.OpenText("patchlist.txt")
+        Dim strTemp As String() = File.ReadAllLines("patchlist.txt")
+        Dim strTemp2 As String() = File.ReadAllLines("patchlist_old.txt")
+        Dim lines(strTemp.Length + strTemp2.Length) As String
 
-        ' Store it in a string variable for now
-        Dim strTemp As String = sr.ReadToEnd
-        sr.Close()
+        Array.Copy(strTemp, lines, strTemp.Length)
+        Array.Copy(strTemp2, 0, lines, strTemp.Length, strTemp2.Length)
 
-        Dim sr2 As StreamReader = File.OpenText("patchlist_old.txt")
-        Dim strTemp2 As String = sr2.ReadToEnd
-        sr2.Close()
+        Dim files = New Dictionary(Of String, String)
 
-        Dim objWriter As New StreamWriter("ALLOFTHETHINGS.txt")
-        objWriter.WriteLine((strTemp & strTemp2))
-        objWriter.Close()
+        For index As Integer = 0 To (lines.Length - 1)
+            Dim currentLine = lines(index)
+            If String.IsNullOrEmpty(currentLine) Then Continue For
 
-        Dim sr3 = New StreamReader("ALLOFTHETHINGS.txt")
-        Dim sw3 = New StreamWriter("SOMEOFTHETHINGS.txt")
-        Dim MyArray As New ArrayList
-        Dim strLine As String
+            Dim filename = Regex.Split(currentLine, ".pat")
+            If String.IsNullOrEmpty(filename(0)) Then Continue For
 
-        Do While sr3.Peek <> -1
-            strLine = sr3.ReadLine()
-            filename = Regex.Split(strLine, ".pat")
-            truefilename = filename(0).Replace("data/win32/", "")
+            Dim key = filename(0).Replace("data/win32/", "")
 
-            If MyArray.Contains(truefilename) = False Then
-                MyArray.Add(truefilename)
-                sw3.WriteLine(strLine)
+            If Not files.ContainsKey(key) Then
+                files.Add(key, currentLine)
             End If
-        Loop
-        sr3.Close()
-        sw3.Close()
+        Next
+
+        SOMEOFTHETHINGS = files
     End Sub
 
     Public Sub MergePrePatches()
@@ -1207,34 +1158,34 @@ Public Class frmMain
 
         ' TODO: Needs a bit of a redo
 
-        Dim sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
-        Dim sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
-        Dim MyArray As New ArrayList
-        Dim strLine As String
+        Using sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
+            Using sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
+                Dim MyArray As New ArrayList
+                Dim strLine As String
 
-        Do While sr3.Peek <> -1
-            strLine = sr3.ReadLine()
-            filename = Regex.Split(strLine, ".pat")
-            truefilename = filename(0).Replace("data/win32/", "")
+                Do While sr3.Peek <> -1
+                    strLine = sr3.ReadLine()
+                    filename = Regex.Split(strLine, ".pat")
+                    truefilename = filename(0).Replace("data/win32/", "")
 
-            If MyArray.Contains(truefilename) = False And (Not String.IsNullOrEmpty(truefilename)) Then
-                MyArray.Add(truefilename)
-                sw3.WriteLine(strLine)
-            End If
-        Loop
-        sr3.Close()
-        sw3.Close()
+                    If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
+                        MyArray.Add(truefilename)
+                        sw3.WriteLine(strLine)
+                    End If
+                Loop
+            End Using
+        End Using
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
-        p = Process.GetProcessesByName(ProcessName)
+        ' TODO: should change what this returns
+        processes = Process.GetProcessesByName(ProcessName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
         Dim x As Integer = 0
         If ProcessName = "PSO2 Tweaker" Then x = 1
 
-        If p.Count > x Then
-            'MsgBox("It seems that " & ProcessName.Replace(".exe", "") & " is already running. If you don't see it, open the task manager and end task it.")
+        If processes.Count > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("It seems that " & ProcessName.Replace(".exe", "") & " is already running. Would you like to close it?", vbYesNo)
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)
@@ -1289,32 +1240,21 @@ Public Class frmMain
                 sBuffer = oReader.ReadLine
                 Helper.SetRegKey(Of String)("NewVersionTemp", sBuffer.ToString)
                 Helper.SetRegKey(Of String)("NewStoryVersion", sBuffer.ToString)
-                'MsgBox(sBuffer.ToString & " is the current version. You have: " & My.Settings.LastCheckedStoryVersion)
                 If sBuffer.ToString <> Helper.GetRegKey(Of String)("StoryPatchVersion") Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
                     Dim net As New WebClient()
-                    Dim src As String
-                    src = net.DownloadString("http://arks-layer.com/story.php")
-                    'MsgBox(src.ToString)
+                    Dim src As String = net.DownloadString("http://arks-layer.com/story.php")
                     ' Create a match using regular exp<b></b>ressions
                     'http://arks-layer.com/Story%20Patch%208-8-2013.rar.torrent
-                    'Dim m As Match = Regex.Match(src, "Story Patch (.*?).rar.torrent")
                     Dim m As Match = Regex.Match(src, "<u>.*?</u>")
-                    'MsgBox(m.Value)
                     ' Spit out the value plucked from the code
                     txtHTML.Text = m.Value
-                    Dim strDownloadME As String = txtHTML.Text
-                    strDownloadME = strDownloadME.Replace("<u>", "")
-                    strDownloadME = strDownloadME.Replace("</u>", "")
-                    'MsgBox(strDownloadME)
-                    'MsgBox(strDownloadME)
-                    'MsgBox(Helper.GetRegKey(Of String)("LatestStoryBase"))
+                    Dim strDownloadME As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
                     If strDownloadME <> Helper.GetRegKey(Of String)("LatestStoryBase") Then
                         Dim MBVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it using the new story patch method?", MsgBoxStyle.YesNo)
                         If MBVisitLink = vbYes Then
                             btnStoryPatchNew.RaiseClick()
-                            'Process.Start("http://arks-layer.com/story.php")
                             Exit Sub
                         End If
                         If MBVisitLink = vbNo Then Exit Sub
@@ -1329,10 +1269,11 @@ Public Class frmMain
                     WriteDebugInfo(My.Resources.strBeginningStoryModeUpdate)
                     While Not (oReader.EndOfStream)
                         sBuffer = oReader.ReadLine
-                        filename = Regex.Split(sBuffer, ",")
+                        MessageBox.Show(sBuffer)
+                        filename = sBuffer.Split(","c)
                         truefilename = filename(0)
                         TrueMD5 = filename(1)
-                        If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
+                        If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) Then
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
                         End If
@@ -1362,13 +1303,12 @@ NEXTFILE1:
                     DLWUA(("http://162.243.211.123/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", True)
                     If Cancelled Then Exit Sub
                     'Delete the existing file FIRST
-                    If File.Exists(downloadstring & ".7z") = False Then
+                    If Not File.Exists(downloadstring & ".7z") Then
                         WriteDebugInfoAndFAILED("File " & (downloadstring & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
                     DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                     Dim process As Process = Nothing
-                    Dim processStartInfo As ProcessStartInfo
-                    processStartInfo = New ProcessStartInfo()
+                    Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
                     Dim UnRarLocation As String = (Application.StartupPath & "\7za.exe")
                     processStartInfo.FileName = UnRarLocation
                     processStartInfo.Verb = "runas"
@@ -1378,20 +1318,19 @@ NEXTFILE1:
                     process = process.Start(processStartInfo)
                     Do Until process.WaitForExit(1000)
                     Loop
-                    If File.Exists(downloadstring) = False Then
+                    If Not File.Exists(downloadstring) Then
                         WriteDebugInfoAndFAILED("File " & (downloadstring) & " does not exist! Perhaps it wasn't extracted properly?")
                     End If
                     File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                     DeleteFile(downloadstring & ".7z")
                     Application.DoEvents()
                 Next
-                'If missingfiles.Count = 0 Then WriteDebugInfo("You appear to have the latest story patch files!")
                 WriteDebugInfoAndOK(My.Resources.strStoryPatchUpdated)
                 Helper.SetRegKey(Of String)("StoryPatchVersion", Helper.GetRegKey(Of String)("NewVersionTemp"))
                 Helper.SetRegKey(Of String)("NewVersionTemp", "")
                 Exit Sub
             End If
-            If UpdateNeeded = False Then
+            If Not UpdateNeeded Then
                 WriteDebugInfoAndOK("You have the latest story patch updates!")
                 Exit Sub
             End If
@@ -1469,8 +1408,7 @@ NEXTFILE1:
         Try
             Dim filedownloader As New WebClient()
             Dim UpdateNeeded As Boolean
-            Dim versionclient As New MyWebClient
-            versionclient.timeout = 3000
+            Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
             versionclient.DownloadFile("http://162.243.211.123/freedom/precede.txt", "precede.txt")
@@ -1508,7 +1446,6 @@ StartPrePatch:
                         Dim TrueMD5 As String = Nothing
                         Dim PSO2EXEMD5 As String = "FUCK YOU DUDU"
                         lblStatus.Text = ""
-                        'LockGUI()
                         WriteDebugInfo("Downloading pre-patch filelist...")
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt", True)
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist1.txt", "patchlist1.txt", True)
@@ -1517,10 +1454,8 @@ StartPrePatch:
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist4.txt", "patchlist4.txt", True)
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt", True)
                         WriteDebugInfoSameLine(My.Resources.strDone)
-                        'UnlockGUI()
                         MergePrePatches()
-                        If Directory.Exists(lblDirectory.Text & "\_precede\data\win32") = False Then Directory.CreateDirectory(lblDirectory.Text & "\_precede\data\win32") 'create directory
-                        'MsgBox("See if directory was created!")
+                        If Not Directory.Exists(lblDirectory.Text & "\_precede\data\win32") Then Directory.CreateDirectory(lblDirectory.Text & "\_precede\data\win32") 'create directory
 
                         WriteDebugInfo("Checking for already existing precede files...")
                         NumberofChecks = 0
@@ -1532,14 +1467,14 @@ StartPrePatch:
                                 sBuffer = oReader.ReadLine
                                 filename = Regex.Split(sBuffer, ".pat")
                                 truefilename = filename(0).Replace("data/win32/", "")
-                                MD5 = Regex.Split(filename(1), vbTab)
+                                MD5 = filename(1).Split(vbTab)
                                 TrueMD5 = MD5(2)
-                                If truefilename <> "GameGuard.des" And truefilename <> "PSO2JP.ini" And truefilename <> "script/user_default.pso2" And truefilename <> "script/user_intel.pso2" Then
+                                If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                                     If truefilename = "pso2.exe" Then
                                         PSO2EXEMD5 = TrueMD5
                                         GoTo NextFile1
                                     End If
-                                    If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\_precede\data\win32") & "\" & truefilename)) = False Then
+                                    If Not File.Exists(((lblDirectory.Text & "\_precede\data\win32") & "\" & truefilename)) Then
                                         If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
                                         missingfiles.Add(truefilename)
                                         GoTo NEXTFILE1
@@ -1555,7 +1490,6 @@ NEXTFILE1:
                                 NumberofChecks += 1
                                 lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks & "")
                                 Application.DoEvents()
-                                'If missingfiles.Count > 30 Then Exit While
                             End While
                         End Using
                         Dim totaldownload As String = missingfiles.Count
@@ -1567,7 +1501,6 @@ NEXTFILE1:
                             If CancelledFull Then Exit Sub
                             'Download the missing files:
                             'WHAT THE FUCK IS GOING ON HERE?
-                            ' TODO: Is clone(3)
                             downloaded += 1
                             totaldownloaded += totalsize2
 
@@ -1607,7 +1540,7 @@ NEXTFILE1:
                 versionclient.DownloadFile("http://162.243.211.123/freedom/precede_apply.txt", "precede_apply.txt")
                 Dim prepatchapply = File.ReadAllLines("precede_apply.txt")
                 Dim ApplyPrePatch As String = prepatchapply(0)
-                If Directory.Exists(lblDirectory.Text & "\_precede\data\win32\") = False Then GoTo BackToCheckUpdates2
+                If Not Directory.Exists(lblDirectory.Text & "\_precede\data\win32\") Then GoTo BackToCheckUpdates2
                 If ApplyPrePatch = "Yes" Then
                     Dim ApplyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch download will be deleted.", vbYesNo)
                     If ApplyPrePatchYesNo = vbNo Then
@@ -1668,7 +1601,6 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub btnApplyChanges_Click(sender As Object, e As EventArgs) Handles btnApplyChanges.Click
-        ' TODO: Oh boy this is going to be fun
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -1676,105 +1608,105 @@ BackToCheckUpdates2:
                 Exit Sub
             End If
             Log("Restoring/Removing files...")
-            If chkRemoveCensor.Checked And chkRestoreCensor.Checked Then
+            If chkRemoveCensor.Checked AndAlso chkRestoreCensor.Checked Then
                 MsgBox(My.Resources.strYouCannotRemoveRestore)
                 Exit Sub
             End If
-            If chkRemoveNVidia.Checked And chkRestoreNVidia.Checked Then
+            If chkRemoveNVidia.Checked AndAlso chkRestoreNVidia.Checked Then
                 MsgBox(My.Resources.strYouCannotRemoveRestore)
                 Exit Sub
             End If
-            If chkRemovePC.Checked And chkRestorePC.Checked Then
+            If chkRemovePC.Checked AndAlso chkRestorePC.Checked Then
                 MsgBox(My.Resources.strYouCannotRemoveRestore)
                 Exit Sub
             End If
-            If chkRemoveVita.Checked And chkRestoreVita.Checked Then
+            If chkRemoveVita.Checked AndAlso chkRestoreVita.Checked Then
                 MsgBox(My.Resources.strYouCannotRemoveRestore)
                 Exit Sub
             End If
-            If chkRemoveSEGA.Checked And chkRestoreSEGA.Checked Then
+            If chkRemoveSEGA.Checked AndAlso chkRestoreSEGA.Checked Then
                 MsgBox(My.Resources.strYouCannotRemoveRestore)
                 Exit Sub
             End If
             'Remove censor
             '[AIDA] Resume here
-            If chkRemoveCensor.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRemoveCensor.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
-            ElseIf chkRemoveCensor.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) = False Then
+            ElseIf chkRemoveCensor.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveCensor)
             End If
             'Restore Censor
-            If chkRestoreCensor.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRestoreCensor.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), "ffbff2ac5b7a7948961212cefd4d402c")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Censor...")
-            ElseIf chkRestoreCensor.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) = False Then
+            ElseIf chkRestoreCensor.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreCensor)
             End If
             'Remove PC Opening Video [Done]
-            If chkRemovePC.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRemovePC.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), "a44fbb2aeb8084c5a5fbe80e219a9927.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "PC Opening Video...")
-            ElseIf chkRemovePC.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = False Then
+            ElseIf chkRemovePC.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemovePC)
             End If
             'Restore PC Opening Video [Done]
-            If chkRestorePC.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRestorePC.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "PC Opening Video...")
-            ElseIf chkRestorePC.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) = False Then
+            ElseIf chkRestorePC.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestorePC)
             End If
             'Remove Vita Opening Video [Done]
-            If chkRemoveVita.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRemoveVita.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"), "a93adc766eb3510f7b5c279551a45585.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Vita Opening Video...")
-            ElseIf chkRemoveVita.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = False Then
+            ElseIf chkRemoveVita.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveVita)
             End If
             'Restore Vita Opening Video [Done]
-            If chkRestoreVita.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRestoreVita.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Vita Opening Video...")
-            ElseIf chkRestoreVita.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) = False Then
+            ElseIf chkRestoreVita.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreVita)
             End If
             'Remove NVidia Opening Video [Done]
-            If chkRemoveNVidia.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRemoveNVidia.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75"), "7f2368d207e104e8ed6086959b742c75.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "NVidia Opening Video...")
-            ElseIf chkRemoveNVidia.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) = False Then
+            ElseIf chkRemoveNVidia.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveNVidia)
             End If
             'Restore NVidia Opening Video [Done]
-            If chkRestoreNVidia.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRestoreNVidia.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), "7f2368d207e104e8ed6086959b742c75")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "NVidia Opening Video...")
-            ElseIf chkRestoreNVidia.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) = False Then
+            ElseIf chkRestoreNVidia.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreNVidia)
             End If
             'Remove SEGA Opening Video [Done]
-            If chkRemoveSEGA.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRemoveSEGA.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771"), "009bfec69b04a34576012d50e3417771.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "SEGA Opening Video...")
-            ElseIf chkRemoveSEGA.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) = False Then
+            ElseIf chkRemoveSEGA.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveSEGA)
             End If
             'Restore SEGA Opening Video [Done]
-            If chkRestoreSEGA.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If chkRestoreSEGA.Checked AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup"), "009bfec69b04a34576012d50e3417771")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "SEGA Opening Video...")
-            ElseIf chkRestoreSEGA.Checked And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) = False Then
+            ElseIf chkRestoreSEGA.Checked AndAlso (Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreSEGA)
             End If
             UnlockGUI()
@@ -1782,39 +1714,32 @@ BackToCheckUpdates2:
             'Restore PC Opening Video [Done]
             If chkSwapOP.Checked Then
                 WriteDebugInfo(My.Resources.strSwappingOpenings)
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
-                    If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
+                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                     My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
                     WriteDebugInfoAndOK(My.Resources.strRestoring & "PC Opening Video...")
-                    'ElseIf My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) = False Then
-                    'WriteDebugInfoAndWarning(My.Resources.strRestoring & "PC Opening Video...")
                 End If
                 'Restore Vita Opening Video [Done]
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
-                    If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
+                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                     My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
                     WriteDebugInfoAndOK(My.Resources.strRestoring & "Vita Opening Video...")
-                    'ElseIf My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) = False Then
-                    'WriteDebugInfoAndWarning(My.Resources.strRestoring & "Vita Opening Video...")
                 End If
                 'Rename the original files
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), "PCOpening")
-                'WriteDebugInfoAndOK("Renaming PC Opening file...")
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"), "VitaOpening")
-                'WriteDebugInfoAndOK("Renaming Vita Opening file...")
                 'Rename them back, swapping them~
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "PCOpening"), "a93adc766eb3510f7b5c279551a45585")
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "VitaOpening"), "a44fbb2aeb8084c5a5fbe80e219a9927")
-                'WriteDebugInfoAndOK("Swapping Files...")
             End If
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) And My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 And GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
+                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & "(" & My.Resources.strNotSwapped & ")"
                     WriteDebugInfo(My.Resources.strallDone)
                     UnlockGUI()
                     Exit Sub
                 End If
-                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 And GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                If GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & "(" & My.Resources.strSwapped & ")"
                     WriteDebugInfo(My.Resources.strallDone)
                     UnlockGUI()
@@ -1829,16 +1754,10 @@ BackToCheckUpdates2:
         End Try
     End Sub
 
-    Private Sub ButtonItem6_Click(sender As Object, e As EventArgs) Handles ButtonItem6.Click
-        'Dim t5 As New Thread(AddressOf Injectstuff)
-        't5.IsBackground = True
-        't5.Start()
+    Private Sub btnLaunchPSO2_Click(sender As Object, e As EventArgs) Handles btnLaunchPSO2.Click
         'Fuck SEGA. Stupid jerks.
-        'If Helper.GetRegKey(Of String)("SeenFuckSEGAMessage") = "False" Then MsgBox("SEGA recently updated the pso2.exe file so that it can't be launched from anything but the official launcher. You can still use this to patch, fix, apply patches, and everything you did before. Once you're ready to launch the game, however, the launcher will open the PSO2JP launcher. Simply click the large button to launch the game. Sorry about the inconvience, I'll try to see if I can find a way around it soon! (This message will not appear again.)" & vbCrLf & "- AIDA")
-        'Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "True")
         Log("Check if PSO2 is running")
         If CheckIfRunning("pso2") = "Running" Then Exit Sub
-        'If CheckIfRunning("pso2.exe") = "Running" Then Exit Sub
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -1846,12 +1765,10 @@ BackToCheckUpdates2:
                 Exit Sub
             End If
 
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+            Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
 
-            If File.Exists(pso2launchpath & "\pso2.exe") = False Then
+            If Not File.Exists(pso2launchpath & "\pso2.exe") Then
                 WriteDebugInfoAndFAILED(My.Resources.strCouldNotFindPSO2EXE)
                 Exit Sub
             End If
@@ -1862,9 +1779,7 @@ BackToCheckUpdates2:
             PB1.Text = ""
             WriteDebugInfo(My.Resources.strLaunchingPSO2)
 
-            Dim dir As String
-            dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-
+            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
 
             If chkItemTranslation.Checked Then
@@ -1882,7 +1797,6 @@ BackToCheckUpdates2:
                     Log(ex.Message)
                     WriteDebugInfo(My.Resources.strERROR & ex.Message)
                 End Try
-                'Log("Delete the check")
                 DeleteFile("working.txt")
                 If Helper.GetMD5(pso2launchpath & "\translator.dll") <> Helper.GetRegKey(Of String)("DLLMD5") Then
                     MsgBox(My.Resources.strTranslationFilesDontMatch)
@@ -1893,25 +1807,17 @@ BackToCheckUpdates2:
             'End Item Translation stuff
             DeleteFile(pso2launchpath & "\ddraw.dll")
             File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
-            Dim startInfo As ProcessStartInfo
-            startInfo = New ProcessStartInfo
+            Dim startInfo As ProcessStartInfo = New ProcessStartInfo With {.FileName = (pso2launchpath & "\pso2.exe"), .Arguments = "+0x33aca2b9", .UseShellExecute = False}
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
-            startInfo.FileName = (pso2launchpath & "\pso2.exe")
-            startInfo.Arguments = "+0x33aca2b9"
-            startInfo.UseShellExecute = False
-            Dim shell As Process
-            shell = New Process
-            shell.StartInfo = startInfo
+            Dim shell As Process = New Process With {.StartInfo = startInfo}
 
             Try
                 shell.Start()
             Catch ex As Exception
                 WriteDebugInfo(My.Resources.strItSeemsThereWasAnError)
                 DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
-                Dim DirectoryString2 As String
-                DirectoryString2 = (lblDirectory.Text & "\data\win32")
-                DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-                If File.Exists((DirectoryString2 & "\pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
+                Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+                If File.Exists((DirectoryString2 & "\pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
                 File.Move("pso2.exe", (DirectoryString2 & "\pso2.exe"))
                 WriteDebugInfoSameLine(My.Resources.strDone)
                 shell.Start()
@@ -1941,7 +1847,7 @@ BackToCheckUpdates2:
                 CancelDownloadToolStripMenuItem.Visible = True
                 ContextMenuStrip1.Show(CType(sender, Control), e.Location)
             End If
-            If DLS.IsBusy = False Then
+            If Not DLS.IsBusy Then
                 CancelDownloadToolStripMenuItem.Visible = False
                 ContextMenuStrip1.Show(CType(sender, Control), e.Location)
             End If
@@ -1960,8 +1866,7 @@ BackToCheckUpdates2:
 
     Private Function GrabLink(ByRef urlIdentifier As String)
         Dim net As New WebClient()
-        Dim src As String
-        src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
+        Dim src As String = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
         Dim regx As New Regex("http://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?", RegexOptions.IgnoreCase)
         Dim mactches As MatchCollection = regx.Matches(src)
         Dim returnURL As String = ""
@@ -1976,19 +1881,29 @@ BackToCheckUpdates2:
     End Function
 
     Private Sub seconds_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles seconds.Tick
-        Me.seconds.Interval = 10
         Me.timer_start += 1
     End Sub
 
-    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
+    Private Sub DocumentCompleted()
         ' TODO: Make function use SizeSuffix and whatever else needs doing
-        ' TODO: Is clone(2)
         Me.seconds.Stop()
         Me.time_for_download = timer_start * 10
         Me.velocity = testfile_Size / time_for_download * 1000
         WriteDebugInfoSameLine(" Done!")
         WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
         DoneDownloading = True
+    End Sub
+
+    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
+        DocumentCompleted()
+    End Sub
+
+    Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
+        DocumentCompleted()
+    End Sub
+
+    Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
+        DocumentCompleted()
     End Sub
 
     Public Function Ping(ByVal server As String) As String
@@ -2009,8 +1924,6 @@ BackToCheckUpdates2:
 
     Private Sub CancelProcessToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CancelProcessToolStripMenuItem.Click
         If DLS.IsBusy Then DLS.CancelAsync()
-        'WriteDebugInfo(My.Resources.strDownloadwasCancelled)
-        'btnCancelDownload.Visible = False
         Cancelled = True
         PB1.Value = 0
         PB1.Text = ""
@@ -2021,38 +1934,7 @@ BackToCheckUpdates2:
         UnlockGUI()
     End Sub
 
-    Private Sub NotifyIcon1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
-        Try
-            Me.Show()
-            Me.WindowState = FormWindowState.Normal
-            NotifyIcon1.Visible = False
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
-        ' TODO: Is clone(2)
-        Me.seconds.Stop()
-        Me.time_for_download = timer_start * 10
-        Me.velocity = testfile_Size / time_for_download * 1000
-        WriteDebugInfoSameLine(" Done!")
-        WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
-        DoneDownloading = True
-    End Sub
-
-    Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
-        ' TODO: Is clone(2)
-        Me.seconds.Stop()
-        Me.time_for_download = timer_start * 10
-        Me.velocity = testfile_Size / time_for_download * 1000
-        WriteDebugInfoSameLine(" Done!")
-        WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
-        DoneDownloading = True
-    End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
         Try
             Log("Selecting PSO2 Directory...")
             Dim MyFolderBrowser As New FolderBrowserDialog
@@ -2102,14 +1984,12 @@ BackToCheckUpdates2:
     Private Sub btnStory_Click(sender As Object, e As EventArgs) Handles btnStory.Click
         CancelledFull = False
         Dim StoryLocation As String
-        'Try
         Dim backupyesno As MsgBoxResult
         If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
         End If
-        'CheckForStoryUpdates()
         Log("Selecting story patch...")
         Dim Downloaded As MsgBoxResult = MsgBox(My.Resources.strHaveyouDownloadedStoryYet, MsgBoxStyle.YesNo)
         If Downloaded = MsgBoxResult.Yes Then
@@ -2126,20 +2006,26 @@ BackToCheckUpdates2:
             End If
 
             Log("Story mode RAR selected as: " & StoryLocation)
-            If Helper.GetRegKey(Of String)("Backup") = "Ask" Then backupyesno = MsgBox(My.Resources.strWouldYouLikeBackupStory, vbYesNo)
-            If Helper.GetRegKey(Of String)("Backup") = "Always" Then backupyesno = MsgBoxResult.Yes
-            If Helper.GetRegKey(Of String)("Backup") = "Never" Then backupyesno = MsgBoxResult.No
+
+            Select Case Helper.GetRegKey(Of String)("Backup")
+                Case "Ask"
+                    backupyesno = MsgBox(My.Resources.strWouldYouLikeBackupStory, vbYesNo)
+                Case "Always"
+                    backupyesno = MsgBoxResult.Yes
+                Case "Never"
+                    backupyesno = MsgBoxResult.No
+            End Select
+
             Log("Extracting story patch...")
             If Directory.Exists("TEMPSTORYAIDAFOOL") Then
                 My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
             End If
-            If Directory.Exists("TEMPSTORYAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
             End If
             Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
@@ -2152,7 +2038,7 @@ BackToCheckUpdates2:
             Do Until process.WaitForExit(1000)
             Loop
             If CancelledFull Then Exit Sub
-            If Directory.Exists("TEMPSTORYAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
@@ -2163,14 +2049,13 @@ BackToCheckUpdates2:
             Application.DoEvents()
             'list the names of all files in the specified directory
             Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch")
-            'WriteDebugInfo("Backup path set to: " & backupdir)
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupdir) Then
                     My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
                     Directory.CreateDirectory(backupdir)
                     WriteDebugInfo(My.Resources.strErasingPreviousBackup)
                 End If
-                If Directory.Exists(backupdir) = False Then
+                If Not Directory.Exists(backupdir) Then
                     Directory.CreateDirectory(backupdir)
                     WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
                 End If
@@ -2195,15 +2080,11 @@ BackToCheckUpdates2:
                 End If
                 File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
             Next
-            'Process.Start("7z.exe", ("e ENPatch.rar -y -o" & (lblDirectory.Text & "\data\win32")))
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If backupyesno = MsgBoxResult.No Then
                 FlashWindow(Me.Handle, 1)
                 'Story Patch 3-12-2014.rar
-                Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName
-                StoryPatchFilename = StoryPatchFilename.Replace("Story Patch ", "")
-                StoryPatchFilename = StoryPatchFilename.Replace(".rar", "")
-                StoryPatchFilename = StoryPatchFilename.Replace("-", "/")
+                Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
                 Helper.SetRegKey(Of String)("StoryPatchVersion", StoryPatchFilename)
                 Helper.SetRegKey(Of String)("LatestStoryBase", StoryPatchFilename)
                 WriteDebugInfo(My.Resources.strStoryPatchInstalled)
@@ -2212,10 +2093,7 @@ BackToCheckUpdates2:
             If backupyesno = MsgBoxResult.Yes Then
                 FlashWindow(Me.Handle, 1)
                 'Story Patch 3-12-2014.rar
-                Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName
-                StoryPatchFilename = StoryPatchFilename.Replace("Story Patch ", "")
-                StoryPatchFilename = StoryPatchFilename.Replace(".rar", "")
-                StoryPatchFilename = StoryPatchFilename.Replace("-", "/")
+                Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
                 Helper.SetRegKey(Of String)("StoryPatchVersion", StoryPatchFilename)
                 Helper.SetRegKey(Of String)("LatestStoryBase", StoryPatchFilename)
                 WriteDebugInfo((My.Resources.strStoryPatchBackup & backupdir))
@@ -2230,15 +2108,12 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
-        If File.Exists(lblDirectory.Text & "\translation.cfg") = False Then
+        If Not File.Exists(lblDirectory.Text & "\translation.cfg") Then
             File.WriteAllText(lblDirectory.Text & "\translation.cfg", "TranslationPath:translation.bin")
         End If
         If chkItemTranslation.Checked Then
-            'WriteDebugInfoAndOK(My.Resources.strItemTranslationEnabled)
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+            Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
 
             WriteDebugInfoAndOK(My.Resources.strDownloadingLatestItemTranslationFiles)
             'Download translator.dll and translation.bin
@@ -2259,7 +2134,6 @@ DOWNLOADDLL2:
             End Try
             Helper.SetRegKey(Of String)("DLLMD5", Helper.GetMD5(pso2launchpath & "\translator.dll"))
             failednumbers = 0
-            'DLWUA(DLLink2, (pso2launchpath & "\translation.bin"), True)
 DOWNLOADBIN2:
             Try
                 client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
@@ -2289,10 +2163,9 @@ DOWNLOADBIN2:
             WriteDebugInfoSameLine(My.Resources.strDone)
         End If
 
-        If chkItemTranslation.Checked = False Then
+        If Not chkItemTranslation.Checked Then
             WriteDebugInfoAndOK(My.Resources.strDeletingItemCache)
-            Dim dir As String
-            dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
             Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
@@ -2381,8 +2254,7 @@ DOWNLOADBIN2:
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
 
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
         WriteDebugInfoSameLine(My.Resources.strDone)
@@ -2391,9 +2263,8 @@ DOWNLOADBIN2:
 
         ' Mike: No idea what you were doing here. Hope I didn't break anything.
         Dim result As MsgBoxResult = MsgBoxResult.No
-        If ComingFromOldFiles = False Then
+        If Not ComingFromOldFiles Then
             Me.TopMost = False
-            'result = MsgBox(My.Resources.strDidYouHaveTheLatestVersion, vbYesNo)
             If chkAlwaysOnTop.Checked Then Me.TopMost = True
         End If
 
@@ -2409,14 +2280,14 @@ DOWNLOADBIN2:
                     sBuffer = oReader.ReadLine
                     filename = Regex.Split(sBuffer, ".pat")
                     truefilename = filename(0).Replace("data/win32/", "")
-                    MD5 = Regex.Split(filename(1), vbTab)
+                    MD5 = filename(1).Split(vbTab)
                     TrueMD5 = MD5(2)
-                    If truefilename <> "GameGuard.des" And truefilename <> "PSO2JP.ini" And truefilename <> "script/user_default.pso2" And truefilename <> "script/user_intel.pso2" Then
+                    If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                         If truefilename = "pso2.exe" Then
                             PSO2EXEMD5 = TrueMD5
                             GoTo NextFile1
                         End If
-                        If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
+                        If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) Then
                             If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
                             missingfiles.Add(truefilename)
                             GoTo NEXTFILE1
@@ -2448,9 +2319,9 @@ NEXTFILE1:
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
-                ' TODO: Is clone(3)
                 downloaded += 1
-                totaldownloaded = totaldownloaded + totalsize2
+                totaldownloaded += totalsize2
+
 
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
@@ -2481,35 +2352,28 @@ NEXTFILE1:
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
-            Dim versionclient2 As New MyWebClient
-            versionclient2.timeout = 3000
+            Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
 
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
-            Dim procs As Process()
-            procs = Process.GetProcessesByName("pso2launcher")
+            Dim procs As Process() = Process.GetProcessesByName("pso2launcher")
             For Each proc As Process In procs
-                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" And proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2launcher.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -2520,7 +2384,7 @@ NEXTFILE1:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2updater.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
@@ -2533,14 +2397,13 @@ NEXTFILE1:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-            If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
             Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            ' TODO: Is clone(4)
             Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
@@ -2550,7 +2413,7 @@ NEXTFILE1:
             UnlockGUI()
 
             If Helper.GetRegKey(Of Boolean)("RemoveCensor") Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
@@ -2579,47 +2442,65 @@ NEXTFILE1:
             If CancelledFull Then Exit Sub
             MergePatches()
             WriteDebugInfo(My.Resources.strCheckingforAllFiles)
-            Using oReader As StreamReader = File.OpenText("SOMEOFTHETHINGS.txt")
-                If CancelledFull Then Exit Sub
-                While Not (oReader.EndOfStream)
-                    If CancelledFull Then Exit Sub
-                    sBuffer = oReader.ReadLine
-                    If String.IsNullOrEmpty(sBuffer) Then GoTo DOWNLOADFILES
-                    filename = Regex.Split(sBuffer, ".pat")
-                    truefilename = filename(0).Replace("data/win32/", "")
-                    MD5 = Regex.Split(filename(1), vbTab)
-                    TrueMD5 = MD5(2)
-                    If truefilename <> "GameGuard.des" And truefilename <> "PSO2JP.ini" And truefilename <> "script/user_default.pso2" And truefilename <> "script/user_intel.pso2" Then
-                        If truefilename = "pso2.exe" Then
-                            PSO2EXEMD5 = TrueMD5
-                            GoTo NextFile2
-                        End If
 
-                        If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
-                            If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & My.Resources.strIsMissing)
-                            testfilesize = Regex.Split(filename(1), "	")
-                            totalfilesize += Convert.ToInt32(testfilesize(1))
-                            missingfiles2.Add(truefilename)
-                            GoTo NEXTFILE2
-                        End If
+            SOMEOFTHETHINGS.Remove("GameGuard.des")
+            SOMEOFTHETHINGS.Remove("PSO2JP.ini")
+            SOMEOFTHETHINGS.Remove("script/user_default.pso2")
+            SOMEOFTHETHINGS.Remove("script/user_intel.pso2")
+            SOMEOFTHETHINGS.Remove("")
 
-                        Dim TempMD5 As String = Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
+            If SOMEOFTHETHINGS.ContainsKey("pso2.exe") Then
+                Dim value = SOMEOFTHETHINGS("pso2.exe")
+                PSO2EXEMD5 = value.Substring(value.LastIndexOf(vbTab) + 1)
+                SOMEOFTHETHINGS.Remove("pso2.exe")
+            End If
 
-                        If Helper.GetMD5(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                            If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
-                            testfilesize = Regex.Split(filename(1), "	")
-                            totalfilesize += Convert.ToInt32(testfilesize(1))
-                            missingfiles2.Add(truefilename)
-                            GoTo NEXTFILE2
-                        End If
-NEXTFILE2:
-                        NumberofChecks += 1
-                        lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
-                        Application.DoEvents()
-                    End If
-                End While
-            End Using
-DOWNLOADFILES:
+            Dim dataPath = lblDirectory.Text & "\data\win32\"
+            Dim length = SOMEOFTHETHINGS.Count
+            Dim oldmax = PB1.Maximum
+            PB1.Maximum = length
+
+            For Each kvp In SOMEOFTHETHINGS
+                lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
+                PB1.Text = NumberofChecks & " / " & length
+                If (NumberofChecks Mod 8) = 0 Then Application.DoEvents()
+                NumberofChecks += 1
+                PB1.Value += 1
+
+                Dim filePath = dataPath & kvp.Key
+
+                If Not File.Exists(filePath) Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & filePath & My.Resources.strIsMissing)
+                    testfilesize = kvp.Value.Split(vbTab)
+                    totalfilesize += Convert.ToInt32(testfilesize(1))
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+
+                testfilesize = kvp.Value.Split(vbTab)
+                Dim fileSizeZ = Convert.ToInt32(testfilesize(1))
+
+                If GetFileSize(filePath) <> fileSizeZ Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
+                    totalfilesize += fileSizeZ
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+
+                TrueMD5 = testfilesize(2)
+
+                If Helper.GetMD5(filePath) <> TrueMD5 Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
+                    totalfilesize += fileSizeZ
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+            Next
+
+            PB1.Text = ""
+            PB1.Value = 0
+            PB1.Maximum = oldmax
+            SOMEOFTHETHINGS = Nothing
             Dim totaldownload2 As String = missingfiles2.Count
             Dim downloaded2 As Long = 0
             Dim info As FileInfo
@@ -2634,7 +2515,6 @@ DOWNLOADFILES:
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?
-                ' TODO: Is clone(3)
                 downloaded2 += 1
                 totaldownloaded += totalsize2
 
@@ -2674,17 +2554,11 @@ DOWNLOADFILES:
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            Dim versionclient2 As New MyWebClient
-            versionclient2.timeout = 3000
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
@@ -2694,13 +2568,13 @@ DOWNLOADFILES:
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
-            If File.Exists((DirectoryString & "pso2launcher.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
             Application.DoEvents()
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
-            If File.Exists((DirectoryString & "pso2updater.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
@@ -2710,7 +2584,7 @@ DOWNLOADFILES:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-            If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
@@ -2748,24 +2622,23 @@ DOWNLOADFILES:
                 Exit Sub
             End If
             Dim backupyesno As MsgBoxResult
-            If Override = False Then
+            If Not Override Then
                 backupyesno = MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo)
             End If
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
                 Dim backupfolder As String = "backupPreENPatch"
-                If Directory.Exists(((lblDirectory.Text & "\data\win32") & "\" & backupfolder)) = False Then
+                If Not Directory.Exists(((lblDirectory.Text & "\data\win32") & "\" & backupfolder)) Then
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & ((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                     Exit Sub
                 End If
                 Dim di As New DirectoryInfo(((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                 Dim diar1 As FileInfo() = di.GetFiles()
-                Dim dra As FileInfo
                 WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & (lblDirectory.Text & "\data\win32")))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
                 Dim win32 As String = (lblDirectory.Text & "\data\win32")
-                For Each dra In diar1
+                For Each dra As FileInfo In diar1
                     If File.Exists(win32 & "\" & dra.ToString) Then
                         DeleteFile(win32 & "\" & dra.ToString)
                     End If
@@ -2793,13 +2666,13 @@ DOWNLOADFILES:
                 Exit Sub
             End If
             Dim backupyesno As MsgBoxResult
-            If Override = False Then
+            If Not Override Then
                 backupyesno = MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo)
             End If
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
                 Dim backupfolder As String = "backupPreLargeFiles"
-                If Directory.Exists(((lblDirectory.Text & "\data\win32") & "\" & backupfolder)) = False Then
+                If Not Directory.Exists(((lblDirectory.Text & "\data\win32") & "\" & backupfolder)) Then
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & ((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                     Exit Sub
                 End If
@@ -2831,8 +2704,8 @@ DOWNLOADFILES:
 
     Private Sub btnRestoreJPNames_Click(sender As Object, e As EventArgs) Handles btnRestoreJPNames.Click
         'http://pso2.arghargh200.net/pso2/2013_06_12/ceffe0e2386e8d39f188358303a92a7d
-        If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+        If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
             My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), "ceffe0e2386e8d39f188358303a92a7d")
             WriteDebugInfoAndOK(My.Resources.strRestoring & " JP Names file...")
         Else
@@ -2842,8 +2715,8 @@ DOWNLOADFILES:
 
     Private Sub btnRestoreJPETrials_Click(sender As Object, e As EventArgs) Handles btnRestoreJPETrials.Click
         'http://pso2.arghargh200.net/pso2/2013_06_12/057aa975bdd2b372fe092614b0f4399e
-        If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+        If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
             My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), "057aa975bdd2b372fe092614b0f4399e")
             WriteDebugInfoAndOK(My.Resources.strRestoring & " JP E-Trials file...")
         Else
@@ -2852,26 +2725,23 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnAnalyze_Click(sender As Object, e As EventArgs) Handles btnAnalyze.Click
-        Dim DirectoryString As String
-        Dim pso2launchpath As String
-        DirectoryString = (lblDirectory.Text & "\data\win32")
-        pso2launchpath = DirectoryString.Replace("data\win32", "")
+        Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+        Dim pso2launchpath As String = DirectoryString.Replace("data\win32", "")
         WriteDebugInfo(My.Resources.strCheckingForNecessaryFiles)
-        If File.Exists(pso2launchpath & "Gameguard.DES") = False Then WriteDebugInfoAndWarning("Missing GameGuard.DES file! " & My.Resources.strPleaseFixGG)
-        If File.Exists(pso2launchpath & "pso2.exe") = False Then WriteDebugInfoAndWarning("Missing pso2.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
-        If File.Exists(pso2launchpath & "pso2launcher.exe") = False Then WriteDebugInfoAndWarning("Missing pso2launcher.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
-        If File.Exists(pso2launchpath & "pso2updater.exe") = False Then WriteDebugInfoAndWarning("Missing pso2updater.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
+        If Not File.Exists(pso2launchpath & "Gameguard.DES") Then WriteDebugInfoAndWarning("Missing GameGuard.DES file! " & My.Resources.strPleaseFixGG)
+        If Not File.Exists(pso2launchpath & "pso2.exe") Then WriteDebugInfoAndWarning("Missing pso2.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
+        If Not File.Exists(pso2launchpath & "pso2launcher.exe") Then WriteDebugInfoAndWarning("Missing pso2launcher.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
+        If Not File.Exists(pso2launchpath & "pso2updater.exe") Then WriteDebugInfoAndWarning("Missing pso2updater.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strCheckingForFolders)
-        If Directory.Exists(pso2launchpath & "\Gameguard\") = False Then WriteDebugInfoAndWarning("Missing Gameguard folder! " & My.Resources.strPleaseFixGG)
-        If Directory.Exists(pso2launchpath & "\data\") = False Then WriteDebugInfoAndWarning("Missing data folder! " & My.Resources.strPleaseReinstallOrCheck)
-        If Directory.Exists(pso2launchpath & "\data\win32\") = False Then WriteDebugInfoAndWarning("Missing data\win32 folder! " & My.Resources.strPleaseReinstallOrCheck)
+        If Not Directory.Exists(pso2launchpath & "\Gameguard\") Then WriteDebugInfoAndWarning("Missing Gameguard folder! " & My.Resources.strPleaseFixGG)
+        If Not Directory.Exists(pso2launchpath & "\data\") Then WriteDebugInfoAndWarning("Missing data folder! " & My.Resources.strPleaseReinstallOrCheck)
+        If Not Directory.Exists(pso2launchpath & "\data\win32\") Then WriteDebugInfoAndWarning("Missing data\win32 folder! " & My.Resources.strPleaseReinstallOrCheck)
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDoneTesting)
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        'Try
         If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
@@ -2904,38 +2774,36 @@ DOWNLOADFILES:
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-        'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
         UnlockGUI()
         Log("Opening patch file list...")
         Using oReader As StreamReader = File.OpenText("patchlist.txt")
             If CancelledFull Then Exit Sub
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), "ffbff2ac5b7a7948961212cefd4d402c")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Censor...")
             End If
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "PC Opening...")
             End If
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75"))
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75"))
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), "7f2368d207e104e8ed6086959b742c75")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "NVidia Logo...")
             End If
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771"))
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771"))
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "009bfec69b04a34576012d50e3417771.backup"), "009bfec69b04a34576012d50e3417771")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "SEGA Logo...")
             End If
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"))
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585")) Then DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585"))
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Vita Opening...")
             End If
@@ -2945,20 +2813,17 @@ DOWNLOADFILES:
                 sBuffer = oReader.ReadLine
                 filename = Regex.Split(sBuffer, ".pat")
                 truefilename = filename(0).Replace("data/win32/", "")
-                If truefilename <> "GameGuard.des" And truefilename <> "edition.txt" And truefilename <> "gameversion.ver" And truefilename <> "pso2.exe" And truefilename <> "PSO2JP.ini" And truefilename <> "script/user_default.pso2" And truefilename <> "script/user_intel.pso2" Then
+                If truefilename <> "GameGuard.des" AndAlso truefilename <> "edition.txt" AndAlso truefilename <> "gameversion.ver" AndAlso truefilename <> "pso2.exe" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
                     Dim info7 As New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
                     Dim length2 As Long
                     If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename) Then length2 = info7.Length
-                    If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) = False Then
-                        'MsgBox((lblDirectory.Text & "\data\win32"))
-                        'MsgBox("\")
-                        'MsgBox(truefilename)
+                    If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename)) Then
                         WriteDebugInfo(truefilename & My.Resources.strIsMissing)
                         missingfiles.Add(truefilename)
                     End If
                     info7 = New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename))
                     If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename) Then length2 = info7.Length
-                    If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename) = False Then length2 = 1
+                    If Not File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename) Then length2 = 1
                     If length2 = 0 Then
                         WriteDebugInfo(truefilename & " has a filesize of 0!")
                         missingfiles.Add(truefilename)
@@ -2966,7 +2831,6 @@ DOWNLOADFILES:
                     End If
                 End If
                 NumberofChecks += 1
-                'MsgBox(NumberofChecks)
                 lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
                 Application.DoEvents()
             End While
@@ -2978,14 +2842,11 @@ DOWNLOADFILES:
                 sBuffer2 = oReader.ReadLine
                 filename2 = Regex.Split(sBuffer2, ".pat")
                 truefilename2 = filename2(0).Replace("data/win32/", "")
-                If truefilename2 <> "GameGuard.des" And truefilename2 <> "pso2.exe" And truefilename2 <> "PSO2JP.ini" And truefilename2 <> "script/user_default.pso2" And truefilename2 <> "script/user_intel.pso2" Then
+                If truefilename2 <> "GameGuard.des" AndAlso truefilename2 <> "pso2.exe" AndAlso truefilename2 <> "PSO2JP.ini" AndAlso truefilename2 <> "script/user_default.pso2" AndAlso truefilename2 <> "script/user_intel.pso2" Then
                     Dim info7 As New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename2))
                     Dim length2 As Long
                     If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename2) Then length2 = info7.Length
-                    If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & truefilename2)) = False Then
-                        'MsgBox((lblDirectory.Text & "\data\win32"))
-                        'MsgBox("\")
-                        'MsgBox(truefilename)
+                    If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & truefilename2)) Then
                         If missingfiles.Contains(truefilename2) Then
                             'Do nothing
                         Else
@@ -2995,7 +2856,7 @@ DOWNLOADFILES:
                     End If
                     info7 = New FileInfo(((lblDirectory.Text & "\data\win32") & "\" & truefilename2))
                     If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename2) Then length2 = info7.Length
-                    If File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename2) = False Then length2 = 1
+                    If Not File.Exists((lblDirectory.Text & "\data\win32") & "\" & truefilename2) Then length2 = 1
                     If length2 = 0 Then
                         WriteDebugInfo(truefilename2 & " has a filesize of 0!")
                         missingfiles.Add(truefilename2)
@@ -3006,7 +2867,7 @@ DOWNLOADFILES:
                 lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
                 Application.DoEvents()
             End While
-            If missingfiles.Count = 0 And missingfiles2.Count = 0 Then
+            If missingfiles.Count = 0 AndAlso missingfiles2.Count = 0 Then
                 WriteDebugInfoAndOK(My.Resources.strAllFilesCheckedOut)
                 Exit Sub
             End If
@@ -3031,7 +2892,8 @@ DOWNLOADFILES:
                 'Download the missing files:
                 Cancelled = False
                 downloaded += 1
-                totaldownloaded = totaldownloaded + totalsize2
+                totaldownloaded += totalsize2
+
 
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
@@ -3044,9 +2906,6 @@ DOWNLOADFILES:
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
                 End If
                 If Cancelled Then Exit Sub
-                'filedownloader.DownloadFile(("http://dl.dropboxusercontent.com/u/23005008/win32/" & downloadstring), downloadstring)
-                'My.Computer.Network.DownloadFile(("http://patch01.pso2gs.net/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, vbNullString, vbNullString, True, 5000, True)
-                'filedownloader.DownloadFile(("http://patch01.pso2gs.net/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring & "."))
                 Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
@@ -3055,8 +2914,6 @@ DOWNLOADFILES:
                 linesList.Remove(downloadstring)
 
                 File.WriteAllLines("resume.txt", linesList.ToArray())
-                'MsgBox("removed this line - " & downloadstring)
-                'MsgBox(downloadstring)
                 If CancelledFull Then Exit Sub
             Next
 
@@ -3075,11 +2932,11 @@ DOWNLOADFILES:
             For Each downloadstring2 In missingfiles2
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
-                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & downloadstring2)) = False Then
-                    'filedownloader2.DownloadFile(("http://dl.dropboxusercontent.com/u/23005008/win32/" & downloadstring2), downloadstring2)
+                If Not File.Exists(((lblDirectory.Text & "\data\win32") & "\" & downloadstring2)) Then
                     Cancelled = False
                     downloaded2 += 1
-                    totaldownloaded2 = totaldownloaded2 + totalsize2
+                    totaldownloaded2 += totalsize2
+
 
                     lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Helper.SizeSuffix(totaldownloaded2) & ")"
 
@@ -3092,8 +2949,6 @@ DOWNLOADFILES:
                         DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring2 & ".pat"), downloadstring2, True)
                     End If
                     If Cancelled Then Exit Sub
-                    'My.Computer.Network.DownloadFile(("http://patch01.pso2gs.net/patch_prod/patches_old/data/win32/" & downloadstring2 & ".pat"), downloadstring2, vbNullString, vbNullString, True, 5000, True)
-                    'filedownloader.DownloadFile(("http://patch01.pso2gs.net/patch_prod/patches_old/data/win32/" & downloadstring2 & ".pat"), downloadstring2)
                     File.Move(downloadstring2, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring2))
                     WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring2 & "."))
                     Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
@@ -3102,17 +2957,10 @@ DOWNLOADFILES:
                     linesList.Remove(downloadstring2)
 
                     File.WriteAllLines("resume.txt", linesList.ToArray())
-                    'MsgBox("removed this line - " & downloadstring2)
-                    'MsgBox(downloadstring)
                 End If
             Next
         End If
         WriteDebugInfoAndOK(My.Resources.strallDone)
-        'Catch ex As Exception
-        ' Log(ex.Message)
-        '  WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        ' Exit Sub
-        ' End Try
     End Sub
 
     Private Sub ButtonItem10_Click(sender As Object, e As EventArgs) Handles ButtonItem10.Click
@@ -3131,8 +2979,7 @@ DOWNLOADFILES:
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
         'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
@@ -3196,10 +3043,9 @@ DOWNLOADFILES:
         Try
             Dim systempath As String
             MsgBox(My.Resources.strPleaseBeAwareGG)
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
+            Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
+
             If Directory.Exists(pso2launchpath & "\Gameguard\") Then
                 WriteDebugInfo("Removing Gameguard Directory...")
                 Directory.Delete(pso2launchpath & "\Gameguard\", True)
@@ -3228,7 +3074,7 @@ DOWNLOADFILES:
                     WriteDebugInfoSameLine(My.Resources.strDone)
                 End If
             End If
-            If Environment.Is64BitOperatingSystem = False Then
+            If Not Environment.Is64BitOperatingSystem Then
                 systempath = Environment.GetFolderPath(Environment.SpecialFolder.System)
                 If File.Exists(systempath & "\npptnt2.sys") Then
                     WriteDebugInfo("Removing Hidden Gameguard Files (1 of 3)...")
@@ -3278,10 +3124,7 @@ DOWNLOADFILES:
                 Exit Sub
             End If
             Dim filedownloader As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             Cancelled = False
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
 
@@ -3289,15 +3132,13 @@ DOWNLOADFILES:
             Dim procs As Process() = Process.GetProcessesByName("pso2launcher")
 
             For Each proc As Process In procs
-                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" And proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2launcher.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -3310,7 +3151,7 @@ DOWNLOADFILES:
             If Cancelled Then Exit Sub
             DirectoryString2 = (lblDirectory.Text & "\data\win32")
             DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2updater.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
@@ -3323,7 +3164,7 @@ DOWNLOADFILES:
             If Cancelled Then Exit Sub
             DirectoryString2 = (lblDirectory.Text & "\data\win32")
             DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
             Application.DoEvents()
@@ -3344,13 +3185,13 @@ DOWNLOADFILES:
                 Exit Sub
             End If
             Dim backupyesno As MsgBoxResult
-            If Override = False Then
+            If Not Override Then
                 backupyesno = MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo)
             End If
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
                 Dim backupfolder As String = "backupPreSTORYPatch"
-                If Directory.Exists(((lblDirectory.Text & "\data\win32") & "\" & backupfolder)) = False Then
+                If Not Directory.Exists(((lblDirectory.Text & "\data\win32") & "\" & backupfolder)) Then
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & ((lblDirectory.Text & "\data\win32") & "\" & backupfolder))
                     Exit Sub
                 End If
@@ -3389,10 +3230,7 @@ DOWNLOADFILES:
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2updater.exe" /e /g "AIDA":F
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2predownload.exe" /e /g "AIDA":F
             MsgBox(My.Resources.strFixPermissionIssuesText)
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             'MsgBox("cacls.exe" & (DirectoryString & "pso2.exe") & " /e /g """ & SystemInformation.UserName & """:F")
             WriteDebugInfo(My.Resources.strFixingPermissionsFor & "pso2.exe...")
             Application.DoEvents()
@@ -3436,24 +3274,9 @@ DOWNLOADFILES:
         ' ping gs016.pso2gs.net
         ' ping www.google.com
         ' network speed test
-        'Me.Label2.Text = testfile_Size & " MB"
-        'WriteDebugInfo("Checking connection to Patch Server #1...")
-        'WriteDebugInfo(Ping("socket-hack.com:2312/"))
-        'WriteDebugInfoSameLine("/" & Ping("socket-hack.com:2312/"))
-        'WriteDebugInfoSameLine("/" & Ping("socket-hack.com:2312/"))
-        'WriteDebugInfoSameLine("/" & Ping("socket-hack.com:2312/"))
-        'WriteDebugInfo("Checking connection to Patch Server #2...")
-        'WriteDebugInfo(Ping("pso2.aeongames.net"))
-        'WriteDebugInfoSameLine("/" & Ping("pso2.aeongames.net"))
-        'WriteDebugInfoSameLine("/" & Ping("pso2.aeongames.net"))
-        'WriteDebugInfoSameLine("/" & Ping("pso2.aeongames.net"))
-        'WriteDebugInfo("Checking connection to Ship 02 Server...")
-        'WriteDebugInfo(Ping("gs016.pso2gs.net"))
         WriteDebugInfo("Testing download speeds for Patch Server #1 (Japan)...")
         WriteDebugInfo("Downloading Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler...")
         Me.timer_start = 0
-        'Me.Label3.Text = Nothing
-        'Me.Label4.Text = Nothing
         Me.WebBrowser1.Navigate("http://socket-hack.com:2312/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler.mp3")
         Me.seconds.Start()
         Do While WebBrowser1.ReadyState <> WebBrowserReadyState.Complete
@@ -3462,9 +3285,6 @@ DOWNLOADFILES:
         WriteDebugInfo("Testing download speeds for Patch Server #2 (North America)...")
         WriteDebugInfo("Downloading Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler...")
         Me.timer_start = 0
-        'Me.Label3.Text = Nothing
-        'Me.Label4.Text = Nothing
-        'Me.WebBrowser1.Navigate("http://cyberkitsune.net/aida/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler(2).mp3")
         Me.WebBrowser2.Navigate("http://pso2.aeongames.net/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler(1).mp3")
         Me.seconds.Start()
     End Sub
@@ -3519,7 +3339,7 @@ DOWNLOADFILES:
                 Me.TopMost = True
                 Helper.SetRegKey(Of String)("AlwaysOnTop", "True")
             End If
-            If chkAlwaysOnTop.Checked = False Then
+            If Not chkAlwaysOnTop.Checked Then
                 frmOptions.TopMost = False
                 Me.TopMost = False
                 Helper.SetRegKey(Of String)("AlwaysOnTop", "False")
@@ -3527,30 +3347,35 @@ DOWNLOADFILES:
         End If
     End Sub
 
-    Private Sub ButtonItem9_Click(sender As Object, e As EventArgs) Handles btnPSO2Options.Click
+    Private Sub btnPSO2Options_Click(sender As Object, e As EventArgs) Handles btnPSO2Options.Click
+        Cursor = Cursors.WaitCursor
         Try
             frmPSO2Options.TopMost = Me.TopMost
-            frmPSO2Options.Top = frmPSO2Options.Top + 50
-            frmPSO2Options.Left = frmPSO2Options.Left + 50
+            frmPSO2Options.Top += 50
+            frmPSO2Options.Left += 50
             frmPSO2Options.ShowDialog()
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Cursor = Cursors.Default
         End Try
     End Sub
 
-    Private Sub ButtonItem13_Click(sender As Object, e As EventArgs) Handles btnOptions.Click
+    Private Sub btnOptions_Click(sender As Object, e As EventArgs) Handles btnOptions.Click
+        Cursor = Cursors.WaitCursor
         Try
             frmOptions.CMBStyle.SelectedIndex = -1
             frmOptions.TopMost = Me.TopMost
             frmOptions.Bounds = Me.Bounds
-            frmOptions.Top = frmOptions.Top + 50
-            frmOptions.Left = frmOptions.Left + 50
-            'If Me.TopMost Then frmOptions.TopMost = True
+            frmOptions.Top += 50
+            frmOptions.Left += 50
             frmOptions.ShowDialog()
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Cursor = Cursors.Default
         End Try
     End Sub
 
@@ -3566,7 +3391,7 @@ DOWNLOADFILES:
         End Using
     End Sub
 
-    Private Sub ButtonItem14_Click(sender As Object, e As EventArgs) Handles ButtonItem14.Click
+    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
         Me.Close()
     End Sub
 
@@ -3581,8 +3406,7 @@ DOWNLOADFILES:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Thread(AddressOf LoadSidebar)
-                    t1.IsBackground = True
+                    Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                     t1.Start()
                 End If
                 Exit Sub
@@ -3599,8 +3423,7 @@ DOWNLOADFILES:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)("SidebarEnabled") = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Thread(AddressOf LoadSidebar)
-                    t1.IsBackground = True
+                    Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                     t1.Start()
                 End If
                 Exit Sub
@@ -3617,8 +3440,7 @@ DOWNLOADFILES:
         If Me.Visible Then
             If e.Url.ToString <> "http://162.243.211.123/freedom/tweaker.html" Then
                 Process.Start(e.Url.ToString())
-                Dim t1 As New Thread(AddressOf LoadSidebar)
-                t1.IsBackground = True
+                Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                 t1.Start()
             End If
         End If
@@ -3729,7 +3551,6 @@ DOWNLOADFILES:
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strLFUninstalled)
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            '            DeleteFile("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
             Log(ex.Message)
@@ -3785,7 +3606,6 @@ DOWNLOADFILES:
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(My.Resources.strStoryPatchUninstalled)
             Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-            '            DeleteFile("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
             Log(ex.Message)
@@ -3805,7 +3625,7 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub btnResumePatching_Click(sender As Object, e As EventArgs) Handles btnResumePatching.Click
-        If File.Exists("resume.txt") = False Then
+        If Not File.Exists("resume.txt") Then
             WriteDebugInfo(My.Resources.strCannotFindResume)
             Exit Sub
         End If
@@ -3835,9 +3655,8 @@ DOWNLOADFILES:
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?v3
-                ' TODO: Is clone(3)
                 downloaded += 1
-                totaldownloaded = totaldownloaded + totalsize2
+                totaldownloaded += totalsize2
 
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
@@ -3852,8 +3671,6 @@ DOWNLOADFILES:
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
                 End If
                 If Cancelled Then Exit Sub
-                'filedownloader.DownloadFile(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
-                'DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", True)
                 'Delete the existing file FIRST
                 DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                 File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
@@ -3869,35 +3686,26 @@ DOWNLOADFILES:
             patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String
-            DirectoryString = (lblDirectory.Text & "\data\win32")
-            DirectoryString = DirectoryString.Replace("\data\win32", "")
-            DirectoryString = (DirectoryString & "\")
+            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
-            Dim versionclient As New MyWebClient
-            versionclient.timeout = 3000
+            Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-            'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String
-            DirectoryString2 = (lblDirectory.Text & "\data\win32")
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
+            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
-            'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
-            Dim procs As Process()
-            procs = Process.GetProcessesByName("pso2launcher")
+            Dim procs = Process.GetProcessesByName("pso2launcher")
             For Each proc As Process In procs
-                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" And proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2launcher.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -3908,7 +3716,7 @@ DOWNLOADFILES:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2updater.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
@@ -3922,7 +3730,7 @@ DOWNLOADFILES:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-            If File.Exists((DirectoryString & "pso2.exe")) And Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
@@ -3931,7 +3739,6 @@ DOWNLOADFILES:
             Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
             DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", True)
             WriteDebugInfoSameLine(My.Resources.strDone)
-            ' TODO: Is clone(4)
             Helper.SetRegKey(Of String)("PSO2PatchlistMD5", Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
@@ -3941,7 +3748,7 @@ DOWNLOADFILES:
             UnlockGUI()
 
             If Helper.GetRegKey(Of Boolean)("RemoveCensor") Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
@@ -3974,13 +3781,12 @@ DOWNLOADFILES:
     End Sub
 
     Private Sub ButtonItem7_Click(sender As Object, e As EventArgs) Handles ButtonItem7.Click
-        'MsgBox(My.Resources.strLatestGG)
         Dim ProcessName As String = "chrome"
-        p = Process.GetProcessesByName("chrome")
+        processes = Process.GetProcessesByName("chrome")
         Dim currentProcess As Process = Process.GetCurrentProcess()
         Dim x As Integer = 0
 
-        If p.Count > x Then
+        If processes.Count > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("You need to have all Chrome windows closed before launching in this mode. Would you like to close all open Chrome windows now?", vbYesNo)
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)
@@ -4031,7 +3837,6 @@ DOWNLOADFILES:
 
     Private Sub btnInstallPSO2_Click(sender As Object, e As EventArgs) Handles btnInstallPSO2.Click
         Dim InstallFolder As String = ""
-        'Dim InstallYesNo As MsgBoxResult = MsgBox("While this installer is great, there is an installer that contains all the latest PSO updates and is available through a torrent at http://arks-layer.com, which could possibly be faster to download than this. Would you like to continue with the installation?", vbYesNo)
         Dim InstallYesNo As MsgBoxResult = vbYes
         If InstallYesNo = vbNo Then
             WriteDebugInfo("You can view more information about the installer at:" & vbCrLf & "http://arks-layer.com/setup.php")
@@ -4040,10 +3845,7 @@ DOWNLOADFILES:
         If InstallYesNo = vbYes Then
             MsgBox("This will install Phantasy Star Online EPISODE 2! Please select a folder to install into." & vbCrLf & "A folder called PHANTASYSTARONLINE2 will be created inside the folder you choose." & vbCrLf & "(For example, if you choose the C drive, it will install to C:\PHANTASYSTARONLINE2\)" & vbCrLf & "It is HIGHLY RECOMMENDED that you do NOT install into the Program Files folder, but a normal folder like C:\PHANTASYSTARONLINE\")
 SelectInstallFolder:
-            Dim MyFolderBrowser As New FolderBrowserDialog
-            MyFolderBrowser.Description = "Please select a folder (or drive) to install PSO2 into"
-            ' Sets the root folder where the browsing starts from 
-            MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+            Dim MyFolderBrowser As New FolderBrowserDialog With {.RootFolder = Environment.SpecialFolder.MyComputer, .Description = "Please select a folder (or drive) to install PSO2 into"}
             Dim dlgResult As DialogResult = MyFolderBrowser.ShowDialog()
 
             If dlgResult = DialogResult.OK Then
@@ -4064,10 +3866,8 @@ SelectInstallFolder:
             If CorrectYesNo = vbYes Then
                 Dim pso2_binfolder As String = InstallFolder & "\PHANTASYSTARONLINE2\pso2_bin"
                 Dim MGMT As ManagementObject
-                Dim Searcher As ManagementObjectSearcher
-                Searcher = New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk")
-                Dim InstallDrive As String = InstallFolder.TrimEnd(":")
-                InstallDrive = InstallDrive.Replace("\", "")
+                Dim Searcher As ManagementObjectSearcher = New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk")
+                Dim InstallDrive As String = InstallFolder.TrimEnd(":").Replace("\", "")
                 For Each MGMT In Searcher.Get
                     If Convert.ToString(MGMT("MediaType")) = "12" Then
                         If MGMT("DeviceID") = InstallDrive Then
@@ -4095,18 +3895,11 @@ SelectInstallFolder:
                     Me.TopMost = False
                     Application.DoEvents()
                     WriteDebugInfo("Checking/Installing DirectX...")
-                    Dim client As New MyWebClient
-                    client.timeout = 10000
+                    Dim client As New MyWebClient With {.timeout = 10000}
                     Try
                         client.DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
-                        Dim process As Process
-                        Dim processStartInfo As ProcessStartInfo
-                        processStartInfo = New ProcessStartInfo()
-                        processStartInfo.FileName = "dxwebsetup.exe"
-                        processStartInfo.Verb = "runas"
-                        processStartInfo.Arguments = "/Q"
-                        processStartInfo.UseShellExecute = True
-                        process = process.Start(processStartInfo)
+                        Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "dxwebsetup.exe", .Verb = "runas", .Arguments = "/Q", .UseShellExecute = True}
+                        Dim process As Process = process.Start(processStartInfo)
                         Do Until process.WaitForExit(1000)
                         Loop
                         WriteDebugInfoSameLine("Done!")
@@ -4121,7 +3914,6 @@ SelectInstallFolder:
                     DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", pso2_binfolder & "\pso2launcher.exe", True)
                     DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", pso2_binfolder & "\pso2updater.exe", True)
                     DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", pso2_binfolder & "\pso2.exe", True)
-                    'DLWUA("http://download.pso2.jp/patch_prod/patches/pso2predownload.exe.pat", pso2_binfolder & "\pso2predownload.exe", True)
                     DLWUA("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", pso2_binfolder & "\PSO2JP.ini", True)
                     WriteDebugInfoSameLine("Done!")
                     'Download Gameguard.des
@@ -4151,7 +3943,7 @@ SelectInstallFolder:
                     SilentENpatch()
                     SilentLargeFiles()
 
-                    If chkItemTranslation.Checked = False Then
+                    If Not chkItemTranslation.Checked Then
                         chkItemTranslation.RaiseClick()
                         WriteDebugInfo("Item patch enabled!")
                     End If
@@ -4202,7 +3994,7 @@ SelectInstallFolder:
                 My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
             Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
@@ -4212,7 +4004,7 @@ SelectInstallFolder:
             Do Until process.WaitForExit(1000)
             Loop
             If CancelledFull Then Exit Sub
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
@@ -4223,7 +4015,6 @@ SelectInstallFolder:
             Application.DoEvents()
 
             'list the names of all files in the specified directory
-            ' TODO: Is clone(1)
             Log("Extracted " & diar1.Count & " files from the patch")
 
             If diar1.Count = 0 Then
@@ -4275,8 +4066,7 @@ SelectInstallFolder:
 
             ' Spit out the value plucked from the code
             txtHTML.Text = m.Value
-            Dim strDownloadME As String = txtHTML.Text
-            strDownloadME = strDownloadME.Replace("<br /><a href=""", "")
+            Dim strDownloadME As String = txtHTML.Text.Replace("<br /><a href=""", "")
             Dim Lastfilename As String() = strDownloadME.Split("/")
             strVersion = Lastfilename(Lastfilename.Count - 1)
             strVersion = strVersion.Replace(".rar", "")
@@ -4296,12 +4086,11 @@ SelectInstallFolder:
                 My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
             Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation = (Application.StartupPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
@@ -4312,7 +4101,7 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             Do Until process.WaitForExit(1000)
             Loop
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
@@ -4325,7 +4114,6 @@ SelectInstallFolder:
             'list the names of all files in the specified directory
             Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
 
-            ' TODO: Is clone(1)
             Log("Extracted " & diar1.Count & " files from the patch")
 
             If diar1.Count = 0 Then
@@ -4368,9 +4156,7 @@ SelectInstallFolder:
                 Return "OK"
             End Using
         Catch ex As WebException
-            Dim ReturnString As String
-            ReturnString = ex.Message.ToString
-            ReturnString = ReturnString.Replace("The remote server returned an error: ", "")
+            Dim ReturnString As String = ex.Message.ToString.Replace("The remote server returned an error: ", "")
             Return ReturnString
         End Try
     End Function
@@ -4440,7 +4226,7 @@ SelectInstallFolder:
         'TODO: CK needs to recode this to actually parse the ship statuses from the packet to be more accurate.
 
         Dim ip As String = "gs016.pso2gs.net" ' Incase they need to use the proxy
-        Dim port As Int32 = 12200
+        Dim port As Integer = 12200
 
         Try
             Using sock As New TcpClient()
@@ -4463,8 +4249,7 @@ SelectInstallFolder:
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
         Dim Oldstatus As String = Label5.Text
-        Dim t5 As New Thread(AddressOf IsServerOnline)
-        t5.IsBackground = True
+        Dim t5 As New Thread(AddressOf IsServerOnline) With {.IsBackground = True}
         t5.Start()
         If Label5.Text <> Oldstatus Then
             MsgBox("The server is now " & Label5.Text & "!")
@@ -4481,48 +4266,6 @@ SelectInstallFolder:
         End If
     End Sub
 
-    Private Sub Inject()
-        Try
-            Dim TargetProcess As Process() = Process.GetProcessesByName("pso2")
-            TargetProcessHandle = OpenProcess(PROCESS_CREATE_THREAD Or PROCESS_VM_OPERATION Or PROCESS_VM_WRITE, False, TargetProcess(0).Id)
-            pszLibFileRemote = OFDSweetFX.FileName()
-            pfnStartAddr = GetProcAddress(GetModuleHandle("Kernel32"), "LoadLibraryA")
-            TargetBufferSize = 1 + Len(pszLibFileRemote)
-            Dim Rtn As Integer
-            Dim LoadLibParamAdr As Integer
-            LoadLibParamAdr = VirtualAllocEx(TargetProcessHandle, 0, TargetBufferSize, MEM_COMMIT, PAGE_READWRITE)
-            Rtn = WriteProcessMemory(TargetProcessHandle, LoadLibParamAdr, pszLibFileRemote, TargetBufferSize, 0)
-            CreateRemoteThread(TargetProcessHandle, 0, 0, pfnStartAddr, LoadLibParamAdr, 0, 0)
-            CloseHandle(TargetProcessHandle)
-            MsgBox("Injected!")
-        Catch
-
-        End Try
-
-        Me.Show()
-    End Sub
-
-    Private Sub btnSelectSweetFX_Click(sender As Object, e As EventArgs) Handles btnSelectSweetFX.Click
-        ' TODO: Why does this open a dialog and not use anything from it?
-        OFDSweetFX.Filter = "DLL (*.dll) |*.dll|(*.*) |*.*"
-        OFDSweetFX.ShowDialog()
-        Dim DllFileName As String = OFDSweetFX.FileName
-    End Sub
-
-    Private Sub Injectstuff()
-        Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
-        Do Until hWnd <> IntPtr.Zero
-            hWnd = FindWindow("Phantasy Star Online 2", Nothing)
-            Thread.Sleep(10)
-        Loop
-        Dim TargetProcess As Process() = Process.GetProcessesByName("pso2")
-        If TargetProcess.Length = 0 Then
-
-        Else
-            Call Inject()
-        End If
-    End Sub
-
     Private Sub btnPredownloadLobbyVideos_Click(sender As Object, e As EventArgs) Handles btnPredownloadLobbyVideos.Click
         If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -4533,7 +4276,7 @@ SelectInstallFolder:
         Dim downloadstring As String = "3fdcad94b7af8c597542cd23e6a87236"
         Dim downloaded As Long = 0
         Dim totaldownloaded As Long = 0
-        totaldownloaded = totaldownloaded + totalsize2
+        totaldownloaded += totalsize2
 
         lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
@@ -4558,8 +4301,8 @@ SelectInstallFolder:
     Private Sub btnCopyInfo_Click_1(sender As Object, e As EventArgs) Handles btnCopyInfo.Click
         Try
             frmDiagnostic.TopMost = Me.TopMost
-            frmDiagnostic.Top = frmDiagnostic.Top + 50
-            frmDiagnostic.Left = frmDiagnostic.Left + 50
+            frmDiagnostic.Top += 50
+            frmDiagnostic.Left += 50
             frmDiagnostic.ShowDialog()
         Catch ex As Exception
             Log(ex.Message)
@@ -4586,7 +4329,7 @@ SelectInstallFolder:
                 MsgBox("ERROR - Version is incorrect! Please recheck the JSON.")
                 Exit Sub
             End If
-            If PublickeyUrl.Contains("publickey.blob") = False Then
+            If Not PublickeyUrl.Contains("publickey.blob") Then
                 MsgBox("ERROR - Public Key URL doesn't point to a public key blob! Please recheck the JSON.")
                 Exit Sub
             End If
@@ -4659,7 +4402,7 @@ SelectInstallFolder:
 
             If AlreadyModified Then WriteDebugInfo("Modifying HOSTS file...")
 
-            If AlreadyModified = False Then
+            If Not AlreadyModified Then
                 BuiltFile &= Host & " gs001.pso2gs.net #" & ProxyName & " Ship 01" & vbNewLine
                 BuiltFile &= Host & " gs016.pso2gs.net #" & ProxyName & " Ship 02" & vbNewLine
                 BuiltFile &= Host & " gs031.pso2gs.net #" & ProxyName & " Ship 03" & vbNewLine
@@ -4678,14 +4421,14 @@ SelectInstallFolder:
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
             myWebClient.DownloadFile(PublickeyUrl, Application.StartupPath & "\publickey.blob")
-            If File.Exists(lblDirectory.Text & "\publickey.blob") And Application.StartupPath <> lblDirectory.Text Then DeleteFile(lblDirectory.Text & "\publickey.blob")
+            If File.Exists(lblDirectory.Text & "\publickey.blob") AndAlso Application.StartupPath <> lblDirectory.Text Then DeleteFile(lblDirectory.Text & "\publickey.blob")
             If Application.StartupPath <> lblDirectory.Text Then File.Move(Application.StartupPath & "\publickey.blob", lblDirectory.Text & "\publickey.blob")
             WriteDebugInfoSameLine(" Done!")
             WriteDebugInfo("All done! You should now be able to connect to " & ProxyName & ".")
             Helper.SetRegKey(Of String)("ProxyEnabled", "True")
         Catch ex As Exception
             WriteDebugInfoAndFAILED("ERROR - " & ex.Message)
-            If ex.Message.ToString.Contains("is denied.") And ex.Message.ToString.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
+            If ex.Message.ToString.Contains("is denied.") AndAlso ex.Message.ToString.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
             Exit Sub
         End Try
     End Sub
@@ -4699,7 +4442,7 @@ SelectInstallFolder:
 
             Do
                 currentLine = reader.ReadLine()
-                If currentLine Is Nothing Then Exit Do
+                If (currentLine Is Nothing) Then Exit Do
                 If Not currentLine.Contains("pso2gs.net") Then builtFile.Add(currentLine)
             Loop
         End Using
@@ -4750,7 +4493,7 @@ SelectInstallFolder:
         Dim count As Integer = 0
         Dim totalfiles = My.Computer.FileSystem.GetFiles(lblDirectory.Text & "\data\win32\")
 
-        If File.Exists("old_patchlist.txt") = False Then
+        If Not File.Exists("old_patchlist.txt") Then
             Dim Filename As String = ""
             Dim filesize As Long = 0
             WriteDebugInfo("Building file list... ")
@@ -4785,8 +4528,7 @@ SelectInstallFolder:
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Dim versionclient As New MyWebClient
-        versionclient.timeout = 3000
+        Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
@@ -4823,7 +4565,7 @@ SelectInstallFolder:
             lblStatus.Text = "Checking file " & count & " / " & CStr(totalfiles.Count)
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
-            If oldarray.Contains(SEGALine) = False Then missingfiles.Add(SEGAFilename)
+            If Not oldarray.Contains(SEGALine) Then missingfiles.Add(SEGAFilename)
             count += 2
         Loop
 
@@ -4844,18 +4586,14 @@ SelectInstallFolder:
         Dim strStoryPatchLatestBase As String = ""
         Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch")
         Dim net As New WebClient()
-        Dim src As String
-        src = net.DownloadString("http://arks-layer.com/story.php")
+        Dim src As String = net.DownloadString("http://arks-layer.com/story.php")
 
         ' Create a match using regular exp<b></b>ressions
         Dim m As Match = Regex.Match(src, "<u>.*?</u>")
 
         ' Spit out the value plucked from the code
         txtHTML.Text = m.Value
-        Dim strDownloadME As String = txtHTML.Text
-        strDownloadME = strDownloadME.Replace("<u>", "")
-        strDownloadME = strDownloadME.Replace("</u>", "")
-
+        Dim strDownloadME As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
         strStoryPatchLatestBase = strDownloadME
         strStoryPatchLatestBase = strStoryPatchLatestBase.Replace("/", "-")
 
@@ -4866,13 +4604,10 @@ SelectInstallFolder:
 
         'execute pso2-transam stuff with -b flag for backup
         Dim process As Process = Nothing
-        Dim processStartInfo As ProcessStartInfo
-        processStartInfo = New ProcessStartInfo()
-        processStartInfo.FileName = "pso2-transam.exe"
-        processStartInfo.Verb = "runas"
+        Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
 
         If Directory.Exists(backupdir) Then processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
-        If Directory.Exists(backupdir) = False Then
+        If Not Directory.Exists(backupdir) Then
             Directory.CreateDirectory(backupdir)
             WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
             processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
@@ -4905,14 +4640,13 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strDownloading & "JP enemy names file....")
             Application.DoEvents()
             Dim strDownloadME As String = GrabLink("ceffe0e2386e8d39f188358303a92a7d")
-            Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
-            strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
+            Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "").Replace("http://107.170.16.100/patchbackups/", "")
             Cancelled = False
             DLWUA(strDownloadME, "ceffe0e2386e8d39f188358303a92a7d", True)
             If Cancelled Then Exit Sub
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "ceffe0e2386e8d39f188358303a92a7d"), "ceffe0e2386e8d39f188358303a92a7d.backup")
             End If
             Application.DoEvents()
@@ -4937,14 +4671,13 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strDownloading & "JP E-Trials file....")
             Application.DoEvents()
             Dim strDownloadME As String = GrabLink("057aa975bdd2b372fe092614b0f4399e")
-            Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "")
-            strVersion = strVersion.Replace("http://107.170.16.100/patchbackups/", "")
+            Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "").Replace("http://107.170.16.100/patchbackups/", "")
             Cancelled = False
             DLWUA(strDownloadME, "057aa975bdd2b372fe092614b0f4399e", True)
             If Cancelled Then Exit Sub
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then
-                If My.Computer.FileSystem.FileExists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then
+                If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then My.Computer.FileSystem.DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile(((lblDirectory.Text & "\data\win32") & "\" & "057aa975bdd2b372fe092614b0f4399e"), "057aa975bdd2b372fe092614b0f4399e.backup")
             End If
             Application.DoEvents()
@@ -5037,13 +4770,13 @@ SelectInstallFolder:
                 My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
+
+            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
 
             Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo
-            processStartInfo = New ProcessStartInfo()
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
@@ -5055,7 +4788,7 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             Do Until process.WaitForExit(1000)
             Loop
-            If Directory.Exists("TEMPPATCHAIDAFOOL") = False Then
+            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
                 WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
             End If
@@ -5073,11 +4806,10 @@ SelectInstallFolder:
                     Directory.CreateDirectory(backupstr)
                     WriteDebugInfo(My.Resources.strErasingPreviousBackup)
                 End If
-                If Directory.Exists(backupstr) = False Then
+                If Not Directory.Exists(backupstr) Then
                     Directory.CreateDirectory(backupstr)
                     WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
                 End If
-
             End If
 
             Log("Extracted " & diar1.Count & " files from the patch")
@@ -5094,7 +4826,6 @@ SelectInstallFolder:
                 If backupyesno = MsgBoxResult.Yes Then
                     If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
                         File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupstr & "\" & dra.ToString))
-
                     End If
                 End If
                 If backupyesno = MsgBoxResult.No Then

@@ -146,12 +146,6 @@
   <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
     <value>37</value>
   </data>
-  <metadata name="btnBlack.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="btnBlack.Text" xml:space="preserve">
-    <value>Black</value>
-  </data>
   <data name="ComboItem1.Text" xml:space="preserve">
     <value>Blue</value>
   </data>
@@ -1071,9 +1065,6 @@
   <data name="&gt;&gt;ButtonX4.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>248, 17</value>
-  </metadata>
   <data name="ButtonX5.Location" type="System.Drawing.Point, System.Drawing">
     <value>238, 343</value>
   </data>
@@ -1218,12 +1209,6 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Options</value>
-  </data>
-  <data name="&gt;&gt;btnBlack.Name" xml:space="preserve">
-    <value>btnBlack</value>
-  </data>
-  <data name="&gt;&gt;btnBlack.Type" xml:space="preserve">
-    <value>DevComponents.AdvTree.ColumnHeader, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;ComboItem1.Name" xml:space="preserve">
     <value>ComboItem1</value>
@@ -1398,12 +1383,6 @@
   </data>
   <data name="&gt;&gt;ComboItem40.Type" xml:space="preserve">
     <value>DevComponents.Editors.ComboItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;OpenFileDialog1.Name" xml:space="preserve">
-    <value>OpenFileDialog1</value>
-  </data>
-  <data name="&gt;&gt;OpenFileDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ComboItem15.Name" xml:space="preserve">
     <value>ComboItem15</value>

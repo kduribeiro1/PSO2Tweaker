@@ -45,7 +45,7 @@ Partial Class frmMain
         Me.chkRestoreNVidia = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestoreSEGA = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.btnApplyChanges = New DevComponents.DotNetBar.ButtonX()
-        Me.ButtonItem6 = New DevComponents.DotNetBar.ButtonX()
+        Me.btnLaunchPSO2 = New DevComponents.DotNetBar.ButtonX()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tsmRestartDownload = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -54,7 +54,6 @@ Partial Class frmMain
         Me.seconds = New System.Windows.Forms.Timer(Me.components)
         Me.Label4 = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
-        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.RibbonControl1 = New DevComponents.DotNetBar.RibbonControl()
@@ -130,7 +129,7 @@ Partial Class frmMain
         Me.ItemContainer4 = New DevComponents.DotNetBar.ItemContainer()
         Me.btnPSO2Options = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
-        Me.ButtonItem14 = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
         Me.LabelItem1 = New DevComponents.DotNetBar.LabelItem()
         Me.StyleManager2 = New DevComponents.DotNetBar.StyleManager()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
@@ -140,7 +139,6 @@ Partial Class frmMain
         Me.Label5 = New System.Windows.Forms.Label()
         Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
         Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
-        Me.OFDSweetFX = New System.Windows.Forms.OpenFileDialog()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -343,14 +341,14 @@ Partial Class frmMain
         Me.btnApplyChanges.Name = "btnApplyChanges"
         Me.btnApplyChanges.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'ButtonItem6
+        'btnLaunchPSO2
         '
-        Me.ButtonItem6.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonItem6.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonItem6.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonItem6, "ButtonItem6")
-        Me.ButtonItem6.Name = "ButtonItem6"
-        Me.ButtonItem6.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.btnLaunchPSO2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.btnLaunchPSO2.BackColor = System.Drawing.Color.Transparent
+        Me.btnLaunchPSO2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        resources.ApplyResources(Me.btnLaunchPSO2, "btnLaunchPSO2")
+        Me.btnLaunchPSO2.Name = "btnLaunchPSO2"
+        Me.btnLaunchPSO2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'ContextMenuStrip1
         '
@@ -380,6 +378,7 @@ Partial Class frmMain
         '
         'seconds
         '
+        Me.seconds.Interval = 10
         '
         'Label4
         '
@@ -390,10 +389,6 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
         Me.WebBrowser1.Name = "WebBrowser1"
-        '
-        'NotifyIcon1
-        '
-        resources.ApplyResources(Me.NotifyIcon1, "NotifyIcon1")
         '
         'WebBrowser2
         '
@@ -827,7 +822,7 @@ Partial Class frmMain
         Me.ItemContainer4.BackgroundStyle.Class = "RibbonFileMenuBottomContainer"
         Me.ItemContainer4.HorizontalItemAlignment = DevComponents.DotNetBar.eHorizontalItemsAlignment.Right
         Me.ItemContainer4.Name = "ItemContainer4"
-        Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPSO2Options, Me.btnOptions, Me.ButtonItem14})
+        Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPSO2Options, Me.btnOptions, Me.btnExit})
         '
         'btnPSO2Options
         '
@@ -845,13 +840,13 @@ Partial Class frmMain
         Me.btnOptions.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnOptions, "btnOptions")
         '
-        'ButtonItem14
+        'btnExit
         '
-        Me.ButtonItem14.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.ButtonItem14.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.ButtonItem14.Name = "ButtonItem14"
-        Me.ButtonItem14.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.ButtonItem14, "ButtonItem14")
+        Me.btnExit.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnExit, "btnExit")
         '
         'LabelItem1
         '
@@ -914,10 +909,6 @@ Partial Class frmMain
         Me.tmrCheckServerStatus.Enabled = True
         Me.tmrCheckServerStatus.Interval = 120000
         '
-        'OFDSweetFX
-        '
-        Me.OFDSweetFX.FileName = "OFDSweetFX"
-        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -935,7 +926,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.ButtonItem6)
+        Me.Controls.Add(Me.btnLaunchPSO2)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.lblDirectory)
         Me.Controls.Add(Me.chkRestoreSEGA)
@@ -986,7 +977,7 @@ Partial Class frmMain
     Friend WithEvents chkRestoreNVidia As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestoreSEGA As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents btnApplyChanges As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents ButtonItem6 As DevComponents.DotNetBar.ButtonX
+    Friend WithEvents btnLaunchPSO2 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CancelDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Label3 As System.Windows.Forms.Label
@@ -994,7 +985,6 @@ Partial Class frmMain
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents CancelProcessToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents NotifyIcon1 As System.Windows.Forms.NotifyIcon
     Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
     Friend WithEvents WebBrowser3 As System.Windows.Forms.WebBrowser
     Friend WithEvents RibbonControl1 As DevComponents.DotNetBar.RibbonControl
@@ -1003,7 +993,7 @@ Partial Class frmMain
     Friend WithEvents ItemContainer2 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents ItemContainer4 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents btnOptions As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents ButtonItem14 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnExit As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents StyleManager2 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents btnPSO2Options As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnAnnouncements As DevComponents.DotNetBar.ButtonX
@@ -1015,7 +1005,6 @@ Partial Class frmMain
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents LabelX1 As DevComponents.DotNetBar.LabelX
     Friend WithEvents tmrCheckServerStatus As System.Windows.Forms.Timer
-    Friend WithEvents OFDSweetFX As System.Windows.Forms.OpenFileDialog
     Friend WithEvents ItemContainer3 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents Button1 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
