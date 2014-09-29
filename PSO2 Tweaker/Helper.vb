@@ -57,11 +57,7 @@ Public Class Helper
     End Function
 
     Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
-        Try
-            RegistrySubKey.SetValue(Key, Value)
-            RegistryCache(Key) = Value
-        Catch ex As Exception
-            My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
-        End Try
+        My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
+        RegistryCache(Key) = Value
     End Sub
 End Class
