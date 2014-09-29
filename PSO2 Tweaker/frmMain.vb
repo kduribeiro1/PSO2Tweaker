@@ -663,7 +663,7 @@ Public Class frmMain
                     Dim changelogtotal As String = ""
 
                     For index As Integer = 2 To 11
-                        Dim innerText = XMLNode.ChildNodes(index).InnerText
+                        Dim innerText = XMLNode.ChildNodes(index).InnerText.Trim
                         If Not String.IsNullOrWhiteSpace(innerText) Then changelogtotal &= vbCrLf & innerText
                     Next
 
