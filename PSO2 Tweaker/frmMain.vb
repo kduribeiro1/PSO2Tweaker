@@ -2448,6 +2448,13 @@ NEXTFILE1:
             SOMEOFTHETHINGS.Remove("script/user_default.pso2")
             SOMEOFTHETHINGS.Remove("script/user_intel.pso2")
             SOMEOFTHETHINGS.Remove("")
+
+            If SOMEOFTHETHINGS.ContainsKey("pso2.exe") Then
+                Dim value = SOMEOFTHETHINGS("pso2.exe")
+                PSO2EXEMD5 = value.Substring(value.LastIndexOf(vbTab) + 1)
+                SOMEOFTHETHINGS.Remove("pso2.exe")
+            End If
+
             Dim dataPath = lblDirectory.Text & "\data\win32\"
             Dim length = SOMEOFTHETHINGS.Count
             Dim oldmax = PB1.Maximum
@@ -2456,14 +2463,9 @@ NEXTFILE1:
             For Each kvp In SOMEOFTHETHINGS
                 lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
                 PB1.Text = NumberofChecks & " / " & length
-                Application.DoEvents()
+                If (NumberofChecks Mod 8) = 0 Then Application.DoEvents()
                 NumberofChecks += 1
                 PB1.Value += 1
-
-                If kvp.Key = "pso2.exe" Then
-                    PSO2EXEMD5 = kvp.Value.Substring(kvp.Value.LastIndexOf(vbTab) + 1)
-                    Continue For
-                End If
 
                 Dim filePath = dataPath & kvp.Key
 
@@ -2475,13 +2477,21 @@ NEXTFILE1:
                     Continue For
                 End If
 
-                Dim tempMD5 As String = Helper.GetMD5(filePath)
                 testfilesize = kvp.Value.Split(vbTab)
+                Dim fileSizeZ = Convert.ToInt32(testfilesize(1))
+
+                If GetFileSize(filePath) <> fileSizeZ Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
+                    totalfilesize += fileSizeZ
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+
                 TrueMD5 = testfilesize(2)
 
-                If tempMD5 <> TrueMD5 Then
+                If Helper.GetMD5(filePath) <> TrueMD5 Then
                     If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
-                    totalfilesize += Convert.ToInt32(testfilesize(1))
+                    totalfilesize += fileSizeZ
                     missingfiles2.Add(kvp.Key)
                     Continue For
                 End If
