@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+*..bproj
 
 # Build results
 
