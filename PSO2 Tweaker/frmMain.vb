@@ -1864,21 +1864,21 @@ BackToCheckUpdates2:
         patching = False
     End Sub
 
-    Private Function GrabLink(ByRef urlIdentifier As String)
-        Dim net As New WebClient()
-        Dim src As String = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
-        Dim regx As New Regex("http://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?", RegexOptions.IgnoreCase)
-        Dim mactches As MatchCollection = regx.Matches(src)
-        Dim returnURL As String = ""
-        For Each match As Match In mactches
-            If match.ToString.Contains(urlIdentifier) Then returnURL = match.ToString
-        Next
-        If String.IsNullOrEmpty(returnURL) Then
-            Return "Error! URL not found!"
-            Exit Function
-        End If
-        Return returnURL
-    End Function
+    '    Private Function GrabLink(ByRef urlIdentifier As String)
+    ' Dim net As New WebClient()
+    ' Dim src As String = Net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
+    ' Dim regx As New Regex("http://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?", RegexOptions.IgnoreCase)
+    ' Dim mactches As MatchCollection = regx.Matches(src)
+    ' Dim returnURL As String = ""
+    '     For Each match As Match In mactches
+    '         If match.ToString.Contains(urlIdentifier) Then returnURL = match.ToString
+    '     Next
+    '     If String.IsNullOrEmpty(returnURL) Then
+    '         Return "Error! URL not found!"
+    '         Exit Function
+    '     End If
+    '     Return returnURL
+    'End Function
 
     Private Sub seconds_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles seconds.Tick
         Me.timer_start += 1
@@ -4639,7 +4639,7 @@ SelectInstallFolder:
             End If
             WriteDebugInfo(My.Resources.strDownloading & "JP enemy names file....")
             Application.DoEvents()
-            Dim strDownloadME As String = GrabLink("ceffe0e2386e8d39f188358303a92a7d")
+            Dim strDownloadME As String = "http://107.170.16.100/patches/ceffe0e2386e8d39f188358303a92a7d"
             Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "").Replace("http://107.170.16.100/patchbackups/", "")
             Cancelled = False
             DLWUA(strDownloadME, "ceffe0e2386e8d39f188358303a92a7d", True)
@@ -4670,7 +4670,7 @@ SelectInstallFolder:
             End If
             WriteDebugInfo(My.Resources.strDownloading & "JP E-Trials file....")
             Application.DoEvents()
-            Dim strDownloadME As String = GrabLink("057aa975bdd2b372fe092614b0f4399e")
+            Dim strDownloadME As String = "http://107.170.16.100/patches/057aa975bdd2b372fe092614b0f4399e"
             Dim strVersion As String = strDownloadME.Replace("http://pso2.arghargh200.net/pso2/", "").Replace("http://107.170.16.100/patchbackups/", "")
             Cancelled = False
             DLWUA(strDownloadME, "057aa975bdd2b372fe092614b0f4399e", True)
