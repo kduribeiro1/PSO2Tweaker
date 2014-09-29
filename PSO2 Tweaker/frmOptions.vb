@@ -145,7 +145,7 @@ Public Class frmOptions
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
         Dim DownloadClient As New WebClient
-        DownloadClient.DownloadFile(New Uri("http://arks-layer.com/tweaker/LanguagePack.rar"), "LanguagePack.rar")
+        DownloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
         Dim process As System.Diagnostics.Process = Nothing
         Dim processStartInfo As System.Diagnostics.ProcessStartInfo
         processStartInfo = New System.Diagnostics.ProcessStartInfo()
