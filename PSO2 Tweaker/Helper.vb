@@ -42,14 +42,18 @@ Public Class Helper
     End Function
 
     Public Shared Function GetRegKey(Of T)(ByRef Key As String) As T
-        Dim returnValue As T
-        If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
+        Try
+            Dim returnValue As T
+            If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
 
-        returnValue = RegistrySubKey.GetValue(Key, Nothing)
+            returnValue = RegistrySubKey.GetValue(Key, Nothing)
 
-        If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
+            If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
 
-        Return returnValue
+            Return returnValue
+        Catch
+            Return Nothing
+        End Try
     End Function
 
     Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
