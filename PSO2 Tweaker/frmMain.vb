@@ -1269,7 +1269,6 @@ Public Class frmMain
                     WriteDebugInfo(My.Resources.strBeginningStoryModeUpdate)
                     While Not (oReader.EndOfStream)
                         sBuffer = oReader.ReadLine
-                        MessageBox.Show(sBuffer)
                         filename = sBuffer.Split(","c)
                         truefilename = filename(0)
                         TrueMD5 = filename(1)
@@ -4207,7 +4206,7 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnDonateToENPatchHost_Click(sender As Object, e As EventArgs) Handles btnDonateToENPatchHost.Click
-        Process.Start("http://arghargh200.net/?page=donators")
+        Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UB7UN9MQ7WZ44")
     End Sub
 
     Public Sub setserverstatus(ByVal serverstatus As String)
@@ -4853,5 +4852,9 @@ SelectInstallFolder:
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
+    End Sub
+
+    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
+
     End Sub
 End Class

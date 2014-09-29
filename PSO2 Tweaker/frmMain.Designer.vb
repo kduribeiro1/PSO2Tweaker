@@ -594,6 +594,7 @@ Partial Class frmMain
         '
         Me.btnConnection.Name = "btnConnection"
         resources.ApplyResources(Me.btnConnection, "btnConnection")
+        Me.btnConnection.Visible = False
         '
         'btnGameguard
         '
@@ -622,10 +623,8 @@ Partial Class frmMain
         '
         'btnResetTweaker
         '
-        Me.btnResetTweaker.Enabled = False
         Me.btnResetTweaker.Name = "btnResetTweaker"
         resources.ApplyResources(Me.btnResetTweaker, "btnResetTweaker")
-        Me.btnResetTweaker.Visible = False
         '
         'btnResumePatching
         '
