@@ -1949,7 +1949,7 @@ BackToCheckUpdates2:
                 Exit Sub
             End If
 
-            If MyFolderBrowser.SelectedPath.Contains("\pso2_bin\data\win32") Then
+            If MyFolderBrowser.SelectedPath.Contains("\pso2_bin") Then
                 If File.Exists(MyFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") Then
                     WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
                     lblDirectory.Text = MyFolderBrowser.SelectedPath.Replace("\data\win32", "")

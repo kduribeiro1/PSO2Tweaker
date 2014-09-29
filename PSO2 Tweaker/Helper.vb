@@ -47,7 +47,7 @@ Public Class Helper
             If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
 
             returnValue = RegistrySubKey.GetValue(Key, Nothing)
-
+            MessageBox.Show("sdasad")
             If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
 
             Return returnValue
@@ -57,7 +57,11 @@ Public Class Helper
     End Function
 
     Public Shared Sub SetRegKey(Of T)(ByRef Key As String, ByRef Value As T)
-        RegistrySubKey.SetValue(Key, Value)
-        RegistryCache(Key) = Value
+        Try
+            RegistrySubKey.SetValue(Key, Value)
+            RegistryCache(Key) = Value
+        Catch ex As Exception
+            My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
+        End Try
     End Sub
 End Class
