@@ -4541,34 +4541,28 @@ SelectInstallFolder:
         Dim SplitSEGALine As String()
         Dim SEGAFilename As String = ""
         Dim missingfiles As New List(Of String)
-        Dim sr1 As StreamReader = File.OpenText("SOMEOFTHETHINGS.txt")
         Dim sr2 As StreamReader = New StreamReader("old_patchlist.txt")
         Dim oldarray As New List(Of String)
         Dim Contains As Boolean = False
-        count = 0
 
         Do While sr2.Peek <> -1
             oldarray.Add(sr2.ReadLine)
         Loop
 
-        Do While sr1.Peek <> -1
-            SEGALine = sr1.ReadLine()
-            If String.IsNullOrEmpty(sr1.ReadLine) Then
-                Continue Do
-                ' Mike: Why was this here? It never executed!
-                'count -= 1
-            End If
+        Dim i As Integer = 0
+        Do Until i = SOMEOFTHETHINGS.Count
+            SEGALine = SOMEOFTHETHINGS.Values(i).ToString
+            If String.IsNullOrEmpty(SEGALine) Then Continue Do
 
             SplitSEGALine = Regex.Split(SEGALine, ".pat")
             SEGAFilename = SplitSEGALine(0).Replace("data/win32/", "")
-            lblStatus.Text = "Checking file " & count & " / " & CStr(totalfiles.Count)
+            lblStatus.Text = "Checking file " & i & " / " & CStr(totalfiles.Count)
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
             If Not oldarray.Contains(SEGALine) Then missingfiles.Add(SEGAFilename)
-            count += 2
+            i += 1
         Loop
 
-        sr1.Close()
         sr2.Close()
     End Sub
 
