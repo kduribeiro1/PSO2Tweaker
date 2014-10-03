@@ -4505,7 +4505,7 @@ SelectInstallFolder:
                 filesize = dra.Length
                 File.AppendAllText("old_patchlist.txt", "data/win32/" & Filename & ".pat" & vbTab & filesize & vbTab & Helper.GetMD5(lblDirectory.Text & "\data\win32\" & Filename) & vbNewLine)
                 count += 1
-                lblStatus.Text = "Building first time list of win32 files (" & count & "/" & CStr(totalfiles.Count) & ")"
+                lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Count & ")"
                 Application.DoEvents()
             Next
 
@@ -4538,32 +4538,22 @@ SelectInstallFolder:
 
         Dim SEGALine As String = ""
         Dim LocalLine As String = ""
-        Dim SplitSEGALine As String()
         Dim SEGAFilename As String = ""
         Dim missingfiles As New List(Of String)
-        Dim sr2 As StreamReader = New StreamReader("old_patchlist.txt")
-        Dim oldarray As New List(Of String)
+
+        Dim oldarray = File.ReadAllLines("old_patchlist.txt")
         Dim Contains As Boolean = False
 
-        Do While sr2.Peek <> -1
-            oldarray.Add(sr2.ReadLine)
-        Loop
+        For i As Integer = 0 To SOMEOFTHETHINGS.Count
+            SEGALine = SOMEOFTHETHINGS.Values(i)
+            If String.IsNullOrEmpty(SEGALine) Then Continue For
 
-        Dim i As Integer = 0
-        Do Until i = SOMEOFTHETHINGS.Count
-            SEGALine = SOMEOFTHETHINGS.Values(i).ToString
-            If String.IsNullOrEmpty(SEGALine) Then Continue Do
-
-            SplitSEGALine = Regex.Split(SEGALine, ".pat")
-            SEGAFilename = SplitSEGALine(0).Replace("data/win32/", "")
-            lblStatus.Text = "Checking file " & i & " / " & CStr(totalfiles.Count)
+            SEGAFilename = Regex.Split(SEGALine, ".pat")(0).Replace("data/win32/", "")
+            lblStatus.Text = "Checking file " & i & " / " & totalfiles.Count
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
             If Not oldarray.Contains(SEGALine) Then missingfiles.Add(SEGAFilename)
-            i += 1
-        Loop
-
-        sr2.Close()
+        Next
     End Sub
 
     Private Sub btnStoryPatchNew_Click(sender As Object, e As EventArgs) Handles btnStoryPatchNew.Click
