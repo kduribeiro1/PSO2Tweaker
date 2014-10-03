@@ -118,7 +118,6 @@ Partial Class frmMain
         Me.btnDonateToCirno = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToENPatchHost = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnSelectSweetFX = New DevComponents.DotNetBar.ButtonItem()
         Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem5 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDownloadPrepatch = New DevComponents.DotNetBar.ButtonItem()
@@ -455,7 +454,7 @@ Partial Class frmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Button1, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnSelectSweetFX, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Button1, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'Button1
         '
@@ -762,15 +761,6 @@ Partial Class frmMain
         Me.btnDonateToTweaker.Name = "btnDonateToTweaker"
         resources.ApplyResources(Me.btnDonateToTweaker, "btnDonateToTweaker")
         '
-        'btnSelectSweetFX
-        '
-        Me.btnSelectSweetFX.BeginGroup = True
-        Me.btnSelectSweetFX.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.btnSelectSweetFX.Name = "btnSelectSweetFX"
-        Me.btnSelectSweetFX.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.btnSelectSweetFX, "btnSelectSweetFX")
-        Me.btnSelectSweetFX.Visible = False
-        '
         'btnNewShit
         '
         Me.btnNewShit.BeginGroup = True
@@ -1059,7 +1049,6 @@ Partial Class frmMain
     Friend WithEvents btnDonateToCirno As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToENPatchHost As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToTweaker As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnSelectSweetFX As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnNewShit As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem5 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDownloadPrepatch As DevComponents.DotNetBar.ButtonItem
