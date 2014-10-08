@@ -176,6 +176,10 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+        btnNewShit.Visible = True
+#End If
+
         tmrCheckServerStatus.Start()
         ' TODO: Fix this Mike plz
         Using g As Graphics = Me.CreateGraphics
@@ -4454,7 +4458,7 @@ SelectInstallFolder:
         End If
 
         Dim count As Integer = 0
-        Dim totalfiles = My.Computer.FileSystem.GetFiles(lblDirectory.Text & "\data\win32\")
+        Dim totalfiles = Directory.GetFiles(lblDirectory.Text & "\data\win32\")
 
         If Not File.Exists("old_patchlist.txt") Then
             Dim Filename As String = ""
@@ -4469,7 +4473,7 @@ SelectInstallFolder:
                 filesize = dra.Length
                 File.AppendAllText("old_patchlist.txt", "data/win32/" & Filename & ".pat" & vbTab & filesize & vbTab & Helper.GetMD5(lblDirectory.Text & "\data\win32\" & Filename) & vbNewLine)
                 count += 1
-                lblStatus.Text = "Building first time list of win32 files (" & count & "/" & CStr(totalfiles.Count) & ")"
+                lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Length & ")"
                 Application.DoEvents()
             Next
 
@@ -4501,33 +4505,20 @@ SelectInstallFolder:
         'Rewrite this to support the new format
 
         Dim SEGALine As String = ""
-        Dim LocalLine As String = ""
-        Dim SplitSEGALine As String()
         Dim SEGAFilename As String = ""
         Dim missingfiles As New List(Of String)
-        Dim sr2 As StreamReader = New StreamReader("old_patchlist.txt")
-        Dim oldarray As New List(Of String)
-        Dim Contains As Boolean = False
+        Dim oldarray = File.ReadAllLines("old_patchlist.txt")
 
-        Do While sr2.Peek <> -1
-            oldarray.Add(sr2.ReadLine)
-        Loop
+        For i As Integer = 0 To SOMEOFTHETHINGS.Count
+            SEGALine = SOMEOFTHETHINGS.Values(i)
+            If String.IsNullOrEmpty(SEGALine) Then Continue For
 
-        Dim i As Integer = 0
-        Do Until i = SOMEOFTHETHINGS.Count
-            SEGALine = SOMEOFTHETHINGS.Values(i).ToString
-            If String.IsNullOrEmpty(SEGALine) Then Continue Do
-
-            SplitSEGALine = Regex.Split(SEGALine, ".pat")
-            SEGAFilename = SplitSEGALine(0).Replace("data/win32/", "")
-            lblStatus.Text = "Checking file " & i & " / " & CStr(totalfiles.Count)
+            SEGAFilename = SEGALine.Remove(SEGALine.IndexOf(".pat")).Replace("data/win32/", "")
+            lblStatus.Text = "Checking file " & i & " / " & totalfiles.Length
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
             If Not oldarray.Contains(SEGALine) Then missingfiles.Add(SEGAFilename)
-            i += 1
-        Loop
-
-        sr2.Close()
+        Next
     End Sub
 
     Private Sub btnStoryPatchNew_Click(sender As Object, e As EventArgs) Handles btnStoryPatchNew.Click
@@ -4810,9 +4801,5 @@ SelectInstallFolder:
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
-    End Sub
-
-    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
-
     End Sub
 End Class
