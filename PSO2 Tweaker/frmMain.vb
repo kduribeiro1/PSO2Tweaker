@@ -197,7 +197,6 @@ Public Class frmMain
             Log("Program started! - Logging enabled!")
             Dim DirectoryString As String
             Dim pso2launchpath As String
-            Dim sBuffer As String
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 Dim AlreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
@@ -842,19 +841,51 @@ Public Class frmMain
             End If
 
             UseItemTranslation = Helper.GetRegKey(Of String)("UseItemTranslation")
-
-            If UseItemTranslation Then chkItemTranslation.Checked = True
             DirectoryString = (lblDirectory.Text & "\data\win32")
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
-            WriteDebugInfo("Downloading latest item patch/proxy files...")
-            ItemDownloadingDone = False
-            Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
-            t4.Start()
+            If UseItemTranslation Then
+                chkItemTranslation.Checked = True
+                WriteDebugInfo("Downloading latest item patch files...")
+                ItemDownloadingDone = False
+                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
+                t4.Start()
 
-            Do Until ItemDownloadingDone = True
-                Application.DoEvents()
-                Thread.Sleep(16)
-            Loop
+                Do Until ItemDownloadingDone = True
+                    Application.DoEvents()
+                    Thread.Sleep(16)
+                Loop
+            End If
+            Dim hostname As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
+            Dim ip As IPAddress() = hostname.AddressList
+            If ip(0).ToString.Contains("210.189.") = False And ItemDownloadingDone = False Then
+                WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
+                ItemDownloadingDone = False
+                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
+                t4.Start()
+
+                Do Until ItemDownloadingDone = True
+                    Application.DoEvents()
+                    Thread.Sleep(16)
+                Loop
+                If Not File.Exists(lblDirectory.Text & "\translation.cfg") Then
+                    File.WriteAllText(lblDirectory.Text & "\translation.cfg", "TranslationPath:translation.bin")
+                End If
+                Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
+                Dim CurrentLine As String = ""
+                Dim BuiltFile As String = ""
+
+                Do While objReader.Peek() <> -1
+
+                    CurrentLine = objReader.ReadLine()
+
+                    If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:"
+
+                    BuiltFile &= CurrentLine & vbNewLine
+                Loop
+
+                objReader.Close()
+                File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
+            End If
 
             WriteDebugInfoSameLine(My.Resources.strDone)
 
