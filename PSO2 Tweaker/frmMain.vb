@@ -312,18 +312,6 @@ Public Class frmMain
                         Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                         Log("Deleting item cache...")
                         DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-                        Log("Checking to see if the item translation works with PSO2...")
-                        DLWUA("http://162.243.211.123/freedom/working.txt", "working.txt", True)
-
-                        Using oReader As StreamReader = File.OpenText("working.txt")
-                            sBuffer = oReader.ReadLine
-                            If sBuffer.ToString = "No" Then
-                                MsgBox("Sorry, but the item translation is not working with the current version of PSO2! Please remove the -item argument if you wish to launch PSO2 without it.")
-                                Exit Sub
-                            End If
-                        End Using
-
-                        DeleteFile("working.txt")
                         DirectoryString = (lblDirectory.Text & "\data\win32")
                         pso2launchpath = DirectoryString.Replace("\data\win32", "")
 
@@ -851,35 +839,26 @@ Public Class frmMain
 
             UseItemTranslation = Helper.GetRegKey(Of String)("UseItemTranslation")
 
-            If UseItemTranslation Then
-                chkItemTranslation.Checked = True
-                DirectoryString = (lblDirectory.Text & "\data\win32")
-                pso2launchpath = DirectoryString.Replace("\data\win32", "")
-                WriteDebugInfo(My.Resources.strDownloadingItemTranslationFiles)
-                ItemDownloadingDone = False
-                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
-                t4.Start()
+            If UseItemTranslation Then chkItemTranslation.Checked = True
+            DirectoryString = (lblDirectory.Text & "\data\win32")
+            pso2launchpath = DirectoryString.Replace("\data\win32", "")
+            WriteDebugInfo("Downloading latest item patch/proxy files...")
+            ItemDownloadingDone = False
+            Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
+            t4.Start()
 
-                Do Until ItemDownloadingDone = True
-                    Application.DoEvents()
-                    Thread.Sleep(16)
-                Loop
+            Do Until ItemDownloadingDone = True
+                Application.DoEvents()
+                Thread.Sleep(16)
+            Loop
 
-                WriteDebugInfoSameLine(My.Resources.strDone)
-            End If
+            WriteDebugInfoSameLine(My.Resources.strDone)
+
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
-        DLWUA("http://162.243.211.123/freedom/working.txt", "working.txt", True)
-
-        Using oReader As StreamReader = File.OpenText("working.txt")
-            Dim sBuffer As String = oReader.ReadLine
-            WriteDebugInfo(My.Resources.strDoesItemPatchWork & sBuffer.ToString)
-        End Using
-
-        DeleteFile("working.txt")
         DeleteFile("version.xml")
         DeleteFile("Story MD5HashList.txt")
         DeleteFile("PSO2 Tweaker Updater.exe")
@@ -1782,21 +1761,6 @@ BackToCheckUpdates2:
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
 
             If chkItemTranslation.Checked Then
-                DLWUA("http://162.243.211.123/freedom/working.txt", "working.txt", True)
-                Try
-                    Dim sBuffer As String
-                    Using oReader As StreamReader = File.OpenText("working.txt")
-                        sBuffer = oReader.ReadLine
-                        If sBuffer.ToString = "No" Then
-                            MsgBox(My.Resources.strItemTranslationNotWorking)
-                            Exit Sub
-                        End If
-                    End Using
-                Catch ex As Exception
-                    Log(ex.Message)
-                    WriteDebugInfo(My.Resources.strERROR & ex.Message)
-                End Try
-                DeleteFile("working.txt")
                 If Helper.GetMD5(pso2launchpath & "\translator.dll") <> Helper.GetRegKey(Of String)("DLLMD5") Then
                     MsgBox(My.Resources.strTranslationFilesDontMatch)
                     Exit Sub
