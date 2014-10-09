@@ -1988,8 +1988,9 @@ BackToCheckUpdates2:
         Dim count As Integer = 0
         Dim Enabled As Boolean = False
         Do Until count = PatchSplit.Count
+            'Clipboard.SetText(PatchSplit(count).ToString)
             'MsgBox(PatchSplit(count).ToString)
-            If PatchSplit(count).ToString = "Large Files: Compatible!" Then Enabled = True
+            If PatchSplit(count).ToString.Contains("Large Files: Compatible!") = True Then Enabled = True
             count += 1
         Loop
         If Enabled = False Then
