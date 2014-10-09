@@ -1968,6 +1968,38 @@ BackToCheckUpdates2:
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
+        Dim sourceString As String = New System.Net.WebClient().DownloadString("http://162.243.211.123/freedom/tweaker.html")
+        Dim SourceSplit() As String
+        Dim SourceSplit2() As String
+        SourceSplit = sourceString.Split("$")
+        SourceSplit2 = SourceSplit(1).Split("#")
+        Dim Patch As String = SourceSplit2(0)
+        Patch = Patch.Replace("-->", "")
+        Patch = Patch.Replace("> ", "")
+        Patch = Patch.Replace("<font color=""green"">", "")
+        Patch = Patch.Replace("<font color=""red"">", "")
+        Patch = Patch.Replace("<font color=""D4A017"">", "")
+        Patch = Patch.Replace("</font><br>", "")
+        Patch = Patch.Replace("</font><br", "")
+        Patch = Patch.Replace("<br>", "")
+        Patch = Patch.Replace("<!--", "")
+        'MsgBox("Current Patch status:" + Patch)
+        Dim PatchSplit() As String = Patch.Split(vbCrLf)
+        Dim count As Integer = 0
+        Dim Enabled As Boolean = False
+        Do Until count = PatchSplit.Count
+            'MsgBox(PatchSplit(count).ToString)
+            If PatchSplit(count).ToString = "Large Files: Compatible!" Then Enabled = True
+            count += 1
+        Loop
+        If Enabled = False Then
+            Dim ReallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
+            If ReallyInstall = MsgBoxResult.No Then
+
+                WriteDebugInfo("Download was cancelled due to incompatibility.")
+                Exit Sub
+            End If
+        End If
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
         Using net As New WebClient()
