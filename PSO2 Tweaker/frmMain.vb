@@ -4717,20 +4717,23 @@ SelectInstallFolder:
 
             DLWUA(PatchListURL, PatchListFile, True)
 
-            Dim oReader As StreamReader = File.OpenText(PatchListFile)
-            Dim sBuffer As String = Nothing
-            Dim filename As String = Nothing
             Dim missingfiles As New List(Of String)
-            Dim NumberofChecks As Integer = 0
 
-            While Not (oReader.EndOfStream)
-                sBuffer = oReader.ReadLine
-                filename = sBuffer
-                missingfiles.Add(filename)
-                NumberofChecks += 1
-            End While
+            Using oReader As StreamReader = File.OpenText(PatchListFile)
+                Dim sBuffer As String = Nothing
+                Dim filename As String = Nothing
+                Dim NumberofChecks As Integer = 0
 
-            oReader.Close()
+                While Not (oReader.EndOfStream)
+                    sBuffer = oReader.ReadLine
+                    filename = sBuffer
+                    missingfiles.Add(filename)
+                    NumberofChecks += 1
+                End While
+
+                oReader.Close()
+            End Using
+
             DeleteFile(PatchListFile)
 
             WriteDebugInfo(My.Resources.strUninstallingPatch)
