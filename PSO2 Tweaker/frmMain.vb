@@ -181,13 +181,9 @@ Public Class frmMain
 #End If
 
         tmrCheckServerStatus.Start()
-        ' TODO: Fix this Mike plz
         Using g As Graphics = Me.CreateGraphics
-            If g.DpiX = 120 Then
-                DPISetting = 120
-            End If
-            If g.DpiX = 96 Then
-                DPISetting = 96
+            If g.DpiX = 120 Or g.DpiX = 96 Then
+                DPISetting = g.DpiX
             End If
         End Using
 
