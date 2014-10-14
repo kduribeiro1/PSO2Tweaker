@@ -182,7 +182,7 @@ Public Class frmMain
 
         tmrCheckServerStatus.Start()
         Using g As Graphics = Me.CreateGraphics
-            If g.DpiX = 120 Or g.DpiX = 96 Then
+            If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 DPISetting = g.DpiX
             End If
         End Using
@@ -853,7 +853,7 @@ Public Class frmMain
             End If
             Dim hostname As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
             Dim ip As IPAddress() = hostname.AddressList
-            If ip(0).ToString.Contains("210.189.") = False And ItemDownloadingDone = False Then
+            If ip(0).ToString.Contains("210.189.") = False AndAlso ItemDownloadingDone = False Then
                 WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
                 ItemDownloadingDone = False
                 Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
@@ -926,7 +926,7 @@ Public Class frmMain
             Dim thing As AuthorizationRuleCollection = Directory.GetAccessControl(Path, AccessControlSections.All).GetAccessRules(True, True, GetType(NTAccount))
 
             For Each rule As FileSystemAccessRule In thing
-                If (rule.FileSystemRights And FileSystemRights.Write) = FileSystemRights.Write Then Return True
+                If (rule.FileSystemRights AndAlso FileSystemRights.Write) = FileSystemRights.Write Then Return True
             Next
         Catch
             Return False
@@ -1438,7 +1438,7 @@ NEXTFILE1:
             Dim precedeversionstring As String = PrecedeSplit(1)
 
             If PrecedeYesNo = "Yes" Then
-                If Helper.GetRegKey(Of String)("PSO2PrecedeVersion") <> precedeversionstring Or FirstTimechecking Then
+                If Helper.GetRegKey(Of String)("PSO2PrecedeVersion") <> precedeversionstring OrElse FirstTimechecking Then
                     Dim DownloadPrepatch As MsgBoxResult = MsgBox("New pre-patch data is available to download - Would you like to download it? This is optional, and will let you download some of a large patch now, as opposed to having a larger download all at once when it is released.", MsgBoxStyle.YesNo)
                     If DownloadPrepatch = vbYes Then
 StartPrePatch:
@@ -2295,7 +2295,7 @@ DOWNLOADBIN2:
             If chkAlwaysOnTop.Checked Then Me.TopMost = True
         End If
 
-        If result = MsgBoxResult.Yes Or ComingFromOldFiles Then
+        If result = MsgBoxResult.Yes OrElse ComingFromOldFiles Then
             WriteDebugInfo(My.Resources.strCheckingforNewContent)
             NumberofChecks = 0
             missingfiles.Clear()
@@ -3472,173 +3472,17 @@ NEXTFILE1:
             End If
         End If
     End Sub
-    ' TODO: Uninstall function
+
     Private Sub btnUninstallENPatch_Click(sender As Object, e As EventArgs) Handles btnUninstallENPatch.Click
-        Try
-            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If
-
-            DLWUA("http://162.243.211.123/patches/enpatchfilelist.txt", "enpatchfilelist.txt", True)
-
-            Dim oReader As StreamReader = File.OpenText("enpatchfilelist.txt")
-            Dim sBuffer As String = Nothing
-            Dim filename As String = Nothing
-            Dim missingfiles As New List(Of String)
-            Dim NumberofChecks As Integer = 0
-
-            While Not (oReader.EndOfStream)
-                sBuffer = oReader.ReadLine
-                filename = sBuffer
-                missingfiles.Add(filename)
-                NumberofChecks += 1
-            End While
-
-            oReader.Close()
-            DeleteFile("enpatchfilelist.txt")
-
-            WriteDebugInfo(My.Resources.strUninstallingPatch)
-            Dim totaldownload As String = missingfiles.Count
-            Dim downloaded As Long = 0
-
-            For Each downloadstring In missingfiles
-                downloaded += 1
-                If CancelledFull Then Exit Sub
-
-                'Download JP file
-                lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-                Dim info7 As New FileInfo(downloadstring)
-                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-
-                'Move JP file to win32
-                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-                File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-            Next
-
-            If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch") Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch"), FileIO.DeleteDirectoryOption.DeleteAllContents)
-            FlashWindow(Me.Handle, 1)
-            WriteDebugInfo(My.Resources.strENPatchUninstalled)
-            Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        UninstallPatch("http://162.243.211.123/patches/enpatchfilelist.txt", "enpatchfilelist.txt", "backupPreENPatch", My.Resources.strENPatchUninstalled, "ENPatchVersion")
     End Sub
-    ' TODO: Uninstall function
+
     Private Sub btnUninstallLargeFiles_Click(sender As Object, e As EventArgs) Handles btnUninstallLargeFiles.Click
-        Try
-            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If
-
-            DLWUA("http://162.243.211.123/patches/largefilelist.txt", "largefilelist.txt", True)
-
-            Dim oReader As StreamReader = File.OpenText("largefilelist.txt")
-            Dim sBuffer As String = Nothing
-            Dim filename As String = Nothing
-            Dim missingfiles As New List(Of String)
-            Dim NumberofChecks As Integer = 0
-
-            While Not (oReader.EndOfStream)
-                sBuffer = oReader.ReadLine
-                filename = sBuffer
-                missingfiles.Add(filename)
-                NumberofChecks += 1
-            End While
-
-            oReader.Close()
-            DeleteFile("largefilelist.txt")
-
-            WriteDebugInfo(My.Resources.strUninstallingPatch)
-            Dim totaldownload As String = missingfiles.Count
-            Dim downloaded As Long = 0
-            For Each downloadstring In missingfiles
-                downloaded += 1
-
-                If CancelledFull Then Exit Sub
-                'Download JP file
-                lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-                Dim info7 As New FileInfo(downloadstring)
-                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-
-                'Move JP file to win32
-                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-                File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-            Next
-
-            If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreLargeFiles") Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreLargeFiles"), FileIO.DeleteDirectoryOption.DeleteAllContents)
-            FlashWindow(Me.Handle, 1)
-            WriteDebugInfo(My.Resources.strLFUninstalled)
-            Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        UninstallPatch("http://162.243.211.123/patches/largefilelist.txt", "largefilelist.txt", "backupPreLargeFiles", My.Resources.strLFUninstalled, "LargeFilesVersion")
     End Sub
-    ' TODO: Uninstall function
+
     Private Sub btnUninstallStory_Click(sender As Object, e As EventArgs) Handles btnUninstallStory.Click
-        Try
-            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If
-
-            DLWUA("http://162.243.211.123/patches/storyfilelist.txt", "storyfilelist.txt", True)
-
-            Dim oReader As StreamReader = File.OpenText("storyfilelist.txt")
-            Dim sBuffer As String = Nothing
-            Dim filename As String = Nothing
-            Dim missingfiles As New List(Of String)
-            Dim NumberofChecks As Integer = 0
-
-            While Not (oReader.EndOfStream)
-                sBuffer = oReader.ReadLine
-                filename = sBuffer
-                missingfiles.Add(filename)
-                NumberofChecks += 1
-            End While
-
-            oReader.Close()
-            DeleteFile("storyfilelist.txt")
-
-            WriteDebugInfo(My.Resources.strUninstallingPatch)
-            Dim totaldownload As String = missingfiles.Count
-            Dim downloaded As Long = 0
-            For Each downloadstring In missingfiles
-                downloaded += 1
-                If CancelledFull Then Exit Sub
-
-                'Download JP file
-                lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-                Dim info7 As New FileInfo(downloadstring)
-                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-                'Move JP file to win32
-                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-                File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-            Next
-
-            If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch") Then My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & "backupPreSTORYPatch"), FileIO.DeleteDirectoryOption.DeleteAllContents)
-            FlashWindow(Me.Handle, 1)
-            WriteDebugInfo(My.Resources.strStoryPatchUninstalled)
-            Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        UninstallPatch("http://162.243.211.123/patches/storyfilelist.txt", "storyfilelist.txt", "backupPreSTORYPatch", My.Resources.strStoryPatchUninstalled, "StoryPatchVersion")
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
@@ -4860,6 +4704,66 @@ SelectInstallFolder:
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub UninstallPatch(PatchListURL As String, PatchListFile As String, BackupDir As String, ConsoleMessage As String, PatchVersionKey As String)
+        Try
+            If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
+                MsgBox(My.Resources.strPleaseSelectwin32Dir)
+                Button1.RaiseClick()
+                Exit Sub
+            End If
+
+            DLWUA(PatchListURL, PatchListFile, True)
+
+            Dim oReader As StreamReader = File.OpenText(PatchListFile)
+            Dim sBuffer As String = Nothing
+            Dim filename As String = Nothing
+            Dim missingfiles As New List(Of String)
+            Dim NumberofChecks As Integer = 0
+
+            While Not (oReader.EndOfStream)
+                sBuffer = oReader.ReadLine
+                filename = sBuffer
+                missingfiles.Add(filename)
+                NumberofChecks += 1
+            End While
+
+            oReader.Close()
+            DeleteFile(PatchListFile)
+
+            WriteDebugInfo(My.Resources.strUninstallingPatch)
+            Dim totaldownload As String = missingfiles.Count
+            Dim downloaded As Long = 0
+
+            For Each downloadstring In missingfiles
+                downloaded += 1
+                If CancelledFull Then Exit Sub
+
+                'Download JP file
+                lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
+                Dim info7 As New FileInfo(downloadstring)
+                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
+
+                'Move JP file to win32
+                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
+                File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
+            Next
+
+            If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & BackupDir) Then
+                My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & BackupDir), FileIO.DeleteDirectoryOption.DeleteAllContents)
+            End If
+
+            FlashWindow(Me.Handle, 1)
+            WriteDebugInfo(ConsoleMessage)
+            Helper.SetRegKey(Of String)(PatchVersionKey, "Not Installed")
+            UnlockGUI()
+        Catch ex As Exception
+            Log(ex.Message)
+            WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Exit Sub
         End Try
     End Sub
 End Class
