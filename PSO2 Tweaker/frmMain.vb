@@ -423,7 +423,7 @@ Public Class frmMain
 
             Dim locale = Helper.GetRegKey(Of String)("Locale")
 
-            If Not String.IsNullOrEmpty(Helper.GetRegKey(Of String)("Locale")) Then
+            If Not String.IsNullOrEmpty(locale) Then
                 Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(locale)
                 Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
             End If
@@ -1188,7 +1188,7 @@ Public Class frmMain
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
-        ' TODO: should change what this returns
+        ' TODO: Change this function's return value. It returns three states but is only ever checked for one. A Boolean should suffice.
         processes = Process.GetProcessesByName(ProcessName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
@@ -4376,56 +4376,56 @@ SelectInstallFolder:
             Dim CurrentLine As String = ""
             Dim AlreadyModified As Boolean = False
             'http://162.243.211.123/test.json
-            Dim objReader As New StreamReader(FILE_NAME)
 
             ' TODO: This isn't right
+            Using objReader As New StreamReader(FILE_NAME)
+                Do While objReader.Peek() <> -1
+                    CurrentLine = objReader.ReadLine()
 
-            Do While objReader.Peek() <> -1
-                CurrentLine = objReader.ReadLine()
-
-                If CurrentLine.Contains("gs001.pso2gs.net") Then
-                    CurrentLine = Host & " gs001.pso2gs.net #" & ProxyName & " Ship 01"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs016.pso2gs.net") Then
-                    CurrentLine = Host & " gs016.pso2gs.net #" & ProxyName & " Ship 02"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs031.pso2gs.net") Then
-                    CurrentLine = Host & " gs031.pso2gs.net #" & ProxyName & " Ship 03"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs046.pso2gs.net") Then
-                    CurrentLine = Host & " gs046.pso2gs.net #" & ProxyName & " Ship 04"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs061.pso2gs.net") Then
-                    CurrentLine = Host & " gs061.pso2gs.net #" & ProxyName & " Ship 05"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs076.pso2gs.net") Then
-                    CurrentLine = Host & " gs076.pso2gs.net #" & ProxyName & " Ship 06"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs091.pso2gs.net") Then
-                    CurrentLine = Host & " gs091.pso2gs.net #" & ProxyName & " Ship 07"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs106.pso2gs.net") Then
-                    CurrentLine = Host & " gs106.pso2gs.net #" & ProxyName & " Ship 08"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs121.pso2gs.net") Then
-                    CurrentLine = Host & " gs121.pso2gs.net #" & ProxyName & " Ship 09"
-                    AlreadyModified = True
-                End If
-                If CurrentLine.Contains("gs136.pso2gs.net") Then
-                    CurrentLine = Host & " gs136.pso2gs.net #" & ProxyName & " Ship 10"
-                    AlreadyModified = True
-                End If
-                BuiltFile &= CurrentLine & vbNewLine
-            Loop
-            objReader.Close()
+                    If CurrentLine.Contains("gs001.pso2gs.net") Then
+                        CurrentLine = Host & " gs001.pso2gs.net #" & ProxyName & " Ship 01"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs016.pso2gs.net") Then
+                        CurrentLine = Host & " gs016.pso2gs.net #" & ProxyName & " Ship 02"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs031.pso2gs.net") Then
+                        CurrentLine = Host & " gs031.pso2gs.net #" & ProxyName & " Ship 03"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs046.pso2gs.net") Then
+                        CurrentLine = Host & " gs046.pso2gs.net #" & ProxyName & " Ship 04"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs061.pso2gs.net") Then
+                        CurrentLine = Host & " gs061.pso2gs.net #" & ProxyName & " Ship 05"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs076.pso2gs.net") Then
+                        CurrentLine = Host & " gs076.pso2gs.net #" & ProxyName & " Ship 06"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs091.pso2gs.net") Then
+                        CurrentLine = Host & " gs091.pso2gs.net #" & ProxyName & " Ship 07"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs106.pso2gs.net") Then
+                        CurrentLine = Host & " gs106.pso2gs.net #" & ProxyName & " Ship 08"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs121.pso2gs.net") Then
+                        CurrentLine = Host & " gs121.pso2gs.net #" & ProxyName & " Ship 09"
+                        AlreadyModified = True
+                    End If
+                    If CurrentLine.Contains("gs136.pso2gs.net") Then
+                        CurrentLine = Host & " gs136.pso2gs.net #" & ProxyName & " Ship 10"
+                        AlreadyModified = True
+                    End If
+                    BuiltFile &= CurrentLine & vbNewLine
+                Loop
+                objReader.Close()
+            End Using
 
             If AlreadyModified Then WriteDebugInfo("Modifying HOSTS file...")
 
