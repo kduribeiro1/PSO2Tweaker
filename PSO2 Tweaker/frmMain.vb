@@ -26,8 +26,6 @@ Public Class frmMain
     Dim testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
     Dim testfile_Size As Double = 1.91992 'MB
     Dim timer_start As Integer
-    Dim time_for_download As Integer
-    Dim velocity As Double
     Dim SystemUnlock As Integer
     Dim MileyCyrus As Integer
     Dim SteamUnlock As Integer
@@ -39,8 +37,6 @@ Public Class frmMain
     Dim CommandLineArgs As String() = Environment.GetCommandLineArgs()
     Dim Override As Boolean = False
     Dim TransOverride As Boolean = False
-    Dim DoneDownloading As Boolean = False
-    Dim patching As Boolean = False
     Dim totalsize2 As Integer
     Dim Restartplz As Boolean
     Dim ItemDownloadingDone As Boolean
@@ -1487,7 +1483,6 @@ NEXTFILE1:
                         Dim totaldownload As String = missingfiles.Count
                         Dim downloaded As Long = 0
                         Dim totaldownloaded As Long = 0
-                        patching = True
 
                         For Each downloadstring In missingfiles
                             If CancelledFull Then Exit Sub
@@ -1517,7 +1512,7 @@ NEXTFILE1:
 
                             Application.DoEvents()
                         Next
-                        patching = False
+
                         If missingfiles.Count = 0 Then WriteDebugInfo("Your precede data is up to date!")
                         If missingfiles.Count <> 0 Then WriteDebugInfo("Precede data downloaded/updated!")
                         Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
@@ -1837,7 +1832,6 @@ BackToCheckUpdates2:
         PB1.Value = 0
         PB1.Text = ""
         lblStatus.Text = ""
-        patching = False
     End Sub
 
     '    Private Function GrabLink(ByRef urlIdentifier As String)
@@ -1863,11 +1857,10 @@ BackToCheckUpdates2:
     Private Sub DocumentCompleted()
         ' TODO: Make function use SizeSuffix and whatever else needs doing
         Me.seconds.Stop()
-        Me.time_for_download = timer_start * 10
-        Me.velocity = testfile_Size / time_for_download * 1000
+        Dim time_for_download = timer_start * 10
+        Dim velocity = testfile_Size / time_for_download * 1000
         WriteDebugInfoSameLine(" Done!")
         WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
-        DoneDownloading = True
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
@@ -1904,7 +1897,6 @@ BackToCheckUpdates2:
         PB1.Value = 0
         PB1.Text = ""
         lblStatus.Text = ""
-        patching = False
         CancelledFull = True
         WriteDebugInfo(My.Resources.strProcessWasCancelled)
         UnlockGUI()
@@ -2317,7 +2309,6 @@ NEXTFILE1:
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             Dim totaldownloaded As Long = 0
-            patching = True
             DeleteFile("resume.txt")
 
             For Each downloadstring In missingfiles
@@ -2358,7 +2349,6 @@ NEXTFILE1:
                 Application.DoEvents()
             Next
 
-            patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
@@ -2515,7 +2505,6 @@ NEXTFILE1:
             Dim info As FileInfo
             Dim filesize As Long
             Dim totaldownloaded As Long = 0
-            patching = True
             DeleteFile("resume.txt")
             For Each downloadstring In missingfiles2
                 File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
@@ -2560,7 +2549,6 @@ NEXTFILE1:
                     Application.DoEvents()
                 End If
             Next
-            patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
@@ -3503,7 +3491,6 @@ NEXTFILE1:
             Dim totaldownload As String = missingfiles.Count
             Dim downloaded As Long = 0
             Dim totaldownloaded As Long = 0
-            patching = True
             For Each downloadstring In missingfiles
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
@@ -3536,7 +3523,6 @@ NEXTFILE1:
                 Application.DoEvents()
             Next
             DeleteFile("resume.txt")
-            patching = False
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
