@@ -1787,7 +1787,7 @@ BackToCheckUpdates2:
             Catch ex As Exception
                 WriteDebugInfo(My.Resources.strItSeemsThereWasAnError)
                 DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
-                Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+                Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
                 If File.Exists((DirectoryString2 & "\pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
                 File.Move("pso2.exe", (DirectoryString2 & "\pso2.exe"))
                 WriteDebugInfoSameLine(My.Resources.strDone)
@@ -2351,7 +2351,7 @@ NEXTFILE1:
 
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
+            Dim DirectoryString As String = (lblDirectory.Text.Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
@@ -2359,7 +2359,7 @@ NEXTFILE1:
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
@@ -2551,10 +2551,10 @@ NEXTFILE1:
             Next
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
+            Dim DirectoryString As String = (lblDirectory.Text.Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
-            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
             Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
@@ -2890,8 +2890,6 @@ NEXTFILE1:
                 Cancelled = False
                 downloaded += 1
                 totaldownloaded += totalsize2
-
-
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
                 DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
@@ -2933,8 +2931,6 @@ NEXTFILE1:
                     Cancelled = False
                     downloaded2 += 1
                     totaldownloaded2 += totalsize2
-
-
                     lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Helper.SizeSuffix(totaldownloaded2) & ")"
 
                     DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring2 & ".pat"), downloadstring2, True)
@@ -2952,7 +2948,6 @@ NEXTFILE1:
 
                     'Remove the line to delete, e.g.
                     linesList.Remove(downloadstring2)
-
                     File.WriteAllLines("resume.txt", linesList.ToArray())
                 End If
             Next
@@ -2978,7 +2973,6 @@ NEXTFILE1:
         Application.DoEvents()
         Dim versionclient As New MyWebClient With {.timeout = 3000}
         versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-        'DLWUA("http://download.pso2.jp/patch_prod/patches/version.ver", "version.ver", True)
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
         UnlockGUI()
@@ -3121,7 +3115,7 @@ NEXTFILE1:
                 Exit Sub
             End If
             Dim filedownloader As New WebClient()
-            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
+            Dim DirectoryString As String = (lblDirectory.Text.Replace("\data\win32", "") & "\")
             Cancelled = False
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
 
@@ -3134,7 +3128,7 @@ NEXTFILE1:
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
             If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
@@ -3227,7 +3221,7 @@ NEXTFILE1:
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2updater.exe" /e /g "AIDA":F
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2predownload.exe" /e /g "AIDA":F
             MsgBox(My.Resources.strFixPermissionIssuesText)
-            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
+            Dim DirectoryString As String = (lblDirectory.Text.Replace("\data\win32", "") & "\")
             'MsgBox("cacls.exe" & (DirectoryString & "pso2.exe") & " /e /g """ & SystemInformation.UserName & """:F")
             WriteDebugInfo(My.Resources.strFixingPermissionsFor & "pso2.exe...")
             Application.DoEvents()
@@ -3525,14 +3519,14 @@ NEXTFILE1:
             DeleteFile("resume.txt")
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String = ((lblDirectory.Text & "\data\win32").Replace("\data\win32", "") & "\")
+            Dim DirectoryString As String = (lblDirectory.Text.Replace("\data\win32", "") & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
             Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = (lblDirectory.Text & "\data\win32").Replace("\data\win32", "")
+            Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
