@@ -136,9 +136,9 @@ Public Class frmPSO2Options
         Try
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = LineToStartAt To TextLines.Count
+            For i As Integer = LineToStartAt To TextLines.Length
                 'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
+                If i + 1 = TextLines.Length Then
                     Return "Setting not found"
                 End If
                 If TextLines(i).Contains(" " & SettingToRead & " ") Then
@@ -166,9 +166,9 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Count
+            For i = 0 To TextLines.Length
                 'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
+                If i + 1 = TextLines.Length Then
                     Exit Sub
                 End If
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
@@ -178,8 +178,8 @@ Public Class frmPSO2Options
                     Dim FinalString As String = strReturn(1).Replace("""", "")
                     FinalString = FinalString.Replace(",", "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Count
-                        If j + 1 = TextLines.Count Then
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
                             TextBoxX1.AppendText("}")
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
@@ -202,9 +202,9 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Count
+            For i = 0 To TextLines.Length
                 'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
+                If i + 1 = TextLines.Length Then
                     Exit Sub
                 End If
                 If TextLines(i).Contains("Windows = {") Then
@@ -221,8 +221,8 @@ Public Class frmPSO2Options
                     Dim FinalString As String = strReturn(1).Replace("""", "")
                     FinalString = FinalString.Replace(",", "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Count
-                        If j + 1 = TextLines.Count Then
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
                             TextBoxX1.AppendText("}")
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
@@ -245,9 +245,9 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Count
+            For i = 0 To TextLines.Length
                 'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
+                If i + 1 = TextLines.Length Then
                     Exit Sub
                 End If
 
@@ -266,8 +266,8 @@ Public Class frmPSO2Options
                     FinalString = FinalString.Replace(",", "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
 
-                    For j = 0 To TextLines.Count
-                        If j + 1 = TextLines.Count Then
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
                             TextBoxX1.AppendText("}")
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)

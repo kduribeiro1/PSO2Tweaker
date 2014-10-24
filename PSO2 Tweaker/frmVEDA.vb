@@ -70,6 +70,7 @@ Public Class frmVEDA
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
+
     Public Sub WriteConsoleAndOK(AddThisText)
         WriteDebugInfoAndOK(AddThisText)
         Application.DoEvents()

@@ -19,12 +19,6 @@ Imports System.Threading
 ' TODO: There are a lot of [.Replace("\data\win32", "")], assumeing this is always the PSO2 path we should just do it once and save it
 
 Public Class frmMain
-    Const MEM_COMMIT = 4096
-    Const PAGE_READWRITE = 4
-    Const PROCESS_CREATE_THREAD = &H2
-    Const PROCESS_VM_OPERATION = &H8
-    Const PROCESS_VM_WRITE = &H20
-
     Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
 
     Dim DPISetting As Integer
@@ -52,20 +46,16 @@ Public Class frmMain
     Dim ItemDownloadingDone As Boolean
     Dim nodiag As Boolean = False
     Dim ComingFromPrePatch As Boolean = False
-    Dim TargetProcessHandle As Integer
-    Dim pfnStartAddr As Integer
-    Dim pszLibFileRemote As String
-    Dim TargetBufferSize As Integer
     Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
     Dim processes As Process()
 
 #Region "External Functions"
 
-    Private Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-
     Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
 
     Private Declare Function FlashWindow Lib "user32" (ByVal hwnd As Integer, ByVal bInvert As Integer) As Integer
+
+    Private Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
 
     Private Declare Function SHGetKnownFolderPath Lib "shell32" (ByRef id As Guid, flags As Integer, token As IntPtr, ByRef path As IntPtr) As Integer
 
@@ -1170,7 +1160,7 @@ Public Class frmMain
 
         Using sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
             Using sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
-                Dim MyArray As New ArrayList
+                Dim MyArray As New List(Of String)
                 Dim strLine As String
 
                 Do While sr3.Peek <> -1
@@ -1195,7 +1185,7 @@ Public Class frmMain
         Dim x As Integer = 0
         If ProcessName = "PSO2 Tweaker" Then x = 1
 
-        If processes.Count > x Then
+        If processes.Length > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("It seems that " & ProcessName.Replace(".exe", "") & " is already running. Would you like to close it?", vbYesNo)
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)
@@ -1234,13 +1224,10 @@ Public Class frmMain
         Try
             If Helper.GetRegKey(Of String)("StoryPatchVersion") = "Not Installed" Then Exit Sub
             DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt", True)
-            Dim filedownloader As New WebClient()
             Dim sBuffer As String
             Dim filename As String()
             Dim truefilename As String
             Dim missingfiles As New List(Of String)
-            Dim filedownloader2 As New WebClient()
-            Dim missingfiles2 As New List(Of String)
             Dim NumberofChecks As Integer
             Dim TrueMD5 As String
             Dim UpdateNeeded As Boolean = False
@@ -1357,10 +1344,9 @@ NEXTFILE1:
 
             Application.DoEvents()
             Dim net As MyWebClient = New MyWebClient() With {.timeout = 10000}
-            Dim src As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
-            Dim strDownloadME As String = src
+            Dim strDownloadME As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
             Dim Lastfilename As String() = strDownloadME.Split("/")
-            Dim strVersion As String = Lastfilename(Lastfilename.Count - 1).Replace(".rar", "")
+            Dim strVersion As String = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
 
             Helper.SetRegKey(Of String)("NewENVersion", strVersion)
             If strVersion <> Helper.GetRegKey(Of String)("ENPatchVersion") Then
@@ -1390,7 +1376,7 @@ NEXTFILE1:
             Dim src As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
             Dim strDownloadME As String = src
             Dim Lastfilename As String() = strDownloadME.Split("/")
-            Dim strVersion As String = Lastfilename(Lastfilename.Count - 1).Replace(".rar", "")
+            Dim strVersion As String = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
 
             Helper.SetRegKey(Of String)("NewLargeFilesVersion", strVersion)
             If strVersion <> Helper.GetRegKey(Of String)("LargeFilesVersion") Then
@@ -1415,7 +1401,6 @@ NEXTFILE1:
 
     Public Sub CheckForPSO2Updates()
         Try
-            Dim filedownloader As New WebClient()
             Dim UpdateNeeded As Boolean
             Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
@@ -1448,8 +1433,6 @@ StartPrePatch:
                         Dim filename As String() = Nothing
                         Dim truefilename As String = Nothing
                         Dim missingfiles As New List(Of String)
-                        Dim filedownloader2 As New WebClient()
-                        Dim missingfiles2 As New List(Of String)
                         Dim NumberofChecks As Integer = 0
                         Dim MD5 As String() = Nothing
                         Dim TrueMD5 As String = Nothing
@@ -1562,7 +1545,6 @@ NEXTFILE1:
                         Application.DoEvents()
                         Dim di As New DirectoryInfo(lblDirectory.Text & "\_precede\data\win32\")
                         Dim diar1 As FileInfo() = di.GetFiles()
-                        Dim dra As FileInfo
 
                         'list the names of all files in the specified directory
                         Dim downloadstring As String = ""
@@ -1983,7 +1965,7 @@ BackToCheckUpdates2:
         Dim PatchSplit() As String = Patch.Split(vbCrLf)
         Dim count As Integer = 0
         Dim Enabled As Boolean = False
-        Do Until count = PatchSplit.Count
+        Do Until count = PatchSplit.Length
             'Clipboard.SetText(PatchSplit(count).ToString)
             'MsgBox(PatchSplit(count).ToString)
             If PatchSplit(count).ToString.Contains("Large Files: Compatible!") = True Then Enabled = True
@@ -2087,8 +2069,8 @@ BackToCheckUpdates2:
                     WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
                 End If
             End If
-            Log("Extracted " & diar1.Count & " files from the patch")
-            If diar1.Count = 0 Then
+            Log("Extracted " & diar1.Length & " files from the patch")
+            If diar1.Length = 0 Then
                 WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
                 Exit Sub
             End If
@@ -3657,7 +3639,7 @@ NEXTFILE1:
         Dim currentProcess As Process = Process.GetCurrentProcess()
         Dim x As Integer = 0
 
-        If processes.Count > x Then
+        If processes.Length > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("You need to have all Chrome windows closed before launching in this mode. Would you like to close all open Chrome windows now?", vbYesNo)
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)
@@ -3848,7 +3830,7 @@ SelectInstallFolder:
             txtHTML.Text = m.NextMatch.ToString
             Dim strDownloadME As String = txtHTML.Text
             Dim Lastfilename As String() = strDownloadME.Split("/")
-            strVersion = Lastfilename(Lastfilename.Count - 1)
+            strVersion = Lastfilename(Lastfilename.Length - 1)
             strVersion = strVersion.Replace(".rar", "")
 
             Cancelled = False
@@ -3886,9 +3868,9 @@ SelectInstallFolder:
             Application.DoEvents()
 
             'list the names of all files in the specified directory
-            Log("Extracted " & diar1.Count & " files from the patch")
+            Log("Extracted " & diar1.Length & " files from the patch")
 
-            If diar1.Count = 0 Then
+            If diar1.Length = 0 Then
                 WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
                 Exit Sub
             End If
@@ -3939,7 +3921,7 @@ SelectInstallFolder:
             txtHTML.Text = m.Value
             Dim strDownloadME As String = txtHTML.Text.Replace("<br /><a href=""", "")
             Dim Lastfilename As String() = strDownloadME.Split("/")
-            strVersion = Lastfilename(Lastfilename.Count - 1)
+            strVersion = Lastfilename(Lastfilename.Length - 1)
             strVersion = strVersion.Replace(".rar", "")
 
             Cancelled = False
@@ -3985,9 +3967,9 @@ SelectInstallFolder:
             'list the names of all files in the specified directory
             Dim backupdir As String = ((lblDirectory.Text & "\data\win32") & "\" & "backupPreENPatch")
 
-            Log("Extracted " & diar1.Count & " files from the patch")
+            Log("Extracted " & diar1.Length & " files from the patch")
 
-            If diar1.Count = 0 Then
+            If diar1.Length = 0 Then
                 WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
                 Exit Sub
             End If
@@ -4664,8 +4646,8 @@ SelectInstallFolder:
                 End If
             End If
 
-            Log("Extracted " & diar1.Count & " files from the patch")
-            If diar1.Count = 0 Then
+            Log("Extracted " & diar1.Length & " files from the patch")
+            If diar1.Length = 0 Then
                 WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
                 Exit Sub
             End If
