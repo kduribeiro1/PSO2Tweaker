@@ -2080,19 +2080,21 @@ StartPrePatch:
             Next
 
             'Start the shitstorm
-            Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
-            Dim CurrentLine As String = ""
-            Dim BuiltFile As String = ""
-            Do While objReader.Peek() <> -1
+            Using reader As New StreamReader(lblDirectory.Text & "\translation.cfg")
+                Dim BuiltFile As New List(Of String)
+                Dim currentLine As String = ""
 
-                CurrentLine = objReader.ReadLine()
+                Do
+                    currentLine = reader.ReadLine()
+                    If (currentLine Is Nothing) Then Exit Do
+                    If currentLine.Contains("TranslationPath:") Then currentLine = "TranslationPath:translation.bin"
 
-                If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:translation.bin"
+                    BuiltFile.Add(currentLine)
+                Loop
 
-                BuiltFile &= CurrentLine & vbNewLine
-            Loop
-            objReader.Close()
-            File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
+                File.WriteAllLines(lblDirectory.Text & "\translation.cfg", BuiltFile.ToArray())
+            End Using
+
             WriteDebugInfoSameLine(My.Resources.strDone)
         End If
 
@@ -2101,21 +2103,21 @@ StartPrePatch:
             Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
-            Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
-            Dim CurrentLine As String = ""
-            Dim BuiltFile As String = ""
 
-            Do While objReader.Peek() <> -1
+            Using reader As New StreamReader(lblDirectory.Text & "\translation.cfg")
+                Dim BuiltFile As New List(Of String)
+                Dim currentLine As String = ""
 
-                CurrentLine = objReader.ReadLine()
+                Do
+                    currentLine = reader.ReadLine()
+                    If (currentLine Is Nothing) Then Exit Do
 
-                If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:"
+                    If currentLine.Contains("TranslationPath:") Then currentLine = "TranslationPath:"
+                    BuiltFile.Add(currentLine)
+                Loop
 
-                BuiltFile &= CurrentLine & vbNewLine
-            Loop
-
-            objReader.Close()
-            File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
+                File.WriteAllLines(lblDirectory.Text & "\translation.cfg", BuiltFile.ToArray())
+            End Using
         End If
 
         UseItemTranslation = chkItemTranslation.Checked
