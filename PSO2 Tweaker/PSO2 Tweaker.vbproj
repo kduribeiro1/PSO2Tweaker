@@ -129,12 +129,10 @@
     <Reference Include="DevComponents.DotNetBar2">
       <HintPath>.\DevComponents.DotNetBar2.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>.\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -246,6 +244,7 @@
     <Compile Include="MyWebClient.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PSO2ProxyInfo.vb" />
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
