@@ -833,24 +833,25 @@ Public Class frmMain
                     Application.DoEvents()
                     Thread.Sleep(16)
                 Loop
+
                 If Not File.Exists(lblDirectory.Text & "\translation.cfg") Then
                     File.WriteAllText(lblDirectory.Text & "\translation.cfg", "TranslationPath:translation.bin")
                 End If
-                Dim objReader As New StreamReader(lblDirectory.Text & "\translation.cfg")
-                Dim CurrentLine As String = ""
-                Dim BuiltFile As String = ""
 
-                Do While objReader.Peek() <> -1
+                Using reader As New StreamReader(lblDirectory.Text & "\translation.cfg")
+                    Dim BuiltFile As New List(Of String)
+                    Dim currentLine As String = ""
 
-                    CurrentLine = objReader.ReadLine()
+                    Do
+                        currentLine = reader.ReadLine()
+                        If (currentLine Is Nothing) Then Exit Do
 
-                    If CurrentLine.Contains("TranslationPath:") Then CurrentLine = "TranslationPath:"
+                        If currentLine.Contains("TranslationPath:") Then currentLine = "TranslationPath:"
+                        BuiltFile.Add(currentLine)
+                    Loop
 
-                    BuiltFile &= CurrentLine & vbNewLine
-                Loop
-
-                objReader.Close()
-                File.WriteAllText(lblDirectory.Text & "\translation.cfg", BuiltFile)
+                    File.WriteAllLines(lblDirectory.Text & "\translation.cfg", BuiltFile.ToArray())
+                End Using
             End If
 
             WriteDebugInfoSameLine(My.Resources.strDone)
@@ -2380,8 +2381,19 @@ StartPrePatch:
             Dim length = SOMEOFTHETHINGS.Count
             Dim oldmax = PB1.Maximum
             PB1.Maximum = length
+            Cancelled = False
 
             For Each kvp In SOMEOFTHETHINGS
+
+                If Cancelled Then
+                    PB1.Text = ""
+                    PB1.Value = 0
+                    PB1.Maximum = oldmax
+                    SOMEOFTHETHINGS = Nothing
+                    Cancelled = False
+                    Exit Sub
+                End If
+
                 lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
                 PB1.Text = NumberofChecks & " / " & length
                 If (NumberofChecks Mod 8) = 0 Then Application.DoEvents()
@@ -3981,18 +3993,14 @@ SelectInstallFolder:
         Dim port As Integer = 12200
 
         Try
-            Using sock As New TcpClient()
-                sock.NoDelay = True
-                sock.ReceiveTimeout = 1000
-                'sock.Connect(ip, port)
-                Dim result = sock.BeginConnect(ip, port, Nothing, Nothing)
-                result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1))
+            Using sock As New TcpClient() With {.NoDelay = True, .ReceiveTimeout = 1000}
+                sock.BeginConnect(ip, port, Nothing, Nothing).AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1))
+
                 If Not sock.Connected Then
                     Throw New Exception("Unable to connect!")
                 End If
 
                 Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE!")
-                sock.Close()
             End Using
         Catch ex As Exception
             Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
@@ -4598,42 +4606,24 @@ SelectInstallFolder:
 
             DLWUA(PatchListURL, PatchListFile, True)
 
-            Dim missingfiles As New List(Of String)
-
-            Using oReader As StreamReader = File.OpenText(PatchListFile)
-                Dim sBuffer As String = Nothing
-                Dim filename As String = Nothing
-                Dim NumberofChecks As Integer = 0
-
-                While Not (oReader.EndOfStream)
-                    sBuffer = oReader.ReadLine()
-                    filename = sBuffer
-                    missingfiles.Add(filename)
-                    NumberofChecks += 1
-                End While
-
-                oReader.Close()
-            End Using
+            Dim missingfiles = File.ReadAllLines(PatchListFile)
 
             DeleteFile(PatchListFile)
 
             WriteDebugInfo(My.Resources.strUninstallingPatch)
-            Dim totaldownload As String = missingfiles.Count
-            Dim downloaded As Long = 0
 
-            For Each downloadstring In missingfiles
-                downloaded += 1
+            For index = 0 To (missingfiles.Length - 1)
                 If CancelledFull Then Exit Sub
 
                 'Download JP file
-                lblStatus.Text = My.Resources.strUninstalling & downloaded & "/" & totaldownload
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, True)
-                Dim info7 As New FileInfo(downloadstring)
-                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
+                lblStatus.Text = My.Resources.strUninstalling & index & "/" & missingfiles.Length
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index), True)
+                Dim info7 As New FileInfo(missingfiles(index))
+                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index), True)
 
                 'Move JP file to win32
-                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
-                File.Move(downloadstring, ((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
+                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & missingfiles(index)))
+                File.Move(missingfiles(index), ((lblDirectory.Text & "\data\win32") & "\" & missingfiles(index)))
             Next
 
             If My.Computer.FileSystem.DirectoryExists((lblDirectory.Text & "\data\win32") & "\" & BackupDir) Then
