@@ -132,30 +132,27 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
+    ' TODO: Add caching
     Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
         Try
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = LineToStartAt To TextLines.Length
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Length Then
-                    Return "Setting not found"
+            Dim TextLines As String() = File.ReadAllLines(usersettingsfile)
+            For i As Integer = LineToStartAt To (TextLines.Length - 1)
+                If Not String.IsNullOrEmpty(TextLines(i)) Then
+                    If TextLines(i).Contains(" " & SettingToRead & " ") Then
+                        Dim strLine As String = TextLines(i).ToString
+                        strLine = strLine.Replace(vbTab, "")
+                        Dim strReturn As String() = strLine.Split("=")
+                        Dim FinalString As String = strReturn(1).Replace("""", "")
+                        FinalString = FinalString.Replace(",", "")
+                        FinalString = FinalString.Replace(" ", "")
+                        Return FinalString
+                    End If
                 End If
-                If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
-                    FinalString = FinalString.Replace(" ", "")
-                    Return FinalString
-                End If
-            Next i
+            Next
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
-        ' TODO: Actually fix the function
         Return ""
     End Function
 
@@ -166,11 +163,7 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Length
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Length Then
-                    Exit Sub
-                End If
+            For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
                     Dim strLine As String = TextLines(i).ToString
                     strLine = strLine.Replace(vbTab, "")
@@ -202,11 +195,7 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Length
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Length Then
-                    Exit Sub
-                End If
+            For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Height =") Then
@@ -245,12 +234,7 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Length
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Length Then
-                    Exit Sub
-                End If
-
+            For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Width =") Then

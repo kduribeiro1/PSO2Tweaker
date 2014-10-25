@@ -87,7 +87,7 @@ Partial Class frmMain
         Me.ButtonItem10 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnConnection = New DevComponents.DotNetBar.ButtonItem()
         Me.btnGameguard = New DevComponents.DotNetBar.ButtonItem()
-        Me.Button6 = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnFixPSO2EXEs = New DevComponents.DotNetBar.ButtonItem()
         Me.btnFixPermissions = New DevComponents.DotNetBar.ButtonItem()
         Me.btnCopyInfo = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem17 = New DevComponents.DotNetBar.ButtonItem()
@@ -571,7 +571,7 @@ Partial Class frmMain
         'ButtonItem2
         '
         Me.ButtonItem2.Name = "ButtonItem2"
-        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnConnection, Me.btnGameguard, Me.Button6, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.ButtonItem12, Me.btnTerminate})
+        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnConnection, Me.btnGameguard, Me.btnFixPSO2EXEs, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.ButtonItem12, Me.btnTerminate})
         resources.ApplyResources(Me.ButtonItem2, "ButtonItem2")
         '
         'btnAnalyze
@@ -602,8 +602,8 @@ Partial Class frmMain
         '
         'Button6
         '
-        Me.Button6.Name = "Button6"
-        resources.ApplyResources(Me.Button6, "Button6")
+        Me.btnFixPSO2EXEs.Name = "Button6"
+        resources.ApplyResources(Me.btnFixPSO2EXEs, "Button6")
         '
         'btnFixPermissions
         '
@@ -1018,7 +1018,7 @@ Partial Class frmMain
     Friend WithEvents ButtonItem10 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnConnection As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnGameguard As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents Button6 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnFixPSO2EXEs As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnFixPermissions As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnCopyInfo As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem17 As DevComponents.DotNetBar.ButtonItem
