@@ -5,19 +5,18 @@ Imports System.Net
 Imports System.Net.Sockets
 Imports System.Reflection
 Imports System.Runtime.InteropServices
+Imports System.Runtime.Serialization.Json
 Imports System.Security.AccessControl
 Imports System.Security.Principal
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
-Imports System.Runtime.Serialization.Json
 
 ' TODO: There are a lot of [.Replace("\data\win32", "")], assumeing this is always the PSO2 path we should just do it once and save it
 ' TODO: Should move the new thread calls to use the thread pool instead
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
-' TODO: Replace all these: Do While objReader.Peek() <> -1
 
 Public Class frmMain
     Const testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
@@ -36,7 +35,8 @@ Public Class frmMain
     Dim CancelledFull As Boolean
     Dim UseItemTranslation As Boolean = False
     Dim VedaUnlocked As Boolean = False
-    Dim CommandLineArgs As String() = Environment.GetCommandLineArgs()
+    Dim args As String() = Environment.GetCommandLineArgs()
+    Dim startPath As String = Application.StartupPath
     Dim Override As Boolean = False
     Dim TransOverride As Boolean = False
     Dim totalsize2 As Integer
@@ -46,6 +46,7 @@ Public Class frmMain
     Dim ComingFromPrePatch As Boolean = False
     Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
     Dim processes As Process()
+
 
 #Region "External Functions"
 
@@ -217,17 +218,17 @@ Public Class frmMain
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             DeleteFile(pso2launchpath & "ddraw.dll")
 
-            For i As Integer = 1 To CommandLineArgs.Length - 1
-                If CommandLineArgs(i) = "-fuck_you_misaki_stop_trying_to_decompile_my_shit" Then
+            For i As Integer = 1 To args.Length - 1
+                If args(i) = "-fuck_you_misaki_stop_trying_to_decompile_my_shit" Then
                     Log("Fuck you, Misaki")
                     MsgBox("Why are you trying to decompile my program? Get outta here!")
                 End If
 
-                If CommandLineArgs(i) = "-nodllcheck" Then
+                If args(i) = "-nodllcheck" Then
                     TransOverride = True
                 End If
 
-                If CommandLineArgs(i) = "-steam" Then
+                If args(i) = "-steam" Then
                     Log("Detected -steam argument")
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SteamUID")) Then
                         MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
@@ -243,18 +244,18 @@ Public Class frmMain
                     Me.Close()
                 End If
 
-                If CommandLineArgs(i) = "-item" Then
+                If args(i) = "-item" Then
                     Log("Detected command argument -item")
                     UseItemTranslation = True
                 End If
 
-                If CommandLineArgs(i) = "-nodiag" Then
+                If args(i) = "-nodiag" Then
                     Log("Detected command argument -nodiag")
                     Log("Bypassing OS detection to fix compatibility!")
                     nodiag = True
                 End If
 
-                If CommandLineArgs(i) = "-bypass" Then
+                If args(i) = "-bypass" Then
                     Log("Detected command argument -bypass")
                     Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
                     MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
@@ -283,7 +284,7 @@ Public Class frmMain
                     Me.Close()
                 End If
 
-                If CommandLineArgs(i) = "-pso2" Then
+                If args(i) = "-pso2" Then
                     Log("Detected command argument -pso2")
 
                     'Fuck SEGA. Fuck them hard.
@@ -543,7 +544,7 @@ Public Class frmMain
             Me.Show()
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SeenDownloadMessage")) Then Helper.SetRegKey(Of String)("SeenDownloadMessage", "No")
-            If Application.StartupPath = GetDownloadsPath() Then
+            If startPath = GetDownloadsPath() Then
                 If Helper.GetRegKey(Of String)("SeenDownloadMessage") = "No" Then
                     MsgBox("Please be aware - Due to various Windows 7/8 issues, this program might not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
                     Helper.SetRegKey(Of String)("SeenDownloadMessage", "Yes")
@@ -555,10 +556,10 @@ Public Class frmMain
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("AlwaysOnTop")) Then Helper.SetRegKey(Of String)("AlwaysOnTop", "False")
             Me.TopMost = Helper.GetRegKey(Of String)("AlwaysOnTop")
             chkAlwaysOnTop.Checked = Helper.GetRegKey(Of Boolean)("AlwaysOnTop")
-            If File.Exists((Application.StartupPath & "\logfile.txt")) Then
-                Dim LogInfo As New FileInfo((Application.StartupPath & "\logfile.txt"))
+            If File.Exists((startPath & "\logfile.txt")) Then
+                Dim LogInfo As New FileInfo((startPath & "\logfile.txt"))
                 If LogInfo.Length > 30720 Then
-                    File.WriteAllText((Application.StartupPath & "\logfile.txt"), "")
+                    File.WriteAllText((startPath & "\logfile.txt"), "")
                 End If
             End If
 
@@ -571,14 +572,14 @@ Public Class frmMain
                 Log(My.Resources.strCurrentOSFullName & My.Computer.Info.OSFullName)
                 Log(My.Resources.strCurrentOSVersion & My.Computer.Info.OSVersion)
                 Log(My.Resources.strIsTheCurrentOS64bit & Environment.Is64BitOperatingSystem)
-                Log(My.Resources.strRunDirectory & Application.StartupPath)
+                Log(My.Resources.strRunDirectory & startPath)
                 Log(My.Resources.strSelectedPSO2win32directory & lblDirectory.Text)
-                Log(My.Resources.strIsUnrarAvailable & File.Exists(Application.StartupPath & "\UnRar.exe"))
+                Log(My.Resources.strIsUnrarAvailable & File.Exists(startPath & "\UnRar.exe"))
                 Dim identity = WindowsIdentity.GetCurrent()
                 Dim principal = New WindowsPrincipal(identity)
                 Dim isElevated As Boolean = principal.IsInRole(WindowsBuiltInRole.Administrator)
                 Log("Run as Administrator: " & isElevated)
-                Log("Is 7zip available: " & File.Exists(Application.StartupPath & "\7za.exe"))
+                Log("Is 7zip available: " & File.Exists(startPath & "\7za.exe"))
                 Log("Is 7zip available: " & File.Exists("7za.exe"))
                 Log("----------------------------------------")
             End If
@@ -601,7 +602,7 @@ Public Class frmMain
 
             Dim wc As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
             Dim source As String = String.Empty
-            DeleteFile(Application.StartupPath & "\version.xml")
+            DeleteFile(startPath & "\version.xml")
             WriteDebugInfo(My.Resources.strCheckingforupdatesPleasewaitamoment)
             source = wc.DownloadString("http://162.243.211.123/freedom/version.xml")
 
@@ -903,7 +904,7 @@ Public Class frmMain
         Else
             rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
+            File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
 
@@ -913,7 +914,7 @@ Public Class frmMain
         Else
             rtbDebug.Text = rtbDebug.Text & " " & AddThisText
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
+            File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
     End Sub
 
@@ -927,7 +928,7 @@ Public Class frmMain
             rtbDebug.AppendText(" [OK!]")
             rtbDebug.SelectionColor = rtbDebug.ForeColor
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [OK!]") & vbCrLf)
+            File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [OK!]") & vbCrLf)
         End If
     End Sub
 
@@ -941,7 +942,7 @@ Public Class frmMain
             rtbDebug.AppendText(" [WARNING!]")
             rtbDebug.SelectionColor = rtbDebug.ForeColor
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [WARNING!]") & vbCrLf)
+            File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [WARNING!]") & vbCrLf)
         End If
     End Sub
 
@@ -957,7 +958,7 @@ Public Class frmMain
             rtbDebug.AppendText(My.Resources.strFAILED)
             rtbDebug.SelectionColor = rtbDebug.ForeColor
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
-            File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
+            File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
             If Helper.GetRegKey(Of String)("Pastebin") Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
                 If upload = MsgBoxResult.Yes Then
@@ -997,7 +998,7 @@ Public Class frmMain
         ' Highly Volital Function -Matthew
         ' TODO: Should be the first thing fixed after refactoring is done
 
-        Overwrite = Application.StartupPath & "\" & Overwrite
+        Overwrite = startPath & "\" & Overwrite
         AddHandler DLS.DownloadProgressChanged, AddressOf OnDownloadProgressChanged
         AddHandler DLS.DownloadFileCompleted, AddressOf OnFileDownloadCompleted
 
@@ -1043,12 +1044,12 @@ Public Class frmMain
     End Sub
 
     Public Sub Log(ByRef Text As String)
-        File.AppendAllText((Application.StartupPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
+        File.AppendAllText((startPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
     End Sub
 
     Public Sub PasteBinUpload()
         ServicePointManager.Expect100Continue = False
-        Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText((Application.StartupPath & "\logfile.txt"))
+        Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText((startPath & "\logfile.txt"))
         Dim w As New WebClient()
         w.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
         Dim pd As Byte() = Encoding.ASCII.GetBytes(fi)
@@ -1263,7 +1264,7 @@ Public Class frmMain
                     DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & downloadstring))
                     Dim process As Process = Nothing
                     Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-                    Dim UnRarLocation As String = (Application.StartupPath & "\7za.exe")
+                    Dim UnRarLocation As String = (startPath & "\7za.exe")
                     processStartInfo.FileName = UnRarLocation
                     processStartInfo.Verb = "runas"
                     processStartInfo.Arguments = ("e -y " & downloadstring & ".7z")
@@ -1741,7 +1742,7 @@ StartPrePatch:
                 WriteDebugInfo(My.Resources.strItSeemsThereWasAnError)
                 DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
                 Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
-                If File.Exists((DirectoryString2 & "\pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
+                If File.Exists((DirectoryString2 & "\pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
                 File.Move("pso2.exe", (DirectoryString2 & "\pso2.exe"))
                 WriteDebugInfoSameLine(My.Resources.strDone)
                 shell.Start()
@@ -1792,7 +1793,6 @@ StartPrePatch:
     End Sub
 
     Private Sub DocumentCompleted()
-        ' TODO: Make function use SizeSuffix and whatever else needs doing
         Me.seconds.Stop()
         Dim time_for_download = timer_start * 10
         Dim velocity = testfile_Size / time_for_download * 1000
@@ -1960,7 +1960,7 @@ StartPrePatch:
             End If
             Dim process As Process = Nothing
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
+            Dim UnRarLocation As String = (startPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
             processStartInfo.Arguments = ("e " & """" & StoryLocation & """" & " TEMPSTORYAIDAFOOL")
@@ -2298,7 +2298,7 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -2309,7 +2309,7 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
@@ -2322,7 +2322,7 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
@@ -2501,13 +2501,13 @@ StartPrePatch:
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
-            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
             Application.DoEvents()
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
-            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
@@ -2517,7 +2517,7 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
@@ -3065,7 +3065,7 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
             Dim DirectoryString2 As String = lblDirectory.Text.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -3078,7 +3078,7 @@ StartPrePatch:
             If Cancelled Then Exit Sub
             DirectoryString2 = (lblDirectory.Text & "\data\win32")
             DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
@@ -3091,7 +3091,7 @@ StartPrePatch:
             If Cancelled Then Exit Sub
             DirectoryString2 = (lblDirectory.Text & "\data\win32")
             DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
             Application.DoEvents()
@@ -3472,7 +3472,7 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -3483,7 +3483,7 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
-            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
@@ -3497,7 +3497,7 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-            If File.Exists((DirectoryString & "pso2.exe")) AndAlso Application.StartupPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             If CancelledFull Then Exit Sub
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
@@ -3765,7 +3765,7 @@ SelectInstallFolder:
             If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
-            Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
+            Dim UnRarLocation As String = (startPath & "\unrar.exe")
             Dim process As Process = process.Start(New ProcessStartInfo() With {.FileName = UnRarLocation, .Verb = "runas", .Arguments = "e LargeFiles.rar TEMPPATCHAIDAFOOL", .WindowStyle = ProcessWindowStyle.Normal, .UseShellExecute = True})
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             If CancelledFull Then Exit Sub
@@ -3859,7 +3859,7 @@ SelectInstallFolder:
             End If
             Dim process As Process = Nothing
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            Dim UnRarLocation = (Application.StartupPath & "\unrar.exe")
+            Dim UnRarLocation = (startPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
             processStartInfo.Arguments = ("e ENPatch.rar " & "TEMPPATCHAIDAFOOL")
@@ -4182,9 +4182,9 @@ SelectInstallFolder:
             WriteDebugInfoSameLine(" Done!")
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
-            myWebClient.DownloadFile(proxyInfo.PublicKeyUrl, Application.StartupPath & "\publickey.blob")
-            If File.Exists(lblDirectory.Text & "\publickey.blob") AndAlso Application.StartupPath <> lblDirectory.Text Then DeleteFile(lblDirectory.Text & "\publickey.blob")
-            If Application.StartupPath <> lblDirectory.Text Then File.Move(Application.StartupPath & "\publickey.blob", lblDirectory.Text & "\publickey.blob")
+            myWebClient.DownloadFile(proxyInfo.PublicKeyUrl, startPath & "\publickey.blob")
+            If File.Exists(lblDirectory.Text & "\publickey.blob") AndAlso startPath <> lblDirectory.Text Then DeleteFile(lblDirectory.Text & "\publickey.blob")
+            If startPath <> lblDirectory.Text Then File.Move(startPath & "\publickey.blob", lblDirectory.Text & "\publickey.blob")
             WriteDebugInfoSameLine(" Done!")
             WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             Helper.SetRegKey(Of String)("ProxyEnabled", "True")
@@ -4520,7 +4520,7 @@ SelectInstallFolder:
 
             Dim process As Process = Nothing
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            Dim UnRarLocation As String = (Application.StartupPath & "\unrar.exe")
+            Dim UnRarLocation As String = (startPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
             processStartInfo.Verb = "runas"
             If predownloadedyesno = MsgBoxResult.No Then processStartInfo.Arguments = ("e " & PatchFile & " TEMPPATCHAIDAFOOL")
