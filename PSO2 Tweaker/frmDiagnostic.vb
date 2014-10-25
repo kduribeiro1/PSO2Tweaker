@@ -65,7 +65,7 @@ Public Class frmDiagnostic
             fileName = fileInfo.Name
             fileSize = fileInfo.Length
             TotalString &= filename
-            If filename = "GameGuard.des" Or filename = "pso2.exe" Or filename = "publickey.blob" Or filename = "rsainject.dll" Or filename = "translation.bin" Or filename = "translator.dll" Then TotalString &= ": " & fileSize.ToString
+            If filename = "GameGuard.des" OrElse filename = "pso2.exe" OrElse filename = "publickey.blob" OrElse filename = "rsainject.dll" OrElse filename = "translation.bin" OrElse filename = "translator.dll" Then TotalString &= ": " & fileSize.ToString
             TotalString &= " | "
         Next
 

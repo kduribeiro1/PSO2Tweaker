@@ -19,12 +19,13 @@ Imports System.Runtime.Serialization.Json
 ' TODO: There are a lot of [.Replace("\data\win32", "")], assumeing this is always the PSO2 path we should just do it once and save it
 
 Public Class frmMain
+    Const testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
+    Const testfile_Size As Double = 1.91992 'MB
+
     Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
 
     Dim DPISetting As Integer
     Dim ComingFromOldFiles As Boolean = False
-    Dim testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
-    Dim testfile_Size As Double = 1.91992 'MB
     Dim timer_start As Integer
     Dim SystemUnlock As Integer
     Dim MileyCyrus As Integer
@@ -361,27 +362,6 @@ Public Class frmMain
 
             'Normal Tweaker startup
             CancelledFull = False
-
-            '[AIDA]For testing only, bitch
-            'Button6.PerformClick()
-            'Exit Sub
-            'frmPSO2Settings.Show()
-            'Exit Sub
-            'Helper.SetRegKey(Of String)("Locale", "")
-            'If Helper.GetRegKey(Of String)("Locale") = "" Then
-            'MsgBox("This appears to be the first time you've used the new version of the Arks System - Please select your language and theme in the next window.")
-            'btnOptions.RaiseClick()
-            'Do While frmOptions.Visible = True
-            '
-            'THIS SHIT WILL BREAK EVERYTHING AND EAT KITTENS
-            'OR MAYBE EAT EVERTHING AND BREAK KITTENS FUCK IF I REMEMBER
-            'Loop
-            'End If
-            'Dim result As Long
-            'result = SetWindowLong(rtbDebug.Handle, GWL_EXSTYLE, _
-            'WS_EX_TRANSPARENT)
-            'GoTo DEBUGMYSHITDAWG
-
             DirectoryString = (lblDirectory.Text & "\data\win32")
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             If File.Exists(pso2launchpath & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2launchpath & "\ddraw.dll")
@@ -551,7 +531,7 @@ Public Class frmMain
             PB1.Text = ""
             Log("Checking if the PSO2 Tweaker is running")
 
-            If CheckIfRunning("PSO2 Tweaker") = "Running" Then
+            If CheckIfRunning("PSO2 Tweaker") Then
                 Application.ExitThread()
             End If
 
@@ -1174,27 +1154,25 @@ Public Class frmMain
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
-        ' TODO: Change this function's return value. It returns three states but is only ever checked for one. A Boolean should suffice.
         processes = Process.GetProcessesByName(ProcessName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
-        Dim x As Integer = 0
-        If ProcessName = "PSO2 Tweaker" Then x = 1
+        Dim x As Integer = If(ProcessName = "PSO2 Tweaker", 1, 0)
 
         If processes.Length > x Then
             Dim CloseItYesNo As MsgBoxResult = MsgBox("It seems that " & ProcessName.Replace(".exe", "") & " is already running. Would you like to close it?", vbYesNo)
+
             If CloseItYesNo = vbYes Then
                 Dim procs As Process() = Process.GetProcessesByName(ProcessName)
 
                 For Each proc As Process In procs
                     If proc.Id <> currentProcess.Id Then proc.Kill()
                 Next
-                Return "Running, but ending"
-            Else
-                Return "Running"
             End If
+
+            Return True
         Else
-            Return "Not Running"
+            Return False
         End If
     End Function
 
@@ -1405,7 +1383,7 @@ NEXTFILE1:
 
             If ComingFromPrePatch Then GoTo StartPrePatch
 
-            Dim FirstTimechecking As Boolean = False
+ Dim FirstTimechecking As Boolean = False
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2PrecedeVersion")) Then
                 Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
                 Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
@@ -1743,7 +1721,7 @@ BackToCheckUpdates2:
     Private Sub btnLaunchPSO2_Click(sender As Object, e As EventArgs) Handles btnLaunchPSO2.Click
         'Fuck SEGA. Stupid jerks.
         Log("Check if PSO2 is running")
-        If CheckIfRunning("pso2") = "Running" Then Exit Sub
+        If CheckIfRunning("pso2") Then Exit Sub
         Try
             If (Directory.Exists((lblDirectory.Text & "\data\win32")) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -1955,7 +1933,6 @@ BackToCheckUpdates2:
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
         Using net As New WebClient()
-            ' TODO: Check the string to make sure it's a valid URL before passing it into the function.
             ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
             ' Furthermore, we could also parse it from within the function.
             Dim url As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
@@ -3355,7 +3332,6 @@ NEXTFILE1:
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
         Using net As New WebClient()
-            ' TODO: Check the string to make sure it's a valid URL before passing it into the function.
             ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
             ' Furthermore, we could also parse it from within the function.
             Dim url As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
@@ -4533,7 +4509,7 @@ SelectInstallFolder:
                 WriteDebugInfo(My.Resources.strDownloading & PatchName & "...")
                 Application.DoEvents()
 
-                ' TODO: Switch to a Uri class.
+                ' Might want to switch to a Uri class.
                 ' Get the filename from the downloaded Path
                 Dim Lastfilename As String() = PatchURL.Split("/"c)
                 strVersion = Lastfilename(Lastfilename.Length - 1)
