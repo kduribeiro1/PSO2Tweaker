@@ -68,8 +68,8 @@ Public Class frmOptions
                 Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
                 Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             Else
-                cmbLanguage.Text = Locale.ToString
-                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(CType(Locale, LangCode).ToString)
+                cmbLanguage.Text = Locale.ToString() 
+                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(CType(Locale, LangCode).ToString())
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             End If
 
@@ -189,7 +189,7 @@ Public Class frmOptions
             MsgBox("PLEASE BE CAUTIOUS - If you turn this function off, the program will not automatically upload your logfile to pastebin, so you can report the bug to AIDA. This means that you'll need to provide the logfile yourself, or the likelyhood of your issue being resolved is very, very, slim.")
         End If
 
-        Helper.SetRegKey(Of String)("Pastebin", CheckBoxX1.Checked.ToString)
+        Helper.SetRegKey(Of String)("Pastebin", CheckBoxX1.Checked.ToString())
     End Sub
 
     Private Sub ColorPickerButton2_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton2.SelectedColorChanged
@@ -220,15 +220,15 @@ Public Class frmOptions
     End Sub
 
     Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
-        Helper.SetRegKey(Of String)("ENPatchAfterInstall", CheckBoxX2.Checked.ToString)
+        Helper.SetRegKey(Of String)("ENPatchAfterInstall", CheckBoxX2.Checked.ToString())
     End Sub
 
     Private Sub CheckBoxX3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX3.CheckedChanged
-        Helper.SetRegKey(Of String)("LargeFilesAfterInstall", CheckBoxX3.Checked.ToString)
+        Helper.SetRegKey(Of String)("LargeFilesAfterInstall", CheckBoxX3.Checked.ToString())
     End Sub
 
     Private Sub CheckBoxX4_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX4.CheckedChanged
-        Helper.SetRegKey(Of String)("StoryPatchAfterInstall", CheckBoxX4.Checked.ToString)
+        Helper.SetRegKey(Of String)("StoryPatchAfterInstall", CheckBoxX4.Checked.ToString())
     End Sub
 
     Private Sub cmbBackupPreference_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBackupPreference.SelectedIndexChanged
@@ -304,11 +304,11 @@ Public Class frmOptions
     End Sub
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
-        Helper.SetRegKey(Of String)("SidebarEnabled", CheckBoxX5.Checked.ToString)
+        Helper.SetRegKey(Of String)("SidebarEnabled", CheckBoxX5.Checked.ToString())
     End Sub
 
     Private Sub chkAutoRemoveCensor_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoRemoveCensor.CheckedChanged
-        Helper.SetRegKey(Of String)("RemoveCensor", chkAutoRemoveCensor.Checked.ToString)
+        Helper.SetRegKey(Of String)("RemoveCensor", chkAutoRemoveCensor.Checked.ToString())
     End Sub
 
     Private Sub cmbPredownload_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPredownload.SelectedIndexChanged

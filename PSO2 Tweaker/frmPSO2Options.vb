@@ -119,7 +119,7 @@ Public Class frmPSO2Options
                 'Disable resolution thingie
             End If
             ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
-            If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text.ToString) = False Then ComboBoxEx5.SelectedIndex = 0
+            If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) = False Then ComboBoxEx5.SelectedIndex = 0
             CheckBoxX1.Checked = False
             If ReadINISetting("Y") = "99999" Then
                 If ReadINISetting("X") = "99999" Then
@@ -139,7 +139,7 @@ Public Class frmPSO2Options
             For i As Integer = LineToStartAt To (TextLines.Length - 1)
                 If Not String.IsNullOrEmpty(TextLines(i)) Then
                     If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                        Dim strLine As String = TextLines(i).ToString
+                        Dim strLine As String = TextLines(i)
                         strLine = strLine.Replace(vbTab, "")
                         Dim strReturn As String() = strLine.Split("=")
                         Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -165,7 +165,7 @@ Public Class frmPSO2Options
             Dim j As Integer
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
-                    Dim strLine As String = TextLines(i).ToString
+                    Dim strLine As String = TextLines(i)
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -204,7 +204,7 @@ Public Class frmPSO2Options
                         End If
                     Next x
 
-                    Dim strLine As String = TextLines(i).ToString
+                    Dim strLine As String = TextLines(i)
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -243,7 +243,7 @@ Public Class frmPSO2Options
                         End If
                     Next x
 
-                    Dim strLine As String = TextLines(i).ToString
+                    Dim strLine As String = TextLines(i)
                     strLine = strLine.Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
                     Dim FinalString As String = strReturn(1).Replace("""", "")
@@ -271,7 +271,7 @@ Public Class frmPSO2Options
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
         Try
             frmMain.Log("Saving Draw Level...")
-            SaveINISetting("DrawLevel", Slider1.Value.ToString)
+            SaveINISetting("DrawLevel", Slider1.Value.ToString())
             frmMain.Log("Saving Texture Resolution...")
             SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex)
             frmMain.Log("Saving Interface Size...")
@@ -308,13 +308,15 @@ Public Class frmPSO2Options
 
             frmMain.Log("Saving Resolution...")
             If ComboBoxEx5.SelectedText <> "x" Then
-                Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString
+                Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
+
                 Dim RealResolution As String() = StrResolution.Split("x")
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If
 
-            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString
+            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString()
+
             FPS = FPS.Replace(" FPS", "")
             FPS = FPS.Replace("Unlimited", "0")
             frmMain.Log("Saving FPS...")

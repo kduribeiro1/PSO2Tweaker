@@ -120,7 +120,7 @@ Public Class frmMain
                 lblStatus.Text = "[ACCESS GRANTED - PSO2 TWERKER]"
                 Application.DoEvents()
                 Thread.Sleep(2000)
-                Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString)
+                Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString())
                 btnLaunchPSO2.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
             End If
@@ -274,7 +274,7 @@ Public Class frmMain
                     Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
                         procs = Process.GetProcessesByName("pso2")
                         For Each proc As Process In procs
-                            If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then
+                            If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
                                 If Not TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
                             End If
                         Next
@@ -351,7 +351,7 @@ Public Class frmMain
                         Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
                             procs = Process.GetProcessesByName("pso2")
                             For Each proc As Process In procs
-                                If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then
+                                If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
                                     If Not TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
                                 End If
                             Next
@@ -538,7 +538,7 @@ Public Class frmMain
                 Application.ExitThread()
             End If
 
-            Me.Text = ("PSO2 Tweaker ver " & My.Application.Info.Version.ToString)
+            Me.Text = ("PSO2 Tweaker ver " & My.Application.Info.Version.ToString())
             Application.DoEvents()
             Me.Show()
 
@@ -587,7 +587,7 @@ Public Class frmMain
                 Log("Diagnostic info skipped due to -nodiag flag!")
             End If
 
-            WriteDebugInfoAndOK((My.Resources.strProgramOpeningSuccessfully & My.Application.Info.Version.ToString))
+            WriteDebugInfoAndOK((My.Resources.strProgramOpeningSuccessfully & My.Application.Info.Version.ToString()))
             Application.DoEvents()
         Catch ex As Exception
             Log(ex.Message)
@@ -597,7 +597,8 @@ Public Class frmMain
         Try
             Dim DirectoryString As String = (lblDirectory.Text & "\data\win32")
             Dim pso2launchpath As String = DirectoryString.Replace("\data\win32", "")
-            Dim localVersion As String = My.Application.Info.Version.ToString
+            Dim localVersion As String = My.Application.Info.Version.ToString()
+
             Dim wc As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
             Dim source As String = String.Empty
             DeleteFile(Application.StartupPath & "\version.xml")
@@ -614,7 +615,7 @@ Public Class frmMain
 
                 Log("Checking for the latest version of the program...")
                 If localVersion = currentVersion Then
-                    WriteDebugInfo((My.Resources.strYouhavethelatestversionoftheprogram & My.Application.Info.Version.ToString))
+                    WriteDebugInfo((My.Resources.strYouhavethelatestversionoftheprogram & My.Application.Info.Version.ToString()))
                 Else
                     Dim changelogtotal As String = ""
 
@@ -623,7 +624,7 @@ Public Class frmMain
                         If Not String.IsNullOrWhiteSpace(innerText) Then changelogtotal &= vbCrLf & innerText
                     Next
 
-                    Dim updateyesno As MsgBoxResult = MsgBox(My.Resources.strYouareusinganoutdatedversionoftheprogram & My.Application.Info.Version.ToString & My.Resources.strAndthelatestis & currentVersion & My.Resources.strWouldyouliketodownloadthenewversion & vbCrLf & vbCrLf & My.Resources.strChanges & vbCrLf & changelogtotal, MsgBoxStyle.YesNo)
+                    Dim updateyesno As MsgBoxResult = MsgBox(My.Resources.strYouareusinganoutdatedversionoftheprogram & My.Application.Info.Version.ToString() & My.Resources.strAndthelatestis & currentVersion & My.Resources.strWouldyouliketodownloadthenewversion & vbCrLf & vbCrLf & My.Resources.strChanges & vbCrLf & changelogtotal, MsgBoxStyle.YesNo)
                     If updateyesno = MsgBoxResult.Yes Then
                         WriteDebugInfo(My.Resources.strDownloadingUpdate)
                         DLWUA("http://162.243.211.123/freedom/PSO2%20Tweaker%20Updater.exe", "PSO2 Tweaker Updater.exe", True)
@@ -822,7 +823,7 @@ Public Class frmMain
             End If
             Dim hostname As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
             Dim ip As IPAddress() = hostname.AddressList
-            If ip(0).ToString.Contains("210.189.") = False AndAlso ItemDownloadingDone = False Then
+            If ip(0).ToString().Contains("210.189.") = False AndAlso ItemDownloadingDone = False Then
                 WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
                 ItemDownloadingDone = False
                 Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
@@ -1192,10 +1193,10 @@ Public Class frmMain
             NumberofChecks = 0
             missingfiles.Clear()
             Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
-                sBuffer = oReader.ReadLine
-                Helper.SetRegKey(Of String)("NewVersionTemp", sBuffer.ToString)
-                Helper.SetRegKey(Of String)("NewStoryVersion", sBuffer.ToString)
-                If sBuffer.ToString <> Helper.GetRegKey(Of String)("StoryPatchVersion") Then
+                sBuffer = oReader.ReadLine()
+                Helper.SetRegKey(Of String)("NewVersionTemp", sBuffer)
+                Helper.SetRegKey(Of String)("NewStoryVersion", sBuffer)
+                If sBuffer <> Helper.GetRegKey(Of String)("StoryPatchVersion") Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
                     Dim net As New WebClient()
@@ -1818,7 +1819,7 @@ StartPrePatch:
         Try
             Response = SendPing.Send(server)
             If Response.Status = NetworkInformation.IPStatus.Success Then
-                Return Response.RoundtripTime.ToString
+                Return Response.RoundtripTime.ToString()
             End If
         Catch ex As Exception
         End Try
@@ -1889,12 +1890,12 @@ StartPrePatch:
         Patch = Patch.Replace("<br>", "")
         Patch = Patch.Replace("<!--", "")
         Dim PatchSplit() As String = Patch.Split(vbCrLf)
-        Dim count As Integer = 0
         Dim Enabled As Boolean = False
-        Do Until count = PatchSplit.Length
-            If PatchSplit(count).ToString.Contains("Large Files: Compatible!") = True Then Enabled = True
-            count += 1
-        Loop
+
+        For index = 0 To PatchSplit.Length
+            If PatchSplit(index).Contains("Large Files: Compatible!") = True Then Enabled = True
+        Next
+
         If Enabled = False Then
             Dim ReallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
             If ReallyInstall = MsgBoxResult.No Then
@@ -1932,7 +1933,7 @@ StartPrePatch:
             If result = DialogResult.Cancel Then
                 Exit Sub
             End If
-            StoryLocation = OpenFileDialog1.FileName.ToString()
+            StoryLocation = OpenFileDialog1.FileName
             If StoryLocation = "PSO2 Story Patch RAR file" Then
                 Exit Sub
             End If
@@ -2001,16 +2002,16 @@ StartPrePatch:
             For Each dra In diar1
                 If CancelledFull Then Exit Sub
                 If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                        File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupdir & "\" & dra.ToString))
+                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString())) Then
+                        File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()), (backupdir & "\" & dra.ToString()))
                     End If
                 End If
                 If backupyesno = MsgBoxResult.No Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                        DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString())) Then
+                        DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
                     End If
                 End If
-                File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
             Next
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If backupyesno = MsgBoxResult.No Then
@@ -2290,7 +2291,7 @@ StartPrePatch:
             Application.DoEvents()
             Dim procs As Process() = Process.GetProcessesByName("pso2launcher")
             For Each proc As Process In procs
-                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
@@ -2301,7 +2302,7 @@ StartPrePatch:
             Application.DoEvents()
             procs = Process.GetProcessesByName("pso2updater")
             For Each proc As Process In procs
-                If proc.MainModule.ToString = "ProcessModule (pso2updater.exe)" Then proc.Kill()
+                If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
@@ -2313,7 +2314,7 @@ StartPrePatch:
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
             procs = Process.GetProcessesByName("pso2")
             For Each proc As Process In procs
-                If proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then proc.Kill()
+                If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
@@ -2557,10 +2558,10 @@ StartPrePatch:
                 'list the names of all files in the specified directory
                 Dim win32 As String = (lblDirectory.Text & "\data\win32")
                 For Each dra As FileInfo In diar1
-                    If File.Exists(win32 & "\" & dra.ToString) Then
-                        DeleteFile(win32 & "\" & dra.ToString)
+                    If File.Exists(win32 & "\" & dra.ToString()) Then
+                        DeleteFile(win32 & "\" & dra.ToString())
                     End If
-                    File.Move((((lblDirectory.Text & "\data\win32") & "\" & backupfolder) & "\" & dra.ToString), (win32 & "\" & dra.ToString))
+                    File.Move((((lblDirectory.Text & "\data\win32") & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
                 My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
                 FlashWindow(Me.Handle, 1)
@@ -2602,10 +2603,10 @@ StartPrePatch:
                 'list the names of all files in the specified directory
                 Dim win32 As String = (lblDirectory.Text & "\data\win32")
                 For Each dra In diar1
-                    If File.Exists(win32 & "\" & dra.ToString) Then
-                        DeleteFile(win32 & "\" & dra.ToString)
+                    If File.Exists(win32 & "\" & dra.ToString()) Then
+                        DeleteFile(win32 & "\" & dra.ToString())
                     End If
-                    File.Move((((lblDirectory.Text & "\data\win32") & "\" & backupfolder) & "\" & dra.ToString), (win32 & "\" & dra.ToString))
+                    File.Move((((lblDirectory.Text & "\data\win32") & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
                 My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
                 WriteDebugInfo(My.Resources.strBackupRestored)
@@ -2946,7 +2947,7 @@ StartPrePatch:
         End Try
 
         If signalStrength <> -1 Then
-            WriteDebugInfo("Current Signal Strength is: " & signalStrength.ToString)
+            WriteDebugInfo("Current Signal Strength is: " & signalStrength.ToString())
             WriteDebugInfo("Any strength below 60 may be an issue!")
         End If
     End Sub
@@ -3044,7 +3045,7 @@ StartPrePatch:
             Dim procs As Process() = Process.GetProcessesByName("pso2launcher")
 
             For Each proc As Process In procs
-                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
@@ -3057,7 +3058,7 @@ StartPrePatch:
             Application.DoEvents()
             procs = Process.GetProcessesByName("pso2updater")
             For Each proc As Process In procs
-                If proc.MainModule.ToString = "ProcessModule (pso2updater.exe)" Then proc.Kill()
+                If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
@@ -3070,7 +3071,7 @@ StartPrePatch:
             Application.DoEvents()
             procs = Process.GetProcessesByName("pso2")
             For Each proc As Process In procs
-                If proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then proc.Kill()
+                If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
@@ -3115,10 +3116,10 @@ StartPrePatch:
                 'list the names of all files in the specified directory
                 Dim win32 As String = (lblDirectory.Text & "\data\win32")
                 For Each dra In diar1
-                    If File.Exists(win32 & "\" & dra.ToString) Then
-                        DeleteFile(win32 & "\" & dra.ToString)
+                    If File.Exists(win32 & "\" & dra.ToString()) Then
+                        DeleteFile(win32 & "\" & dra.ToString())
                     End If
-                    File.Move((((lblDirectory.Text & "\data\win32") & "\" & backupfolder) & "\" & dra.ToString), (win32 & "\" & dra.ToString))
+                    File.Move((((lblDirectory.Text & "\data\win32") & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
                 My.Computer.FileSystem.DeleteDirectory(((lblDirectory.Text & "\data\win32") & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
                 WriteDebugInfo(My.Resources.strBackupRestored)
@@ -3205,9 +3206,9 @@ StartPrePatch:
         WriteDebugInfo(My.Resources.strTerminatePSO2)
         Dim procs As Process() = Process.GetProcessesByName("pso2")
         For Each proc As Process In procs
-            If proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then proc.Kill()
-            If proc.MainModule.ToString = "ProcessModule (GameMon.des)" Then proc.Kill()
-            If proc.MainModule.ToString = "ProcessModule (GameMon64.des)" Then proc.Kill()
+            If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
+            If proc.MainModule.ToString() = "ProcessModule (GameMon.des)" Then proc.Kill()
+            If proc.MainModule.ToString() = "ProcessModule (GameMon64.des)" Then proc.Kill()
         Next
         WriteDebugInfoSameLine(My.Resources.strDone)
     End Sub
@@ -3349,7 +3350,7 @@ StartPrePatch:
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Me.Visible Then
-            If e.Url.ToString <> "http://162.243.211.123/freedom/tweaker.html" Then
+            If e.Url.ToString() <> "http://162.243.211.123/freedom/tweaker.html" Then
                 Process.Start(e.Url.ToString())
                 Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
                 t1.Start()
@@ -3453,7 +3454,7 @@ StartPrePatch:
             Application.DoEvents()
             Dim procs = Process.GetProcessesByName("pso2launcher")
             For Each proc As Process In procs
-                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+                If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
@@ -3464,7 +3465,7 @@ StartPrePatch:
             Application.DoEvents()
             procs = Process.GetProcessesByName("pso2updater")
             For Each proc As Process In procs
-                If proc.MainModule.ToString = "ProcessModule (pso2updater.exe)" Then proc.Kill()
+                If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
@@ -3476,7 +3477,7 @@ StartPrePatch:
             procs = Process.GetProcessesByName("pso2")
 
             For Each proc As Process In procs
-                If proc.MainModule.ToString = "ProcessModule (pso2.exe)" Then proc.Kill()
+                If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
@@ -3726,7 +3727,8 @@ SelectInstallFolder:
             'http://pso2.arghargh200.net/pso2/2013_05_22_largefiles.rar
             Dim m As Match = Regex.Match(src, "<br /><a href="".*?.rar")
             ' Spit out the value plucked from the code
-            txtHTML.Text = m.NextMatch.ToString
+            txtHTML.Text = m.NextMatch.ToString()
+
             Dim strDownloadME As String = txtHTML.Text
             Dim Lastfilename As String() = strDownloadME.Split("/")
             strVersion = Lastfilename(Lastfilename.Length - 1)
@@ -3778,8 +3780,8 @@ SelectInstallFolder:
 
             For Each dra In diar1
                 If CancelledFull Then Exit Sub
-                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
+                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
             Next
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -3875,8 +3877,8 @@ SelectInstallFolder:
 
             For Each dra In diar1
                 If CancelledFull Then Exit Sub
-                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
+                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
             Next
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -3906,7 +3908,7 @@ SelectInstallFolder:
                 Return True
             End Using
         Catch ex As WebException
-            'Dim ReturnString As String = ex.Message.ToString.Replace("The remote server returned an error: ", "")
+            'Dim ReturnString As String = ex.Message.ToString() .Replace("The remote server returned an error: ", "")
             'Return ReturnString
             Return False
         End Try
@@ -4091,7 +4093,8 @@ SelectInstallFolder:
             For index = 0 To (proxyInfo.Host.Length - 1)
                 If Char.IsLetter(proxyInfo.Host(index)) Then
                     Dim ips = Dns.GetHostAddresses(proxyInfo.Host)
-                    proxyInfo.Host = ips(0).ToString
+                    proxyInfo.Host = ips(0).ToString()
+
                     Exit For
                 End If
             Next
@@ -4177,7 +4180,7 @@ SelectInstallFolder:
             Helper.SetRegKey(Of String)("ProxyEnabled", "True")
         Catch ex As Exception
             WriteDebugInfoAndFAILED("ERROR - " & ex.Message)
-            If ex.Message.ToString.Contains("is denied.") AndAlso ex.Message.ToString.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
+            If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
             Exit Sub
         End Try
     End Sub
@@ -4489,7 +4492,7 @@ SelectInstallFolder:
                 OpenFileDialog1.Filter = "RAR Archives|*.rar|All Files (*.*) |*.*"
                 If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Exit Sub
 
-                RARLocation = OpenFileDialog1.FileName.ToString()
+                RARLocation = OpenFileDialog1.FileName
                 strVersion = OpenFileDialog1.SafeFileName
                 strVersion = Path.GetFileNameWithoutExtension(strVersion)
             End If
@@ -4554,16 +4557,16 @@ SelectInstallFolder:
                 If CancelledFull Then Exit Sub
 
                 If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                        File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString), (backupstr & "\" & dra.ToString))
+                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString())) Then
+                        File.Move(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()), (backupstr & "\" & dra.ToString()))
                     End If
                 End If
                 If backupyesno = MsgBoxResult.No Then
-                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString)) Then
-                        DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                    If File.Exists(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString())) Then
+                        DeleteFile(((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
                     End If
                 End If
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString))
+                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), ((lblDirectory.Text & "\data\win32") & "\" & dra.ToString()))
             Next
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)

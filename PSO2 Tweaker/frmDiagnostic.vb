@@ -6,9 +6,9 @@ Public Class frmDiagnostic
         Dim TotalString As String = ""
 
         TotalString &= "OS: " & My.Computer.Info.OSFullName & vbCrLf
-        TotalString &= "64 Bit OS?: " & Environment.Is64BitOperatingSystem.ToString & vbCrLf
+        TotalString &= "64 Bit OS?: " & Environment.Is64BitOperatingSystem.ToString() & vbCrLf
         TotalString &= "Tweaker is located at: " & Environment.CurrentDirectory & vbCrLf
-        TotalString &= ".NET Version: " & Environment.Version.ToString & vbCrLf
+        TotalString &= ".NET Version: " & Environment.Version.ToString() & vbCrLf
         TotalString &= "System has been on for: " & Mid((Environment.TickCount / 3600000), 1, 5) & " hours"
         Clipboard.SetText(TotalString)
         MsgBox("Copied!")
@@ -49,7 +49,7 @@ Public Class frmDiagnostic
         totalString &= "EN Patch version installed: " & Helper.GetRegKey(Of String)("ENPatchVersion") & vbCrLf
         totalString &= "Large Files version installed: " & Helper.GetRegKey(Of String)("LargeFilesVersion") & vbCrLf
         totalString &= "Story Patch version installed: " & Helper.GetRegKey(Of String)("StoryPatchVersion") & vbCrLf
-        totalString &= "Size of PSO2 data/win32 folder: ~" & fileSize.ToString.Remove(2, 9) & "GB"
+        totalString &= "Size of PSO2 data/win32 folder: ~" & fileSize.ToString().Remove(2, 9) & "GB"
         Clipboard.SetText(totalString)
         MsgBox("Copied!")
     End Sub
@@ -65,7 +65,8 @@ Public Class frmDiagnostic
             fileName = fileInfo.Name
             fileSize = fileInfo.Length
             TotalString &= filename
-            If filename = "GameGuard.des" OrElse filename = "pso2.exe" OrElse filename = "publickey.blob" OrElse filename = "rsainject.dll" OrElse filename = "translation.bin" OrElse filename = "translator.dll" Then TotalString &= ": " & fileSize.ToString
+            If filename = "GameGuard.des" OrElse filename = "pso2.exe" OrElse filename = "publickey.blob" OrElse filename = "rsainject.dll" OrElse filename = "translation.bin" OrElse filename = "translator.dll" Then TotalString &= ": " & fileSize.ToString()
+
             TotalString &= " | "
         Next
 
