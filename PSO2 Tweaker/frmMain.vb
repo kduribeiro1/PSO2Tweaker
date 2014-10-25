@@ -4082,94 +4082,90 @@ SelectInstallFolder:
                 MsgBox("ERROR - Version is incorrect! Please recheck the JSON.")
                 Exit Sub
             End If
+
             If Not proxyInfo.PublicKeyUrl.Contains("publickey.blob") Then
                 MsgBox("ERROR - Public Key URL doesn't point to a public key blob! Please recheck the JSON.")
                 Exit Sub
             End If
-            For i = 0 To proxyInfo.Host.Length - 1
-                If Char.IsLetter(proxyInfo.Host.Chars(i)) Then
-                    Dim ips As IPAddress()
 
-                    ips = Dns.GetHostAddresses(proxyInfo.Host)
+            For index = 0 To (proxyInfo.Host.Length - 1)
+                If Char.IsLetter(proxyInfo.Host(index)) Then
+                    Dim ips = Dns.GetHostAddresses(proxyInfo.Host)
                     proxyInfo.Host = ips(0).ToString
                     Exit For
                 End If
             Next
+
             WriteDebugInfoSameLine(" Done!")
 
-            Dim FILE_NAME As String = Environment.SystemDirectory & "\drivers\etc\hosts"
-            Dim BuiltFile As String = ""
-            Dim CurrentLine As String = ""
+            Dim BuiltFile As New List(Of String)
             Dim AlreadyModified As Boolean = False
-            'http://162.243.211.123/test.json
 
-            ' TODO: This isn't right
-            Using objReader As New StreamReader(FILE_NAME)
-                Do While objReader.Peek() <> -1
-                    CurrentLine = objReader.ReadLine()
+            Using reader As New StreamReader(Environment.SystemDirectory & "\drivers\etc\hosts")
+                Dim currentLine As String = ""
 
-                    If CurrentLine.Contains("gs001.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs001.pso2gs.net #" & proxyInfo.Name & " Ship 01"
-                        AlreadyModified = True
+                Do
+                    currentLine = reader.ReadLine()
+                    If (currentLine Is Nothing) Then Exit Do
+
+                    Dim splitLine = currentLine.Split(" "c)
+
+                    If splitLine.Length > 1 Then
+                        Select Case (splitLine(1))
+                            Case "gs001.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs001.pso2gs.net #" & proxyInfo.Name & " Ship 01"
+                                AlreadyModified = True
+                            Case "gs016.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs016.pso2gs.net #" & proxyInfo.Name & " Ship 02"
+                                AlreadyModified = True
+                            Case "gs031.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs031.pso2gs.net #" & proxyInfo.Name & " Ship 03"
+                                AlreadyModified = True
+                            Case "gs046.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs046.pso2gs.net #" & proxyInfo.Name & " Ship 04"
+                                AlreadyModified = True
+                            Case "gs061.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs061.pso2gs.net #" & proxyInfo.Name & " Ship 05"
+                                AlreadyModified = True
+                            Case "gs076.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs076.pso2gs.net #" & proxyInfo.Name & " Ship 06"
+                                AlreadyModified = True
+                            Case "gs091.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs091.pso2gs.net #" & proxyInfo.Name & " Ship 07"
+                                AlreadyModified = True
+                            Case "gs106.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs106.pso2gs.net #" & proxyInfo.Name & " Ship 08"
+                                AlreadyModified = True
+                            Case "gs121.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs121.pso2gs.net #" & proxyInfo.Name & " Ship 09"
+                                AlreadyModified = True
+                            Case "gs136.pso2gs.net"
+                                currentLine = proxyInfo.Host & " gs136.pso2gs.net #" & proxyInfo.Name & " Ship 10"
+                                AlreadyModified = True
+                        End Select
                     End If
-                    If CurrentLine.Contains("gs016.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs016.pso2gs.net #" & proxyInfo.Name & " Ship 02"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs031.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs031.pso2gs.net #" & proxyInfo.Name & " Ship 03"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs046.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs046.pso2gs.net #" & proxyInfo.Name & " Ship 04"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs061.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs061.pso2gs.net #" & proxyInfo.Name & " Ship 05"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs076.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs076.pso2gs.net #" & proxyInfo.Name & " Ship 06"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs091.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs091.pso2gs.net #" & proxyInfo.Name & " Ship 07"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs106.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs106.pso2gs.net #" & proxyInfo.Name & " Ship 08"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs121.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs121.pso2gs.net #" & proxyInfo.Name & " Ship 09"
-                        AlreadyModified = True
-                    End If
-                    If CurrentLine.Contains("gs136.pso2gs.net") Then
-                        CurrentLine = proxyInfo.Host & " gs136.pso2gs.net #" & proxyInfo.Name & " Ship 10"
-                        AlreadyModified = True
-                    End If
-                    BuiltFile &= CurrentLine & vbNewLine
+
+                    BuiltFile.Add(currentLine)
                 Loop
-                objReader.Close()
             End Using
 
             If AlreadyModified Then WriteDebugInfo("Modifying HOSTS file...")
 
             If Not AlreadyModified Then
-                BuiltFile &= proxyInfo.Host & " gs001.pso2gs.net #" & proxyInfo.Name & " Ship 01" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs016.pso2gs.net #" & proxyInfo.Name & " Ship 02" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs031.pso2gs.net #" & proxyInfo.Name & " Ship 03" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs046.pso2gs.net #" & proxyInfo.Name & " Ship 04" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs061.pso2gs.net #" & proxyInfo.Name & " Ship 05" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs076.pso2gs.net #" & proxyInfo.Name & " Ship 06" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs091.pso2gs.net #" & proxyInfo.Name & " Ship 07" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs106.pso2gs.net #" & proxyInfo.Name & " Ship 08" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs121.pso2gs.net #" & proxyInfo.Name & " Ship 09" & vbNewLine
-                BuiltFile &= proxyInfo.Host & " gs136.pso2gs.net #" & proxyInfo.Name & " Ship 10" & vbNewLine
+                BuiltFile.Add(proxyInfo.Host & " gs001.pso2gs.net #" & proxyInfo.Name & " Ship 01")
+                BuiltFile.Add(proxyInfo.Host & " gs016.pso2gs.net #" & proxyInfo.Name & " Ship 02")
+                BuiltFile.Add(proxyInfo.Host & " gs031.pso2gs.net #" & proxyInfo.Name & " Ship 03")
+                BuiltFile.Add(proxyInfo.Host & " gs046.pso2gs.net #" & proxyInfo.Name & " Ship 04")
+                BuiltFile.Add(proxyInfo.Host & " gs061.pso2gs.net #" & proxyInfo.Name & " Ship 05")
+                BuiltFile.Add(proxyInfo.Host & " gs076.pso2gs.net #" & proxyInfo.Name & " Ship 06")
+                BuiltFile.Add(proxyInfo.Host & " gs091.pso2gs.net #" & proxyInfo.Name & " Ship 07")
+                BuiltFile.Add(proxyInfo.Host & " gs106.pso2gs.net #" & proxyInfo.Name & " Ship 08")
+                BuiltFile.Add(proxyInfo.Host & " gs121.pso2gs.net #" & proxyInfo.Name & " Ship 09")
+                BuiltFile.Add(proxyInfo.Host & " gs136.pso2gs.net #" & proxyInfo.Name & " Ship 10")
                 WriteDebugInfo("Previous modifications not found, creating new entries...")
             End If
 
-            File.WriteAllText(Environment.SystemDirectory & "\drivers\etc\hosts", BuiltFile)
+            File.WriteAllLines(Environment.SystemDirectory & "\drivers\etc\hosts", BuiltFile.ToArray())
             WriteDebugInfoSameLine(" Done!")
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
