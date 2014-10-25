@@ -1224,7 +1224,7 @@ Public Class frmMain
                 If UpdateNeeded Then
                     WriteDebugInfo(My.Resources.strBeginningStoryModeUpdate)
                     While Not (oReader.EndOfStream)
-                        sBuffer = oReader.ReadLine
+                        sBuffer = oReader.ReadLine()
                         filename = sBuffer.Split(","c)
                         truefilename = filename(0)
                         TrueMD5 = filename(1)
@@ -1412,7 +1412,7 @@ StartPrePatch:
                             If CancelledFull Then Exit Sub
                             While Not (oReader.EndOfStream)
                                 If CancelledFull Then Exit Sub
-                                sBuffer = oReader.ReadLine
+                                sBuffer = oReader.ReadLine()
                                 filename = Regex.Split(sBuffer, ".pat")
                                 truefilename = filename(0).Replace("data/win32/", "")
                                 MD5 = filename(1).Split(vbTab)
@@ -2208,7 +2208,7 @@ StartPrePatch:
                 If CancelledFull Then Exit Sub
                 While Not (oReader.EndOfStream)
                     If CancelledFull Then Exit Sub
-                    sBuffer = oReader.ReadLine
+                    sBuffer = oReader.ReadLine()
                     filename = Regex.Split(sBuffer, ".pat")
                     truefilename = filename(0).Replace("data/win32/", "")
                     MD5 = filename(1).Split(vbTab)
@@ -2729,7 +2729,7 @@ StartPrePatch:
             WriteDebugInfo(My.Resources.strCheckingFiles)
             While Not (oReader.EndOfStream)
                 If CancelledFull Then Exit Sub
-                sBuffer = oReader.ReadLine
+                sBuffer = oReader.ReadLine()
                 filename = Regex.Split(sBuffer, ".pat")
                 truefilename = filename(0).Replace("data/win32/", "")
                 If truefilename <> "GameGuard.des" AndAlso truefilename <> "edition.txt" AndAlso truefilename <> "gameversion.ver" AndAlso truefilename <> "pso2.exe" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
@@ -2758,7 +2758,7 @@ StartPrePatch:
         Using oReader As StreamReader = File.OpenText("patchlist_old.txt")
             While Not (oReader.EndOfStream)
                 If CancelledFull Then Exit Sub
-                sBuffer2 = oReader.ReadLine
+                sBuffer2 = oReader.ReadLine()
                 filename2 = Regex.Split(sBuffer2, ".pat")
                 truefilename2 = filename2(0).Replace("data/win32/", "")
                 If truefilename2 <> "GameGuard.des" AndAlso truefilename2 <> "pso2.exe" AndAlso truefilename2 <> "PSO2JP.ini" AndAlso truefilename2 <> "script/user_default.pso2" AndAlso truefilename2 <> "script/user_intel.pso2" Then
@@ -3397,7 +3397,7 @@ StartPrePatch:
                 If CancelledFull Then Exit Sub
                 While Not (oReader.EndOfStream)
                     If CancelledFull Then Exit Sub
-                    sBuffer = oReader.ReadLine
+                    sBuffer = oReader.ReadLine()
                     missingfiles.Add(sBuffer)
                 End While
             End Using
@@ -4606,7 +4606,7 @@ SelectInstallFolder:
                 Dim NumberofChecks As Integer = 0
 
                 While Not (oReader.EndOfStream)
-                    sBuffer = oReader.ReadLine
+                    sBuffer = oReader.ReadLine()
                     filename = sBuffer
                     missingfiles.Add(filename)
                     NumberofChecks += 1

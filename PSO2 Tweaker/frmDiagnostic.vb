@@ -22,7 +22,7 @@ Public Class frmDiagnostic
             Dim buffer As New List(Of String)
 
             Do Until xRead.EndOfStream
-                CurrentLine = xRead.ReadLine
+                CurrentLine = xRead.ReadLine()
                 '[AIDA] Changed it, only took a few days! :D.... :(
                 If CurrentLine <> "" Then TotalString &= CurrentLine & vbCrLf
             Loop
