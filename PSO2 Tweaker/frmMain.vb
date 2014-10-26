@@ -44,8 +44,8 @@ Public Class frmMain
     Dim args As String() = Environment.GetCommandLineArgs()
     Dim nodiag As Boolean = False
     Dim processes As Process()
-    Dim pso2Dir As String
-    Dim pso2DirWinDir As String
+    Dim pso2RootDir As String
+    Dim pso2WinDir As String
     Dim startPath As String = Application.StartupPath
     Dim timer_start As Integer
     Dim totalsize2 As Integer
@@ -225,10 +225,10 @@ Public Class frmMain
                 Button1.RaiseClick()
             End If
 
-            pso2Dir = lblDirectory.Text
-            pso2DirWinDir = (pso2Dir & "\data\win32")
+            pso2RootDir = lblDirectory.Text
+            pso2WinDir = (pso2RootDir & "\data\win32")
 
-            DirectoryString = pso2Dir
+            DirectoryString = pso2RootDir
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             DeleteFile(pso2launchpath & "ddraw.dll")
 
@@ -273,12 +273,12 @@ Public Class frmMain
                     Log("Detected command argument -bypass")
                     Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
                     MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
-                    If (Directory.Exists(pso2Dir) = False OrElse pso2Dir = "lblDirectory") Then
+                    If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
                         MsgBox(My.Resources.strPleaseSelectwin32Dir)
                         Button1.RaiseClick()
                         Exit Sub
                     End If
-                    DirectoryString = pso2DirWinDir
+                    DirectoryString = pso2WinDir
                     pso2launchpath = DirectoryString.Replace("\data\win32", "")
                     File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
                     Log("Setting environment variable")
@@ -302,20 +302,20 @@ Public Class frmMain
                     Log("Detected command argument -pso2")
 
                     'Fuck SEGA. Fuck them hard.
-                    If (Directory.Exists(pso2Dir) = False OrElse pso2Dir = "lblDirectory") Then
+                    If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
                         MsgBox(My.Resources.strPleaseSelectwin32Dir)
                         Button1.RaiseClick()
                         Exit Sub
                     End If
 
-                    DirectoryString = pso2DirWinDir
+                    DirectoryString = pso2WinDir
                     pso2launchpath = DirectoryString.Replace("\data\win32", "")
 
                     If UseItemTranslation Then
                         Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                         Log("Deleting item cache...")
                         DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-                        DirectoryString = pso2DirWinDir
+                        DirectoryString = pso2WinDir
                         pso2launchpath = DirectoryString.Replace("\data\win32", "")
 
 
@@ -380,7 +380,7 @@ Public Class frmMain
 
             'Normal Tweaker startup
             CancelledFull = False
-            DirectoryString = pso2DirWinDir
+            DirectoryString = pso2WinDir
             pso2launchpath = DirectoryString.Replace("\data\win32", "")
             If File.Exists(pso2launchpath & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2launchpath & "\ddraw.dll")
             Log("Loading settings...")
@@ -587,7 +587,7 @@ Public Class frmMain
                 Log(My.Resources.strCurrentOSVersion & My.Computer.Info.OSVersion)
                 Log(My.Resources.strIsTheCurrentOS64bit & Environment.Is64BitOperatingSystem)
                 Log(My.Resources.strRunDirectory & startPath)
-                Log(My.Resources.strSelectedPSO2win32directory & pso2Dir)
+                Log(My.Resources.strSelectedPSO2win32directory & pso2RootDir)
                 Log(My.Resources.strIsUnrarAvailable & File.Exists(startPath & "\UnRar.exe"))
                 Dim identity = WindowsIdentity.GetCurrent()
                 Dim principal = New WindowsPrincipal(identity)
@@ -610,7 +610,7 @@ Public Class frmMain
         End Try
 
         Try
-            Dim pso2launchpath As String = pso2Dir
+            Dim pso2launchpath As String = pso2RootDir
             Dim localVersion As String = My.Application.Info.Version.ToString()
 
             Dim wc As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
@@ -661,21 +661,21 @@ Public Class frmMain
         t3.Start()
 
         Try
-            Dim pso2launchpath As String = pso2Dir
+            Dim pso2launchpath As String = pso2RootDir
             Application.DoEvents()
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 MsgBox(My.Resources.strPleaseSelectPSO2win32dir)
                 Button1.RaiseClick()
             Else
-                pso2Dir = Helper.GetRegKey(Of String)("PSO2Dir")
+                pso2RootDir = Helper.GetRegKey(Of String)("PSO2Dir")
             End If
 
-            If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If GetFileSize((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
+            If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strNotSwapped & ")"
                 End If
-                If GetFileSize((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strSwapped & ")"
                 End If
             End If
@@ -845,11 +845,11 @@ Public Class frmMain
                     Thread.Sleep(16)
                 Loop
 
-                If Not File.Exists(pso2Dir & "\translation.cfg") Then
-                    File.WriteAllText(pso2Dir & "\translation.cfg", "TranslationPath:translation.bin")
+                If Not File.Exists(pso2RootDir & "\translation.cfg") Then
+                    File.WriteAllText(pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
                 End If
 
-                Using reader As New StreamReader(pso2Dir & "\translation.cfg")
+                Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
                     Dim BuiltFile As New List(Of String)
                     Dim currentLine As String = ""
 
@@ -861,7 +861,7 @@ Public Class frmMain
                         BuiltFile.Add(currentLine)
                     Loop
 
-                    File.WriteAllLines(pso2Dir & "\translation.cfg", BuiltFile.ToArray())
+                    File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
                 End Using
             End If
 
@@ -880,7 +880,7 @@ Public Class frmMain
     End Sub
 
     Public Sub DownloadItemTranslationFiles()
-        Dim pso2launchpath As String = pso2Dir
+        Dim pso2launchpath As String = pso2RootDir
         Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
         Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
         Dim client As New WebClient
@@ -1227,9 +1227,9 @@ Public Class frmMain
                         truefilename = filename(0)
                         TrueMD5 = filename(1)
 
-                        If Not File.Exists((pso2DirWinDir & "\" & truefilename)) Then
+                        If Not File.Exists((pso2WinDir & "\" & truefilename)) Then
                             missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMD5((pso2DirWinDir & "\" & truefilename)) <> TrueMD5 Then
+                        ElseIf Helper.GetMD5((pso2WinDir & "\" & truefilename)) <> TrueMD5 Then
                             missingfiles.Add(truefilename)
                         End If
 
@@ -1257,7 +1257,7 @@ Public Class frmMain
                     If Not File.Exists(downloadstring & ".7z") Then
                         WriteDebugInfoAndFAILED("File " & (downloadstring & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
-                    DeleteFile((pso2DirWinDir & "\" & downloadstring))
+                    DeleteFile((pso2WinDir & "\" & downloadstring))
                     Dim process As Process = Nothing
                     Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
                     Dim UnRarLocation As String = (startPath & "\7za.exe")
@@ -1272,7 +1272,7 @@ Public Class frmMain
                     If Not File.Exists(downloadstring) Then
                         WriteDebugInfoAndFAILED("File " & (downloadstring) & " does not exist! Perhaps it wasn't extracted properly?")
                     End If
-                    File.Move(downloadstring, (pso2DirWinDir & "\" & downloadstring))
+                    File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
                     DeleteFile(downloadstring & ".7z")
                     Application.DoEvents()
                 Next
@@ -1400,7 +1400,7 @@ StartPrePatch:
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt", True)
                         WriteDebugInfoSameLine(My.Resources.strDone)
                         MergePrePatches()
-                        If Not Directory.Exists(pso2Dir & "\_precede\data\win32") Then Directory.CreateDirectory(pso2Dir & "\_precede\data\win32") 'create directory
+                        If Not Directory.Exists(pso2RootDir & "\_precede\data\win32") Then Directory.CreateDirectory(pso2RootDir & "\_precede\data\win32") 'create directory
 
                         WriteDebugInfo("Checking for already existing precede files...")
                         NumberofChecks = 0
@@ -1417,10 +1417,10 @@ StartPrePatch:
                             MD5 = filename(1).Split(vbTab)
                             TrueMD5 = MD5(2)
                             If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
-                                If Not File.Exists(((pso2Dir & "\_precede\data\win32") & "\" & truefilename)) Then
+                                If Not File.Exists(((pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) Then
                                     If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
                                     missingfiles.Add(truefilename)
-                                ElseIf Helper.GetMD5(((pso2Dir & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
+                                ElseIf Helper.GetMD5(((pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
                                     If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                                     missingfiles.Add(truefilename)
                                 End If
@@ -1459,8 +1459,8 @@ StartPrePatch:
 
                             If Cancelled Then Exit Sub
 
-                            DeleteFile(((pso2Dir & "\_precede\data\win32") & "\" & downloadstring))
-                            File.Move(downloadstring, ((pso2Dir & "\_precede\data\win32") & "\" & downloadstring))
+                            DeleteFile(((pso2RootDir & "\_precede\data\win32") & "\" & downloadstring))
+                            File.Move(downloadstring, ((pso2RootDir & "\_precede\data\win32") & "\" & downloadstring))
                             If VedaUnlocked Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadstring & ".")
 
                             Application.DoEvents()
@@ -1476,38 +1476,38 @@ StartPrePatch:
             End If
 
             'Check whether or not to apply pre-patch shit. Ugh.
-            If Directory.Exists(pso2Dir & "\_precede\") Then
+            If Directory.Exists(pso2RootDir & "\_precede\") Then
                 versionclient.DownloadFile("http://162.243.211.123/freedom/precede_apply.txt", "precede_apply.txt")
                 Dim prepatchapply = File.ReadAllLines("precede_apply.txt")
                 Dim ApplyPrePatch As String = prepatchapply(0)
 
-                If Directory.Exists(pso2Dir & "\_precede\data\win32\") Then
+                If Directory.Exists(pso2RootDir & "\_precede\data\win32\") Then
                     If ApplyPrePatch = "Yes" Then
                         Dim ApplyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch download will be deleted.", vbYesNo)
                         If ApplyPrePatchYesNo = vbNo Then
                             WriteDebugInfoAndOK("Deleting pre-patch download...")
-                            Directory.Delete(pso2Dir & "\_precede", True)
+                            Directory.Delete(pso2RootDir & "\_precede", True)
                         ElseIf ApplyPrePatchYesNo = vbYes Then
                             WriteDebugInfo("Installing prepatch, please wait...")
                             Application.DoEvents()
-                            Dim di As New DirectoryInfo(pso2Dir & "\_precede\data\win32\")
+                            Dim di As New DirectoryInfo(pso2RootDir & "\_precede\data\win32\")
                             Dim diar1 As FileInfo() = di.GetFiles()
 
                             'list the names of all files in the specified directory
                             Dim downloadstring As String = ""
                             Dim count As Integer = 0
-                            Dim counter = My.Computer.FileSystem.GetFiles(pso2Dir & "\_precede\data\win32\")
+                            Dim counter = My.Computer.FileSystem.GetFiles(pso2RootDir & "\_precede\data\win32\")
                             For Each dra In diar1
                                 If counter.Count = 0 Then Exit For
                                 downloadstring = dra.Name
-                                DeleteFile((pso2DirWinDir & "\" & downloadstring))
-                                File.Move(pso2Dir & "\_precede\data\win32\" & downloadstring, (pso2DirWinDir & "\" & downloadstring))
+                                DeleteFile((pso2WinDir & "\" & downloadstring))
+                                File.Move(pso2RootDir & "\_precede\data\win32\" & downloadstring, (pso2WinDir & "\" & downloadstring))
                                 count += 1
                                 lblStatus.Text = "Moved " & count & " files out of " & counter.Count
                                 Application.DoEvents()
                             Next
                             WriteDebugInfoSameLine("Done!")
-                            DeleteDirectory(pso2Dir & "\_precede")
+                            DeleteDirectory(pso2RootDir & "\_precede")
                         End If
                     End If
                 End If
@@ -1541,7 +1541,7 @@ StartPrePatch:
 
     Private Sub btnApplyChanges_Click(sender As Object, e As EventArgs) Handles btnApplyChanges.Click
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -1569,83 +1569,83 @@ StartPrePatch:
             End If
             'Remove censor
             '[AIDA] Resume here
-            If chkRemoveCensor.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then
-                If File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
+            If chkRemoveCensor.Checked AndAlso File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then
+                If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
-            ElseIf chkRemoveCensor.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))) Then
+            ElseIf chkRemoveCensor.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveCensor)
             End If
             'Restore Censor
-            If chkRestoreCensor.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), "ffbff2ac5b7a7948961212cefd4d402c")
+            If chkRestoreCensor.Checked AndAlso File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), "ffbff2ac5b7a7948961212cefd4d402c")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Censor...")
-            ElseIf chkRestoreCensor.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"))) Then
+            ElseIf chkRestoreCensor.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreCensor)
             End If
             'Remove PC Opening Video [Done]
-            If chkRemovePC.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then
-                If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), "a44fbb2aeb8084c5a5fbe80e219a9927.backup")
+            If chkRemovePC.Checked AndAlso File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then
+                If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), "a44fbb2aeb8084c5a5fbe80e219a9927.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "PC Opening Video...")
-            ElseIf chkRemovePC.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))) Then
+            ElseIf chkRemovePC.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemovePC)
             End If
             'Restore PC Opening Video [Done]
-            If chkRestorePC.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
+            If chkRestorePC.Checked AndAlso File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "PC Opening Video...")
-            ElseIf chkRestorePC.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"))) Then
+            ElseIf chkRestorePC.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestorePC)
             End If
             'Remove Vita Opening Video [Done]
-            If chkRemoveVita.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), "a93adc766eb3510f7b5c279551a45585.backup")
+            If chkRemoveVita.Checked AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
+                If File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), "a93adc766eb3510f7b5c279551a45585.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Vita Opening Video...")
-            ElseIf chkRemoveVita.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585"))) Then
+            ElseIf chkRemoveVita.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveVita)
             End If
             'Restore Vita Opening Video [Done]
-            If chkRestoreVita.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
+            If chkRestoreVita.Checked AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Vita Opening Video...")
-            ElseIf chkRestoreVita.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"))) Then
+            ElseIf chkRestoreVita.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreVita)
             End If
             'Remove NVidia Opening Video [Done]
-            If chkRemoveNVidia.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75")) Then
-                If File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75"), "7f2368d207e104e8ed6086959b742c75.backup")
+            If chkRemoveNVidia.Checked AndAlso File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75")) Then
+                If File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75"), "7f2368d207e104e8ed6086959b742c75.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "NVidia Opening Video...")
-            ElseIf chkRemoveNVidia.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75"))) Then
+            ElseIf chkRemoveNVidia.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveNVidia)
             End If
             'Restore NVidia Opening Video [Done]
-            If chkRestoreNVidia.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), "7f2368d207e104e8ed6086959b742c75")
+            If chkRestoreNVidia.Checked AndAlso File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), "7f2368d207e104e8ed6086959b742c75")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "NVidia Opening Video...")
-            ElseIf chkRestoreNVidia.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"))) Then
+            ElseIf chkRestoreNVidia.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreNVidia)
             End If
             'Remove SEGA Opening Video [Done]
-            If chkRemoveSEGA.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771")) Then
-                If File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771"), "009bfec69b04a34576012d50e3417771.backup")
+            If chkRemoveSEGA.Checked AndAlso File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771")) Then
+                If File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771"), "009bfec69b04a34576012d50e3417771.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "SEGA Opening Video...")
-            ElseIf chkRemoveSEGA.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771"))) Then
+            ElseIf chkRemoveSEGA.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRemoveSEGA)
             End If
             'Restore SEGA Opening Video [Done]
-            If chkRestoreSEGA.Checked AndAlso File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"), "009bfec69b04a34576012d50e3417771")
+            If chkRestoreSEGA.Checked AndAlso File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"), "009bfec69b04a34576012d50e3417771")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "SEGA Opening Video...")
-            ElseIf chkRestoreSEGA.Checked AndAlso (Not File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"))) Then
+            ElseIf chkRestoreSEGA.Checked AndAlso (Not File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"))) Then
                 WriteDebugInfoAndWarning(My.Resources.strFailedToRestoreSEGA)
             End If
             UnlockGUI()
@@ -1653,32 +1653,32 @@ StartPrePatch:
             'Restore PC Opening Video [Done]
             If chkSwapOP.Checked Then
                 WriteDebugInfo(My.Resources.strSwappingOpenings)
-                If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
-                    If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                    My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
+                If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
+                    If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                    My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
                     WriteDebugInfoAndOK(My.Resources.strRestoring & "PC Opening Video...")
                 End If
                 'Restore Vita Opening Video [Done]
-                If File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
-                    If File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                    My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
+                If File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
+                    If File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                    My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
                     WriteDebugInfoAndOK(My.Resources.strRestoring & "Vita Opening Video...")
                 End If
                 'Rename the original files
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), "PCOpening")
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), "VitaOpening")
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"), "PCOpening")
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585"), "VitaOpening")
                 'Rename them back, swapping them~
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "PCOpening"), "a93adc766eb3510f7b5c279551a45585")
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "VitaOpening"), "a44fbb2aeb8084c5a5fbe80e219a9927")
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "PCOpening"), "a93adc766eb3510f7b5c279551a45585")
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "VitaOpening"), "a44fbb2aeb8084c5a5fbe80e219a9927")
             End If
-            If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If GetFileSize((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
+            If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & "(" & My.Resources.strNotSwapped & ")"
                     WriteDebugInfo(My.Resources.strallDone)
                     UnlockGUI()
                     Exit Sub
                 End If
-                If GetFileSize((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & "(" & My.Resources.strSwapped & ")"
                     WriteDebugInfo(My.Resources.strallDone)
                     UnlockGUI()
@@ -1698,13 +1698,13 @@ StartPrePatch:
         Log("Check if PSO2 is running")
         If CheckIfRunning("pso2") Then Exit Sub
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
             End If
 
-            Dim pso2launchpath As String = pso2Dir
+            Dim pso2launchpath As String = pso2RootDir
 
             If Not File.Exists(pso2launchpath & "\pso2.exe") Then
                 WriteDebugInfoAndFAILED(My.Resources.strCouldNotFindPSO2EXE)
@@ -1739,7 +1739,7 @@ StartPrePatch:
             Catch ex As Exception
                 WriteDebugInfo(My.Resources.strItSeemsThereWasAnError)
                 DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
-                Dim DirectoryString2 As String = pso2Dir
+                Dim DirectoryString2 As String = pso2RootDir
                 If File.Exists((DirectoryString2 & "\pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
                 File.Move("pso2.exe", (DirectoryString2 & "\pso2.exe"))
                 WriteDebugInfoSameLine(My.Resources.strDone)
@@ -1842,7 +1842,7 @@ StartPrePatch:
             Log("Selecting PSO2 Directory...")
             Dim MyFolderBrowser As New FolderBrowserDialog
             ' Description that displays above the dialog box control. 
-            If Not String.IsNullOrEmpty(pso2Dir) Then MyFolderBrowser.SelectedPath = pso2Dir
+            If Not String.IsNullOrEmpty(pso2RootDir) Then MyFolderBrowser.SelectedPath = pso2RootDir
             MyFolderBrowser.Description = My.Resources.strSelectPSO2win32folder2
             ' Sets the root folder where the browsing starts from 
             MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
@@ -1855,16 +1855,16 @@ StartPrePatch:
             If MyFolderBrowser.SelectedPath.Contains("\pso2_bin") Then
                 If File.Exists(MyFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") Then
                     WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
-                    lblDirectory.Text = pso2Dir = MyFolderBrowser.SelectedPath.Replace("\data\win32", "")
-                    Helper.SetRegKey(Of String)("PSO2Dir", pso2Dir)
-                    WriteDebugInfoAndOK(pso2Dir & " " & My.Resources.strSetAsYourPSO2)
+                    lblDirectory.Text = pso2RootDir = MyFolderBrowser.SelectedPath.Replace("\data\win32", "")
+                    Helper.SetRegKey(Of String)("PSO2Dir", pso2RootDir)
+                    WriteDebugInfoAndOK(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
                     Exit Sub
                 End If
             End If
 
             Helper.SetRegKey(Of String)("PSO2Dir", MyFolderBrowser.SelectedPath)
-            lblDirectory.Text = pso2Dir = MyFolderBrowser.SelectedPath
-            WriteDebugInfoAndOK(pso2Dir & " " & My.Resources.strSetAsYourPSO2)
+            lblDirectory.Text = pso2RootDir = MyFolderBrowser.SelectedPath
+            WriteDebugInfoAndOK(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
             Log(ex.Message)
@@ -1891,7 +1891,7 @@ StartPrePatch:
         Dim PatchSplit() As String = Patch.Split(vbCrLf)
         Dim Enabled As Boolean = False
 
-        For index = 0 To PatchSplit.Length
+        For index = 0 To (PatchSplit.Length - 1)
             If PatchSplit(index).Contains("Large Files: Compatible!") = True Then Enabled = True
         Next
 
@@ -1917,7 +1917,7 @@ StartPrePatch:
         CancelledFull = False
         Dim StoryLocation As String
         Dim backupyesno As MsgBoxResult
-        If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+        If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
@@ -1977,10 +1977,10 @@ StartPrePatch:
             Dim di As New DirectoryInfo("TEMPSTORYAIDAFOOL")
             Dim diar1 As FileInfo() = di.GetFiles()
             Dim dra As FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2DirWinDir))
+            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
             Application.DoEvents()
             'list the names of all files in the specified directory
-            Dim backupdir As String = (pso2DirWinDir & "\" & "backupPreSTORYPatch")
+            Dim backupdir As String = (pso2WinDir & "\" & "backupPreSTORYPatch")
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupdir) Then
                     My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -2001,16 +2001,16 @@ StartPrePatch:
             For Each dra In diar1
                 If CancelledFull Then Exit Sub
                 If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists((pso2DirWinDir & "\" & dra.ToString())) Then
-                        File.Move((pso2DirWinDir & "\" & dra.ToString()), (backupdir & "\" & dra.ToString()))
+                    If File.Exists((pso2WinDir & "\" & dra.ToString())) Then
+                        File.Move((pso2WinDir & "\" & dra.ToString()), (backupdir & "\" & dra.ToString()))
                     End If
                 End If
                 If backupyesno = MsgBoxResult.No Then
-                    If File.Exists((pso2DirWinDir & "\" & dra.ToString())) Then
-                        DeleteFile((pso2DirWinDir & "\" & dra.ToString()))
+                    If File.Exists((pso2WinDir & "\" & dra.ToString())) Then
+                        DeleteFile((pso2WinDir & "\" & dra.ToString()))
                     End If
                 End If
-                File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (pso2DirWinDir & "\" & dra.ToString()))
+                File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
             Next
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If backupyesno = MsgBoxResult.No Then
@@ -2040,12 +2040,12 @@ StartPrePatch:
     End Sub
 
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
-        If Not File.Exists(pso2Dir & "\translation.cfg") Then
-            File.WriteAllText(pso2Dir & "\translation.cfg", "TranslationPath:translation.bin")
+        If Not File.Exists(pso2RootDir & "\translation.cfg") Then
+            File.WriteAllText(pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
         End If
         If chkItemTranslation.Checked Then
 
-            Dim pso2launchpath As String = pso2Dir
+            Dim pso2launchpath As String = pso2RootDir
 
             WriteDebugInfoAndOK(My.Resources.strDownloadingLatestItemTranslationFiles)
             'Download translator.dll and translation.bin
@@ -2078,7 +2078,7 @@ StartPrePatch:
             Next
 
             'Start the shitstorm
-            Using reader As New StreamReader(pso2Dir & "\translation.cfg")
+            Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
                 Dim BuiltFile As New List(Of String)
                 Dim currentLine As String = ""
 
@@ -2090,7 +2090,7 @@ StartPrePatch:
                     BuiltFile.Add(currentLine)
                 Loop
 
-                File.WriteAllLines(pso2Dir & "\translation.cfg", BuiltFile.ToArray())
+                File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
             End Using
 
             WriteDebugInfoSameLine(My.Resources.strDone)
@@ -2102,7 +2102,7 @@ StartPrePatch:
             DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
 
-            Using reader As New StreamReader(pso2Dir & "\translation.cfg")
+            Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
                 Dim BuiltFile As New List(Of String)
                 Dim currentLine As String = ""
 
@@ -2114,7 +2114,7 @@ StartPrePatch:
                     BuiltFile.Add(currentLine)
                 Loop
 
-                File.WriteAllLines(pso2Dir & "\translation.cfg", BuiltFile.ToArray())
+                File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
             End Using
         End If
 
@@ -2125,7 +2125,7 @@ StartPrePatch:
     Private Sub ButtonItem5_Click(sender As Object, e As EventArgs) Handles ButtonItem5.Click
         CancelledFull = False
 
-        If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+        If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
@@ -2145,21 +2145,21 @@ StartPrePatch:
         Dim testfilesize As String()
         lblStatus.Text = ""
 
-        If Directory.Exists((pso2DirWinDir & "\backupPreENPatch")) Then
+        If Directory.Exists((pso2WinDir & "\backupPreENPatch")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             Override = True
             btnRestoreENBackup.RaiseClick()
             Override = False
         End If
 
-        If Directory.Exists((pso2DirWinDir & "\backupPreLargeFiles")) Then
+        If Directory.Exists((pso2WinDir & "\backupPreLargeFiles")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             Override = True
             btnRestoreLargeFilesBackup.RaiseClick()
             Override = False
         End If
 
-        If Directory.Exists((pso2DirWinDir & "\backupPreSTORYPatch")) Then
+        If Directory.Exists((pso2WinDir & "\backupPreSTORYPatch")) Then
             WriteDebugInfo(My.Resources.strStoryBackupFound)
             Override = True
             btnRestoreStoryBackup.RaiseClick()
@@ -2215,10 +2215,10 @@ StartPrePatch:
                     MD5 = filename(1).Split(vbTab)
                     TrueMD5 = MD5(2)
                     If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
-                        If Not File.Exists((pso2DirWinDir & "\" & truefilename)) Then
+                        If Not File.Exists((pso2WinDir & "\" & truefilename)) Then
                             If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
                             missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMD5((pso2DirWinDir & "\" & truefilename)) <> TrueMD5 Then
+                        ElseIf Helper.GetMD5((pso2WinDir & "\" & truefilename)) <> TrueMD5 Then
                             If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                             missingfiles.Add(truefilename)
                         End If
@@ -2261,8 +2261,8 @@ StartPrePatch:
                 End If
 
                 If Cancelled Then Exit Sub
-                DeleteFile((pso2DirWinDir & "\" & downloadstring))
-                File.Move(downloadstring, (pso2DirWinDir & "\" & downloadstring))
+                DeleteFile((pso2WinDir & "\" & downloadstring))
+                File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
                 If VedaUnlocked Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadstring & ".")
                 Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
@@ -2275,7 +2275,7 @@ StartPrePatch:
 
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String = (pso2Dir & "\")
+            Dim DirectoryString As String = (pso2RootDir & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
@@ -2283,7 +2283,7 @@ StartPrePatch:
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = pso2Dir
+            Dim DirectoryString2 As String = pso2RootDir
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
@@ -2336,8 +2336,8 @@ StartPrePatch:
             UnlockGUI()
 
             If Helper.GetRegKey(Of Boolean)("RemoveCensor") Then
-                If File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
+                If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
 
@@ -2377,7 +2377,7 @@ StartPrePatch:
                 SOMEOFTHETHINGS.Remove("pso2.exe")
             End If
 
-            Dim dataPath = pso2Dir & "\data\win32\"
+            Dim dataPath = pso2RootDir & "\data\win32\"
             Dim length = SOMEOFTHETHINGS.Count
             Dim oldmax = PB1.Maximum
             PB1.Maximum = length
@@ -2469,8 +2469,8 @@ StartPrePatch:
                 End If
 
                 If File.Exists(downloadstring) Then
-                    DeleteFile((pso2DirWinDir & "\" & downloadstring))
-                    File.Move(downloadstring, (pso2DirWinDir & "\" & downloadstring))
+                    DeleteFile((pso2WinDir & "\" & downloadstring))
+                    File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
                     If VedaUnlocked Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadstring & ".")
                     Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
@@ -2485,10 +2485,10 @@ StartPrePatch:
             Next
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String = (pso2Dir & "\")
+            Dim DirectoryString As String = (pso2RootDir & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
-            Dim DirectoryString2 As String = pso2Dir
+            Dim DirectoryString2 As String = pso2RootDir
             Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
@@ -2547,7 +2547,7 @@ StartPrePatch:
 
     Private Sub btnRestoreENBackup_Click(sender As Object, e As EventArgs) Handles btnRestoreENBackup.Click
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -2559,23 +2559,23 @@ StartPrePatch:
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
                 Dim backupfolder As String = "backupPreENPatch"
-                If Not Directory.Exists((pso2DirWinDir & "\" & backupfolder)) Then
-                    WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2DirWinDir & "\" & backupfolder))
+                If Not Directory.Exists((pso2WinDir & "\" & backupfolder)) Then
+                    WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2WinDir & "\" & backupfolder))
                     Exit Sub
                 End If
-                Dim di As New DirectoryInfo((pso2DirWinDir & "\" & backupfolder))
+                Dim di As New DirectoryInfo((pso2WinDir & "\" & backupfolder))
                 Dim diar1 As FileInfo() = di.GetFiles()
-                WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & pso2DirWinDir))
+                WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & pso2WinDir))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
-                Dim win32 As String = pso2DirWinDir
+                Dim win32 As String = pso2WinDir
                 For Each dra As FileInfo In diar1
                     If File.Exists(win32 & "\" & dra.ToString()) Then
                         DeleteFile(win32 & "\" & dra.ToString())
                     End If
-                    File.Move(((pso2DirWinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
+                    File.Move(((pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
-                My.Computer.FileSystem.DeleteDirectory((pso2DirWinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
+                My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
                 FlashWindow(Me.Handle, 1)
                 WriteDebugInfo(My.Resources.strBackupRestored)
                 UnlockGUI()
@@ -2591,7 +2591,7 @@ StartPrePatch:
 
     Private Sub ButtonItem4_Click(sender As Object, e As EventArgs) Handles btnRestoreLargeFilesBackup.Click
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -2603,24 +2603,24 @@ StartPrePatch:
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
                 Dim backupfolder As String = "backupPreLargeFiles"
-                If Not Directory.Exists((pso2DirWinDir & "\" & backupfolder)) Then
-                    WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2DirWinDir & "\" & backupfolder))
+                If Not Directory.Exists((pso2WinDir & "\" & backupfolder)) Then
+                    WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2WinDir & "\" & backupfolder))
                     Exit Sub
                 End If
-                Dim di As New DirectoryInfo((pso2DirWinDir & "\" & backupfolder))
+                Dim di As New DirectoryInfo((pso2WinDir & "\" & backupfolder))
                 Dim diar1 As FileInfo() = di.GetFiles()
                 Dim dra As FileInfo
-                WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & pso2DirWinDir))
+                WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & pso2WinDir))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
-                Dim win32 As String = pso2DirWinDir
+                Dim win32 As String = pso2WinDir
                 For Each dra In diar1
                     If File.Exists(win32 & "\" & dra.ToString()) Then
                         DeleteFile(win32 & "\" & dra.ToString())
                     End If
-                    File.Move(((pso2DirWinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
+                    File.Move(((pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
-                My.Computer.FileSystem.DeleteDirectory((pso2DirWinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
+                My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
                 WriteDebugInfo(My.Resources.strBackupRestored)
                 UnlockGUI()
             Else
@@ -2635,9 +2635,9 @@ StartPrePatch:
 
     Private Sub btnRestoreJPNames_Click(sender As Object, e As EventArgs) Handles btnRestoreJPNames.Click
         'http://pso2.arghargh200.net/pso2/2013_06_12/ceffe0e2386e8d39f188358303a92a7d
-        If File.Exists((pso2DirWinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then
-            If File.Exists((pso2DirWinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-            My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), "ceffe0e2386e8d39f188358303a92a7d")
+        If File.Exists((pso2WinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then
+            If File.Exists((pso2WinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), "ceffe0e2386e8d39f188358303a92a7d")
             WriteDebugInfoAndOK(My.Resources.strRestoring & " JP Names file...")
         Else
             WriteDebugInfoAndOK(My.Resources.strRestoreFailedPleaseReinstall)
@@ -2646,9 +2646,9 @@ StartPrePatch:
 
     Private Sub btnRestoreJPETrials_Click(sender As Object, e As EventArgs) Handles btnRestoreJPETrials.Click
         'http://pso2.arghargh200.net/pso2/2013_06_12/057aa975bdd2b372fe092614b0f4399e
-        If File.Exists((pso2DirWinDir & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then
-            If File.Exists((pso2DirWinDir & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "057aa975bdd2b372fe092614b0f4399e"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-            My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), "057aa975bdd2b372fe092614b0f4399e")
+        If File.Exists((pso2WinDir & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then
+            If File.Exists((pso2WinDir & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "057aa975bdd2b372fe092614b0f4399e"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), "057aa975bdd2b372fe092614b0f4399e")
             WriteDebugInfoAndOK(My.Resources.strRestoring & " JP E-Trials file...")
         Else
             WriteDebugInfoAndOK(My.Resources.strRestoreFailedPleaseReinstall)
@@ -2656,7 +2656,7 @@ StartPrePatch:
     End Sub
 
     Private Sub btnAnalyze_Click(sender As Object, e As EventArgs) Handles btnAnalyze.Click
-        Dim pso2launchpath As String = pso2DirWinDir.Replace("data\win32", "")
+        Dim pso2launchpath As String = pso2WinDir.Replace("data\win32", "")
         WriteDebugInfo(My.Resources.strCheckingForNecessaryFiles)
         If Not File.Exists(pso2launchpath & "Gameguard.DES") Then WriteDebugInfoAndWarning("Missing GameGuard.DES file! " & My.Resources.strPleaseFixGG)
         If Not File.Exists(pso2launchpath & "pso2.exe") Then WriteDebugInfoAndWarning("Missing pso2.exe file! " & My.Resources.strPleaseFixPSO2EXEs)
@@ -2672,7 +2672,7 @@ StartPrePatch:
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+        If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
@@ -2712,29 +2712,29 @@ StartPrePatch:
         Log("Opening patch file list...")
         Using oReader As StreamReader = File.OpenText("patchlist.txt")
             If CancelledFull Then Exit Sub
-            If File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then DeleteFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), "ffbff2ac5b7a7948961212cefd4d402c")
+            If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"))
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), "ffbff2ac5b7a7948961212cefd4d402c")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Censor...")
             End If
-            If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then DeleteFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
+            If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then DeleteFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927"))
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927.backup"), "a44fbb2aeb8084c5a5fbe80e219a9927")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "PC Opening...")
             End If
-            If File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75")) Then DeleteFile((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75"))
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), "7f2368d207e104e8ed6086959b742c75")
+            If File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75")) Then DeleteFile((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75"))
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "7f2368d207e104e8ed6086959b742c75.backup"), "7f2368d207e104e8ed6086959b742c75")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "NVidia Logo...")
             End If
-            If File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771")) Then DeleteFile((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771"))
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"), "009bfec69b04a34576012d50e3417771")
+            If File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771")) Then DeleteFile((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771"))
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "009bfec69b04a34576012d50e3417771.backup"), "009bfec69b04a34576012d50e3417771")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "SEGA Logo...")
             End If
-            If File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
-                If File.Exists((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then DeleteFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585"))
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
+            If File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup")) Then
+                If File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then DeleteFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585"))
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585.backup"), "a93adc766eb3510f7b5c279551a45585")
                 WriteDebugInfoAndOK(My.Resources.strRestoring & "Vita Opening...")
             End If
             WriteDebugInfo(My.Resources.strCheckingFiles)
@@ -2744,20 +2744,20 @@ StartPrePatch:
                 filename = Regex.Split(sBuffer, ".pat")
                 truefilename = filename(0).Replace("data/win32/", "")
                 If truefilename <> "GameGuard.des" AndAlso truefilename <> "edition.txt" AndAlso truefilename <> "gameversion.ver" AndAlso truefilename <> "pso2.exe" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
-                    Dim info7 As New FileInfo((pso2DirWinDir & "\" & truefilename))
+                    Dim info7 As New FileInfo((pso2WinDir & "\" & truefilename))
                     Dim length2 As Long
-                    If File.Exists(pso2DirWinDir & "\" & truefilename) Then length2 = info7.Length
-                    If Not File.Exists((pso2DirWinDir & "\" & truefilename)) Then
+                    If File.Exists(pso2WinDir & "\" & truefilename) Then length2 = info7.Length
+                    If Not File.Exists((pso2WinDir & "\" & truefilename)) Then
                         WriteDebugInfo(truefilename & My.Resources.strIsMissing)
                         missingfiles.Add(truefilename)
                     End If
-                    info7 = New FileInfo((pso2DirWinDir & "\" & truefilename))
-                    If File.Exists(pso2DirWinDir & "\" & truefilename) Then length2 = info7.Length
-                    If Not File.Exists(pso2DirWinDir & "\" & truefilename) Then length2 = 1
+                    info7 = New FileInfo((pso2WinDir & "\" & truefilename))
+                    If File.Exists(pso2WinDir & "\" & truefilename) Then length2 = info7.Length
+                    If Not File.Exists(pso2WinDir & "\" & truefilename) Then length2 = 1
                     If length2 = 0 Then
                         WriteDebugInfo(truefilename & " has a filesize of 0!")
                         missingfiles.Add(truefilename)
-                        DeleteFile(pso2DirWinDir & "\" & truefilename)
+                        DeleteFile(pso2WinDir & "\" & truefilename)
                     End If
                 End If
                 NumberofChecks += 1
@@ -2773,10 +2773,10 @@ StartPrePatch:
                 filename2 = Regex.Split(sBuffer2, ".pat")
                 truefilename2 = filename2(0).Replace("data/win32/", "")
                 If truefilename2 <> "GameGuard.des" AndAlso truefilename2 <> "pso2.exe" AndAlso truefilename2 <> "PSO2JP.ini" AndAlso truefilename2 <> "script/user_default.pso2" AndAlso truefilename2 <> "script/user_intel.pso2" Then
-                    Dim info7 As New FileInfo((pso2DirWinDir & "\" & truefilename2))
+                    Dim info7 As New FileInfo((pso2WinDir & "\" & truefilename2))
                     Dim length2 As Long
-                    If File.Exists(pso2DirWinDir & "\" & truefilename2) Then length2 = info7.Length
-                    If Not File.Exists((pso2DirWinDir & "\" & truefilename2)) Then
+                    If File.Exists(pso2WinDir & "\" & truefilename2) Then length2 = info7.Length
+                    If Not File.Exists((pso2WinDir & "\" & truefilename2)) Then
                         If missingfiles.Contains(truefilename2) Then
                             'Do nothing
                         Else
@@ -2784,13 +2784,13 @@ StartPrePatch:
                             missingfiles2.Add(truefilename2)
                         End If
                     End If
-                    info7 = New FileInfo((pso2DirWinDir & "\" & truefilename2))
-                    If File.Exists(pso2DirWinDir & "\" & truefilename2) Then length2 = info7.Length
-                    If Not File.Exists(pso2DirWinDir & "\" & truefilename2) Then length2 = 1
+                    info7 = New FileInfo((pso2WinDir & "\" & truefilename2))
+                    If File.Exists(pso2WinDir & "\" & truefilename2) Then length2 = info7.Length
+                    If Not File.Exists(pso2WinDir & "\" & truefilename2) Then length2 = 1
                     If length2 = 0 Then
                         WriteDebugInfo(truefilename2 & " has a filesize of 0!")
                         missingfiles.Add(truefilename2)
-                        DeleteFile(pso2DirWinDir & "\" & truefilename2)
+                        DeleteFile(pso2WinDir & "\" & truefilename2)
                     End If
                 End If
                 NumberofChecks += 1
@@ -2834,7 +2834,7 @@ StartPrePatch:
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
                 End If
                 If Cancelled Then Exit Sub
-                File.Move(downloadstring, (pso2DirWinDir & "\" & downloadstring))
+                File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
                 WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring & "."))
                 Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
@@ -2860,7 +2860,7 @@ StartPrePatch:
             For Each downloadstring2 In missingfiles2
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
-                If Not File.Exists((pso2DirWinDir & "\" & downloadstring2)) Then
+                If Not File.Exists((pso2WinDir & "\" & downloadstring2)) Then
                     Cancelled = False
                     downloaded2 += 1
                     totaldownloaded2 += totalsize2
@@ -2875,7 +2875,7 @@ StartPrePatch:
                         DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring2 & ".pat"), downloadstring2, True)
                     End If
                     If Cancelled Then Exit Sub
-                    File.Move(downloadstring2, (pso2DirWinDir & "\" & downloadstring2))
+                    File.Move(downloadstring2, (pso2WinDir & "\" & downloadstring2))
                     WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring2 & "."))
                     Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
@@ -2967,7 +2967,7 @@ StartPrePatch:
         Try
             Dim systempath As String
             MsgBox(My.Resources.strPleaseBeAwareGG)
-            Dim pso2launchpath As String = pso2Dir
+            Dim pso2launchpath As String = pso2RootDir
 
             If Directory.Exists(pso2launchpath & "\Gameguard\") Then
                 WriteDebugInfo("Removing Gameguard Directory...")
@@ -3041,13 +3041,13 @@ StartPrePatch:
 
     Private Sub btnFixPSO2EXEs_Click(sender As Object, e As EventArgs) Handles btnFixPSO2EXEs.Click
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
             End If
             Dim filedownloader As New WebClient()
-            Dim DirectoryString As String = (pso2Dir & "\")
+            Dim DirectoryString As String = (pso2RootDir & "\")
             Cancelled = False
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
 
@@ -3060,7 +3060,7 @@ StartPrePatch:
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = pso2Dir
+            Dim DirectoryString2 As String = pso2RootDir
             If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
@@ -3072,7 +3072,7 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
-            DirectoryString2 = pso2DirWinDir
+            DirectoryString2 = pso2WinDir
             DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
             If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
@@ -3085,7 +3085,7 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
-            DirectoryString2 = pso2DirWinDir
+            DirectoryString2 = pso2WinDir
             DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
             If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
@@ -3102,7 +3102,7 @@ StartPrePatch:
 
     Private Sub btnRestoreStoryBackup_Click(sender As Object, e As EventArgs) Handles btnRestoreStoryBackup.Click
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -3114,24 +3114,24 @@ StartPrePatch:
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
                 Dim backupfolder As String = "backupPreSTORYPatch"
-                If Not Directory.Exists((pso2DirWinDir & "\" & backupfolder)) Then
-                    WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2DirWinDir & "\" & backupfolder))
+                If Not Directory.Exists((pso2WinDir & "\" & backupfolder)) Then
+                    WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2WinDir & "\" & backupfolder))
                     Exit Sub
                 End If
-                Dim di As New DirectoryInfo((pso2DirWinDir & "\" & backupfolder))
+                Dim di As New DirectoryInfo((pso2WinDir & "\" & backupfolder))
                 Dim diar1 As FileInfo() = di.GetFiles()
                 Dim dra As FileInfo
-                WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & pso2DirWinDir))
+                WriteDebugInfoAndOK((My.Resources.strRestoringBackupTo & pso2WinDir))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
-                Dim win32 As String = pso2DirWinDir
+                Dim win32 As String = pso2WinDir
                 For Each dra In diar1
                     If File.Exists(win32 & "\" & dra.ToString()) Then
                         DeleteFile(win32 & "\" & dra.ToString())
                     End If
-                    File.Move(((pso2DirWinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
+                    File.Move(((pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
-                My.Computer.FileSystem.DeleteDirectory((pso2DirWinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
+                My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
                 WriteDebugInfo(My.Resources.strBackupRestored)
                 UnlockGUI()
             Else
@@ -3153,7 +3153,7 @@ StartPrePatch:
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2updater.exe" /e /g "AIDA":F
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2predownload.exe" /e /g "AIDA":F
             MsgBox(My.Resources.strFixPermissionIssuesText)
-            Dim DirectoryString As String = (pso2Dir & "\")
+            Dim DirectoryString As String = (pso2RootDir & "\")
             'MsgBox("cacls.exe" & (DirectoryString & "pso2.exe") & " /e /g """ & SystemInformation.UserName & """:F")
             WriteDebugInfo(My.Resources.strFixingPermissionsFor & "pso2.exe...")
             Application.DoEvents()
@@ -3436,8 +3436,8 @@ StartPrePatch:
                 End If
                 If Cancelled Then Exit Sub
                 'Delete the existing file FIRST
-                DeleteFile((pso2DirWinDir & "\" & downloadstring))
-                File.Move(downloadstring, (pso2DirWinDir & "\" & downloadstring))
+                DeleteFile((pso2WinDir & "\" & downloadstring))
+                File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
                 If VedaUnlocked Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadstring & ".")
                 Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
@@ -3449,14 +3449,14 @@ StartPrePatch:
             DeleteFile("resume.txt")
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
             Dim filedownloader3 As New WebClient()
-            Dim DirectoryString As String = (pso2Dir & "\")
+            Dim DirectoryString As String = (pso2RootDir & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
             Cancelled = False
             Dim versionclient As New MyWebClient With {.timeout = 3000}
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = pso2Dir
+            Dim DirectoryString2 As String = pso2RootDir
             DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
@@ -3511,8 +3511,8 @@ StartPrePatch:
             UnlockGUI()
 
             If Helper.GetRegKey(Of Boolean)("RemoveCensor") Then
-                If File.Exists((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2DirWinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
+                If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
 
@@ -3686,9 +3686,9 @@ SelectInstallFolder:
                     Application.DoEvents()
 
                     'set the pso2Dir to the install patch
-                    lblDirectory.Text = pso2Dir = pso2_binfolder
-                    Helper.SetRegKey(Of String)("PSO2Dir", pso2Dir)
-                    WriteDebugInfo(pso2Dir & " " & My.Resources.strSetAsYourPSO2)
+                    lblDirectory.Text = pso2RootDir = pso2_binfolder
+                    Helper.SetRegKey(Of String)("PSO2Dir", pso2RootDir)
+                    WriteDebugInfo(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("StoryPatchVersion")) Then Helper.SetRegKey(Of String)("StoryPatchVersion", "Not Installed")
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("ENPatchVersion")) Then Helper.SetRegKey(Of String)("ENPatchVersion", "Not Installed")
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("LargeFilesVersion")) Then Helper.SetRegKey(Of String)("LargeFilesVersion", "Not Installed")
@@ -3775,7 +3775,7 @@ SelectInstallFolder:
             Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
             Dim diar1 As FileInfo() = di.GetFiles()
             Dim dra As FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2DirWinDir))
+            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
             Application.DoEvents()
 
             'list the names of all files in the specified directory
@@ -3790,8 +3790,8 @@ SelectInstallFolder:
 
             For Each dra In diar1
                 If CancelledFull Then Exit Sub
-                DeleteFile((pso2DirWinDir & "\" & dra.ToString()))
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2DirWinDir & "\" & dra.ToString()))
+                DeleteFile((pso2WinDir & "\" & dra.ToString()))
+                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
             Next
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -3872,7 +3872,7 @@ SelectInstallFolder:
             Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
             Dim diar1 As FileInfo() = di.GetFiles()
             Dim dra As FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2DirWinDir))
+            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
             Application.DoEvents()
             If CancelledFull Then Exit Sub
 
@@ -3887,8 +3887,8 @@ SelectInstallFolder:
 
             For Each dra In diar1
                 If CancelledFull Then Exit Sub
-                DeleteFile((pso2DirWinDir & "\" & dra.ToString()))
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2DirWinDir & "\" & dra.ToString()))
+                DeleteFile((pso2WinDir & "\" & dra.ToString()))
+                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
             Next
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -4025,7 +4025,7 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnPredownloadLobbyVideos_Click(sender As Object, e As EventArgs) Handles btnPredownloadLobbyVideos.Click
-        If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+        If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
@@ -4048,7 +4048,7 @@ SelectInstallFolder:
             DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
         End If
         If Cancelled Then Exit Sub
-        File.Move(downloadstring, (pso2DirWinDir & "\" & downloadstring))
+        File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
         WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & downloadstring & "."))
     End Sub
 
@@ -4179,8 +4179,8 @@ SelectInstallFolder:
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
             myWebClient.DownloadFile(proxyInfo.PublicKeyUrl, startPath & "\publickey.blob")
-            If File.Exists(pso2Dir & "\publickey.blob") AndAlso startPath <> pso2Dir Then DeleteFile(pso2Dir & "\publickey.blob")
-            If startPath <> pso2Dir Then File.Move(startPath & "\publickey.blob", pso2Dir & "\publickey.blob")
+            If File.Exists(pso2RootDir & "\publickey.blob") AndAlso startPath <> pso2RootDir Then DeleteFile(pso2RootDir & "\publickey.blob")
+            If startPath <> pso2RootDir Then File.Move(startPath & "\publickey.blob", pso2RootDir & "\publickey.blob")
             WriteDebugInfoSameLine(" Done!")
             WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             Helper.SetRegKey(Of String)("ProxyEnabled", "True")
@@ -4208,7 +4208,7 @@ SelectInstallFolder:
         WriteDebugInfo("Modifying HOSTS file...")
         File.WriteAllLines(hostsFilePath, builtFile.ToArray())
         WriteDebugInfoSameLine(" Done!")
-        DeleteFile(pso2Dir & "\publickey.blob")
+        DeleteFile(pso2RootDir & "\publickey.blob")
         WriteDebugInfoAndOK("All normal JP connection settings restored!")
         Helper.SetRegKey(Of String)("ProxyEnabled", "False")
     End Sub
@@ -4234,14 +4234,14 @@ SelectInstallFolder:
         'download all missingfiles
 
         'if file "currentpatchlist.txt" is not found then build list like SEGA's.
-        If Directory.Exists((pso2DirWinDir & "\backupPreENPatch")) Then
+        If Directory.Exists((pso2WinDir & "\backupPreENPatch")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             Override = True
             btnRestoreENBackup.RaiseClick()
             Override = False
         End If
 
-        If Directory.Exists((pso2DirWinDir & "\backupPreLargeFiles")) Then
+        If Directory.Exists((pso2WinDir & "\backupPreLargeFiles")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             Override = True
             btnRestoreLargeFilesBackup.RaiseClick()
@@ -4249,20 +4249,20 @@ SelectInstallFolder:
         End If
 
         Dim count As Integer = 0
-        Dim totalfiles = Directory.GetFiles(pso2Dir & "\data\win32\")
+        Dim totalfiles = Directory.GetFiles(pso2RootDir & "\data\win32\")
 
         If Not File.Exists("old_patchlist.txt") Then
             Dim Filename As String = ""
             Dim filesize As Long = 0
             WriteDebugInfo("Building file list... ")
-            Dim di As New DirectoryInfo(pso2Dir & "\data\win32\")
+            Dim di As New DirectoryInfo(pso2RootDir & "\data\win32\")
             Dim diar1 As FileInfo() = di.GetFiles()
             Dim dra As FileInfo
 
             For Each dra In diar1
                 Filename = dra.Name
                 filesize = dra.Length
-                File.AppendAllText("old_patchlist.txt", "data/win32/" & Filename & ".pat" & vbTab & filesize & vbTab & Helper.GetMD5(pso2Dir & "\data\win32\" & Filename) & vbNewLine)
+                File.AppendAllText("old_patchlist.txt", "data/win32/" & Filename & ".pat" & vbTab & filesize & vbTab & Helper.GetMD5(pso2RootDir & "\data\win32\" & Filename) & vbNewLine)
                 count += 1
                 lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Length & ")"
                 Application.DoEvents()
@@ -4315,15 +4315,15 @@ SelectInstallFolder:
     Private Sub btnStoryPatchNew_Click(sender As Object, e As EventArgs) Handles btnStoryPatchNew.Click
         'Don't forget to make GUI changes!
 
-        If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+        If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
             Button1.RaiseClick()
             Exit Sub
         End If
 
-        Dim win32 As String = pso2Dir & "\data\win32"
+        Dim win32 As String = pso2RootDir & "\data\win32"
         Dim strStoryPatchLatestBase As String = ""
-        Dim backupdir As String = (pso2DirWinDir & "\" & "backupPreSTORYPatch")
+        Dim backupdir As String = (pso2WinDir & "\" & "backupPreSTORYPatch")
         Dim net As New WebClient()
         Dim src As String = net.DownloadString("http://arks-layer.com/story.php")
 
@@ -4379,7 +4379,7 @@ SelectInstallFolder:
 
     Private Sub RestoreJapaneseNames(filename As String, patchname As String, Optional url As String = "http://107.170.16.100/patches/")
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -4393,16 +4393,16 @@ SelectInstallFolder:
             If Cancelled Then Exit Sub
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
 
-            If File.Exists((pso2Dir & "\" & filename)) Then
-                If File.Exists((pso2Dir & "\" & filename & ".backup")) Then
-                    My.Computer.FileSystem.DeleteFile((pso2Dir & "\" & filename & ".backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            If File.Exists((pso2WinDir & "\" & filename)) Then
+                If File.Exists((pso2WinDir & "\" & filename & ".backup")) Then
+                    My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & filename & ".backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 End If
 
-                My.Computer.FileSystem.RenameFile((pso2Dir & "\" & filename), filename & ".backup")
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & filename), filename & ".backup")
             End If
 
             Application.DoEvents()
-            File.Move(filename, (pso2Dir & "\" & filename))
+            File.Move(filename, (pso2WinDir & "\" & filename))
             FlashWindow(Me.Handle, 1)
             WriteDebugInfo(patchname & " " & My.Resources.strInstalledUpdated)
             UnlockGUI()
@@ -4415,7 +4415,7 @@ SelectInstallFolder:
     Private Sub DownloadPatch(PatchURL As String, PatchName As String, PatchFile As String, VersionString As String, msgBackup As String, msgSelectArchive As String, BackupDir As String)
         CancelledFull = False
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -4515,11 +4515,11 @@ SelectInstallFolder:
             Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
             Dim diar1 As FileInfo() = di.GetFiles()
             Dim dra As FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2DirWinDir))
+            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
             Application.DoEvents()
             If CancelledFull Then Exit Sub
 
-            Dim backupstr As String = (pso2DirWinDir & "\" & BackupDir)
+            Dim backupstr As String = (pso2WinDir & "\" & BackupDir)
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupstr) Then
                     My.Computer.FileSystem.DeleteDirectory(backupstr, FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -4544,16 +4544,16 @@ SelectInstallFolder:
                 If CancelledFull Then Exit Sub
 
                 If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists((pso2DirWinDir & "\" & dra.ToString())) Then
-                        File.Move((pso2DirWinDir & "\" & dra.ToString()), (backupstr & "\" & dra.ToString()))
+                    If File.Exists((pso2WinDir & "\" & dra.ToString())) Then
+                        File.Move((pso2WinDir & "\" & dra.ToString()), (backupstr & "\" & dra.ToString()))
                     End If
                 End If
                 If backupyesno = MsgBoxResult.No Then
-                    If File.Exists((pso2DirWinDir & "\" & dra.ToString())) Then
-                        DeleteFile((pso2DirWinDir & "\" & dra.ToString()))
+                    If File.Exists((pso2WinDir & "\" & dra.ToString())) Then
+                        DeleteFile((pso2WinDir & "\" & dra.ToString()))
                     End If
                 End If
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2DirWinDir & "\" & dra.ToString()))
+                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
             Next
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -4577,7 +4577,7 @@ SelectInstallFolder:
 
     Private Sub UninstallPatch(PatchListURL As String, PatchListFile As String, BackupDir As String, ConsoleMessage As String, PatchVersionKey As String)
         Try
-            If (Directory.Exists(pso2DirWinDir) = False OrElse pso2Dir = "lblDirectory") Then
+            If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
@@ -4601,12 +4601,12 @@ SelectInstallFolder:
                 If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index), True)
 
                 'Move JP file to win32
-                DeleteFile((pso2DirWinDir & "\" & missingfiles(index)))
-                File.Move(missingfiles(index), (pso2DirWinDir & "\" & missingfiles(index)))
+                DeleteFile((pso2WinDir & "\" & missingfiles(index)))
+                File.Move(missingfiles(index), (pso2WinDir & "\" & missingfiles(index)))
             Next
 
-            If My.Computer.FileSystem.DirectoryExists(pso2DirWinDir & "\" & BackupDir) Then
-                My.Computer.FileSystem.DeleteDirectory((pso2DirWinDir & "\" & BackupDir), FileIO.DeleteDirectoryOption.DeleteAllContents)
+            If My.Computer.FileSystem.DirectoryExists(pso2WinDir & "\" & BackupDir) Then
+                My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & BackupDir), FileIO.DeleteDirectoryOption.DeleteAllContents)
             End If
 
             FlashWindow(Me.Handle, 1)
