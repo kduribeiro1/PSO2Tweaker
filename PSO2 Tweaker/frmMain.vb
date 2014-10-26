@@ -25,7 +25,6 @@ Public Class frmMain
     Dim CancelledFull As Boolean
     Dim ComingFromOldFiles As Boolean = False
     Dim ComingFromPrePatch As Boolean = False
-    Dim DLS As New MyWebClient
     Dim DPISetting As Integer
     Dim ItemDownloadingDone As Boolean
     Dim MileyCyrus As Integer
@@ -969,7 +968,7 @@ Public Class frmMain
         rtbDebug.SelectionStart = rtbDebug.Text.Length
     End Sub
 
-    Private Sub OnDownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressChangedEventArgs)
+    Private Sub OnDownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressChangedEventArgs) Handles DLS.DownloadProgressChanged
         Dim totalSize As Long = e.TotalBytesToReceive
         totalsize2 = totalSize
         Dim downloadedBytes As Long = e.BytesReceived
@@ -979,7 +978,7 @@ Public Class frmMain
         'Put your progress UI here, you can cancel download by uncommenting the line below
     End Sub
 
-    Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs) Handles DLS.DownloadFileCompleted
         PB1.Value = 0
         PB1.Text = ""
     End Sub
@@ -989,11 +988,7 @@ Public Class frmMain
         ' Highly Volital Function -Matthew
         ' TODO: Should be the first thing fixed after refactoring is done
 
-        Overwrite = startPath & "\" & Overwrite
-        AddHandler DLS.DownloadProgressChanged, AddressOf OnDownloadProgressChanged
-        AddHandler DLS.DownloadFileCompleted, AddressOf OnFileDownloadCompleted
-
-        DLS.Headers.Add("user-agent", "AQUA_HTTP")
+        DLS.Headers("user-agent") = "AQUA_HTTP"
         DLS.timeout = 10000
 
         For i As Integer = 1 To 5
@@ -1837,7 +1832,8 @@ StartPrePatch:
             If MyFolderBrowser.SelectedPath.Contains("\pso2_bin") Then
                 If File.Exists(MyFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") Then
                     WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
-                    lblDirectory.Text = pso2RootDir = MyFolderBrowser.SelectedPath.Replace("\data\win32", "")
+                    pso2RootDir = MyFolderBrowser.SelectedPath.Replace("\data\win32", "")
+                    lblDirectory.Text = pso2RootDir
                     Helper.SetRegKey(Of String)(RegKey.PSO2Dir, pso2RootDir)
                     WriteDebugInfoAndOK(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
                     Exit Sub
@@ -1845,7 +1841,8 @@ StartPrePatch:
             End If
 
             Helper.SetRegKey(Of String)(RegKey.PSO2Dir, MyFolderBrowser.SelectedPath)
-            lblDirectory.Text = pso2RootDir = MyFolderBrowser.SelectedPath
+            pso2RootDir = MyFolderBrowser.SelectedPath
+            lblDirectory.Text = pso2RootDir
             WriteDebugInfoAndOK(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
@@ -3014,7 +3011,7 @@ StartPrePatch:
         End Try
     End Sub
 
-    Private Sub btnFixPSO2EXEs_Click(sender As Object, e As EventArgs) Handles btnFixPSO2EXEs.Click
+    Private Sub btnFixPSO2EXEs_Click(sender As Object, e As EventArgs) Handles btnFixPSO2EXEs.Click, Button6.Click
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
@@ -3658,7 +3655,8 @@ SelectInstallFolder:
                     Application.DoEvents()
 
                     'set the pso2Dir to the install patch
-                    lblDirectory.Text = pso2RootDir = pso2_binfolder
+                    pso2RootDir = pso2_binfolder
+                    lblDirectory.Text = pso2RootDir
                     Helper.SetRegKey(Of String)(RegKey.PSO2Dir, pso2RootDir)
                     WriteDebugInfo(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
                     If String.IsNullOrEmpty(Helper.GetRegKey(Of String)(RegKey.StoryPatchVersion)) Then Helper.SetRegKey(Of String)(RegKey.StoryPatchVersion, "Not Installed")

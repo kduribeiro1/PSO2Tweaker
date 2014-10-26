@@ -138,6 +138,7 @@ Partial Class frmMain
         Me.Label5 = New System.Windows.Forms.Label()
         Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
         Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
+        Me.DLS = New PSO2_Tweaker.MyWebClient()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -898,6 +899,10 @@ Partial Class frmMain
         Me.tmrCheckServerStatus.Enabled = True
         Me.tmrCheckServerStatus.Interval = 120000
         '
+        'DLS
+        '
+        Me.DLS.timeout = 10000
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -1059,5 +1064,7 @@ Partial Class frmMain
     Friend WithEvents btnStoryPatchNew As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents Button6 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
 
 End Class
