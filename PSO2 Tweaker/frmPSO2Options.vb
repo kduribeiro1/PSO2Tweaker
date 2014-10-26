@@ -44,7 +44,7 @@ Public Class frmPSO2Options
                 Exit Sub
             End If
 
-            Select Case Helper.GetRegKey(Of String)("Style")
+            Select Case Helper.GetRegKey(Of String)(RegKey.Style)
                 Case "Blue"
                     StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
                 Case "Black"
@@ -326,8 +326,8 @@ Public Class frmPSO2Options
             If CheckBoxX1.Checked Then
                 If ReadINISetting("X") <> "99999" Then
                     If ReadINISetting("Y") <> "99999" Then
-                        Helper.SetRegKey(Of String)("OldX", ReadINISetting("X"))
-                        Helper.SetRegKey(Of String)("OldY", ReadINISetting("Y"))
+                        Helper.SetRegKey(Of String)(RegKey.OldX, ReadINISetting("X"))
+                        Helper.SetRegKey(Of String)(RegKey.OldY, ReadINISetting("Y"))
                         SaveINISetting("X", "99999")
                         SaveINISetting("Y", "99999")
                     End If
@@ -338,8 +338,8 @@ Public Class frmPSO2Options
             If CheckBoxX1.Checked = False Then
                 If ReadINISetting("X") = "99999" Then
                     If ReadINISetting("Y") = "99999" Then
-                        SaveINISetting("X", Helper.GetRegKey(Of String)("OldX"))
-                        SaveINISetting("Y", Helper.GetRegKey(Of String)("OldY"))
+                        SaveINISetting("X", Helper.GetRegKey(Of String)(RegKey.OldX))
+                        SaveINISetting("Y", Helper.GetRegKey(Of String)(RegKey.OldY))
                     End If
                 End If
             End If

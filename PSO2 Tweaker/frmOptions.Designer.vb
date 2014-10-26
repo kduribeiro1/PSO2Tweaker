@@ -639,6 +639,7 @@ Partial Class frmOptions
         Me.DoubleBuffered = True
         Me.EnableGlass = False
         Me.FlattenMDIBorder = False
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmOptions"

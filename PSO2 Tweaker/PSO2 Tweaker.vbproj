@@ -148,6 +148,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Enums\Languages.vb" />
+    <Compile Include="Enums\RegKey.vb" />
     <Compile Include="frmDiagnostic.Designer.vb">
       <DependentUpon>frmDiagnostic.vb</DependentUpon>
     </Compile>
