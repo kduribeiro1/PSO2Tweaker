@@ -12,7 +12,6 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
-' TODO: There are a lot of [.Replace("\data\win32", "")], assumeing this is always the PSO2 path we should just do it once and save it
 ' TODO: Should move the new thread calls to use the thread pool instead
 ' TODO: Replace all redundant code with functions
 ' TODO: Replace all string literals for registry keys with constant strings to avoid errors in the future
@@ -192,8 +191,6 @@ Public Class frmMain
             btnAnnouncements.Text = ">"
             Dim procs As Process()
             Log("Program started! - Logging enabled!")
-            Dim DirectoryString As String
-            Dim pso2launchpath As String
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PSO2Dir")) Then
                 Dim AlreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
@@ -211,6 +208,7 @@ Public Class frmMain
                 Log("Loaded pso2_bin directory from settings")
             End If
 
+            ' This sets up pso2RootDir and pso2WinDir - don't remove it
             If lblDirectory.Text.Contains("\pso2_bin\data\win32") Then
                 If File.Exists(lblDirectory.Text.Replace("\data\win32", "") & "\pso2.exe") Then
                     Log("win32 folder selected instead of pso2_bin folder - Fixing!")
@@ -228,9 +226,7 @@ Public Class frmMain
             pso2RootDir = lblDirectory.Text
             pso2WinDir = (pso2RootDir & "\data\win32")
 
-            DirectoryString = pso2RootDir
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
-            DeleteFile(pso2launchpath & "ddraw.dll")
+            DeleteFile(pso2RootDir & "\ddraw.dll")
 
             For i As Integer = 1 To args.Length - 1
                 If args(i) = "-fuck_you_misaki_stop_trying_to_decompile_my_shit" Then
@@ -249,7 +245,7 @@ Public Class frmMain
                     End If
 
                     Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-                    ShellExecute(Handle, "open", (pso2launchpath & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                    ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
 
                     Log("Deleting item cache")
                     DeleteFile(Dir() & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
@@ -278,19 +274,17 @@ Public Class frmMain
                         Button1.RaiseClick()
                         Exit Sub
                     End If
-                    DirectoryString = pso2WinDir
-                    pso2launchpath = DirectoryString.Replace("\data\win32", "")
-                    File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
+                    File.WriteAllBytes(pso2RootDir & "\ddraw.dll", My.Resources.ddraw)
                     Log("Setting environment variable")
                     Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
                     Log("Launching PSO2")
-                    ShellExecute(Handle, "open", (pso2launchpath & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                    ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
                     Me.Hide()
-                    Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
+                    Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
                         procs = Process.GetProcessesByName("pso2")
                         For Each proc As Process In procs
                             If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
-                                If Not TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
+                                If Not TransOverride Then DeleteFile(pso2RootDir & "\ddraw.dll")
                             End If
                         Next
                         Thread.Sleep(1000)
@@ -308,16 +302,10 @@ Public Class frmMain
                         Exit Sub
                     End If
 
-                    DirectoryString = pso2WinDir
-                    pso2launchpath = DirectoryString.Replace("\data\win32", "")
-
                     If UseItemTranslation Then
                         Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                         Log("Deleting item cache...")
                         DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-                        DirectoryString = pso2WinDir
-                        pso2launchpath = DirectoryString.Replace("\data\win32", "")
-
 
                         'Download the latest translator.dll and translation.bin
                         Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
@@ -328,7 +316,7 @@ Public Class frmMain
                         ' Try up to 4 times to download the translator DLL.
                         For tries As Integer = 1 To 4
                             Try
-                                client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
+                                client.DownloadFile(DLLink1, (pso2RootDir & "\translator.dll"))
                                 Exit For
                             Catch ex As Exception
                                 If tries = 4 Then
@@ -341,7 +329,7 @@ Public Class frmMain
                         ' Try up to 4 times to download the translation strings.
                         For tries As Integer = 1 To 4
                             Try
-                                client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
+                                client.DownloadFile(DLLink2, (pso2RootDir & "\translation.bin"))
                                 Exit For
                             Catch ex As Exception
                                 If tries = 4 Then
@@ -351,23 +339,23 @@ Public Class frmMain
                             End Try
                         Next
 
-                        File.WriteAllBytes(pso2launchpath & "\ddraw.dll", My.Resources.ddraw)
+                        File.WriteAllBytes(pso2RootDir & "\ddraw.dll", My.Resources.ddraw)
                     End If
 
                     Log("Setting environment variable")
                     Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
 
                     Log("Launching PSO2")
-                    ShellExecute(Handle, "open", (pso2launchpath & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                    ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
 
                     DeleteFile("LanguagePack.rar")
                     If UseItemTranslation Then
                         Me.Hide()
-                        Do Until File.Exists(pso2launchpath & "\ddraw.dll") = False
+                        Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
                             procs = Process.GetProcessesByName("pso2")
                             For Each proc As Process In procs
                                 If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
-                                    If Not TransOverride Then DeleteFile(pso2launchpath & "\ddraw.dll")
+                                    If Not TransOverride Then DeleteFile(pso2RootDir & "\ddraw.dll")
                                 End If
                             Next
                             Thread.Sleep(1000)
@@ -380,9 +368,8 @@ Public Class frmMain
 
             'Normal Tweaker startup
             CancelledFull = False
-            DirectoryString = pso2WinDir
-            pso2launchpath = DirectoryString.Replace("\data\win32", "")
-            If File.Exists(pso2launchpath & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2launchpath & "\ddraw.dll")
+
+            If File.Exists(pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2RootDir & "\ddraw.dll")
             Log("Loading settings...")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("PatchServer")) Then Helper.SetRegKey(Of String)("PatchServer", "Patch Server #1")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)("SeenFuckSEGAMessage")) Then Helper.SetRegKey(Of String)("SeenFuckSEGAMessage", "False")
@@ -861,6 +848,7 @@ Public Class frmMain
                         BuiltFile.Add(currentLine)
                     Loop
 
+                    reader.Close()
                     File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
                 End Using
             End If
@@ -2090,6 +2078,7 @@ StartPrePatch:
                     BuiltFile.Add(currentLine)
                 Loop
 
+                reader.Close()
                 File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
             End Using
 
@@ -2114,6 +2103,7 @@ StartPrePatch:
                     BuiltFile.Add(currentLine)
                 Loop
 
+                reader.Close()
                 File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
             End Using
         End If
@@ -3060,8 +3050,9 @@ StartPrePatch:
 
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
-            Dim DirectoryString2 As String = pso2RootDir
-            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
+
+            ' TODO: Make function
+            If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
@@ -3072,9 +3063,9 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", True)
             If Cancelled Then Exit Sub
-            DirectoryString2 = pso2WinDir
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
+
+
+            If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
@@ -3085,9 +3076,9 @@ StartPrePatch:
             Next
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
-            DirectoryString2 = pso2WinDir
-            DirectoryString2 = DirectoryString2.Replace("\data\win32", "")
-            If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
+
+
+            If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
             Application.DoEvents()
