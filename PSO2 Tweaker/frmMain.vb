@@ -24,29 +24,30 @@ Public Class frmMain
 
     Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
 
-    Dim DPISetting As Integer
-    Dim ComingFromOldFiles As Boolean = False
-    Dim timer_start As Integer
-    Dim SystemUnlock As Integer
-    Dim MileyCyrus As Integer
-    Dim SteamUnlock As Integer
-    Dim DLS As New MyWebClient
     Dim Cancelled As Boolean
     Dim CancelledFull As Boolean
+    Dim ComingFromOldFiles As Boolean = False
+    Dim ComingFromPrePatch As Boolean = False
+    Dim DLS As New MyWebClient
+    Dim DPISetting As Integer
+    Dim ItemDownloadingDone As Boolean
+    Dim MileyCyrus As Integer
+    Dim Override As Boolean = False
+    Dim Restartplz As Boolean
+    Dim SOMEOFTHEPREPATCHES As List(Of String)
+    Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
+    Dim SteamUnlock As Integer
+    Dim SystemUnlock As Integer
+    Dim TransOverride As Boolean = False
     Dim UseItemTranslation As Boolean = False
     Dim VedaUnlocked As Boolean = False
     Dim args As String() = Environment.GetCommandLineArgs()
-    Dim startPath As String = Application.StartupPath
-    Dim Override As Boolean = False
-    Dim TransOverride As Boolean = False
-    Dim totalsize2 As Integer
-    Dim Restartplz As Boolean
-    Dim ItemDownloadingDone As Boolean
     Dim nodiag As Boolean = False
-    Dim ComingFromPrePatch As Boolean = False
-    Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
     Dim processes As Process()
     Dim pso2Dir As String
+    Dim startPath As String = Application.StartupPath
+    Dim timer_start As Integer
+    Dim totalsize2 As Integer
 
     'Public Property pso2Dir() As String
     '    Get
@@ -1114,36 +1115,55 @@ Public Class frmMain
     End Sub
 
     Public Sub MergePrePatches()
+        Dim patches As New List(Of String)
 
-        Dim filename As String()
-        Dim truefilename As String
+        For i = 0 To 5
+            Dim patchlist = File.ReadAllText("patchlist" & i & ".txt")
 
-        Using objWriter As New StreamWriter("ALLOFTHEPREPATCHES.txt")
-            For i As Integer = 0 To 5
-                objWriter.Write(File.ReadAllText("patchlist" & i & ".txt"))
+            For index = 0 To (patchlist.Length - 1)
+                If String.IsNullOrEmpty(patchlist(index)) Then Continue For
+
+                Dim truefilename = (Regex.Split(patchlist(index), ".pat"))(0).Replace("data/win32/", "")
+
+                If (Not String.IsNullOrEmpty(truefilename)) AndAlso (Not patches.Contains(truefilename)) Then
+                    patches.Add(truefilename)
+                End If
             Next
-            objWriter.WriteLine()
-        End Using
+        Next
 
-        ' TODO: Needs a bit of a redo
+        SOMEOFTHEPREPATCHES = patches
+        ' TEMP
+        File.WriteAllLines("SOMEOFTHEPREPATCHES.txt", patches.ToArray())
 
-        Using sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
-            Using sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
-                Dim MyArray As New List(Of String)
-                Dim strLine As String
+        'Dim filename As String()
+        'Dim truefilename As String
 
-                Do While sr3.Peek <> -1
-                    strLine = sr3.ReadLine()
-                    filename = Regex.Split(strLine, ".pat")
-                    truefilename = filename(0).Replace("data/win32/", "")
+        'Using objWriter As New StreamWriter("ALLOFTHEPREPATCHES.txt")
+        '    For i As Integer = 0 To 5
+        '        objWriter.Write(File.ReadAllText("patchlist" & i & ".txt"))
+        '    Next
+        '    objWriter.WriteLine()
+        'End Using
 
-                    If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
-                        MyArray.Add(truefilename)
-                        sw3.WriteLine(strLine)
-                    End If
-                Loop
-            End Using
-        End Using
+        '' TODO: Needs a bit of a redo
+
+        'Using sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
+        '    Using sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
+        '        Dim MyArray As New List(Of String)
+        '        Dim strLine As String
+
+        '        Do While sr3.Peek <> -1
+        '            strLine = sr3.ReadLine()
+        '            filename = Regex.Split(strLine, ".pat")
+        '            truefilename = filename(0).Replace("data/win32/", "")
+
+        '            If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
+        '                MyArray.Add(truefilename)
+        '                sw3.WriteLine(strLine)
+        '            End If
+        '        Loop
+        '    End Using
+        'End Using
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
@@ -2546,7 +2566,7 @@ StartPrePatch:
         Try
             File.Delete(path)
         Catch ex As Exception
-            ' TODO: Aida put whatever you see fit here plz
+            ' Aida put whatever you see fit here plz
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
