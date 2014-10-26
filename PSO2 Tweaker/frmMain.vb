@@ -2395,23 +2395,16 @@ StartPrePatch:
                 End If
 
                 testfilesize = kvp.Value.Split(vbTab)
-                Dim fileSizeZ = Convert.ToInt32(testfilesize(1))
+                Dim fileSize = Convert.ToInt32(testfilesize(1))
 
-                If GetFileSize(filePath) <> fileSizeZ Then
-                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
-                    totalfilesize += fileSizeZ
-                    missingfiles2.Add(kvp.Key)
-                    Continue For
-                End If
-
-                TrueMD5 = testfilesize(2)
-
-                If Helper.GetMD5(filePath) <> TrueMD5 Then
-                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
-                    totalfilesize += fileSizeZ
-                    missingfiles2.Add(kvp.Key)
-                    Continue For
-                End If
+                Using stream = File.Open(filePath, FileMode.Open, FileAccess.Read)
+                    If (stream.Length <> fileSize) OrElse (Helper.GetMD5(stream) <> testfilesize(2)) Then
+                        If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
+                        totalfilesize += fileSize
+                        missingfiles2.Add(kvp.Key)
+                        Continue For
+                    End If
+                End Using
             Next
 
             PB1.Text = ""
@@ -2421,7 +2414,6 @@ StartPrePatch:
             Dim totaldownload2 As String = missingfiles2.Count
             Dim downloaded2 As Long = 0
             Dim info As FileInfo
-            Dim filesize As Long
             Dim totaldownloaded As Long = 0
             DeleteFile("resume.txt")
             For Each downloadstring In missingfiles2
@@ -2446,8 +2438,7 @@ StartPrePatch:
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, True)
                 End If
                 info = New FileInfo(downloadstring)
-                filesize = info.Length
-                If filesize = 0 Then
+                If info.Length = 0 Then
                     DeleteFile(downloadstring)
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, False)
                 End If
@@ -4302,7 +4293,7 @@ SelectInstallFolder:
             Exit Sub
         End If
 
-        Dim win32 As String = pso2RootDir & "\data\win32"
+        Dim win32 As String = pso2WinDir
         Dim strStoryPatchLatestBase As String = ""
         Dim backupdir As String = (pso2WinDir & "\" & "backupPreSTORYPatch")
         Dim net As New WebClient()

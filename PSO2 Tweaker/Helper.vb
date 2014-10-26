@@ -24,6 +24,16 @@ Public Class Helper
         Return ""
     End Function
 
+    Public Shared Function GetMD5(stream As FileStream) As String
+        Try
+            Dim hash = MD5Provider.ComputeHash(Stream)
+            Return String.Join("", HexTable(hash(0)), HexTable(hash(1)), HexTable(hash(2)), HexTable(hash(3)), HexTable(hash(4)), HexTable(hash(5)), HexTable(hash(6)), HexTable(hash(7)), HexTable(hash(8)), HexTable(hash(9)), HexTable(hash(10)), HexTable(hash(11)), HexTable(hash(12)), HexTable(hash(13)), HexTable(hash(14)), HexTable(hash(15)))
+        Catch
+        End Try
+
+        Return ""
+    End Function
+
     Public Shared Function SizeSuffix(ByVal value As Long) As String
         If value < 0 Then Return "-" & SizeSuffix(-value)
         If value = 0 Then Return "0 bytes"
