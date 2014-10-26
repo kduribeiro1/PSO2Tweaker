@@ -1132,38 +1132,6 @@ Public Class frmMain
         Next
 
         SOMEOFTHEPREPATCHES = patches
-        ' TEMP
-        File.WriteAllLines("SOMEOFTHEPREPATCHES.txt", patches.ToArray())
-
-        'Dim filename As String()
-        'Dim truefilename As String
-
-        'Using objWriter As New StreamWriter("ALLOFTHEPREPATCHES.txt")
-        '    For i As Integer = 0 To 5
-        '        objWriter.Write(File.ReadAllText("patchlist" & i & ".txt"))
-        '    Next
-        '    objWriter.WriteLine()
-        'End Using
-
-        '' TODO: Needs a bit of a redo
-
-        'Using sr3 = New StreamReader("ALLOFTHEPREPATCHES.txt")
-        '    Using sw3 = New StreamWriter("SOMEOFTHEPREPATCHES.txt")
-        '        Dim MyArray As New List(Of String)
-        '        Dim strLine As String
-
-        '        Do While sr3.Peek <> -1
-        '            strLine = sr3.ReadLine()
-        '            filename = Regex.Split(strLine, ".pat")
-        '            truefilename = filename(0).Replace("data/win32/", "")
-
-        '            If (Not MyArray.Contains(truefilename)) AndAlso (Not String.IsNullOrEmpty(truefilename)) Then
-        '                MyArray.Add(truefilename)
-        '                sw3.WriteLine(strLine)
-        '            End If
-        '        Loop
-        '    End Using
-        'End Using
     End Sub
 
     Private Function CheckIfRunning(ByRef ProcessName As String)
@@ -1414,7 +1382,6 @@ Public Class frmMain
 StartPrePatch:
                         'Download prepatch
                         CancelledFull = False
-                        Dim sBuffer As String = Nothing
                         Dim filename As String() = Nothing
                         Dim truefilename As String = Nothing
                         Dim missingfiles As New List(Of String)
@@ -1436,30 +1403,34 @@ StartPrePatch:
                         WriteDebugInfo("Checking for already existing precede files...")
                         NumberofChecks = 0
                         missingfiles.Clear()
-                        Using oReader As StreamReader = File.OpenText("SOMEOFTHEPREPATCHES.txt")
-                            If CancelledFull Then Exit Sub
-                            While Not (oReader.EndOfStream)
-                                If CancelledFull Then Exit Sub
-                                sBuffer = oReader.ReadLine()
-                                filename = Regex.Split(sBuffer, ".pat")
-                                truefilename = filename(0).Replace("data/win32/", "")
-                                MD5 = filename(1).Split(vbTab)
-                                TrueMD5 = MD5(2)
-                                If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
-                                    If Not File.Exists(((pso2Dir & "\_precede\data\win32") & "\" & truefilename)) Then
-                                        If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
-                                        missingfiles.Add(truefilename)
-                                    ElseIf Helper.GetMD5(((pso2Dir & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                                        If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
-                                        missingfiles.Add(truefilename)
-                                    End If
-                                End If
 
-                                NumberofChecks += 1
-                                lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks & "")
-                                Application.DoEvents()
-                            End While
-                        End Using
+                        For Each sBuffer In SOMEOFTHEPREPATCHES
+                            If CancelledFull Then
+                                SOMEOFTHEPREPATCHES = Nothing
+                                Exit Sub
+                            End If
+
+                            filename = Regex.Split(sBuffer, ".pat")
+                            truefilename = filename(0).Replace("data/win32/", "")
+                            MD5 = filename(1).Split(vbTab)
+                            TrueMD5 = MD5(2)
+                            If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
+                                If Not File.Exists(((pso2Dir & "\_precede\data\win32") & "\" & truefilename)) Then
+                                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
+                                    missingfiles.Add(truefilename)
+                                ElseIf Helper.GetMD5(((pso2Dir & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
+                                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
+                                    missingfiles.Add(truefilename)
+                                End If
+                            End If
+
+                            NumberofChecks += 1
+                            lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks & "")
+                            Application.DoEvents()
+                        Next
+
+                        SOMEOFTHEPREPATCHES = Nothing
+
                         Dim totaldownload As String = missingfiles.Count
                         Dim downloaded As Long = 0
                         Dim totaldownloaded As Long = 0
