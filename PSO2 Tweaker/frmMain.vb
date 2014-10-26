@@ -12,7 +12,6 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
-' TODO: Should move the new thread calls to use the thread pool instead
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
 
@@ -643,8 +642,7 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
-        Dim t3 As New Thread(AddressOf IsServerOnline) With {.IsBackground = True}
-        t3.Start()
+        ThreadPool.QueueUserWorkItem(AddressOf IsServerOnline, Nothing)
 
         Try
             Dim pso2launchpath As String = pso2RootDir
@@ -754,8 +752,7 @@ Public Class frmMain
 
             If Helper.GetRegKey(Of String)(RegKey.SidebarEnabled) = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
-                Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
-                t1.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
 
                 If DPISetting = 96 Then Me.Width = 796
                 If DPISetting = 120 Then Me.Width = 1060
@@ -810,8 +807,7 @@ Public Class frmMain
                 chkItemTranslation.Checked = True
                 WriteDebugInfo("Downloading latest item patch files...")
                 ItemDownloadingDone = False
-                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
-                t4.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
 
                 Do Until ItemDownloadingDone = True
                     Application.DoEvents()
@@ -823,8 +819,7 @@ Public Class frmMain
             If ip(0).ToString().Contains("210.189.") = False AndAlso ItemDownloadingDone = False Then
                 WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
                 ItemDownloadingDone = False
-                Dim t4 As New Thread(AddressOf DownloadItemTranslationFiles) With {.IsBackground = True}
-                t4.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
 
                 Do Until ItemDownloadingDone = True
                     Application.DoEvents()
@@ -866,7 +861,7 @@ Public Class frmMain
         btnLaunchPSO2.Enabled = True
     End Sub
 
-    Public Sub DownloadItemTranslationFiles()
+    Public Sub DownloadItemTranslationFiles(state As Object)
         Dim pso2launchpath As String = pso2RootDir
         Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
         Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
@@ -3076,7 +3071,6 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", True)
             If Cancelled Then Exit Sub
 
-
             If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2.exe"))
             File.Move("pso2.exe", (DirectoryString & "pso2.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2.exe"))
@@ -3318,8 +3312,7 @@ StartPrePatch:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)(RegKey.SidebarEnabled) = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
-                    t1.Start()
+                    ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
                 End If
                 Exit Sub
             End If
@@ -3335,8 +3328,7 @@ StartPrePatch:
                 btnAnnouncements.Text = "<"
                 If Helper.GetRegKey(Of String)(RegKey.SidebarEnabled) = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
-                    Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
-                    t1.Start()
+                    ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
                 End If
                 Exit Sub
             End If
@@ -3352,8 +3344,7 @@ StartPrePatch:
         If Me.Visible Then
             If e.Url.ToString() <> "http://162.243.211.123/freedom/tweaker.html" Then
                 Process.Start(e.Url.ToString())
-                Dim t1 As New Thread(AddressOf LoadSidebar) With {.IsBackground = True}
-                t1.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
             End If
         End If
     End Sub
@@ -3939,7 +3930,7 @@ SelectInstallFolder:
         End Using
     End Sub
 
-    Private Sub LoadSidebar()
+    Private Sub LoadSidebar(state As Object)
         Try
             WebBrowser4.Navigate("http://162.243.211.123/freedom/tweaker.html")
         Catch ex As Exception
@@ -3974,7 +3965,7 @@ SelectInstallFolder:
         End If
     End Sub
 
-    Private Sub IsServerOnline()
+    Private Sub IsServerOnline(state As Object)
         ' Evidently SEGA is dumb, so CK doesn't have to do crap! YOU'RE SAVED!
 
         Dim ip As String = "gs016.pso2gs.net" ' Incase they need to use the proxy
@@ -3997,8 +3988,8 @@ SelectInstallFolder:
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
         Dim Oldstatus As String = Label5.Text
-        Dim t5 As New Thread(AddressOf IsServerOnline) With {.IsBackground = True}
-        t5.Start()
+        ThreadPool.QueueUserWorkItem(AddressOf IsServerOnline, Nothing)
+
         If Label5.Text <> Oldstatus Then
             MsgBox("The server is now " & Label5.Text & "!")
             If Label5.Text = "ONLINE" Then CheckForPSO2Updates()
