@@ -4367,65 +4367,46 @@ SelectInstallFolder:
         CheckForStoryUpdates()
     End Sub
 
-    ' TODO: Make into function
     Private Sub btnJPEnemyNames_Click(sender As Object, e As EventArgs) Handles btnJPEnemyNames.Click
-        Try
-            If (Directory.Exists(pso2Dir) = False OrElse pso2Dir = "lblDirectory") Then
-                MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
-                Exit Sub
-            End If
-            WriteDebugInfo(My.Resources.strDownloading & "JP enemy names file....")
-            Application.DoEvents()
-            Dim strDownloadME As String = "http://107.170.16.100/patches/ceffe0e2386e8d39f188358303a92a7d"
-            Cancelled = False
-            DLWUA(strDownloadME, "ceffe0e2386e8d39f188358303a92a7d", True)
-            If Cancelled Then Exit Sub
-            WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            If File.Exists((pso2Dir & "\" & "ceffe0e2386e8d39f188358303a92a7d")) Then
-                If File.Exists((pso2Dir & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup")) Then My.Computer.FileSystem.DeleteFile((pso2Dir & "\" & "ceffe0e2386e8d39f188358303a92a7d.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2Dir & "\" & "ceffe0e2386e8d39f188358303a92a7d"), "ceffe0e2386e8d39f188358303a92a7d.backup")
-            End If
-            Application.DoEvents()
-            File.Move("ceffe0e2386e8d39f188358303a92a7d", (pso2Dir & "\ceffe0e2386e8d39f188358303a92a7d"))
-            FlashWindow(Me.Handle, 1)
-            WriteDebugInfo("JP enemy names file " & My.Resources.strInstalledUpdated)
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        RestoreJapaneseNames("ceffe0e2386e8d39f188358303a92a7d", "JP enemy names")
     End Sub
 
-    ' TODO: Make into function
     Private Sub btnJPETrials_Click(sender As Object, e As EventArgs) Handles btnJPETrials.Click
+        RestoreJapaneseNames("057aa975bdd2b372fe092614b0f4399e", "JP E-Trials file")
+    End Sub
+
+    Private Sub RestoreJapaneseNames(filename As String, patchname As String, Optional url As String = "http://107.170.16.100/patches/")
         Try
             If (Directory.Exists(pso2Dir) = False OrElse pso2Dir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 Button1.RaiseClick()
                 Exit Sub
             End If
-            WriteDebugInfo(My.Resources.strDownloading & "JP E-Trials file....")
+
+            WriteDebugInfo(My.Resources.strDownloading & patchname & "...")
             Application.DoEvents()
-            Dim strDownloadME As String = "http://107.170.16.100/patches/057aa975bdd2b372fe092614b0f4399e"
+            Dim strDownloadME As String = url & filename
             Cancelled = False
-            DLWUA(strDownloadME, "057aa975bdd2b372fe092614b0f4399e", True)
+            DLWUA(strDownloadME, filename, True)
             If Cancelled Then Exit Sub
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            If File.Exists((pso2Dir & "\" & "057aa975bdd2b372fe092614b0f4399e")) Then
-                If File.Exists((pso2Dir & "\" & "057aa975bdd2b372fe092614b0f4399e.backup")) Then My.Computer.FileSystem.DeleteFile((pso2Dir & "\" & "057aa975bdd2b372fe092614b0f4399e.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                My.Computer.FileSystem.RenameFile((pso2Dir & "\" & "057aa975bdd2b372fe092614b0f4399e"), "057aa975bdd2b372fe092614b0f4399e.backup")
+
+            If File.Exists((pso2Dir & "\" & filename)) Then
+                If File.Exists((pso2Dir & "\" & filename & ".backup")) Then
+                    My.Computer.FileSystem.DeleteFile((pso2Dir & "\" & filename & ".backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                End If
+
+                My.Computer.FileSystem.RenameFile((pso2Dir & "\" & filename), filename & ".backup")
             End If
+
             Application.DoEvents()
-            File.Move("057aa975bdd2b372fe092614b0f4399e", (pso2Dir & "\057aa975bdd2b372fe092614b0f4399e"))
+            File.Move(filename, (pso2Dir & "\" & filename))
             FlashWindow(Me.Handle, 1)
-            WriteDebugInfo("JP E-Trials file " & My.Resources.strInstalledUpdated)
+            WriteDebugInfo(patchname & " " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
         End Try
     End Sub
 
