@@ -199,7 +199,7 @@ Public Class frmMain
             Log("Attempting to auto-load pso2_bin directory from settings")
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)(RegKey.PSO2Dir)) Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
             Else
                 lblDirectory.Text = Helper.GetRegKey(Of String)(RegKey.PSO2Dir)
                 Log("Loaded pso2_bin directory from settings")
@@ -217,7 +217,7 @@ Public Class frmMain
 
             If (Directory.Exists(lblDirectory.Text) = False OrElse lblDirectory.Text = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
             End If
 
             pso2RootDir = lblDirectory.Text
@@ -268,7 +268,7 @@ Public Class frmMain
                     MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
                     If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
                         MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                        Button1.RaiseClick()
+                        SelectPSO2Directory()
                         Exit Sub
                     End If
                     File.WriteAllBytes(pso2RootDir & "\ddraw.dll", My.Resources.ddraw)
@@ -295,7 +295,7 @@ Public Class frmMain
                     'Fuck SEGA. Fuck them hard.
                     If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
                         MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                        Button1.RaiseClick()
+                        SelectPSO2Directory()
                         Exit Sub
                     End If
 
@@ -649,7 +649,7 @@ Public Class frmMain
 
             If String.IsNullOrEmpty(Helper.GetRegKey(Of String)(RegKey.PSO2Dir)) Then
                 MsgBox(My.Resources.strPleaseSelectPSO2win32dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
             Else
                 pso2RootDir = Helper.GetRegKey(Of String)(RegKey.PSO2Dir)
             End If
@@ -1520,7 +1520,7 @@ StartPrePatch:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
             Log("Restoring/Removing files...")
@@ -1677,7 +1677,7 @@ StartPrePatch:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
 
@@ -1814,7 +1814,7 @@ StartPrePatch:
         UnlockGUI()
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub SelectPSO2Directory()
         Try
             Log("Selecting PSO2 Directory...")
             Dim MyFolderBrowser As New FolderBrowserDialog
@@ -1849,6 +1849,10 @@ StartPrePatch:
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        SelectPSO2Directory()
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
@@ -1898,7 +1902,7 @@ StartPrePatch:
         Dim backupyesno As MsgBoxResult
         If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
-            Button1.RaiseClick()
+            SelectPSO2Directory()
             Exit Sub
         End If
         Log("Selecting story patch...")
@@ -2108,7 +2112,7 @@ StartPrePatch:
 
         If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
-            Button1.RaiseClick()
+            SelectPSO2Directory()
             Exit Sub
         End If
 
@@ -2521,7 +2525,7 @@ StartPrePatch:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
             Dim backupyesno As MsgBoxResult
@@ -2565,7 +2569,7 @@ StartPrePatch:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
             Dim backupyesno As MsgBoxResult
@@ -2646,7 +2650,7 @@ StartPrePatch:
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
-            Button1.RaiseClick()
+            SelectPSO2Directory()
             Exit Sub
         End If
         Dim filedownloader As New WebClient()
@@ -3015,7 +3019,7 @@ StartPrePatch:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
             Dim filedownloader As New WebClient()
@@ -3076,7 +3080,7 @@ StartPrePatch:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
             Dim backupyesno As MsgBoxResult
@@ -3997,7 +4001,7 @@ SelectInstallFolder:
     Private Sub btnPredownloadLobbyVideos_Click(sender As Object, e As EventArgs) Handles btnPredownloadLobbyVideos.Click
         If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
-            Button1.RaiseClick()
+            SelectPSO2Directory()
             Exit Sub
         End If 'Download the missing files:
         Cancelled = False
@@ -4287,7 +4291,7 @@ SelectInstallFolder:
 
         If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
             MsgBox(My.Resources.strPleaseSelectwin32Dir)
-            Button1.RaiseClick()
+            SelectPSO2Directory()
             Exit Sub
         End If
 
@@ -4351,7 +4355,7 @@ SelectInstallFolder:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
 
@@ -4387,7 +4391,7 @@ SelectInstallFolder:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
 
@@ -4549,7 +4553,7 @@ SelectInstallFolder:
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                Button1.RaiseClick()
+                SelectPSO2Directory()
                 Exit Sub
             End If
 
