@@ -672,23 +672,16 @@ Public Class frmMain
                 DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
             End If
 
-            If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
-                WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
-                Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
-            End If
+            For index = 1 To 5
+                If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
+                    WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
+                    Application.DoEvents()
+                    DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
+                Else
+                    Exit For
+                End If
+            Next
 
-            If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
-                WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
-                Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
-            End If
-
-            If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
-                WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
-                Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", True)
-            End If
 
             If Not File.Exists("UnRar.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "UnRar.exe...")
@@ -696,31 +689,23 @@ Public Class frmMain
                 DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
             End If
 
-            If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
-                WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
-                Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
-            End If
+            For index = 1 To 5
+                If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
+                    WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
+                    Application.DoEvents()
+                    DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
+                Else
+                    Exit For
+                End If
+            Next
 
-            If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
-                WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
-                Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
-            End If
-
-            If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
-                WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
-                Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", True)
-            End If
-
-            If Directory.Exists("TEMPSTORYAIDAFOOL") Then
-                Directory.Delete("TEMPSTORYAIDAFOOL", True)
-            End If
-
-            If Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                Directory.Delete("TEMPPATCHAIDAFOOL", True)
-            End If
+            For index = 1 To 3
+                If Directory.Exists("TEMPSTORYAIDAFOOL") Then
+                    Directory.Delete("TEMPSTORYAIDAFOOL", True)
+                Else
+                    Exit For
+                End If
+            Next
 
             DeleteFile("launcherlist.txt")
             DeleteFile("patchlist.txt")
