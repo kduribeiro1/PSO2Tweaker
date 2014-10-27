@@ -1,9 +1,12 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
+Imports System.Collections.Generic
 
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
+    Shared INICache As New Dictionary(Of String, String)
+
     Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
 
     <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
@@ -132,9 +135,11 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    ' TODO: Add caching
     Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
         Try
+            Dim returnValue = ""
+            If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
+
             Dim TextLines As String() = File.ReadAllLines(usersettingsfile)
             For i As Integer = LineToStartAt To (TextLines.Length - 1)
                 If Not String.IsNullOrEmpty(TextLines(i)) Then
@@ -145,6 +150,7 @@ Public Class frmPSO2Options
                         Dim FinalString As String = strReturn(1).Replace("""", "")
                         FinalString = FinalString.Replace(",", "")
                         FinalString = FinalString.Replace(" ", "")
+                        If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
                         Return FinalString
                     End If
                 End If
@@ -158,6 +164,8 @@ Public Class frmPSO2Options
 
     Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
         Try
+            INICache(SettingToSave) = Value
+
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
