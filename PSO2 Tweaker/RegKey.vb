@@ -1,4 +1,6 @@
-﻿Public Class RegKey
+﻿Imports Microsoft.Win32
+
+Public Class RegKey
     Public Const AlwaysOnTop = "AlwaysOnTop"
     Public Const Backup = "Backup"
     Public Const CloseAfterLaunch = "CloseAfterLaunch"
@@ -38,4 +40,27 @@
     Public Const TextBoxColor = "TextBoxColor"
     Public Const UID = "UID"
     Public Const UseItemTranslation = "UseItemTranslation"
+
+    Private Shared RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
+    Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
+
+
+    Public Shared Function GetValue(Of T)(ByRef Key As String) As T
+        Try
+            Dim returnValue As T
+            If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
+
+            returnValue = RegistrySubKey.GetValue(Key, Nothing)
+            If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
+
+            Return returnValue
+        Catch
+            Return Nothing
+        End Try
+    End Function
+
+    Public Shared Sub SetValue(Of T)(ByRef Key As String, ByRef Value As T)
+        My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
+        RegistryCache(Key) = Value
+    End Sub
 End Class

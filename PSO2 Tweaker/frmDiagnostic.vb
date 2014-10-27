@@ -34,7 +34,7 @@ Public Class frmDiagnostic
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim drInfo As New DirectoryInfo(Helper.GetRegKey(Of String)(RegKey.PSO2Dir) & "\data\win32\")
+        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir) & "\data\win32\")
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
         Dim fileSize As Long = 0
 
@@ -43,19 +43,19 @@ Public Class frmDiagnostic
         Next
 
         Dim totalString As String = ""
-        totalString &= "PSO2 Directory: " & Helper.GetRegKey(Of String)(RegKey.PSO2Dir) & vbCrLf
-        totalString &= "Current game version: " & Helper.GetRegKey(Of String)(RegKey.PSO2RemoteVersion) & vbCrLf
-        totalString &= "Item Translation: " & Helper.GetRegKey(Of String)(RegKey.UseItemTranslation) & vbCrLf
-        totalString &= "EN Patch version installed: " & Helper.GetRegKey(Of String)(RegKey.ENPatchVersion) & vbCrLf
-        totalString &= "Large Files version installed: " & Helper.GetRegKey(Of String)(RegKey.LargeFilesVersion) & vbCrLf
-        totalString &= "Story Patch version installed: " & Helper.GetRegKey(Of String)(RegKey.StoryPatchVersion) & vbCrLf
+        totalString &= "PSO2 Directory: " & RegKey.GetValue(Of String)(RegKey.PSO2Dir) & vbCrLf
+        totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.PSO2RemoteVersion) & vbCrLf
+        totalString &= "Item Translation: " & RegKey.GetValue(Of String)(RegKey.UseItemTranslation) & vbCrLf
+        totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.ENPatchVersion) & vbCrLf
+        totalString &= "Large Files version installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) & vbCrLf
+        totalString &= "Story Patch version installed: " & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) & vbCrLf
         totalString &= "Size of PSO2 data/win32 folder: ~" & fileSize.ToString().Remove(2, 9) & "GB"
         Clipboard.SetText(totalString)
         MsgBox("Copied!")
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim drInfo As New DirectoryInfo(Helper.GetRegKey(Of String)(RegKey.PSO2Dir))
+        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir))
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
         Dim fileSize As Long = 0
         Dim filename As String = ""
