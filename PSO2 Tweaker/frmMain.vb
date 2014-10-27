@@ -3026,7 +3026,7 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", True)
             If Cancelled Then Exit Sub
 
-            ' TODO: Make function
+            ' never mind I'll just rewrite it later or something idk
             If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
