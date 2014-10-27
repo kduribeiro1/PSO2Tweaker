@@ -14,6 +14,7 @@ Imports System.Threading
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
+' TODO: Rework backup hax to be stored in data\win32\backup\<patchname>
 
 Public Class frmMain
     Const testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
@@ -486,22 +487,27 @@ Public Class frmMain
                 End Select
             End If
 
-            ' TODO: neeeds some doing
-
             Log("Loading textbox settings")
 
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxBGColor)) Then rtbDebug.BackColor = Color.FromArgb(RegKey.GetValue(Of String)(RegKey.TextBoxBGColor))
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxColor)) Then rtbDebug.ForeColor = Color.FromArgb(RegKey.GetValue(Of String)(RegKey.TextBoxColor))
+            Dim regValue As String
+
+            regValue = RegKey.GetValue(Of String)(RegKey.TextBoxBGColor)
+            If Not String.IsNullOrEmpty(regValue) Then rtbDebug.BackColor = Color.FromArgb(regValue)
+
+            regValue = RegKey.GetValue(Of String)(RegKey.TextBoxColor)
+            If Not String.IsNullOrEmpty(regValue) Then rtbDebug.ForeColor = Color.FromArgb(regValue)
 
             Log("Colors")
 
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Color)) Then
-                StyleManager1.ManagerColorTint = Color.FromArgb(RegKey.GetValue(Of String)(RegKey.Color))
-                frmPSO2Options.StyleManager1.ManagerColorTint = Color.FromArgb(RegKey.GetValue(Of String)(RegKey.Color))
+            regValue = RegKey.GetValue(Of String)(RegKey.Color)
+            If Not String.IsNullOrEmpty(regValue) Then
+                StyleManager1.ManagerColorTint = Color.FromArgb(regValue)
+                frmPSO2Options.StyleManager1.ManagerColorTint = Color.FromArgb(regValue)
             End If
 
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.FontColor)) Then
-                Dim Color As System.Drawing.Color = Color.FromArgb(RegKey.GetValue(Of String)(RegKey.FontColor))
+            regValue = RegKey.GetValue(Of String)(RegKey.FontColor)
+            If Not String.IsNullOrEmpty(regValue) Then
+                Dim Color As System.Drawing.Color = Color.FromArgb(regValue)
                 frmPSO2Options.TabControl1.ColorScheme.TabItemSelectedText = Color
                 frmPSO2Options.TabItem1.TextColor = Color
                 frmPSO2Options.TabItem2.TextColor = Color
@@ -552,13 +558,12 @@ Public Class frmMain
             LockGUI()
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)) Then RegKey.SetValue(Of String)(RegKey.AlwaysOnTop, "False")
-            Me.TopMost = RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)
-            chkAlwaysOnTop.Checked = RegKey.GetValue(Of Boolean)(RegKey.AlwaysOnTop)
-            If File.Exists((startPath & "\logfile.txt")) Then
-                Dim LogInfo As New FileInfo((startPath & "\logfile.txt"))
-                If LogInfo.Length > 30720 Then
-                    File.WriteAllText((startPath & "\logfile.txt"), "")
-                End If
+            regValue = RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)
+            Me.TopMost = regValue
+            chkAlwaysOnTop.Checked = regValue
+
+            If File.Exists((startPath & "\logfile.txt")) AndAlso GetFileSize((startPath & "\logfile.txt")) > 30720 Then
+                File.WriteAllText((startPath & "\logfile.txt"), "")
             End If
 
             Application.DoEvents()
@@ -657,8 +662,7 @@ Public Class frmMain
             If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
                 If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strNotSwapped & ")"
-                End If
-                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                ElseIf GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strSwapped & ")"
                 End If
             End If
