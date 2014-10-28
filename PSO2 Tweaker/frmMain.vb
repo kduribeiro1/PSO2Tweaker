@@ -1845,34 +1845,33 @@ StartPrePatch:
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
-        Dim sourceString As String = New System.Net.WebClient().DownloadString("http://162.243.211.123/freedom/tweaker.html")
-        Dim SourceSplit() As String
-        Dim SourceSplit2() As String
-        SourceSplit = sourceString.Split("$")
-        SourceSplit2 = SourceSplit(1).Split("#")
-        Dim Patch As String = SourceSplit2(0).Replace("-->", "").Replace("> ", "").Replace("<font color=""green"">", "").Replace("<font color=""red"">", "").Replace("<font color=""D4A017"">", "").Replace("</font><br>", "").Replace("</font><br", "").Replace("<br>", "").Replace("<!--", "")
-        Dim PatchSplit() As String = Patch.Split(vbCrLf)
-        Dim Enabled As Boolean = False
-
-        For index = 0 To (PatchSplit.Length - 1)
-            If PatchSplit(index).Contains("Large Files: Compatible!") = True Then Enabled = True
-        Next
-
-        If Enabled = False Then
-            Dim ReallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
-            If ReallyInstall = MsgBoxResult.No Then
-
-                WriteDebugInfo("Download was cancelled due to incompatibility.")
-                Exit Sub
-            End If
-        End If
-        ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
         Using net As New WebClient()
-            ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
-            ' Furthermore, we could also parse it from within the function.
-            Dim url As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
-            DownloadPatch(url, "Large Files", "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backupPreLargeFiles")
+            ' This parses the sidebar page for compatibility
+            ' First it downloads the page and splits it by line
+            Dim compat As String() = net.DownloadString("http://162.243.211.123/freedom/tweaker.html").Split(Environment.NewLine)
+            Dim doDownload As Boolean = True
+
+            ' Then for each string in the split page, it does a regex match to grab the compatibility.
+            ' This way we can avoid .replace.replace.replace.replace.replace and just get straight to the point;
+            ' is it equal to "Compatible"
+            For Each s In compat
+                If Regex.IsMatch(s, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>") Then
+                    If Not Regex.Match(s, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
+                        Dim ReallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
+
+                        doDownload = If(ReallyInstall = MsgBoxResult.No, False, True)
+                    End If
+                End If
+            Next
+
+            If doDownload Then
+                ' Here we parse the text file before passing it to the DownloadPatch function.
+                Dim url As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
+                DownloadPatch(url, "Large Files", "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backupPreLargeFiles")
+            Else
+                WriteDebugInfo("Download was cancelled due to incompatibility.")
+            End If
         End Using
     End Sub
 
