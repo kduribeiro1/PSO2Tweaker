@@ -601,10 +601,10 @@ Partial Class frmMain
         Me.btnGameguard.Name = "btnGameguard"
         resources.ApplyResources(Me.btnGameguard, "btnGameguard")
         '
-        'Button6
+        'btnFixPSO2EXEs
         '
-        Me.btnFixPSO2EXEs.Name = "Button6"
-        resources.ApplyResources(Me.btnFixPSO2EXEs, "Button6")
+        Me.btnFixPSO2EXEs.Name = "btnFixPSO2EXEs"
+        resources.ApplyResources(Me.btnFixPSO2EXEs, "btnFixPSO2EXEs")
         '
         'btnFixPermissions
         '
@@ -1064,7 +1064,6 @@ Partial Class frmMain
     Friend WithEvents btnStoryPatchNew As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents Button6 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
 
 End Class

@@ -2992,7 +2992,7 @@ StartPrePatch:
         End Try
     End Sub
 
-    Private Sub btnFixPSO2EXEs_Click(sender As Object, e As EventArgs) Handles btnFixPSO2EXEs.Click, Button6.Click
+    Private Sub btnFixPSO2EXEs_Click(sender As Object, e As EventArgs) Handles btnFixPSO2EXEs.Click
         Try
             If (Directory.Exists(pso2WinDir) = False OrElse pso2RootDir = "lblDirectory") Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
