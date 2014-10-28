@@ -973,9 +973,7 @@ Public Class frmMain
     End Sub
 
     Public Sub DLWUA(ByVal Address As String, ByVal Filename As String, ByVal Overwrite As String)
-
-        ' Highly Volital Function -Matthew
-        ' TODO: Should be the first thing fixed after refactoring is done
+        ' Fuck this function, there's just to much wrong with it -Matthew
 
         DLS.Headers("user-agent") = "AQUA_HTTP"
         DLS.timeout = 10000
@@ -984,7 +982,6 @@ Public Class frmMain
             Try
                 Application.DoEvents()
                 DLS.DownloadFileAsync((New Uri(Address)), Filename)
-                Application.DoEvents()
                 Exit For
             Catch ex As Exception
                 If i = 4 Then Thread.Sleep(5000)
@@ -1005,6 +1002,7 @@ Public Class frmMain
             If Not Me.Visible Then
                 DLS.CancelAsync()
                 Cancelled = True
+                CancelledFull = True
                 Application.Exit()
             End If
         End While
@@ -2392,14 +2390,14 @@ StartPrePatch:
             PB1.Value = 0
             PB1.Maximum = oldmax
             SOMEOFTHETHINGS = Nothing
+
             Dim totaldownload2 As String = missingfiles2.Count
             Dim downloaded2 As Long = 0
             Dim info As FileInfo
             Dim totaldownloaded As Long = 0
             DeleteFile("resume.txt")
-            For Each downloadstring In missingfiles2
-                File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
-            Next
+            File.WriteAllLines("resume.txt", missingfiles2.ToArray())
+
             For Each downloadstring In missingfiles2
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
