@@ -1850,16 +1850,7 @@ StartPrePatch:
         Dim SourceSplit2() As String
         SourceSplit = sourceString.Split("$")
         SourceSplit2 = SourceSplit(1).Split("#")
-        Dim Patch As String = SourceSplit2(0)
-        Patch = Patch.Replace("-->", "")
-        Patch = Patch.Replace("> ", "")
-        Patch = Patch.Replace("<font color=""green"">", "")
-        Patch = Patch.Replace("<font color=""red"">", "")
-        Patch = Patch.Replace("<font color=""D4A017"">", "")
-        Patch = Patch.Replace("</font><br>", "")
-        Patch = Patch.Replace("</font><br", "")
-        Patch = Patch.Replace("<br>", "")
-        Patch = Patch.Replace("<!--", "")
+        Dim Patch As String = SourceSplit2(0).Replace("-->", "").Replace("> ", "").Replace("<font color=""green"">", "").Replace("<font color=""red"">", "").Replace("<font color=""D4A017"">", "").Replace("</font><br>", "").Replace("</font><br", "").Replace("<br>", "").Replace("<!--", "")
         Dim PatchSplit() As String = Patch.Split(vbCrLf)
         Dim Enabled As Boolean = False
 

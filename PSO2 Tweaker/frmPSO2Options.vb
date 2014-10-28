@@ -144,12 +144,9 @@ Public Class frmPSO2Options
             For i As Integer = LineToStartAt To (TextLines.Length - 1)
                 If Not String.IsNullOrEmpty(TextLines(i)) Then
                     If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                        Dim strLine As String = TextLines(i)
-                        strLine = strLine.Replace(vbTab, "")
+                        Dim strLine As String = TextLines(i).Replace(vbTab, "")
                         Dim strReturn As String() = strLine.Split("=")
-                        Dim FinalString As String = strReturn(1).Replace("""", "")
-                        FinalString = FinalString.Replace(",", "")
-                        FinalString = FinalString.Replace(" ", "")
+                        Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "").Replace(" ", "")
                         If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
                         Return FinalString
                     End If
@@ -173,11 +170,9 @@ Public Class frmPSO2Options
             Dim j As Integer
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
-                    Dim strLine As String = TextLines(i)
-                    strLine = strLine.Replace(vbTab, "")
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
                     For j = 0 To TextLines.Length
                         If j + 1 = TextLines.Length Then
@@ -212,11 +207,9 @@ Public Class frmPSO2Options
                         End If
                     Next x
 
-                    Dim strLine As String = TextLines(i)
-                    strLine = strLine.Replace(vbTab, "")
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
                     For j = 0 To TextLines.Length
                         If j + 1 = TextLines.Length Then
@@ -251,11 +244,9 @@ Public Class frmPSO2Options
                         End If
                     Next x
 
-                    Dim strLine As String = TextLines(i)
-                    strLine = strLine.Replace(vbTab, "")
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
 
                     For j = 0 To TextLines.Length
@@ -323,10 +314,8 @@ Public Class frmPSO2Options
                 SaveResolutionHeight(RealResolution(1))
             End If
 
-            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString()
+            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
 
-            FPS = FPS.Replace(" FPS", "")
-            FPS = FPS.Replace("Unlimited", "0")
             frmMain.Log("Saving FPS...")
             SaveINISetting("FrameKeep", FPS)
             frmMain.Log("Disabling Interface...")

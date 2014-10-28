@@ -1,6 +1,7 @@
 ﻿Imports System.Threading
 Imports System.IO
 Imports System.Net
+Imports System.Diagnostics
 
 Public Class frmOptions
 
@@ -34,9 +35,7 @@ Public Class frmOptions
             If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxBGColor)) Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
             If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxColor)) Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
 
-            Dim BackupMode As String
-
-            BackupMode = GetBackupMode(RegKey.Backup)
+            Dim BackupMode = GetBackupMode(RegKey.Backup)
 
             If Not String.IsNullOrEmpty(BackupMode) Then
                 cmbBackupPreference.Text = BackupMode
@@ -144,20 +143,17 @@ Public Class frmOptions
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
         Dim DownloadClient As New WebClient
         DownloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
-        Dim process As System.Diagnostics.Process = Nothing
-        Dim processStartInfo As System.Diagnostics.ProcessStartInfo
-        processStartInfo = New System.Diagnostics.ProcessStartInfo()
-        Dim UnRarLocation As String
-        UnRarLocation = (Application.StartupPath & "\unrar.exe")
-        UnRarLocation = UnRarLocation.Replace("\\", "\")
-        processStartInfo.FileName = UnRarLocation
-        processStartInfo.Verb = "runas"
-        processStartInfo.Arguments = ("x -inul -o+ LanguagePack.rar")
-        processStartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
-        processStartInfo.UseShellExecute = True
-        process = System.Diagnostics.Process.Start(processStartInfo)
 
-        Do Until process.WaitForExit(1000)
+        Dim processStartInfo = New ProcessStartInfo()
+        processStartInfo.FileName = (Application.StartupPath & "\unrar.exe").Replace("\\", "\")
+        processStartInfo.Verb = "runas"
+        processStartInfo.Arguments = "x -inul -o+ LanguagePack.rar"
+        processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
+        processStartInfo.UseShellExecute = True
+
+        Dim extractorProcess = Process.Start(processStartInfo)
+
+        Do Until extractorProcess.WaitForExit(1000)
         Loop
 
         SetLocale()
