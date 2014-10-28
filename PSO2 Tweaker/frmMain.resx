@@ -1044,10 +1044,10 @@
   <data name="btnGameguard.Tooltip" xml:space="preserve">
     <value>Fixes numberous Gameguard issues and errors</value>
   </data>
-  <data name="Button6.Text" xml:space="preserve">
+  <data name="btnFixPSO2EXEs.Text" xml:space="preserve">
     <value>Fix PSO2 EXEs</value>
   </data>
-  <data name="Button6.Tooltip" xml:space="preserve">
+  <data name="btnFixPSO2EXEs.Tooltip" xml:space="preserve">
     <value>Re-downloads the PSO2 EXE files</value>
   </data>
   <data name="btnFixPermissions.Text" xml:space="preserve">
@@ -7865,10 +7865,10 @@
   <data name="&gt;&gt;btnGameguard.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;Button6.Name" xml:space="preserve">
-    <value>Button6</value>
+  <data name="&gt;&gt;btnFixPSO2EXEs.Name" xml:space="preserve">
+    <value>btnFixPSO2EXEs</value>
   </data>
-  <data name="&gt;&gt;Button6.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnFixPSO2EXEs.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnFixPermissions.Name" xml:space="preserve">
