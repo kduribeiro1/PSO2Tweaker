@@ -69,6 +69,63 @@ Public Class frmMain
 
 #End Region
 
+    Sub New()
+        Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
+
+        If Not String.IsNullOrEmpty(locale) Then
+            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(locale)
+            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
+        End If
+
+        InitializeComponent()
+
+        'Yo, fuck this shit. Shit is mad whack, yo.
+        chkRemoveCensor.Text = My.Resources.strRemoveCensorFile
+        chkRemovePC.Text = My.Resources.strRemovePCOpening
+        chkRemoveVita.Text = My.Resources.strRemoveVitaOpening
+        chkRemoveNVidia.Text = My.Resources.strRemoveNVidiaVideo
+        chkRemoveSEGA.Text = My.Resources.strRemoveSEGALogoVideo
+        chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings
+        chkRestoreCensor.Text = My.Resources.strRestoreCensorFile
+        chkRestorePC.Text = My.Resources.strRestorePCOpeningVideo
+        chkRestoreVita.Text = My.Resources.strRestoreVitaOpeningVideo
+        chkRestoreNVidia.Text = My.Resources.strRestoreNVidiaLogo
+        chkRestoreSEGA.Text = My.Resources.strRestoreSEGALogoVideo
+        Label1.Text = My.Resources.strCurrentlyselecteddirectory
+        lblStatus.Text = My.Resources.strWaitingforacommand
+        Button1.Text = My.Resources.strSelectPSO2win32folder
+        ButtonInstall.Text = My.Resources.strInstallUpdatePatches
+        btnRestoreBackups.Text = "Restore Backup of JP Files"
+        btnApplyChanges.Text = My.Resources.strApplySelectedChanges
+        CancelDownloadToolStripMenuItem.Text = My.Resources.strCancelCurrentDownload
+        ButtonItem5.Text = My.Resources.strCheckforPSO2Updates
+        btnLaunchPSO2.Text = My.Resources.strLaunchPSO2
+        btnFixPSO2EXEs.Text = My.Resources.strFixPSO2EXEs
+        btnFixPermissions.Text = My.Resources.strFixPSO2Permissions
+        LabelItem1.Text = My.Resources.strClickOrb
+        rtbDebug.Text = My.Resources.strProgramStarted
+        ButtonItem1.Text = "Redownload Original JP Files"
+        ButtonItem2.Text = My.Resources.strTroubleshooting
+        btnOtherStuff.Text = My.Resources.strOtherTasks
+        ButtonItem3.Text = My.Resources.strWebLinks
+        btnCheckForStoryUpdates.Text = My.Resources.strCheckForStoryPatchUpdates
+        chkAlwaysOnTop.Text = My.Resources.strAlwaysonTop
+        chkItemTranslation.Text = My.Resources.strTranslateItems
+        btnPSO2Options.Text = My.Resources.strPSO2Options
+        btnOptions.Text = My.Resources.strOptions
+        btnExit.Text = My.Resources.strExit
+        btnAnalyze.Text = My.Resources.strAnalyzeInstallforIssues
+        Button2.Text = My.Resources.strCheckforDeletedMissingFiles
+        ButtonItem10.Text = My.Resources.strCheckForOldMissingFiles
+        btnConnection.Text = My.Resources.strDiagnoseConnectionIssues
+        btnGameguard.Text = My.Resources.strFixGameguardErrors
+        ButtonItem17.Text = My.Resources.strResetPSO2Settings
+        btnResumePatching.Text = My.Resources.strResumePatching
+        ButtonItem12.Text = My.Resources.strStoryPatchServerTests
+        btnTerminate.Text = My.Resources.strTerminate
+        ButtonItem7.Text = My.Resources.strLaunchChrome
+    End Sub
+
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         Application.Exit()
     End Sub
@@ -389,64 +446,6 @@ Public Class frmMain
                 Dim UIDSTRING As String = client.DownloadString("http://arks-layer.com/docs/client.php")
                 RegKey.SetValue(Of String)(RegKey.UID, UIDSTRING)
             End If
-
-            Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
-
-            If Not String.IsNullOrEmpty(locale) Then
-                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(locale)
-                Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
-            End If
-
-            Me.BackgroundImage = Nothing
-            frmOptions.BackgroundImage = Nothing
-
-            Log("Initialize stuff for locale...")
-
-            'Yo, fuck this shit. Shit is mad whack, yo.
-            chkRemoveCensor.Text = My.Resources.strRemoveCensorFile
-            chkRemovePC.Text = My.Resources.strRemovePCOpening
-            chkRemoveVita.Text = My.Resources.strRemoveVitaOpening
-            chkRemoveNVidia.Text = My.Resources.strRemoveNVidiaVideo
-            chkRemoveSEGA.Text = My.Resources.strRemoveSEGALogoVideo
-            chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings
-            chkRestoreCensor.Text = My.Resources.strRestoreCensorFile
-            chkRestorePC.Text = My.Resources.strRestorePCOpeningVideo
-            chkRestoreVita.Text = My.Resources.strRestoreVitaOpeningVideo
-            chkRestoreNVidia.Text = My.Resources.strRestoreNVidiaLogo
-            chkRestoreSEGA.Text = My.Resources.strRestoreSEGALogoVideo
-            Label1.Text = My.Resources.strCurrentlyselecteddirectory
-            lblStatus.Text = My.Resources.strWaitingforacommand
-            Button1.Text = My.Resources.strSelectPSO2win32folder
-            ButtonInstall.Text = My.Resources.strInstallUpdatePatches
-            btnRestoreBackups.Text = "Restore Backup of JP Files"
-            btnApplyChanges.Text = My.Resources.strApplySelectedChanges
-            CancelDownloadToolStripMenuItem.Text = My.Resources.strCancelCurrentDownload
-            ButtonItem5.Text = My.Resources.strCheckforPSO2Updates
-            btnLaunchPSO2.Text = My.Resources.strLaunchPSO2
-            btnFixPSO2EXEs.Text = My.Resources.strFixPSO2EXEs
-            btnFixPermissions.Text = My.Resources.strFixPSO2Permissions
-            LabelItem1.Text = My.Resources.strClickOrb
-            rtbDebug.Text = My.Resources.strProgramStarted
-            ButtonItem1.Text = "Redownload Original JP Files"
-            ButtonItem2.Text = My.Resources.strTroubleshooting
-            btnOtherStuff.Text = My.Resources.strOtherTasks
-            ButtonItem3.Text = My.Resources.strWebLinks
-            btnCheckForStoryUpdates.Text = My.Resources.strCheckForStoryPatchUpdates
-            chkAlwaysOnTop.Text = My.Resources.strAlwaysonTop
-            chkItemTranslation.Text = My.Resources.strTranslateItems
-            btnPSO2Options.Text = My.Resources.strPSO2Options
-            btnOptions.Text = My.Resources.strOptions
-            btnExit.Text = My.Resources.strExit
-            btnAnalyze.Text = My.Resources.strAnalyzeInstallforIssues
-            Button2.Text = My.Resources.strCheckforDeletedMissingFiles
-            ButtonItem10.Text = My.Resources.strCheckForOldMissingFiles
-            btnConnection.Text = My.Resources.strDiagnoseConnectionIssues
-            btnGameguard.Text = My.Resources.strFixGameguardErrors
-            ButtonItem17.Text = My.Resources.strResetPSO2Settings
-            btnResumePatching.Text = My.Resources.strResumePatching
-            ButtonItem12.Text = My.Resources.strStoryPatchServerTests
-            btnTerminate.Text = My.Resources.strTerminate
-            ButtonItem7.Text = My.Resources.strLaunchChrome
 
             Log("Load more settings...")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
