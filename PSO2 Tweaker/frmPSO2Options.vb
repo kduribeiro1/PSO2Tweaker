@@ -89,8 +89,8 @@ Public Class frmPSO2Options
             TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
             Dim DevM As DEVMODE
-            DevM.dmDeviceName = New [String](New Char(32) {})
-            DevM.dmFormName = New [String](New Char(32) {})
+            DevM.dmDeviceName = New String("", 32)
+            DevM.dmFormName = New String("", 32)
             DevM.dmSize = CShort(Marshal.SizeOf(GetType(DEVMODE)))
 
             Dim modeIndex As Integer = 0
@@ -145,8 +145,8 @@ Public Class frmPSO2Options
                 If Not String.IsNullOrEmpty(TextLines(i)) Then
                     If TextLines(i).Contains(" " & SettingToRead & " ") Then
                         Dim strLine As String = TextLines(i).Replace(vbTab, "")
-                        Dim strReturn As String() = strLine.Split("=")
-                        Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "").Replace(" ", "")
+                        Dim strReturn As String() = strLine.Split("="c)
+                        Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "").Replace(" "c, "")
                         If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
                         Return FinalString
                     End If
@@ -171,8 +171,8 @@ Public Class frmPSO2Options
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
                     For j = 0 To TextLines.Length
                         If j + 1 = TextLines.Length Then
@@ -208,8 +208,8 @@ Public Class frmPSO2Options
                     Next x
 
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
                     For j = 0 To TextLines.Length
                         If j + 1 = TextLines.Length Then
@@ -245,8 +245,8 @@ Public Class frmPSO2Options
                     Next x
 
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(",", "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
 
                     For j = 0 To TextLines.Length
@@ -309,7 +309,7 @@ Public Class frmPSO2Options
             If ComboBoxEx5.SelectedText <> "x" Then
                 Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
 
-                Dim RealResolution As String() = StrResolution.Split("x")
+                Dim RealResolution As String() = StrResolution.Split("x"c)
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If
@@ -350,9 +350,12 @@ Public Class frmPSO2Options
 
     Private Sub ComboBoxEx4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx4.SelectedIndexChanged
         Try
-            If ComboBoxEx4.SelectedIndex = 2 Then ComboBoxEx5.Enabled = False
-            If ComboBoxEx4.SelectedIndex = 1 Then ComboBoxEx5.Enabled = True
-            If ComboBoxEx4.SelectedIndex = 0 Then ComboBoxEx5.Enabled = True
+            'If ComboBoxEx4.SelectedIndex = 2 Then ComboBoxEx5.Enabled = False
+            'If ComboBoxEx4.SelectedIndex = 1 Then ComboBoxEx5.Enabled = True
+            'If ComboBoxEx4.SelectedIndex = 0 Then ComboBoxEx5.Enabled = True
+
+            ComboBoxEx5.Enabled = (ComboBoxEx4.SelectedIndex < 2)
+
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)

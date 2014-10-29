@@ -5,10 +5,10 @@ Public Class frmItemConfig
         Dim pso2launchpath = frmMain.lblDirectory.Text.Replace("\data\win32", "")
         File.Delete(pso2launchpath & "\translation.cfg")
 
-        Dim SplitKey As String() = cmbToggleKey.SelectedItem.Split("(")
+        Dim SplitKey As String() = cmbToggleKey.SelectedItem.Split("("c)
         Dim data As String()
         Dim delay As Integer = NUDDelay.Value * 1000
-        Dim NumberKey = SplitKey(1).Replace(")", "")
+        Dim NumberKey = SplitKey(1).Replace(")"c, "")
         lblToggle.Text = "Toggle item patch ON/OFF: Control + " & SplitKey(0).Replace("   (", "")
 
         If chkLogging.Checked Then
@@ -31,6 +31,6 @@ Public Class frmItemConfig
     End Sub
 
     Private Sub cmbToggleKey_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbToggleKey.SelectedIndexChanged
-        lblToggle.Text = "Toggle item patch ON/OFF: Control + " & (cmbToggleKey.SelectedItem.Split("(")(0)).Replace("   (", "")
+        lblToggle.Text = "Toggle item patch ON/OFF: Control + " & (cmbToggleKey.SelectedItem.Split("("c)(0)).Replace("   (", "")
     End Sub
 End Class

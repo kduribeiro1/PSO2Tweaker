@@ -39,6 +39,7 @@ Public Class frmMain
     Dim UseItemTranslation As Boolean = False
     Dim VedaUnlocked As Boolean = False
     Dim args As String() = Environment.GetCommandLineArgs()
+    Dim hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
     Dim nodiag As Boolean = False
     Dim processes As Process()
     Dim pso2RootDir As String
@@ -1263,7 +1264,7 @@ Public Class frmMain
             Application.DoEvents()
             Dim net As MyWebClient = New MyWebClient() With {.timeout = 10000}
             Dim strDownloadME As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
-            Dim Lastfilename As String() = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/"c)
             Dim strVersion As String = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
 
             RegKey.SetValue(Of String)(RegKey.NewENVersion, strVersion)
@@ -1293,7 +1294,7 @@ Public Class frmMain
             Dim net As MyWebClient = New MyWebClient() With {.timeout = 10000}
             Dim src As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
             Dim strDownloadME As String = src
-            Dim Lastfilename As String() = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/"c)
             Dim strVersion As String = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
 
             RegKey.SetValue(Of String)(RegKey.NewLargeFilesVersion, strVersion)
@@ -1330,13 +1331,13 @@ Public Class frmMain
             Dim FirstTimechecking As Boolean = False
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PSO2PrecedeVersion)) Then
                 Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
-                Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
+                Dim PrecedeVersion2 As String() = precedefile2(0).Split(":"c)
                 RegKey.SetValue(Of String)(RegKey.PSO2PrecedeVersion, PrecedeVersion2(1))
                 FirstTimechecking = True
             End If
 
             Dim precedefile = File.ReadAllLines("precede.txt")
-            Dim PrecedeSplit As String() = precedefile(0).Split(":")
+            Dim PrecedeSplit As String() = precedefile(0).Split(":"c)
             Dim PrecedeYesNo As String = PrecedeSplit(0)
             Dim precedeversionstring As String = PrecedeSplit(1)
 
@@ -1432,7 +1433,7 @@ StartPrePatch:
                         If missingfiles.Count = 0 Then WriteDebugInfo("Your precede data is up to date!")
                         If missingfiles.Count <> 0 Then WriteDebugInfo("Precede data downloaded/updated!")
                         Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
-                        Dim PrecedeVersion2 As String() = precedefile2(0).Split(":")
+                        Dim PrecedeVersion2 As String() = precedefile2(0).Split(":"c)
                         RegKey.SetValue(Of String)(RegKey.PSO2PrecedeVersion, PrecedeVersion2(1))
                     End If
                 End If
@@ -3579,7 +3580,7 @@ SelectInstallFolder:
                 Dim pso2_binfolder As String = InstallFolder & "\PHANTASYSTARONLINE2\pso2_bin"
                 Dim MGMT As ManagementObject
                 Dim Searcher As ManagementObjectSearcher = New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk")
-                Dim InstallDrive As String = InstallFolder.TrimEnd(":").Replace("\", "")
+                Dim InstallDrive As String = InstallFolder.TrimEnd(":").Replace("\"c, "")
                 For Each MGMT In Searcher.Get
                     If Convert.ToString(MGMT("MediaType")) = "12" Then
                         If MGMT("DeviceID") = InstallDrive Then
@@ -3690,7 +3691,7 @@ SelectInstallFolder:
             txtHTML.Text = m.NextMatch.ToString()
 
             Dim strDownloadME As String = txtHTML.Text
-            Dim Lastfilename As String() = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/"c)
             strVersion = Lastfilename(Lastfilename.Length - 1)
             strVersion = strVersion.Replace(".rar", "")
 
@@ -3781,7 +3782,7 @@ SelectInstallFolder:
             ' Spit out the value plucked from the code
             txtHTML.Text = m.Value
             Dim strDownloadME As String = txtHTML.Text.Replace("<br /><a href=""", "")
-            Dim Lastfilename As String() = strDownloadME.Split("/")
+            Dim Lastfilename As String() = strDownloadME.Split("/"c)
             strVersion = Lastfilename(Lastfilename.Length - 1)
             strVersion = strVersion.Replace(".rar", "")
 
@@ -4060,7 +4061,7 @@ SelectInstallFolder:
             Dim BuiltFile As New List(Of String)
             Dim AlreadyModified As Boolean = False
 
-            Using reader As New StreamReader(Environment.SystemDirectory & "\drivers\etc\hosts")
+            Using reader As New StreamReader(hostsFilePath)
                 Dim currentLine As String = ""
 
                 Do
@@ -4124,7 +4125,7 @@ SelectInstallFolder:
                 WriteDebugInfo("Previous modifications not found, creating new entries...")
             End If
 
-            File.WriteAllLines(Environment.SystemDirectory & "\drivers\etc\hosts", BuiltFile.ToArray())
+            File.WriteAllLines(hostsFilePath, BuiltFile.ToArray())
             WriteDebugInfoSameLine(" Done!")
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
@@ -4142,7 +4143,6 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnRevertPSO2ProxyToJP_Click(sender As Object, e As EventArgs) Handles btnRevertPSO2ProxyToJP.Click
-        Dim hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
         Dim builtFile = New List(Of String)
 
         Using reader As New StreamReader(hostsFilePath)
