@@ -2375,12 +2375,11 @@ StartPrePatch:
                 testfilesize = kvp.Value.Split(vbTab)
                 Dim fileSize = Convert.ToInt32(testfilesize(1))
 
-                Using stream = File.Open(filePath, FileMode.Open, FileAccess.Read)
+                Using stream = New FileStream(filePath, FileMode.Open)
                     If (stream.Length <> fileSize) OrElse (Helper.GetMD5(stream) <> testfilesize(2)) Then
                         If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
                         totalfilesize += fileSize
                         missingfiles2.Add(kvp.Key)
-                        Continue For
                     End If
                 End Using
             Next
