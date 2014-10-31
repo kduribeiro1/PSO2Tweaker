@@ -42,6 +42,11 @@ Public NotInheritable Class MD5Provider
         MyClass.New(&H1000)
     End Sub
 
+    Protected Overrides Sub Finalize()
+        Dispose()
+        MyBase.Finalize()
+    End Sub
+
     Public Sub Dispose() Implements IDisposable.Dispose
         CryptReleaseContext(hProv, 0)
         GC.SuppressFinalize(Me)
