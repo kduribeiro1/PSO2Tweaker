@@ -11,6 +11,7 @@ Imports System.Security.Principal
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading
+Imports DevComponents.DotNetBar
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
@@ -2236,7 +2237,6 @@ StartPrePatch:
             Next
 
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
-            Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String = (pso2RootDir & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
@@ -2345,6 +2345,14 @@ StartPrePatch:
             PB1.Maximum = length
             Cancelled = False
 
+            Dim fileLengths = New Dictionary(Of String, Long)
+            Dim fileNames = New List(Of String)
+
+            For Each fileinfo As FileInfo In New DirectoryInfo(dataPath).EnumerateFiles()
+                fileNames.Add(fileinfo.Name)
+                fileLengths.Add(fileinfo.Name, fileinfo.Length)
+            Next
+
             For Each kvp In SOMEOFTHETHINGS
 
                 If Cancelled Then
@@ -2362,10 +2370,8 @@ StartPrePatch:
                 NumberofChecks += 1
                 PB1.Value += 1
 
-                Dim filePath = dataPath & kvp.Key
-
-                If Not File.Exists(filePath) Then
-                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & filePath & My.Resources.strIsMissing)
+                If Not fileNames.Contains(kvp.Key) Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & (dataPath & kvp.Key) & My.Resources.strIsMissing)
                     testfilesize = kvp.Value.Split(vbTab)
                     totalfilesize += Convert.ToInt32(testfilesize(1))
                     missingfiles2.Add(kvp.Key)
@@ -2375,8 +2381,15 @@ StartPrePatch:
                 testfilesize = kvp.Value.Split(vbTab)
                 Dim fileSize = Convert.ToInt32(testfilesize(1))
 
-                Using stream = New FileStream(filePath, FileMode.Open)
-                    If (stream.Length <> fileSize) OrElse (Helper.GetMD5(stream) <> testfilesize(2)) Then
+                If fileSize <> fileLengths(kvp.Key) Then
+                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
+                    totalfilesize += fileSize
+                    missingfiles2.Add(kvp.Key)
+                    Continue For
+                End If
+
+                Using stream = New FileStream(dataPath & kvp.Key, FileMode.Open)
+                    If Helper.GetMD5(stream) <> testfilesize(2) Then
                         If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & kvp.Key & " must be redownloaded.")
                         totalfilesize += fileSize
                         missingfiles2.Add(kvp.Key)
