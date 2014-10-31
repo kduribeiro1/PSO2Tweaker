@@ -2348,12 +2348,12 @@ StartPrePatch:
             Cancelled = False
 
             Dim fileLengths = New Dictionary(Of String, Long)
-            Dim fileNames = New List(Of String)
 
             For Each fileinfo As FileInfo In New DirectoryInfo(dataPath).EnumerateFiles()
-                fileNames.Add(fileinfo.Name)
                 fileLengths.Add(fileinfo.Name, fileinfo.Length)
             Next
+
+            Dim fileNames = fileLengths.Keys
 
             For Each kvp In SOMEOFTHETHINGS
 
