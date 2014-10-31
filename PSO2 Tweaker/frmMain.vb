@@ -459,32 +459,32 @@ Public Class frmMain
             If Not String.IsNullOrEmpty(style) Then
                 Select Case style
                     Case "Blue"
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                        StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Blue
 
                     Case "Silver"
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+                        StyleManager1.ManagerStyle = eStyle.Office2007Silver
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Silver
 
                     Case "Black"
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+                        StyleManager1.ManagerStyle = eStyle.Office2007Black
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Black
 
                     Case "Vista Glass"
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+                        StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
 
                     Case "2010 Silver"
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+                        StyleManager1.ManagerStyle = eStyle.Office2010Silver
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2010Silver
 
                     Case "Windows 7 Blue"
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+                        StyleManager1.ManagerStyle = eStyle.Windows7Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Windows7Blue
 
                     Case Else
-                        StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                        StyleManager1.ManagerStyle = eStyle.Office2007Blue
+                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Blue
                 End Select
             End If
 
