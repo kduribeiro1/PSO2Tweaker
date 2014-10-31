@@ -65,20 +65,20 @@ Public Class frmVEDA
         Return Generator.Next(Min, Max)
     End Function
 
-    Public Sub WriteConsole(AddThisText)
-        WriteDebugInfo(AddThisText)
+    Public Sub WriteConsole(str As String)
+        WriteDebugInfo(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
 
-    Public Sub WriteConsoleAndOK(AddThisText)
-        WriteDebugInfoAndOK(AddThisText)
+    Public Sub WriteConsoleAndOK(str As String)
+        WriteDebugInfoAndOK(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
 
-    Public Sub WriteConsoleAndWarning(AddThisText)
-        WriteDebugInfoAndWarning(AddThisText)
+    Public Sub WriteConsoleAndWarning(str As String)
+        WriteDebugInfoAndWarning(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
@@ -244,6 +244,6 @@ Public Class frmVEDA
     End Sub
 
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click
-        frmMain.DLWUA(txtAqua.Text, "testfile", True)
+        frmMain.DLWUA(txtAqua.Text, "testfile", "True")
     End Sub
 End Class

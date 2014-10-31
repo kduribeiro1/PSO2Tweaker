@@ -7,7 +7,7 @@ Public Class frmPSO2Options
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
     Shared INICache As New Dictionary(Of String, String)
 
-    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
+    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As String, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Boolean
 
     <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
         <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmDeviceName As String
@@ -89,8 +89,8 @@ Public Class frmPSO2Options
             TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
             Dim DevM As DEVMODE
-            DevM.dmDeviceName = New String("", 32)
-            DevM.dmFormName = New String("", 32)
+            DevM.dmDeviceName = New String(Chr(0), 32)
+            DevM.dmFormName = New String(Chr(0), 32)
             DevM.dmSize = CShort(Marshal.SizeOf(GetType(DEVMODE)))
 
             Dim modeIndex As Integer = 0
@@ -102,9 +102,9 @@ Public Class frmPSO2Options
                 ' The next mode
                 modeIndex += 1
             End While
-            Slider1.Value = ReadINISetting("DrawLevel")
-            ComboBoxEx1.SelectedIndex = ReadINISetting("TextureResolution")
-            ComboBoxEx7.SelectedIndex = ReadINISetting("InterfaceSize")
+            Slider1.Value = Convert.ToInt32(ReadINISetting("DrawLevel"))
+            ComboBoxEx1.SelectedIndex = Convert.ToInt32(ReadINISetting("TextureResolution"))
+            ComboBoxEx7.SelectedIndex = Convert.ToInt32(ReadINISetting("InterfaceSize"))
             ComboBoxEx6.Text = ReadINISetting("FrameKeep") & " FPS"
             If ComboBoxEx6.Text = "0 FPS" Then ComboBoxEx6.Text = "Unlimited FPS"
             If ReadINISetting("ShaderQuality") = "true" Then ComboBoxEx2.SelectedIndex = 0
@@ -135,7 +135,7 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
+    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
         Try
             Dim returnValue = ""
             If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
@@ -272,9 +272,9 @@ Public Class frmPSO2Options
             frmMain.Log("Saving Draw Level...")
             SaveINISetting("DrawLevel", Slider1.Value.ToString())
             frmMain.Log("Saving Texture Resolution...")
-            SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex)
+            SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex.ToString())
             frmMain.Log("Saving Interface Size...")
-            SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex)
+            SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex.ToString())
             frmMain.Log("Saving Shader Quality...")
             If ComboBoxEx2.SelectedIndex = 0 Then SaveINISetting("ShaderQuality", "true")
             If ComboBoxEx2.SelectedIndex = 1 Then SaveINISetting("ShaderQuality", "false")

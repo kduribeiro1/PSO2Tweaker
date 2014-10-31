@@ -5,7 +5,7 @@ Imports System.Runtime.InteropServices
 Public NotInheritable Class MD5Provider
     Implements IDisposable
 
-    Private Shared hashSize As Integer = hashSize = 16
+    Private Shared hashSize As Integer = 16
     Private _bufferSize As Integer
     Private hProv As IntPtr = IntPtr.Zero
 

@@ -45,15 +45,15 @@ Public Class RegKey
     Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
 
 
-    Public Shared Function GetValue(Of T)(ByRef Key As String) As T
+    Public Shared Function GetValue(Of T)(Key As String) As T
         Try
-            Dim returnValue As T
-            If RegistryCache.TryGetValue(Key, returnValue) Then Return returnValue
+            Dim returnValue As Object = Nothing
+            If RegistryCache.TryGetValue(Key, returnValue) Then Return DirectCast(returnValue, T)
 
             returnValue = RegistrySubKey.GetValue(Key, Nothing)
             If returnValue IsNot Nothing Then RegistryCache.Add(Key, returnValue)
 
-            Return returnValue
+            Return DirectCast(returnValue, T)
         Catch
             Return Nothing
         End Try

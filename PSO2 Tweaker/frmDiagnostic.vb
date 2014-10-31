@@ -9,7 +9,7 @@ Public Class frmDiagnostic
         TotalString &= "64 Bit OS?: " & Environment.Is64BitOperatingSystem.ToString() & vbCrLf
         TotalString &= "Tweaker is located at: " & Environment.CurrentDirectory & vbCrLf
         TotalString &= ".NET Version: " & Environment.Version.ToString() & vbCrLf
-        TotalString &= "System has been on for: " & Mid((Environment.TickCount / 3600000), 1, 5) & " hours"
+        TotalString &= "System has been on for: " & Mid((Environment.TickCount / 3600000).ToString(), 1, 5) & " hours"
         Clipboard.SetText(TotalString)
         MsgBox("Copied!")
     End Sub

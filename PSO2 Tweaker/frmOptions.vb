@@ -59,7 +59,7 @@ Public Class frmOptions
 
             ' Here we pull the locale setting from registry and apply it to the form.
             ' Reads locale from registry and converts from LangCode (e.g "en") to Language (e.g "English")
-            Dim Locale As Language = [Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale))
+            Dim Locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
 
             ' Defaults to English if there is no locale or an error occurs
             If Locale = Nothing Then
