@@ -59,18 +59,17 @@ Public Class frmOptions
 
             ' Here we pull the locale setting from registry and apply it to the form.
             ' Reads locale from registry and converts from LangCode (e.g "en") to Language (e.g "English")
-            Dim Locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
+            Try
+                Dim Locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
 
-            ' Defaults to English if there is no locale or an error occurs
-            If Locale = Nothing Then
-                cmbLanguage.Text = "English"
-                Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
-                Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
-            Else
                 cmbLanguage.Text = Locale.ToString()
                 Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(CType(Locale, LangCode).ToString())
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
-            End If
+            Catch ex As Exception
+                cmbLanguage.Text = "English"
+                Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
+                Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
+            End Try
 
             LabelX1.Text = My.Resources.strChooseATheme
             LabelX2.Text = My.Resources.strChooseALanguage

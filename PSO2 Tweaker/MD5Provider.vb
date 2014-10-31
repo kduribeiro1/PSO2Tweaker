@@ -35,7 +35,7 @@ Public NotInheritable Class MD5Provider
 
     Public Sub New(ByVal bufferSize As Integer)
         _bufferSize = bufferSize
-        CryptAcquireContext(hProv, Nothing, Nothing, 1, &HF0000000)
+        CryptAcquireContext(hProv, Nothing, Nothing, 1, &HF0000000UI)
     End Sub
 
     Public Sub New()
