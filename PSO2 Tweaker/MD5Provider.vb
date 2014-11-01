@@ -5,9 +5,9 @@ Imports System.Runtime.InteropServices
 Public NotInheritable Class MD5Provider
     Implements IDisposable
 
-    Private Shared hashSize As Integer = 16
     Private _bufferSize As Integer
     Private hProv As IntPtr = IntPtr.Zero
+    Dim buffer As Byte()
 
     <DllImport("advapi32.dll", CharSet:=CharSet.None, ExactSpelling:=False, SetLastError:=True)>
     Private Shared Function CryptAcquireContext(ByRef hProv As IntPtr, ByVal pszContainer As String, ByVal pszProvider As String, ByVal dwProvType As UInteger, ByVal dwFlags As UInteger) As Boolean
@@ -35,6 +35,7 @@ Public NotInheritable Class MD5Provider
 
     Public Sub New(ByVal bufferSize As Integer)
         _bufferSize = bufferSize
+        buffer = New Byte(_bufferSize) {}
         CryptAcquireContext(hProv, Nothing, Nothing, 1, &HF0000000UI)
     End Sub
 
@@ -56,17 +57,16 @@ Public NotInheritable Class MD5Provider
         Dim hHash As IntPtr = IntPtr.Zero
         CryptCreateHash(hProv, &H8003, IntPtr.Zero, 0, hHash)
         Dim bytesRead As Integer = 0
-        Dim array(_bufferSize) As Byte
 
-        bytesRead = stream.Read(array, 0, _bufferSize)
+        bytesRead = stream.Read(buffer, 0, _bufferSize)
 
         While bytesRead > 0
-            CryptHashData(hHash, array, bytesRead, 0)
-            bytesRead = stream.Read(array, 0, _bufferSize)
+            CryptHashData(hHash, buffer, bytesRead, 0)
+            bytesRead = stream.Read(buffer, 0, _bufferSize)
         End While
 
-        Dim hash(hashSize) As Byte
-        CryptGetHashParam(hHash, 2, hash, hashSize, 0)
+        Dim hash(15) As Byte
+        CryptGetHashParam(hHash, 2, hash, 16, 0)
         CryptDestroyHash(hHash)
 
         Return hash
