@@ -449,6 +449,9 @@ Public Class frmMain
                 RegKey.SetValue(Of String)(RegKey.UID, UIDSTRING)
             End If
 
+            Me.BackgroundImage = Nothing
+            frmOptions.BackgroundImage = Nothing
+
             Log("Load more settings...")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ENPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.ENPatchVersion, "Not Installed")
