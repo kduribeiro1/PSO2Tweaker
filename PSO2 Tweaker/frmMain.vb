@@ -429,20 +429,20 @@ Public Class frmMain
             If File.Exists(pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2RootDir & "\ddraw.dll")
             Log("Loading settings...")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PatchServer)) Then RegKey.SetValue(Of String)(RegKey.PatchServer, "Patch Server #1")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenFuckSEGAMessage)) Then RegKey.SetValue(Of String)(RegKey.SeenFuckSEGAMessage, "False")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenFuckSEGAMessage)) Then RegKey.SetValue(Of Boolean)(RegKey.SeenFuckSEGAMessage, False)
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Backup)) Then RegKey.SetValue(Of String)(RegKey.Backup, "Always")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PreDownloadedRAR)) Then RegKey.SetValue(Of String)(RegKey.PreDownloadedRAR, "Never")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then RegKey.SetValue(Of String)(RegKey.Pastebin, "True")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.CloseAfterLaunch)) Then RegKey.SetValue(Of String)(RegKey.CloseAfterLaunch, "False")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall)) Then RegKey.SetValue(Of String)(RegKey.ENPatchAfterInstall, "False")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesAfterInstall, "False")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchAfterInstall, "False")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then RegKey.SetValue(Of Boolean)(RegKey.Pastebin, True)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.CloseAfterLaunch)) Then RegKey.SetValue(Of Boolean)(RegKey.CloseAfterLaunch, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.ENPatchAfterInstall, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.LargeFilesAfterInstall, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.StoryPatchAfterInstall, False)
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LatestStoryBase)) Then RegKey.SetValue(Of String)(RegKey.LatestStoryBase, "Unknown")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyEnabled)) Then RegKey.SetValue(Of String)(RegKey.ProxyEnabled, "False")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyEnabled)) Then RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
                 btnAnnouncements.PerformClick()
             End If
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UID)) Then RegKey.SetValue(Of String)(RegKey.UID, "False")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UID)) Then RegKey.SetValue(Of Boolean)(RegKey.UID, False)
             If RegKey.GetValue(Of String)(RegKey.UID) = "False" Then
                 Dim client As New WebClient()
                 Dim UIDSTRING As String = client.DownloadString("http://arks-layer.com/docs/client.php")
@@ -558,8 +558,8 @@ Public Class frmMain
 
             LockGUI()
 
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)) Then RegKey.SetValue(Of String)(RegKey.AlwaysOnTop, "False")
-            Dim isTopMost = RegKey.GetValue(Of Boolean)(RegKey.AlwaysOnTop)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)) Then RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
+            Dim isTopMost = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop))
             Me.TopMost = isTopMost
             chkAlwaysOnTop.Checked = isTopMost
 
@@ -736,8 +736,8 @@ Public Class frmMain
             UnlockGUI()
             btnLaunchPSO2.Enabled = False
 
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SidebarEnabled)) Then RegKey.SetValue(Of String)(RegKey.SidebarEnabled, "True")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) Then RegKey.SetValue(Of String)(RegKey.RemoveCensor, "True")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SidebarEnabled)) Then RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, True)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) Then RegKey.SetValue(Of Boolean)(RegKey.RemoveCensor, True)
 
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "True" Then
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
@@ -788,10 +788,10 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strIfAboveVersions)
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseItemTranslation)) Then
-                RegKey.SetValue(Of String)(RegKey.UseItemTranslation, "True")
+                RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, True)
             End If
 
-            UseItemTranslation = RegKey.GetValue(Of Boolean)(RegKey.UseItemTranslation)
+            UseItemTranslation = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseItemTranslation))
             If UseItemTranslation Then
                 chkItemTranslation.Checked = True
                 WriteDebugInfo("Downloading latest item patch files...")
@@ -939,7 +939,7 @@ Public Class frmMain
             rtbDebug.SelectionColor = rtbDebug.ForeColor
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & (AddThisText & " [FAILED!]") & vbCrLf)
-            If RegKey.GetValue(Of Boolean)(RegKey.Pastebin) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
                 If upload = MsgBoxResult.Yes Then
                     PasteBinUpload()
@@ -2299,23 +2299,23 @@ StartPrePatch:
             RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion2)
             UnlockGUI()
 
-            If RegKey.GetValue(Of Boolean)(RegKey.RemoveCensor) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) Then
                 If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.ENPatchAfterInstall) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
                 btnENPatch.RaiseClick()
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.LargeFilesAfterInstall) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingLF)
                 btnLargeFiles.RaiseClick()
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.StoryPatchAfterInstall) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingStoryPatch)
                 btnStory.RaiseClick()
             End If
@@ -3227,12 +3227,11 @@ StartPrePatch:
             If chkAlwaysOnTop.Checked Then
                 frmOptions.TopMost = True
                 Me.TopMost = True
-                RegKey.SetValue(Of String)(RegKey.AlwaysOnTop, "True")
-            End If
-            If Not chkAlwaysOnTop.Checked Then
+                RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, True)
+            Else
                 frmOptions.TopMost = False
                 Me.TopMost = False
-                RegKey.SetValue(Of String)(RegKey.AlwaysOnTop, "False")
+                RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
             End If
         End If
     End Sub
@@ -3474,23 +3473,23 @@ StartPrePatch:
             RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion2)
             UnlockGUI()
 
-            If RegKey.GetValue(Of Boolean)(RegKey.RemoveCensor) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) Then
                 If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
                 My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.ENPatchAfterInstall) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
                 btnENPatch.RaiseClick()
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.LargeFilesAfterInstall) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingLF)
                 btnLargeFiles.RaiseClick()
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.StoryPatchAfterInstall) Then
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingStoryPatch)
                 btnStory.RaiseClick()
             End If
@@ -4148,7 +4147,7 @@ SelectInstallFolder:
             If startPath <> pso2RootDir Then File.Move(startPath & "\publickey.blob", pso2RootDir & "\publickey.blob")
             WriteDebugInfoSameLine(" Done!")
             WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
-            RegKey.SetValue(Of String)(RegKey.ProxyEnabled, "True")
+            RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
             WriteDebugInfoAndFAILED("ERROR - " & ex.Message)
             If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
@@ -4174,7 +4173,7 @@ SelectInstallFolder:
         WriteDebugInfoSameLine(" Done!")
         DeleteFile(pso2RootDir & "\publickey.blob")
         WriteDebugInfoAndOK("All normal JP connection settings restored!")
-        RegKey.SetValue(Of String)(RegKey.ProxyEnabled, "False")
+        RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
     End Sub
 
     Private Sub btnNewShit_Click(sender As Object, e As EventArgs) Handles btnNewShit.Click

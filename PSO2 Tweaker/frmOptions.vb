@@ -75,13 +75,13 @@ Public Class frmOptions
             LabelX2.Text = My.Resources.strChooseALanguage
             LabelX3.Text = My.Resources.strChooseABackgroundImage
 
-            CheckBoxX1.Checked = RegKey.GetValue(Of Boolean)(RegKey.Pastebin)
-            CheckBoxX2.Checked = RegKey.GetValue(Of Boolean)(RegKey.ENPatchAfterInstall)
-            CheckBoxX3.Checked = RegKey.GetValue(Of Boolean)(RegKey.LargeFilesAfterInstall)
-            CheckBoxX4.Checked = RegKey.GetValue(Of Boolean)(RegKey.StoryPatchAfterInstall)
-            CheckBoxX5.Checked = RegKey.GetValue(Of Boolean)(RegKey.SidebarEnabled)
+            CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
+            CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall))
+            CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall))
+            CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall))
+            CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SidebarEnabled))
 
-            chkAutoRemoveCensor.Checked = RegKey.GetValue(Of Boolean)(RegKey.RemoveCensor)
+            chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
             CMBStyle.Text = RegKey.GetValue(Of String)(RegKey.Style)
 
             ComboItem33.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)
