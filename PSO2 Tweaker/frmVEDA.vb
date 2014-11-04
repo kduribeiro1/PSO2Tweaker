@@ -244,6 +244,6 @@ Public Class frmVEDA
     End Sub
 
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click
-        frmMain.DLWUA(txtAqua.Text, "testfile", "True")
+        frmMain.DLWUA(txtAqua.Text, "testfile")
     End Sub
 End Class

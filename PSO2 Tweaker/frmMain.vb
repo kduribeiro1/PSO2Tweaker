@@ -631,7 +631,7 @@ Public Class frmMain
                     Dim updateyesno As MsgBoxResult = MsgBox(My.Resources.strYouareusinganoutdatedversionoftheprogram & My.Application.Info.Version.ToString() & My.Resources.strAndthelatestis & currentVersion & My.Resources.strWouldyouliketodownloadthenewversion & vbCrLf & vbCrLf & My.Resources.strChanges & vbCrLf & changelogtotal, MsgBoxStyle.YesNo)
                     If updateyesno = MsgBoxResult.Yes Then
                         WriteDebugInfo(My.Resources.strDownloadingUpdate)
-                        DLWUA("http://162.243.211.123/freedom/PSO2%20Tweaker%20Updater.exe", "PSO2 Tweaker Updater.exe", "True")
+                        DLWUA("http://162.243.211.123/freedom/PSO2%20Tweaker%20Updater.exe", "PSO2 Tweaker Updater.exe")
                         Process.Start(Environment.CurrentDirectory & "\PSO2 Tweaker Updater.exe")
                         Application.DoEvents()
                         Exit Sub
@@ -674,14 +674,14 @@ Public Class frmMain
             If Not File.Exists("7za.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "7za.exe...")
                 Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", "True")
+                DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe")
             End If
 
             For index = 1 To 5
                 If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
                     WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
                     Application.DoEvents()
-                    DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe", "True")
+                    DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe")
                 Else
                     Exit For
                 End If
@@ -691,14 +691,14 @@ Public Class frmMain
             If Not File.Exists("UnRar.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "UnRar.exe...")
                 Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", "True")
+                DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe")
             End If
 
             For index = 1 To 5
                 If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
                     WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
                     Application.DoEvents()
-                    DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe", "True")
+                    DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe")
                 Else
                     Exit For
                 End If
@@ -973,7 +973,7 @@ Public Class frmMain
         PB1.Text = ""
     End Sub
 
-    Public Sub DLWUA(ByVal Address As String, ByVal Filename As String, ByVal Overwrite As String)
+    Public Sub DLWUA(ByVal Address As String, ByVal Filename As String)
         ' Fuck this function, there's just to much wrong with it -Matthew
 
         DLS.Headers("user-agent") = "AQUA_HTTP"
@@ -1145,7 +1145,7 @@ Public Class frmMain
     Public Sub CheckForStoryUpdates()
         Try
             If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) = "Not Installed" Then Exit Sub
-            DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt", "True")
+            DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
             Dim sBuffer As String
             Dim filename As String()
             Dim truefilename As String
@@ -1216,7 +1216,7 @@ Public Class frmMain
                     lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
                     Application.DoEvents()
                     Cancelled = False
-                    DLWUA(("http://162.243.211.123/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z", "True")
+                    DLWUA(("http://162.243.211.123/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z")
                     If Cancelled Then Exit Sub
                     'Delete the existing file FIRST
                     If Not File.Exists(downloadstring & ".7z") Then
@@ -1357,12 +1357,12 @@ StartPrePatch:
                         Dim TrueMD5 As String = Nothing
                         lblStatus.Text = ""
                         WriteDebugInfo("Downloading pre-patch filelist...")
-                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt", "True")
-                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist1.txt", "patchlist1.txt", "True")
-                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist2.txt", "patchlist2.txt", "True")
-                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist3.txt", "patchlist3.txt", "True")
-                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist4.txt", "patchlist4.txt", "True")
-                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt", "True")
+                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt")
+                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist1.txt", "patchlist1.txt")
+                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist2.txt", "patchlist2.txt")
+                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist3.txt", "patchlist3.txt")
+                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist4.txt", "patchlist4.txt")
+                        DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt")
                         WriteDebugInfoSameLine(My.Resources.strDone)
                         MergePrePatches()
                         If Not Directory.Exists(pso2RootDir & "\_precede\data\win32") Then Directory.CreateDirectory(pso2RootDir & "\_precede\data\win32") 'create directory
@@ -1413,13 +1413,13 @@ StartPrePatch:
 
                             Application.DoEvents()
                             Cancelled = False
-                            DLWUA(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                            DLWUA(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadstring & ".pat"), downloadstring)
                             Dim info7 As New FileInfo(downloadstring)
                             'Dim length2 As Long
                             'If File.Exists(downloadstring) Then length2 = info7.Length
                             If info7.Length = 0 Then
                                 Log("File appears to be empty, trying to download from secondary SEGA server")
-                                DLWUA(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                                DLWUA(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadstring & ".pat"), downloadstring)
                             End If
 
                             If Cancelled Then Exit Sub
@@ -1703,7 +1703,7 @@ StartPrePatch:
                 shell.Start()
             Catch ex As Exception
                 WriteDebugInfo(My.Resources.strItSeemsThereWasAnError)
-                DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", "True")
+                DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
                 Dim DirectoryString2 As String = pso2RootDir
                 If File.Exists((DirectoryString2 & "\pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString2 & "\pso2.exe"))
                 File.Move("pso2.exe", (DirectoryString2 & "\pso2.exe"))
@@ -2136,17 +2136,17 @@ StartPrePatch:
         WriteDebugInfo(My.Resources.strDownloadingPatchFile1)
 
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile2)
 
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile3)
 
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
 
@@ -2216,13 +2216,13 @@ StartPrePatch:
 
                 Application.DoEvents()
                 Cancelled = False
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 Dim info7 As New FileInfo(downloadstring)
                 'Dim length2 As Long
                 'If File.Exists(downloadstring) Then length2 = info7.Length
                 If info7.Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
                 End If
 
                 If Cancelled Then Exit Sub
@@ -2258,7 +2258,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe")
             If Cancelled Then Exit Sub
             If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
@@ -2269,7 +2269,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
             If Cancelled Then Exit Sub
             If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
@@ -2281,7 +2281,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
             If Cancelled Then Exit Sub
 
             If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
@@ -2421,18 +2421,18 @@ StartPrePatch:
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Helper.SizeSuffix(totaldownloaded) & " / " & Helper.SizeSuffix(totalfilesize) & ")"
 
                 Application.DoEvents()
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, "False")
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 Dim info7 As New FileInfo(downloadstring)
                 'Dim length2 As Long
                 'If File.Exists(downloadstring) Then length2 = info7.Length
                 If info7.Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
                 End If
                 info = New FileInfo(downloadstring)
                 If info.Length = 0 Then
                     DeleteFile(downloadstring)
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, "False")
+                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
                 End If
 
                 If File.Exists(downloadstring) Then
@@ -2465,13 +2465,13 @@ StartPrePatch:
 
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe")
             If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
             Application.DoEvents()
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
             If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
@@ -2479,7 +2479,7 @@ StartPrePatch:
             Application.DoEvents()
 
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
             If Cancelled Then Exit Sub
 
             If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
@@ -2659,15 +2659,15 @@ StartPrePatch:
         LockGUI()
         WriteDebugInfo(My.Resources.strDownloadingPatchFile1)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile2)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile3)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
@@ -2792,13 +2792,13 @@ StartPrePatch:
                 totaldownloaded += totalsize2
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 Dim info7 As New FileInfo(downloadstring)
                 'Dim length2 As Long
                 'If File.Exists(downloadstring) Then length2 = info7.Length
                 If info7.Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
                 End If
                 If Cancelled Then Exit Sub
                 File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
@@ -2833,13 +2833,13 @@ StartPrePatch:
                     totaldownloaded2 += totalsize2
                     lblStatus.Text = My.Resources.strDownloading & "" & downloaded2 & "/" & totaldownload2 & " (" & Helper.SizeSuffix(totaldownloaded2) & ")"
 
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring2 & ".pat"), downloadstring2, "True")
+                    DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring2 & ".pat"), downloadstring2)
                     Dim info7 As New FileInfo(downloadstring2)
                     'Dim length2 As Long
                     'If File.Exists(downloadstring2) Then length2 = info7.Length
                     If info7.Length = 0 Then
                         Log("File appears to be empty, trying to download from secondary SEGA server")
-                        DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring2 & ".pat"), downloadstring2, "True")
+                        DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring2 & ".pat"), downloadstring2)
                     End If
                     If Cancelled Then Exit Sub
                     File.Move(downloadstring2, (pso2WinDir & "\" & downloadstring2))
@@ -2859,15 +2859,15 @@ StartPrePatch:
         LockGUI()
         WriteDebugInfo(My.Resources.strDownloadingPatchFile1)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile2)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile3)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
@@ -2983,9 +2983,9 @@ StartPrePatch:
                 End If
             End If
             WriteDebugInfo("Downloading Latest Gameguard file...")
-            DLWUA("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", "GameGuard.des", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", "GameGuard.des")
             WriteDebugInfo("Downloading Latest Gameguard config...")
-            DLWUA("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", pso2launchpath & "\PSO2JP.ini", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", pso2launchpath & "\PSO2JP.ini")
             WriteDebugInfoSameLine(My.Resources.strDone)
             File.Move("GameGuard.des", pso2launchpath & "\GameGuard.des")
 
@@ -3025,7 +3025,7 @@ StartPrePatch:
                 If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
 
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe")
             If Cancelled Then Exit Sub
 
             ' never mind I'll just rewrite it later or something idk
@@ -3038,7 +3038,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
             If Cancelled Then Exit Sub
 
 
@@ -3051,7 +3051,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
             If Cancelled Then Exit Sub
 
             If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2.exe"))
@@ -3390,13 +3390,13 @@ StartPrePatch:
 
                 Application.DoEvents()
                 Cancelled = False
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 Dim info7 As New FileInfo(downloadstring)
                 'Dim length2 As Long
                 'If File.Exists(downloadstring) Then length2 = info7.Length
                 If info7.Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
-                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+                    DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
                 End If
                 If Cancelled Then Exit Sub
                 'Delete the existing file FIRST
@@ -3430,7 +3430,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe")
             If Cancelled Then Exit Sub
             If File.Exists((DirectoryString & "pso2launcher.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2launcher.exe"))
             File.Move("pso2launcher.exe", (DirectoryString & "pso2launcher.exe"))
@@ -3441,7 +3441,7 @@ StartPrePatch:
             For Each proc As Process In procs
                 If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
             If Cancelled Then Exit Sub
             If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
@@ -3454,7 +3454,7 @@ StartPrePatch:
                 If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
 
-            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
             If Cancelled Then Exit Sub
 
             If File.Exists((DirectoryString & "pso2.exe")) AndAlso startPath <> DirectoryString2 Then DeleteFile((DirectoryString & "pso2.exe"))
@@ -3464,7 +3464,7 @@ StartPrePatch:
             RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
             RegKey.SetValue(Of String)(RegKey.ENPatchVersion, "Not Installed")
             RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
-            DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", "True")
+            DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt")
             WriteDebugInfoSameLine(My.Resources.strDone)
             RegKey.SetValue(Of String)(RegKey.PSO2PatchlistMD5, Helper.GetMD5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
@@ -3638,14 +3638,14 @@ SelectInstallFolder:
                     Directory.CreateDirectory(pso2_binfolder & "\data\win32\")
                     'Download required pso2 stuff
                     WriteDebugInfo("Downloading PSO2 required files...")
-                    DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", pso2_binfolder & "\pso2launcher.exe", "True")
-                    DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", pso2_binfolder & "\pso2updater.exe", "True")
-                    DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", pso2_binfolder & "\pso2.exe", "True")
-                    DLWUA("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", pso2_binfolder & "\PSO2JP.ini", "True")
+                    DLWUA("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", pso2_binfolder & "\pso2launcher.exe")
+                    DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", pso2_binfolder & "\pso2updater.exe")
+                    DLWUA("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", pso2_binfolder & "\pso2.exe")
+                    DLWUA("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", pso2_binfolder & "\PSO2JP.ini")
                     WriteDebugInfoSameLine("Done!")
                     'Download Gameguard.des
                     WriteDebugInfo("Downloading Latest Gameguard file...")
-                    DLWUA("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", pso2_binfolder & "\GameGuard.des", "True")
+                    DLWUA("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", pso2_binfolder & "\GameGuard.des")
                     WriteDebugInfoSameLine(My.Resources.strDone)
                     Application.DoEvents()
 
@@ -3715,7 +3715,7 @@ SelectInstallFolder:
                 WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
                 Exit Sub
             End If
-            DLWUA(strDownloadME, "LargeFiles.rar", "True")
+            DLWUA(strDownloadME, "LargeFiles.rar")
             If Cancelled Then Exit Sub
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
             Application.DoEvents()
@@ -3806,7 +3806,7 @@ SelectInstallFolder:
                 WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
                 Exit Sub
             End If
-            DLWUA(strDownloadME, "ENPatch.rar", "True")
+            DLWUA(strDownloadME, "ENPatch.rar")
             If Cancelled Then Exit Sub
 
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
@@ -4002,7 +4002,7 @@ SelectInstallFolder:
 
         lblStatus.Text = My.Resources.strDownloading & " lobby video (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
-        DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+        DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
         Dim info7 As New FileInfo(downloadstring)
 
         'Dim length2 As Long
@@ -4010,7 +4010,7 @@ SelectInstallFolder:
 
         If info7.Length = 0 Then
             Log("File appears to be empty, trying to download from secondary SEGA server")
-            DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring, "True")
+            DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
         End If
         If Cancelled Then Exit Sub
         File.Move(downloadstring, (pso2WinDir & "\" & downloadstring))
@@ -4238,15 +4238,15 @@ SelectInstallFolder:
         LockGUI()
         WriteDebugInfo(My.Resources.strDownloadingPatchFile1)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/launcherlist.txt", "launcherlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile2)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches/patchlist.txt", "patchlist.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile3)
         Application.DoEvents()
-        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt", "True")
+        DLWUA("http://download.pso2.jp/patch_prod/patches_old/patchlist.txt", "patchlist_old.txt")
         WriteDebugInfoSameLine(My.Resources.strDone)
         WriteDebugInfo(My.Resources.strDownloadingPatchFile4)
         Application.DoEvents()
@@ -4301,9 +4301,9 @@ SelectInstallFolder:
         strStoryPatchLatestBase = strStoryPatchLatestBase.Replace("/", "-")
 
         WriteDebugInfoAndOK("Downloading story patch info... ")
-        DLWUA("http://162.243.211.123/freedom/pso2.stripped.db", "pso2.stripped.db", "True")
+        DLWUA("http://162.243.211.123/freedom/pso2.stripped.db", "pso2.stripped.db")
         WriteDebugInfoAndOK("Downloading Trans-Am tool... ")
-        DLWUA("http://162.243.211.123/freedom/pso2-transam.exe", "pso2-transam.exe", "True")
+        DLWUA("http://162.243.211.123/freedom/pso2-transam.exe", "pso2-transam.exe")
 
         'execute pso2-transam stuff with -b flag for backup
         Dim process As Process = Nothing
@@ -4353,7 +4353,7 @@ SelectInstallFolder:
             Application.DoEvents()
             Dim strDownloadME As String = url & filename
             Cancelled = False
-            DLWUA(strDownloadME, filename, "True")
+            DLWUA(strDownloadME, filename)
             If Cancelled Then Exit Sub
             WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
 
@@ -4434,7 +4434,7 @@ SelectInstallFolder:
                     Exit Sub
                 End If
 
-                DLWUA(PatchURL, PatchFile, "True")
+                DLWUA(PatchURL, PatchFile)
                 If Cancelled Then Exit Sub
                 WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & PatchURL & ")"))
             ElseIf predownloadedyesno = MsgBoxResult.Yes Then
@@ -4547,7 +4547,7 @@ SelectInstallFolder:
                 Exit Sub
             End If
 
-            DLWUA(PatchListURL, PatchListFile, "True")
+            DLWUA(PatchListURL, PatchListFile)
 
             Dim missingfiles = File.ReadAllLines(PatchListFile)
 
@@ -4560,9 +4560,9 @@ SelectInstallFolder:
 
                 'Download JP file
                 lblStatus.Text = My.Resources.strUninstalling & index & "/" & missingfiles.Length
-                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index), "True")
+                DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index))
                 Dim info7 As New FileInfo(missingfiles(index))
-                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index), "True")
+                If info7.Length = 0 Then DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & missingfiles(index) & ".pat"), missingfiles(index))
 
                 'Move JP file to win32
                 DeleteFile((pso2WinDir & "\" & missingfiles(index)))
