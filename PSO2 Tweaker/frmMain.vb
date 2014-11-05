@@ -112,7 +112,6 @@ Public Class frmMain
         btnGameguard.Text = My.Resources.strFixGameguardErrors
         ButtonItem17.Text = My.Resources.strResetPSO2Settings
         btnResumePatching.Text = My.Resources.strResumePatching
-        ButtonItem12.Text = My.Resources.strStoryPatchServerTests
         btnTerminate.Text = My.Resources.strTerminate
         ButtonItem7.Text = My.Resources.strLaunchChrome
     End Sub
@@ -3087,26 +3086,6 @@ StartPrePatch:
             File.WriteAllText(usersettingsfile, txtPSO2DefaultINI.Text)
             WriteDebugInfoAndOK(My.Resources.strPSO2SettingsReset)
         End If
-    End Sub
-
-    Private Sub ButtonItem12_Click(sender As Object, e As EventArgs) Handles ButtonItem12.Click
-        ' ping download.pso2.jp
-        ' ping gs016.pso2gs.net
-        ' ping www.google.com
-        ' network speed test
-        WriteDebugInfo("Testing download speeds for Patch Server #1 (Japan)...")
-        WriteDebugInfo("Downloading Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler...")
-        Me.timer_start = 0
-        Me.WebBrowser1.Navigate("http://socket-hack.com:2312/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler.mp3")
-        Me.seconds.Start()
-        Do While WebBrowser1.ReadyState <> WebBrowserReadyState.Complete
-            Application.DoEvents()
-        Loop
-        WriteDebugInfo("Testing download speeds for Patch Server #2 (North America)...")
-        WriteDebugInfo("Downloading Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler...")
-        Me.timer_start = 0
-        Me.WebBrowser2.Navigate("http://pso2.aeongames.net/Disko%20Warp%20x%20Pump%20It%20Up%20Pro%202%20Official%20Soundtrack%20Sampler(1).mp3")
-        Me.seconds.Start()
     End Sub
 
     Private Sub btnTerminate_Click(sender As Object, e As EventArgs) Handles btnTerminate.Click

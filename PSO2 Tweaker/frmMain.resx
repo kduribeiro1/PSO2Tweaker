@@ -1074,12 +1074,6 @@
   <data name="btnResumePatching.Tooltip" xml:space="preserve">
     <value>Resume a failed/interrupted/canceled patchjob</value>
   </data>
-  <data name="ButtonItem12.Text" xml:space="preserve">
-    <value>Story Patch Server Tests</value>
-  </data>
-  <data name="ButtonItem12.Tooltip" xml:space="preserve">
-    <value>Tests your connection and download speed to the Story patch servers</value>
-  </data>
   <data name="btnTerminate.Text" xml:space="preserve">
     <value>Terminate PSO2 Process</value>
   </data>
@@ -7887,12 +7881,6 @@
     <value>btnResumePatching</value>
   </data>
   <data name="&gt;&gt;btnResumePatching.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ButtonItem12.Name" xml:space="preserve">
-    <value>ButtonItem12</value>
-  </data>
-  <data name="&gt;&gt;ButtonItem12.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnTerminate.Name" xml:space="preserve">

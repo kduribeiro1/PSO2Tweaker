@@ -92,7 +92,6 @@ Partial Class frmMain
         Me.ButtonItem17 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnResetTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnResumePatching = New DevComponents.DotNetBar.ButtonItem()
-        Me.ButtonItem12 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnTerminate = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOtherStuff = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem7 = New DevComponents.DotNetBar.ButtonItem()
@@ -571,7 +570,7 @@ Partial Class frmMain
         'ButtonItem2
         '
         Me.ButtonItem2.Name = "ButtonItem2"
-        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnGameguard, Me.btnFixPSO2EXEs, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.ButtonItem12, Me.btnTerminate})
+        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnGameguard, Me.btnFixPSO2EXEs, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.btnTerminate})
         resources.ApplyResources(Me.ButtonItem2, "ButtonItem2")
         '
         'btnAnalyze
@@ -623,11 +622,6 @@ Partial Class frmMain
         '
         Me.btnResumePatching.Name = "btnResumePatching"
         resources.ApplyResources(Me.btnResumePatching, "btnResumePatching")
-        '
-        'ButtonItem12
-        '
-        Me.ButtonItem12.Name = "ButtonItem12"
-        resources.ApplyResources(Me.ButtonItem12, "ButtonItem12")
         '
         'btnTerminate
         '
@@ -896,8 +890,6 @@ Partial Class frmMain
         Me.DLS.BaseAddress = ""
         Me.DLS.CachePolicy = Nothing
         Me.DLS.Credentials = Nothing
-        Me.DLS.Encoding = CType(resources.GetObject("DLS.Encoding"), System.Text.Encoding)
-        Me.DLS.Headers = CType(resources.GetObject("DLS.Headers"), System.Net.WebHeaderCollection)
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.timeout = 10000
         Me.DLS.UseDefaultCredentials = False
@@ -1027,7 +1019,6 @@ Partial Class frmMain
     Friend WithEvents ButtonItem17 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnResetTweaker As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnResumePatching As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents ButtonItem12 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnTerminate As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnOtherStuff As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem7 As DevComponents.DotNetBar.ButtonItem
