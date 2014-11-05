@@ -32,7 +32,6 @@ Partial Class frmMain
         Me.chkRemoveVita = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.StyleManager1 = New DevComponents.DotNetBar.StyleManager()
         Me.PBMainBar = New DevComponents.DotNetBar.Controls.ProgressBarX()
-        Me.QatCustomizeItem1 = New DevComponents.DotNetBar.QatCustomizeItem()
         Me.chkRemoveNVidia = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemoveSEGA = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkSwapOP = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -50,9 +49,7 @@ Partial Class frmMain
         Me.tsmRestartDownload = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelProcessToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.seconds = New System.Windows.Forms.Timer(Me.components)
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
@@ -207,10 +204,6 @@ Partial Class frmMain
         Me.PBMainBar.Name = "PBMainBar"
         Me.PBMainBar.TabStop = False
         Me.PBMainBar.TextVisible = True
-        '
-        'QatCustomizeItem1
-        '
-        Me.QatCustomizeItem1.Name = "QatCustomizeItem1"
         '
         'chkRemoveNVidia
         '
@@ -369,19 +362,9 @@ Partial Class frmMain
         Me.CancelProcessToolStripMenuItem.Name = "CancelProcessToolStripMenuItem"
         resources.ApplyResources(Me.CancelProcessToolStripMenuItem, "CancelProcessToolStripMenuItem")
         '
-        'Label3
-        '
-        resources.ApplyResources(Me.Label3, "Label3")
-        Me.Label3.Name = "Label3"
-        '
         'seconds
         '
         Me.seconds.Interval = 10
-        '
-        'Label4
-        '
-        resources.ApplyResources(Me.Label4, "Label4")
-        Me.Label4.Name = "Label4"
         '
         'WebBrowser1
         '
@@ -908,8 +891,6 @@ Partial Class frmMain
         Me.Controls.Add(Me.WebBrowser3)
         Me.Controls.Add(Me.WebBrowser2)
         Me.Controls.Add(Me.WebBrowser1)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.btnLaunchPSO2)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.lblDirectory)
@@ -948,7 +929,6 @@ Partial Class frmMain
     Friend WithEvents chkRemoveVita As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents StyleManager1 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents PBMainBar As DevComponents.DotNetBar.Controls.ProgressBarX
-    Friend WithEvents QatCustomizeItem1 As DevComponents.DotNetBar.QatCustomizeItem
     Friend WithEvents chkRemoveNVidia As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemoveSEGA As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkSwapOP As DevComponents.DotNetBar.Controls.CheckBoxX
@@ -964,9 +944,7 @@ Partial Class frmMain
     Friend WithEvents btnLaunchPSO2 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents cmsProgressBar As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CancelDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents seconds As System.Windows.Forms.Timer
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents CancelProcessToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
