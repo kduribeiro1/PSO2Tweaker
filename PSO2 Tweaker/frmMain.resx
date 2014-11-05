@@ -924,7 +924,7 @@
   <data name="btnUninstallStory.Tooltip" xml:space="preserve">
     <value>Uninstall the English Story Patch</value>
   </data>
-  <data name="btniTroubleshooting.Text" xml:space="preserve">
+  <data name="ButtonItem1.Text" xml:space="preserve">
     <value>Redownload Original JP Files</value>
   </data>
   <data name="btnAnalyze.Text" xml:space="preserve">
@@ -7640,9 +7640,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
   </data>
@@ -7808,10 +7805,10 @@
   <data name="&gt;&gt;btnRestoreJPETrials.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;btniTroubleshooting.Name" xml:space="preserve">
-    <value>btniTroubleshooting</value>
+  <data name="&gt;&gt;ButtonItem1.Name" xml:space="preserve">
+    <value>ButtonItem1</value>
   </data>
-  <data name="&gt;&gt;btniTroubleshooting.Type" xml:space="preserve">
+  <data name="&gt;&gt;ButtonItem1.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnUninstallENPatch.Name" xml:space="preserve">

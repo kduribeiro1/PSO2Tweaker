@@ -96,7 +96,7 @@ Public Class frmMain
         btnFixPermissions.Text = My.Resources.strFixPSO2Permissions
         lblORBLabel.Text = My.Resources.strClickOrb
         rtbDebug.Text = My.Resources.strProgramStarted
-        btniTroubleshooting.Text = "Redownload Original JP Files"
+        ButtonItem1.Text = "Redownload Original JP Files"
         ButtonItem2.Text = My.Resources.strTroubleshooting
         btnOtherStuff.Text = My.Resources.strOtherTasks
         ButtonItem3.Text = My.Resources.strWebLinks

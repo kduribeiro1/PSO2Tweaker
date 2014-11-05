@@ -77,7 +77,7 @@ Partial Class frmMain
         Me.btnRestoreStoryBackup = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreJPNames = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreJPETrials = New DevComponents.DotNetBar.ButtonItem()
-        Me.btniTroubleshooting = New DevComponents.DotNetBar.ButtonItem()
+        Me.ButtonItem1 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnUninstallENPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnUninstallLargeFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnUninstallStory = New DevComponents.DotNetBar.ButtonItem()
@@ -453,7 +453,7 @@ Partial Class frmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.btniTroubleshooting, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'btnSelectPSODir
         '
@@ -546,11 +546,11 @@ Partial Class frmMain
         resources.ApplyResources(Me.btnRestoreJPETrials, "btnRestoreJPETrials")
         Me.btnRestoreJPETrials.Visible = False
         '
-        'btniTroubleshooting
+        'ButtonItem1
         '
-        Me.btniTroubleshooting.Name = "btniTroubleshooting"
-        Me.btniTroubleshooting.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnUninstallENPatch, Me.btnUninstallLargeFiles, Me.btnUninstallStory})
-        resources.ApplyResources(Me.btniTroubleshooting, "btniTroubleshooting")
+        Me.ButtonItem1.Name = "ButtonItem1"
+        Me.ButtonItem1.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnUninstallENPatch, Me.btnUninstallLargeFiles, Me.btnUninstallStory})
+        resources.ApplyResources(Me.ButtonItem1, "ButtonItem1")
         '
         'btnUninstallENPatch
         '
@@ -1003,7 +1003,7 @@ Partial Class frmMain
     Friend WithEvents btnRestoreStoryBackup As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRestoreJPNames As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRestoreJPETrials As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btniTroubleshooting As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents ButtonItem1 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnUninstallENPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnUninstallLargeFiles As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnUninstallStory As DevComponents.DotNetBar.ButtonItem
