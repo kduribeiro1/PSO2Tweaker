@@ -85,7 +85,6 @@ Partial Class frmMain
         Me.btnAnalyze = New DevComponents.DotNetBar.ButtonItem()
         Me.Button2 = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem10 = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnConnection = New DevComponents.DotNetBar.ButtonItem()
         Me.btnGameguard = New DevComponents.DotNetBar.ButtonItem()
         Me.btnFixPSO2EXEs = New DevComponents.DotNetBar.ButtonItem()
         Me.btnFixPermissions = New DevComponents.DotNetBar.ButtonItem()
@@ -572,7 +571,7 @@ Partial Class frmMain
         'ButtonItem2
         '
         Me.ButtonItem2.Name = "ButtonItem2"
-        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnConnection, Me.btnGameguard, Me.btnFixPSO2EXEs, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.ButtonItem12, Me.btnTerminate})
+        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnGameguard, Me.btnFixPSO2EXEs, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.ButtonItem12, Me.btnTerminate})
         resources.ApplyResources(Me.ButtonItem2, "ButtonItem2")
         '
         'btnAnalyze
@@ -589,12 +588,6 @@ Partial Class frmMain
         '
         Me.ButtonItem10.Name = "ButtonItem10"
         resources.ApplyResources(Me.ButtonItem10, "ButtonItem10")
-        '
-        'btnConnection
-        '
-        Me.btnConnection.Name = "btnConnection"
-        resources.ApplyResources(Me.btnConnection, "btnConnection")
-        Me.btnConnection.Visible = False
         '
         'btnGameguard
         '
@@ -854,7 +847,6 @@ Partial Class frmMain
         Me.btnAnnouncements.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
         resources.ApplyResources(Me.btnAnnouncements, "btnAnnouncements")
         Me.btnAnnouncements.Name = "btnAnnouncements"
-        Me.btnAnnouncements.Shape = New DevComponents.DotNetBar.RoundRectangleShapeDescriptor()
         Me.btnAnnouncements.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'WebBrowser4
@@ -901,7 +893,14 @@ Partial Class frmMain
         '
         'DLS
         '
+        Me.DLS.BaseAddress = ""
+        Me.DLS.CachePolicy = Nothing
+        Me.DLS.Credentials = Nothing
+        Me.DLS.Encoding = CType(resources.GetObject("DLS.Encoding"), System.Text.Encoding)
+        Me.DLS.Headers = CType(resources.GetObject("DLS.Headers"), System.Net.WebHeaderCollection)
+        Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.timeout = 10000
+        Me.DLS.UseDefaultCredentials = False
         '
         'frmMain
         '
@@ -1021,7 +1020,6 @@ Partial Class frmMain
     Friend WithEvents btnAnalyze As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents Button2 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem10 As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnConnection As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnGameguard As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnFixPSO2EXEs As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnFixPermissions As DevComponents.DotNetBar.ButtonItem

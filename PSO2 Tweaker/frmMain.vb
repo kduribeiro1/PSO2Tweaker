@@ -109,7 +109,6 @@ Public Class frmMain
         btnAnalyze.Text = My.Resources.strAnalyzeInstallforIssues
         Button2.Text = My.Resources.strCheckforDeletedMissingFiles
         ButtonItem10.Text = My.Resources.strCheckForOldMissingFiles
-        btnConnection.Text = My.Resources.strDiagnoseConnectionIssues
         btnGameguard.Text = My.Resources.strFixGameguardErrors
         ButtonItem17.Text = My.Resources.strResetPSO2Settings
         btnResumePatching.Text = My.Resources.strResumePatching
@@ -2859,55 +2858,6 @@ StartPrePatch:
         ComingFromOldFiles = True
         CancelledFull = False
         ButtonItem5.RaiseClick()
-    End Sub
-
-    Private Sub btnConnection_Click(sender As Object, e As EventArgs) Handles btnConnection.Click
-        ' TODO: Is this function even used?
-        ' ping download.pso2.jp
-        ' ping gs016.pso2gs.net
-        ' ping www.google.com
-        ' network speed test
-        WriteDebugInfo(My.Resources.strCheckingConnection)
-        WriteDebugInfo(Ping("download.pso2.jp"))
-        WriteDebugInfoSameLine("/" & Ping("download.pso2.jp"))
-        WriteDebugInfoSameLine("/" & Ping("download.pso2.jp"))
-        WriteDebugInfoSameLine("/" & Ping("download.pso2.jp"))
-        WriteDebugInfo(My.Resources.strIfTheAboveNumbers)
-        WriteDebugInfo(My.Resources.strTestingDownloadSpeeds)
-        WriteDebugInfo(My.Resources.strDownloadingTestFile & testfile & "...")
-
-        Me.timer_start = 0
-        Me.WebBrowser1.Navigate(testfile)
-        Me.seconds.Start()
-
-        Dim query As ManagementObjectSearcher
-        Dim Qc As ManagementObjectCollection
-        Dim Oq As ObjectQuery
-        Dim Ms As ManagementScope
-        Dim Co As ConnectionOptions
-        Dim Mo As ManagementObject
-        Dim signalStrength As Double
-
-        Try
-            Co = New ConnectionOptions
-            Ms = New ManagementScope("root\wmi")
-            Oq = New ObjectQuery("SELECT * FROM MSNdis_80211_ReceivedSignalStrength Where active=true")
-            query = New ManagementObjectSearcher(Ms, Oq)
-            Qc = query.Get
-            signalStrength = 0
-
-            For Each Mo In query.Get
-                signalStrength = Convert.ToDouble(Mo("Ndis80211ReceivedSignalStrength"))
-            Next
-        Catch exp As Exception
-            ' Indicate no signal
-            signalStrength = -1
-        End Try
-
-        If signalStrength <> -1 Then
-            WriteDebugInfo("Current Signal Strength is: " & signalStrength.ToString())
-            WriteDebugInfo("Any strength below 60 may be an issue!")
-        End If
     End Sub
 
     Private Sub btnGameguard_Click(sender As Object, e As EventArgs) Handles btnGameguard.Click

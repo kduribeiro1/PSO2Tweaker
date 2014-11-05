@@ -171,7 +171,7 @@
     <value>28</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>90, 17</value>
   </metadata>
   <data name="chkRemoveCensor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -255,7 +255,7 @@
     <value>25</value>
   </data>
   <metadata name="StyleManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>147, 17</value>
+    <value>232, 17</value>
   </metadata>
   <data name="PB1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 265</value>
@@ -627,7 +627,7 @@
     <value>14</value>
   </data>
   <metadata name="ContextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>426, 17</value>
+    <value>461, 17</value>
   </metadata>
   <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>167, 70</value>
@@ -687,7 +687,7 @@
     <value>13</value>
   </data>
   <metadata name="seconds.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>277, 15</value>
+    <value>365, 17</value>
   </metadata>
   <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1032,12 +1032,6 @@
   <data name="ButtonItem10.Tooltip" xml:space="preserve">
     <value>Checks for deleted files AND out-of-date files</value>
   </data>
-  <data name="btnConnection.Text" xml:space="preserve">
-    <value>Diagnose Connection Issues</value>
-  </data>
-  <data name="btnConnection.Tooltip" xml:space="preserve">
-    <value>Tests your connection to the patch server, and your general download speed</value>
-  </data>
   <data name="btnGameguard.Text" xml:space="preserve">
     <value>Fix Gameguard Errors</value>
   </data>
@@ -1165,7 +1159,7 @@
     <value>PSO2 Tweaker Donation Link</value>
   </data>
   <metadata name="StyleManager2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>145, 45</value>
+    <value>618, 17</value>
   </metadata>
   <data name="btnAnnouncements.Location" type="System.Drawing.Point, System.Drawing">
     <value>406, 31</value>
@@ -1451,7 +1445,7 @@
     <value>2</value>
   </data>
   <metadata name="tmrCheckServerStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>273, 45</value>
+    <value>17, 56</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -7851,12 +7845,6 @@
     <value>ButtonItem10</value>
   </data>
   <data name="&gt;&gt;ButtonItem10.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;btnConnection.Name" xml:space="preserve">
-    <value>btnConnection</value>
-  </data>
-  <data name="&gt;&gt;btnConnection.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnGameguard.Name" xml:space="preserve">
