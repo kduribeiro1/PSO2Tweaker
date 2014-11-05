@@ -19,8 +19,6 @@ Public Class frmDiagnostic
         Dim CurrentLine As String = ""
 
         Using xRead As New StreamReader("C:\WINDOWS\system32\drivers\etc\hosts")
-            Dim buffer As New List(Of String)
-
             Do Until xRead.EndOfStream
                 CurrentLine = xRead.ReadLine()
                 '[AIDA] Changed it, only took a few days! :D.... :(

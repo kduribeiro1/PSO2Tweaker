@@ -49,16 +49,6 @@ Public Class frmMain
     Dim timer_start As Integer
     Dim totalsize2 As Long
 
-    'Public Property pso2Dir() As String
-    '    Get
-    '        MessageBox.Show(_pso2Dir)
-    '        Return _pso2Dir
-    '    End Get
-    '    Set(value As String)
-    '        _pso2Dir = value
-    '    End Set
-    'End Property
-
 #Region "External Functions"
 
     Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As IntPtr
@@ -286,127 +276,52 @@ Public Class frmMain
             DeleteFile(pso2RootDir & "\ddraw.dll")
 
             For i As Integer = 1 To args.Length - 1
-                If args(i) = "-fuck_you_misaki_stop_trying_to_decompile_my_shit" Then
-                    Log("Fuck you, Misaki")
-                    MsgBox("Why are you trying to decompile my program? Get outta here!")
-                End If
+                Select Case args(i)
+                    Case "-nodllcheck"
+                        TransOverride = True
 
-                If args(i) = "-nodllcheck" Then
-                    TransOverride = True
-                End If
+                    Case "-fuck_you_misaki_stop_trying_to_decompile_my_shit"
+                        Log("Fuck you, Misaki")
+                        MsgBox("Why are you trying to decompile my program? Get outta here!")
 
-                If args(i) = "-steam" Then
-                    Log("Detected -steam argument")
-                    If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamUID)) Then
-                        MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
-                    End If
+                    Case "-item"
+                        Log("Detected command argument -item")
+                        UseItemTranslation = True
 
-                    Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-                    ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                    Case "-nodiag"
+                        Log("Detected command argument -nodiag")
+                        Log("Bypassing OS detection to fix compatibility!")
+                        nodiag = True
 
-                    Log("Deleting item cache")
-                    DeleteFile(Dir() & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-                    Log("Launching PSO2 with -steam")
+                    Case "-steam"
+                        Log("Detected -steam argument")
+                        If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamUID)) Then
+                            MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
+                        End If
 
-                    Me.Close()
-                End If
+                        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
+                        ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
 
-                If args(i) = "-item" Then
-                    Log("Detected command argument -item")
-                    UseItemTranslation = True
-                End If
+                        Log("Deleting item cache")
+                        DeleteFile(Dir() & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
+                        Log("Launching PSO2 with -steam")
 
-                If args(i) = "-nodiag" Then
-                    Log("Detected command argument -nodiag")
-                    Log("Bypassing OS detection to fix compatibility!")
-                    nodiag = True
-                End If
+                        Me.Close()
 
-                If args(i) = "-bypass" Then
-                    Log("Detected command argument -bypass")
-                    Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
-                    MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
-                    If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
-                        MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                        SelectPSO2Directory()
-                        Exit Sub
-                    End If
-                    File.WriteAllBytes(pso2RootDir & "\ddraw.dll", My.Resources.ddraw)
-                    Log("Setting environment variable")
-                    Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-                    Log("Launching PSO2")
-                    ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
-                    Me.Hide()
-                    Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
-                        procs = Process.GetProcessesByName("pso2")
-                        For Each proc As Process In procs
-                            If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
-                                If Not TransOverride Then DeleteFile(pso2RootDir & "\ddraw.dll")
-                            End If
-                        Next
-                        Thread.Sleep(1000)
-                    Loop
-                    Me.Close()
-                End If
-
-                If args(i) = "-pso2" Then
-                    Log("Detected command argument -pso2")
-
-                    'Fuck SEGA. Fuck them hard.
-                    If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
-                        MsgBox(My.Resources.strPleaseSelectwin32Dir)
-                        SelectPSO2Directory()
-                        Exit Sub
-                    End If
-
-                    If UseItemTranslation Then
-                        Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                        Log("Deleting item cache...")
-                        DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-
-                        'Download the latest translator.dll and translation.bin
-                        Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
-                        Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
-                        Log(My.Resources.strDownloadingItemTranslationFiles)
-                        Dim client As New WebClient
-
-                        ' Try up to 4 times to download the translator DLL.
-                        For tries As Integer = 1 To 4
-                            Try
-                                client.DownloadFile(DLLink1, (pso2RootDir & "\translator.dll"))
-                                Exit For
-                            Catch ex As Exception
-                                If tries = 4 Then
-                                    Log("Failed to download translation files! (" & ex.Message & ")")
-                                    Exit For
-                                End If
-                            End Try
-                        Next
-
-                        ' Try up to 4 times to download the translation strings.
-                        For tries As Integer = 1 To 4
-                            Try
-                                client.DownloadFile(DLLink2, (pso2RootDir & "\translation.bin"))
-                                Exit For
-                            Catch ex As Exception
-                                If tries = 4 Then
-                                    Log("Failed to download translation files! (" & ex.Message & ")")
-                                    Exit Try
-                                End If
-                            End Try
-                        Next
-
+                    Case "-bypass"
+                        Log("Detected command argument -bypass")
+                        Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
+                        MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
+                        If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
+                            MsgBox(My.Resources.strPleaseSelectwin32Dir)
+                            SelectPSO2Directory()
+                            Exit Sub
+                        End If
                         File.WriteAllBytes(pso2RootDir & "\ddraw.dll", My.Resources.ddraw)
-                    End If
-
-                    Log("Setting environment variable")
-                    Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-
-                    Log("Launching PSO2")
-                    ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
-
-                    DeleteFile("LanguagePack.rar")
-                    If UseItemTranslation Then
+                        Log("Setting environment variable")
+                        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
+                        Log("Launching PSO2")
+                        ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
                         Me.Hide()
                         Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
                             procs = Process.GetProcessesByName("pso2")
@@ -417,10 +332,80 @@ Public Class frmMain
                             Next
                             Thread.Sleep(1000)
                         Loop
-                    End If
+                        Me.Close()
 
-                    Me.Close()
-                End If
+                    Case "-pso2"
+                        Log("Detected command argument -pso2")
+
+                        'Fuck SEGA. Fuck them hard.
+                        If (Directory.Exists(pso2RootDir) = False OrElse pso2RootDir = "lblDirectory") Then
+                            MsgBox(My.Resources.strPleaseSelectwin32Dir)
+                            SelectPSO2Directory()
+                            Exit Sub
+                        End If
+
+                        If UseItemTranslation Then
+                            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                            Log("Deleting item cache...")
+                            DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
+
+                            'Download the latest translator.dll and translation.bin
+                            Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
+                            Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
+                            Log(My.Resources.strDownloadingItemTranslationFiles)
+                            Dim client As New WebClient
+
+                            ' Try up to 4 times to download the translator DLL.
+                            For tries As Integer = 1 To 4
+                                Try
+                                    client.DownloadFile(DLLink1, (pso2RootDir & "\translator.dll"))
+                                    Exit For
+                                Catch ex As Exception
+                                    If tries = 4 Then
+                                        Log("Failed to download translation files! (" & ex.Message & ")")
+                                        Exit For
+                                    End If
+                                End Try
+                            Next
+
+                            ' Try up to 4 times to download the translation strings.
+                            For tries As Integer = 1 To 4
+                                Try
+                                    client.DownloadFile(DLLink2, (pso2RootDir & "\translation.bin"))
+                                    Exit For
+                                Catch ex As Exception
+                                    If tries = 4 Then
+                                        Log("Failed to download translation files! (" & ex.Message & ")")
+                                        Exit Try
+                                    End If
+                                End Try
+                            Next
+
+                            File.WriteAllBytes(pso2RootDir & "\ddraw.dll", My.Resources.ddraw)
+                        End If
+
+                        Log("Setting environment variable")
+                        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
+
+                        Log("Launching PSO2")
+                        ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+
+                        DeleteFile("LanguagePack.rar")
+                        If UseItemTranslation Then
+                            Me.Hide()
+                            Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
+                                procs = Process.GetProcessesByName("pso2")
+                                For Each proc As Process In procs
+                                    If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
+                                        If Not TransOverride Then DeleteFile(pso2RootDir & "\ddraw.dll")
+                                    End If
+                                Next
+                                Thread.Sleep(1000)
+                            Loop
+                        End If
+
+                        Me.Close()
+                End Select
             Next
 
             'Normal Tweaker startup
@@ -572,7 +557,9 @@ Public Class frmMain
 
             Application.DoEvents()
 
-            If Not nodiag Then
+            If nodiag Then
+                Log("Diagnostic info skipped due to -nodiag flag!")
+            Else
                 Log(vbCrLf)
                 Log("----------------------------------------")
                 Log(My.Resources.strProgramOpeningRunningDiagnostics)
@@ -591,10 +578,6 @@ Public Class frmMain
                 Log("----------------------------------------")
             End If
 
-            If nodiag Then
-                Log("Diagnostic info skipped due to -nodiag flag!")
-            End If
-
             WriteDebugInfoAndOK((My.Resources.strProgramOpeningSuccessfully & My.Application.Info.Version.ToString()))
             Application.DoEvents()
         Catch ex As Exception
@@ -603,7 +586,6 @@ Public Class frmMain
         End Try
 
         Try
-            Dim pso2launchpath As String = pso2RootDir
             Dim localVersion As String = My.Application.Info.Version.ToString()
 
             Dim wc As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
@@ -653,7 +635,6 @@ Public Class frmMain
         ThreadPool.QueueUserWorkItem(AddressOf IsServerOnline, Nothing)
 
         Try
-            Dim pso2launchpath As String = pso2RootDir
             Application.DoEvents()
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PSO2Dir)) Then
@@ -2213,16 +2194,12 @@ StartPrePatch:
                 'WHAT THE FUCK IS GOING ON HERE?
                 downloaded += 1
                 totaldownloaded += totalsize2
-
-
                 lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
 
                 Application.DoEvents()
                 Cancelled = False
                 DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 Dim info7 As New FileInfo(downloadstring)
-                'Dim length2 As Long
-                'If File.Exists(downloadstring) Then length2 = info7.Length
                 If info7.Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
                     DLWUA(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
@@ -2340,7 +2317,6 @@ StartPrePatch:
             SOMEOFTHETHINGS.Remove("")
 
             If SOMEOFTHETHINGS.ContainsKey("pso2.exe") Then
-                Dim value = SOMEOFTHETHINGS("pso2.exe")
                 SOMEOFTHETHINGS.Remove("pso2.exe")
             End If
 
@@ -2886,6 +2862,7 @@ StartPrePatch:
     End Sub
 
     Private Sub btnConnection_Click(sender As Object, e As EventArgs) Handles btnConnection.Click
+        ' TODO: Is this function even used?
         ' ping download.pso2.jp
         ' ping gs016.pso2gs.net
         ' ping www.google.com
@@ -3781,15 +3758,14 @@ SelectInstallFolder:
         Try
             WriteDebugInfo(My.Resources.strDownloading & "EN patch...")
             Application.DoEvents()
-            Dim strVersion As String
-            Dim net As New WebClient()
-            Dim src As String
+
             If Not CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") Then
                 WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
                 WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
                 Exit Sub
             End If
-            src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
+            Dim net As New WebClient()
+            Dim src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
 
             ' Create a match using regular exp<b></b>ressions
             'http://pso2.arghargh200.net/pso2/patch_2013_04_24.rar
@@ -3799,8 +3775,7 @@ SelectInstallFolder:
             txtHTML.Text = m.Value
             Dim strDownloadME As String = txtHTML.Text.Replace("<br /><a href=""", "")
             Dim Lastfilename As String() = strDownloadME.Split("/"c)
-            strVersion = Lastfilename(Lastfilename.Length - 1)
-            strVersion = strVersion.Replace(".rar", "")
+            Dim strVersion = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
 
             Cancelled = False
             If Not CheckLink(strDownloadME) Then
@@ -3808,6 +3783,7 @@ SelectInstallFolder:
                 WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
                 Exit Sub
             End If
+
             DLWUA(strDownloadME, "ENPatch.rar")
             If Cancelled Then Exit Sub
 
@@ -3885,8 +3861,6 @@ SelectInstallFolder:
                 Return True
             End Using
         Catch ex As WebException
-            'Dim ReturnString As String = ex.Message.ToString() .Replace("The remote server returned an error: ", "")
-            'Return ReturnString
             Return False
         End Try
     End Function
@@ -4006,9 +3980,6 @@ SelectInstallFolder:
 
         DLWUA(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
         Dim info7 As New FileInfo(downloadstring)
-
-        'Dim length2 As Long
-        'If File.Exists(downloadstring) Then length2 = info7.Length
 
         If info7.Length = 0 Then
             Log("File appears to be empty, trying to download from secondary SEGA server")

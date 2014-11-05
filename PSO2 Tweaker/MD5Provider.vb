@@ -33,14 +33,10 @@ Public NotInheritable Class MD5Provider
     Private Shared Function CryptReleaseContext(ByVal hProv As IntPtr, ByVal dwFlags As Integer) As Boolean
     End Function
 
-    Public Sub New(ByVal bufferSize As Integer)
+    Public Sub New(Optional ByVal bufferSize As Integer = &H1000)
         _bufferSize = bufferSize
         buffer = New Byte(_bufferSize - 1) {}
         CryptAcquireContext(hProv, Nothing, Nothing, 1, &HF0000000UI)
-    End Sub
-
-    Public Sub New()
-        MyClass.New(&H1000)
     End Sub
 
     Protected Overrides Sub Finalize()
