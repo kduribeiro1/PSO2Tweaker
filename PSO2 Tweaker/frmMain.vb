@@ -83,9 +83,9 @@ Public Class frmMain
         chkRestoreVita.Text = My.Resources.strRestoreVitaOpeningVideo
         chkRestoreNVidia.Text = My.Resources.strRestoreNVidiaLogo
         chkRestoreSEGA.Text = My.Resources.strRestoreSEGALogoVideo
-        Label1.Text = My.Resources.strCurrentlyselecteddirectory
+        lblDirectoryLabel.Text = My.Resources.strCurrentlyselecteddirectory
         lblStatus.Text = My.Resources.strWaitingforacommand
-        Button1.Text = My.Resources.strSelectPSO2win32folder
+        btnSelectPSODir.Text = My.Resources.strSelectPSO2win32folder
         ButtonInstall.Text = My.Resources.strInstallUpdatePatches
         btnRestoreBackups.Text = "Restore Backup of JP Files"
         btnApplyChanges.Text = My.Resources.strApplySelectedChanges
@@ -94,9 +94,9 @@ Public Class frmMain
         btnLaunchPSO2.Text = My.Resources.strLaunchPSO2
         btnFixPSO2EXEs.Text = My.Resources.strFixPSO2EXEs
         btnFixPermissions.Text = My.Resources.strFixPSO2Permissions
-        LabelItem1.Text = My.Resources.strClickOrb
+        lblORBLabel.Text = My.Resources.strClickOrb
         rtbDebug.Text = My.Resources.strProgramStarted
-        ButtonItem1.Text = "Redownload Original JP Files"
+        btniTroubleshooting.Text = "Redownload Original JP Files"
         ButtonItem2.Text = My.Resources.strTroubleshooting
         btnOtherStuff.Text = My.Resources.strOtherTasks
         ButtonItem3.Text = My.Resources.strWebLinks
@@ -523,7 +523,7 @@ Public Class frmMain
                 chkSwapOP.TextColor = Color
             End If
 
-            PB1.Text = ""
+            PBMainBar.Text = ""
             Log("Checking if the PSO2 Tweaker is running")
 
             If CheckIfRunning("PSO2 Tweaker") Then
@@ -945,14 +945,14 @@ Public Class frmMain
         totalsize2 = totalSize
         Dim downloadedBytes As Long = e.BytesReceived
         Dim percentage As Integer = e.ProgressPercentage
-        PB1.Value = percentage
-        PB1.Text = (My.Resources.strDownloaded & Helper.SizeSuffix(downloadedBytes) & " / " & Helper.SizeSuffix(totalSize) & " (" & percentage & "%) - " & My.Resources.strRightClickforOptions)
+        PBMainBar.Value = percentage
+        PBMainBar.Text = (My.Resources.strDownloaded & Helper.SizeSuffix(downloadedBytes) & " / " & Helper.SizeSuffix(totalSize) & " (" & percentage & "%) - " & My.Resources.strRightClickforOptions)
         'Put your progress UI here, you can cancel download by uncommenting the line below
     End Sub
 
     Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs) Handles DLS.DownloadFileCompleted
-        PB1.Value = 0
-        PB1.Text = ""
+        PBMainBar.Value = 0
+        PBMainBar.Text = ""
     End Sub
 
     Public Sub DLWUA(ByVal Address As String, ByVal Filename As String)
@@ -1109,8 +1109,8 @@ Public Class frmMain
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         DLS.CancelAsync()
         Cancelled = True
-        PB1.Value = 0
-        PB1.Text = ""
+        PBMainBar.Value = 0
+        PBMainBar.Text = ""
         DeleteFile("launcherlist.txt")
         DeleteFile("patchlist.txt")
         DeleteFile("patchlist_old.txt")
@@ -1660,8 +1660,8 @@ StartPrePatch:
 
             DLS.CancelAsync()
             Cancelled = True
-            PB1.Value = 0
-            PB1.Text = ""
+            PBMainBar.Value = 0
+            PBMainBar.Text = ""
             WriteDebugInfo(My.Resources.strLaunchingPSO2)
 
             Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -1711,17 +1711,17 @@ StartPrePatch:
         End Try
     End Sub
 
-    Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PB1.Click
+    Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
         Dim mouseArgs = DirectCast(e, MouseEventArgs)
 
         If mouseArgs.Button = MouseButtons.Right Then
             If DLS.IsBusy Then
                 CancelDownloadToolStripMenuItem.Visible = True
-                ContextMenuStrip1.Show(CType(sender, Control), mouseArgs.Location)
+                cmsProgressBar.Show(CType(sender, Control), mouseArgs.Location)
             End If
             If Not DLS.IsBusy Then
                 CancelDownloadToolStripMenuItem.Visible = False
-                ContextMenuStrip1.Show(CType(sender, Control), mouseArgs.Location)
+                cmsProgressBar.Show(CType(sender, Control), mouseArgs.Location)
             End If
         End If
     End Sub
@@ -1730,8 +1730,8 @@ StartPrePatch:
         DLS.CancelAsync()
         WriteDebugInfo(My.Resources.strDownloadwasCancelled)
         Cancelled = True
-        PB1.Value = 0
-        PB1.Text = ""
+        PBMainBar.Value = 0
+        PBMainBar.Text = ""
         lblStatus.Text = ""
     End Sub
 
@@ -1778,8 +1778,8 @@ StartPrePatch:
     Private Sub CancelProcessToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CancelProcessToolStripMenuItem.Click
         If DLS.IsBusy Then DLS.CancelAsync()
         Cancelled = True
-        PB1.Value = 0
-        PB1.Text = ""
+        PBMainBar.Value = 0
+        PBMainBar.Text = ""
         lblStatus.Text = ""
         CancelledFull = True
         WriteDebugInfo(My.Resources.strProcessWasCancelled)
@@ -1823,7 +1823,7 @@ StartPrePatch:
         End Try
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnSelectPSODir.Click
         SelectPSO2Directory()
     End Sub
 
@@ -2320,8 +2320,8 @@ StartPrePatch:
 
             Dim dataPath = pso2RootDir & "\data\win32\"
             Dim length = SOMEOFTHETHINGS.Count
-            Dim oldmax = PB1.Maximum
-            PB1.Maximum = length
+            Dim oldmax = PBMainBar.Maximum
+            PBMainBar.Maximum = length
             Cancelled = False
 
             Dim fileLengths = New Dictionary(Of String, Long)
@@ -2335,19 +2335,19 @@ StartPrePatch:
             For Each kvp In SOMEOFTHETHINGS
 
                 If Cancelled Then
-                    PB1.Text = ""
-                    PB1.Value = 0
-                    PB1.Maximum = oldmax
+                    PBMainBar.Text = ""
+                    PBMainBar.Value = 0
+                    PBMainBar.Maximum = oldmax
                     SOMEOFTHETHINGS = Nothing
                     Cancelled = False
                     Exit Sub
                 End If
 
                 lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & NumberofChecks)
-                PB1.Text = NumberofChecks & " / " & length
+                PBMainBar.Text = NumberofChecks & " / " & length
                 If (NumberofChecks Mod 8) = 0 Then Application.DoEvents()
                 NumberofChecks += 1
-                PB1.Value += 1
+                PBMainBar.Value += 1
 
                 If Not fileNames.Contains(kvp.Key) Then
                     If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & (dataPath & kvp.Key) & My.Resources.strIsMissing)
@@ -2376,9 +2376,9 @@ StartPrePatch:
                 End Using
             Next
 
-            PB1.Text = ""
-            PB1.Value = 0
-            PB1.Maximum = oldmax
+            PBMainBar.Text = ""
+            PBMainBar.Value = 0
+            PBMainBar.Maximum = oldmax
             SOMEOFTHETHINGS = Nothing
 
             Dim totaldownload2 As Long = missingfiles2.Count
@@ -3845,12 +3845,12 @@ SelectInstallFolder:
 
     Public Sub setserverstatus(ByVal serverstatus As String)
         If serverstatus = "ONLINE!" Then
-            Label5.ForeColor = Color.Green
-            Label5.Text = "ONLINE!"
+            lblServerStatus.ForeColor = Color.Green
+            lblServerStatus.Text = "ONLINE!"
         End If
         If serverstatus = "OFFLINE" Then
-            Label5.ForeColor = Color.Red
-            Label5.Text = "OFFLINE"
+            lblServerStatus.ForeColor = Color.Red
+            lblServerStatus.Text = "OFFLINE"
         End If
     End Sub
 
@@ -3868,20 +3868,20 @@ SelectInstallFolder:
                     Throw New Exception("Unable to connect!")
                 End If
 
-                Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE!")
+                lblServerStatus.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE!")
             End Using
         Catch ex As Exception
-            Label5.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
+            lblServerStatus.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
         End Try
     End Sub
 
     Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
-        Dim Oldstatus As String = Label5.Text
+        Dim Oldstatus As String = lblServerStatus.Text
         ThreadPool.QueueUserWorkItem(AddressOf IsServerOnline, Nothing)
 
-        If Label5.Text <> Oldstatus Then
-            MsgBox("The server is now " & Label5.Text & "!")
-            If Label5.Text = "ONLINE" Then CheckForPSO2Updates()
+        If lblServerStatus.Text <> Oldstatus Then
+            MsgBox("The server is now " & lblServerStatus.Text & "!")
+            If lblServerStatus.Text = "ONLINE" Then CheckForPSO2Updates()
         End If
     End Sub
 

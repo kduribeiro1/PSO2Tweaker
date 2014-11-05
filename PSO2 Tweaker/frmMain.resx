@@ -257,25 +257,25 @@
   <metadata name="StyleManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 17</value>
   </metadata>
-  <data name="PB1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="PBMainBar.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 265</value>
   </data>
-  <data name="PB1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="PBMainBar.Size" type="System.Drawing.Size, System.Drawing">
     <value>399, 25</value>
   </data>
-  <data name="PB1.TabIndex" type="System.Int32, mscorlib">
+  <data name="PBMainBar.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
   </data>
-  <data name="&gt;&gt;PB1.Name" xml:space="preserve">
-    <value>PB1</value>
+  <data name="&gt;&gt;PBMainBar.Name" xml:space="preserve">
+    <value>PBMainBar</value>
   </data>
-  <data name="&gt;&gt;PB1.Type" xml:space="preserve">
+  <data name="&gt;&gt;PBMainBar.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.Controls.ProgressBarX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;PB1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;PBMainBar.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;PB1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;PBMainBar.ZOrder" xml:space="preserve">
     <value>24</value>
   </data>
   <data name="chkRemoveNVidia.AutoSize" type="System.Boolean, mscorlib">
@@ -362,31 +362,31 @@
   <data name="&gt;&gt;chkSwapOP.ZOrder" xml:space="preserve">
     <value>30</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblDirectoryLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lblDirectoryLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 56</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblDirectoryLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 15</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblDirectoryLabel.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="lblDirectoryLabel.Text" xml:space="preserve">
     <value>Currently selected directory:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;lblDirectoryLabel.Name" xml:space="preserve">
+    <value>lblDirectoryLabel</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblDirectoryLabel.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.LabelX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblDirectoryLabel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblDirectoryLabel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="lblDirectory.Location" type="System.Drawing.Point, System.Drawing">
@@ -626,18 +626,9 @@
   <data name="&gt;&gt;btnLaunchPSO2.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <metadata name="ContextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="cmsProgressBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>461, 17</value>
   </metadata>
-  <data name="ContextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 70</value>
-  </data>
-  <data name="&gt;&gt;ContextMenuStrip1.Name" xml:space="preserve">
-    <value>ContextMenuStrip1</value>
-  </data>
-  <data name="&gt;&gt;ContextMenuStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tsmRestartDownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
   </data>
@@ -656,8 +647,21 @@
   <data name="CancelProcessToolStripMenuItem.Text" xml:space="preserve">
     <value>Cancel process</value>
   </data>
+  <data name="cmsProgressBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 70</value>
+  </data>
+  <data name="&gt;&gt;cmsProgressBar.Name" xml:space="preserve">
+    <value>cmsProgressBar</value>
+  </data>
+  <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 108</value>
@@ -691,6 +695,9 @@
   </metadata>
   <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="Label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 132</value>
@@ -800,7 +807,6 @@
   <data name="&gt;&gt;WebBrowser3.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -810,113 +816,11 @@
   <data name="RibbonControl1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 2</value>
   </data>
-  <data name="Office2007StartButton1.Text" xml:space="preserve">
-    <value>&amp;File</value>
-  </data>
-  <data name="LabelItem1.Text" xml:space="preserve">
-    <value>Click the ORB to access the menu</value>
-  </data>
-  <data name="RibbonControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>796, 52</value>
-  </data>
-  <data name="RibbonControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>70</value>
-  </data>
-  <data name="RibbonControl1.Text" xml:space="preserve">
-    <value>RibbonControl1</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.Name" xml:space="preserve">
-    <value>RibbonControl1</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.RibbonControl, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
-    <value>31</value>
-  </data>
-  <data name="Button1.Text" xml:space="preserve">
+  <data name="btnSelectPSODir.Text" xml:space="preserve">
     <value>Select pso2_bin folder...</value>
   </data>
-  <data name="Button1.Tooltip" xml:space="preserve">
+  <data name="btnSelectPSODir.Tooltip" xml:space="preserve">
     <value>Use this to select your pso2_bin folder... duh!</value>
-  </data>
-  <data name="ButtonInstall.Text" xml:space="preserve">
-    <value>Install/Update Patches</value>
-  </data>
-  <data name="btnRestoreBackups.Text" xml:space="preserve">
-    <value>Restore Backup of JP Files</value>
-  </data>
-  <data name="ButtonItem1.Text" xml:space="preserve">
-    <value>Redownload Original JP Files</value>
-  </data>
-  <data name="ButtonItem2.Text" xml:space="preserve">
-    <value>Troubleshooting</value>
-  </data>
-  <data name="btnOtherStuff.Text" xml:space="preserve">
-    <value>Other Tasks</value>
-  </data>
-  <data name="ButtonItem3.Text" xml:space="preserve">
-    <value>Web Links</value>
-  </data>
-  <data name="btnDonations.Text" xml:space="preserve">
-    <value>Donation Links</value>
-  </data>
-  <data name="btnNewShit.Text" xml:space="preserve">
-    <value>Check for PSO2 Updates (New method test)</value>
-  </data>
-  <data name="btnNewShit.Tooltip" xml:space="preserve">
-    <value>Checks for any files that need to be updated</value>
-  </data>
-  <data name="ButtonItem5.Text" xml:space="preserve">
-    <value>Check for PSO2 Updates</value>
-  </data>
-  <data name="ButtonItem5.Tooltip" xml:space="preserve">
-    <value>Checks for any files that need to be updated</value>
-  </data>
-  <data name="btnDownloadPrepatch.Text" xml:space="preserve">
-    <value>Check for Pre-Patch data</value>
-  </data>
-  <data name="btnCheckForStoryUpdates.Text" xml:space="preserve">
-    <value>Check for Story Patch Updates</value>
-  </data>
-  <data name="btnCheckForStoryUpdates.Tooltip" xml:space="preserve">
-    <value>Trigger a check for out-of-date story patch files</value>
-  </data>
-  <data name="chkAlwaysOnTop.Text" xml:space="preserve">
-    <value>Always on Top</value>
-  </data>
-  <data name="chkAlwaysOnTop.Tooltip" xml:space="preserve">
-    <value>Determine whether the PSO2 Tweaker will stay on top of other programs or not</value>
-  </data>
-  <data name="chkItemTranslation.Text" xml:space="preserve">
-    <value>Translate Items</value>
-  </data>
-  <data name="chkItemTranslation.Tooltip" xml:space="preserve">
-    <value>Sets whether or not items are translated in-game</value>
-  </data>
-  <data name="btnConfigureItemTranslation.Text" xml:space="preserve">
-    <value>Configure Item Translation</value>
-  </data>
-  <data name="btnPSO2Options.Text" xml:space="preserve">
-    <value>PSO2 Options</value>
-  </data>
-  <data name="btnPSO2Options.Tooltip" xml:space="preserve">
-    <value>Change certain in-game PSO2 options</value>
-  </data>
-  <data name="btnOptions.Text" xml:space="preserve">
-    <value>Opt&amp;ions</value>
-  </data>
-  <data name="btnOptions.Tooltip" xml:space="preserve">
-    <value>Change options relating to the PSO2 Tweaker</value>
-  </data>
-  <data name="btnExit.Text" xml:space="preserve">
-    <value>E&amp;xit</value>
-  </data>
-  <data name="btnExit.Tooltip" xml:space="preserve">
-    <value>Exit the PSO2 Tweaker</value>
   </data>
   <data name="btnENPatch.Text" xml:space="preserve">
     <value>English Patch</value>
@@ -966,6 +870,9 @@
   <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
     <value>Patch enemy names to be in Japanese</value>
   </data>
+  <data name="ButtonInstall.Text" xml:space="preserve">
+    <value>Install/Update Patches</value>
+  </data>
   <data name="btnRestoreENBackup.Text" xml:space="preserve">
     <value>English Patch</value>
   </data>
@@ -996,6 +903,9 @@
   <data name="btnRestoreJPETrials.Tooltip" xml:space="preserve">
     <value>Restore a backup of the JP e-codes patch (if it exists)</value>
   </data>
+  <data name="btnRestoreBackups.Text" xml:space="preserve">
+    <value>Restore Backup of JP Files</value>
+  </data>
   <data name="btnUninstallENPatch.Text" xml:space="preserve">
     <value>English Patch</value>
   </data>
@@ -1013,6 +923,9 @@
   </data>
   <data name="btnUninstallStory.Tooltip" xml:space="preserve">
     <value>Uninstall the English Story Patch</value>
+  </data>
+  <data name="btniTroubleshooting.Text" xml:space="preserve">
+    <value>Redownload Original JP Files</value>
   </data>
   <data name="btnAnalyze.Text" xml:space="preserve">
     <value>Analyze Install for Issues</value>
@@ -1080,6 +993,9 @@
   <data name="btnTerminate.Tooltip" xml:space="preserve">
     <value>Forcibly ends PSO2 - Bye bye!</value>
   </data>
+  <data name="ButtonItem2.Text" xml:space="preserve">
+    <value>Troubleshooting</value>
+  </data>
   <data name="ButtonItem7.Text" xml:space="preserve">
     <value>Launch Chrome in PSO2 Compatibility Mode</value>
   </data>
@@ -1109,6 +1025,9 @@
   </data>
   <data name="btnInstallPSO2.Text" xml:space="preserve">
     <value>Install Phantasy Star Online 2</value>
+  </data>
+  <data name="btnOtherStuff.Text" xml:space="preserve">
+    <value>Other Tasks</value>
   </data>
   <data name="btnBumped.Text" xml:space="preserve">
     <value>Bumped.org (PSO2 News Site)</value>
@@ -1140,6 +1059,9 @@
   <data name="btnEXPFULL.Text" xml:space="preserve">
     <value>The Ship 2 Voice Chat (EXPFULL)</value>
   </data>
+  <data name="ButtonItem3.Text" xml:space="preserve">
+    <value>Web Links</value>
+  </data>
   <data name="btnDonateToBumped.Text" xml:space="preserve">
     <value>Bumped.org Donation Link</value>
   </data>
@@ -1151,6 +1073,90 @@
   </data>
   <data name="btnDonateToTweaker.Text" xml:space="preserve">
     <value>PSO2 Tweaker Donation Link</value>
+  </data>
+  <data name="btnDonations.Text" xml:space="preserve">
+    <value>Donation Links</value>
+  </data>
+  <data name="btnNewShit.Text" xml:space="preserve">
+    <value>Check for PSO2 Updates (New method test)</value>
+  </data>
+  <data name="btnNewShit.Tooltip" xml:space="preserve">
+    <value>Checks for any files that need to be updated</value>
+  </data>
+  <data name="ButtonItem5.Text" xml:space="preserve">
+    <value>Check for PSO2 Updates</value>
+  </data>
+  <data name="ButtonItem5.Tooltip" xml:space="preserve">
+    <value>Checks for any files that need to be updated</value>
+  </data>
+  <data name="btnDownloadPrepatch.Text" xml:space="preserve">
+    <value>Check for Pre-Patch data</value>
+  </data>
+  <data name="btnCheckForStoryUpdates.Text" xml:space="preserve">
+    <value>Check for Story Patch Updates</value>
+  </data>
+  <data name="btnCheckForStoryUpdates.Tooltip" xml:space="preserve">
+    <value>Trigger a check for out-of-date story patch files</value>
+  </data>
+  <data name="chkAlwaysOnTop.Text" xml:space="preserve">
+    <value>Always on Top</value>
+  </data>
+  <data name="chkAlwaysOnTop.Tooltip" xml:space="preserve">
+    <value>Determine whether the PSO2 Tweaker will stay on top of other programs or not</value>
+  </data>
+  <data name="chkItemTranslation.Text" xml:space="preserve">
+    <value>Translate Items</value>
+  </data>
+  <data name="chkItemTranslation.Tooltip" xml:space="preserve">
+    <value>Sets whether or not items are translated in-game</value>
+  </data>
+  <data name="btnConfigureItemTranslation.Text" xml:space="preserve">
+    <value>Configure Item Translation</value>
+  </data>
+  <data name="btnPSO2Options.Text" xml:space="preserve">
+    <value>PSO2 Options</value>
+  </data>
+  <data name="btnPSO2Options.Tooltip" xml:space="preserve">
+    <value>Change certain in-game PSO2 options</value>
+  </data>
+  <data name="btnOptions.Text" xml:space="preserve">
+    <value>Opt&amp;ions</value>
+  </data>
+  <data name="btnOptions.Tooltip" xml:space="preserve">
+    <value>Change options relating to the PSO2 Tweaker</value>
+  </data>
+  <data name="btnExit.Text" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="btnExit.Tooltip" xml:space="preserve">
+    <value>Exit the PSO2 Tweaker</value>
+  </data>
+  <data name="Office2007StartButton1.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="lblORBLabel.Text" xml:space="preserve">
+    <value>Click the ORB to access the menu</value>
+  </data>
+  <data name="RibbonControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>796, 52</value>
+  </data>
+  <data name="RibbonControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="RibbonControl1.Text" xml:space="preserve">
+    <value>RibbonControl1</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.Name" xml:space="preserve">
+    <value>RibbonControl1</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.RibbonControl, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
+    <value>31</value>
   </data>
   <metadata name="StyleManager2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>618, 17</value>
@@ -1387,59 +1393,65 @@
   <data name="&gt;&gt;txtPSO2DefaultINI.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="Label5.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="lblServerStatus.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9pt, style=Bold</value>
   </data>
-  <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lblServerStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblServerStatus.Location" type="System.Drawing.Point, System.Drawing">
     <value>339, 55</value>
   </data>
-  <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblServerStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 18</value>
   </data>
-  <data name="Label5.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblServerStatus.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
   </data>
-  <data name="&gt;&gt;Label5.Name" xml:space="preserve">
-    <value>Label5</value>
+  <data name="&gt;&gt;lblServerStatus.Name" xml:space="preserve">
+    <value>lblServerStatus</value>
   </data>
-  <data name="&gt;&gt;Label5.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblServerStatus.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label5.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblServerStatus.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblServerStatus.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="LabelX1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblServerStatusLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="LabelX1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lblServerStatusLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>238, 55</value>
   </data>
-  <data name="LabelX1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblServerStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>102, 15</value>
   </data>
-  <data name="LabelX1.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblServerStatusLabel.TabIndex" type="System.Int32, mscorlib">
     <value>78</value>
   </data>
-  <data name="LabelX1.Text" xml:space="preserve">
+  <data name="lblServerStatusLabel.Text" xml:space="preserve">
     <value>PSO2 Server status:</value>
   </data>
-  <data name="&gt;&gt;LabelX1.Name" xml:space="preserve">
-    <value>LabelX1</value>
+  <data name="&gt;&gt;lblServerStatusLabel.Name" xml:space="preserve">
+    <value>lblServerStatusLabel</value>
   </data>
-  <data name="&gt;&gt;LabelX1.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblServerStatusLabel.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.LabelX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;LabelX1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblServerStatusLabel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblServerStatusLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <metadata name="tmrCheckServerStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 56</value>
+  </metadata>
+  <metadata name="DLS.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -7628,6 +7640,9 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
   </data>
@@ -7697,10 +7712,10 @@
   <data name="&gt;&gt;ItemContainer3.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ItemContainer, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;Button1.Name" xml:space="preserve">
-    <value>Button1</value>
+  <data name="&gt;&gt;btnSelectPSODir.Name" xml:space="preserve">
+    <value>btnSelectPSODir</value>
   </data>
-  <data name="&gt;&gt;Button1.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnSelectPSODir.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;ButtonInstall.Name" xml:space="preserve">
@@ -7793,10 +7808,10 @@
   <data name="&gt;&gt;btnRestoreJPETrials.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;ButtonItem1.Name" xml:space="preserve">
-    <value>ButtonItem1</value>
+  <data name="&gt;&gt;btniTroubleshooting.Name" xml:space="preserve">
+    <value>btniTroubleshooting</value>
   </data>
-  <data name="&gt;&gt;ButtonItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;btniTroubleshooting.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnUninstallENPatch.Name" xml:space="preserve">
@@ -8093,10 +8108,10 @@
   <data name="&gt;&gt;btnExit.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;LabelItem1.Name" xml:space="preserve">
-    <value>LabelItem1</value>
+  <data name="&gt;&gt;lblORBLabel.Name" xml:space="preserve">
+    <value>lblORBLabel</value>
   </data>
-  <data name="&gt;&gt;LabelItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblORBLabel.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.LabelItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;StyleManager2.Name" xml:space="preserve">
