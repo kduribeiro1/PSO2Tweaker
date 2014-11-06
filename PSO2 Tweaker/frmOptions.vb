@@ -279,11 +279,6 @@ Public Class frmOptions
         End If
     End Sub
 
-    Private Sub ButtonX5_Click(sender As Object, e As EventArgs)
-        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-        ShellExecute(Handle, "open", ("steam://rungameID/" & RegKey.GetValue(Of String)(RegKey.SteamUID)), " +0x33aca2b9 -pso2", "", 0)
-    End Sub
-
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
         RegKey.SetValue(Of String)(RegKey.SidebarEnabled, CheckBoxX5.Checked.ToString())
     End Sub

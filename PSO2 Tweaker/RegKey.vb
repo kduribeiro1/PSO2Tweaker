@@ -32,7 +32,6 @@ Public Class RegKey
     Public Const SeenDownloadMessage = "SeenDownloadMessage"
     Public Const SeenFuckSEGAMessage = "SeenFuckSEGAMessage"
     Public Const SidebarEnabled = "SidebarEnabled"
-    Public Const SteamUID = "SteamUID"
     Public Const StoryPatchAfterInstall = "StoryPatchAfterInstall"
     Public Const StoryPatchVersion = "StoryPatchVersion"
     Public Const Style = "Style"

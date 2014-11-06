@@ -31,7 +31,6 @@ Public Class frmMain
     Dim Restartplz As Boolean
     Dim SOMEOFTHEPREPATCHES As List(Of String)
     Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
-    Dim SteamUnlock As Integer
     Dim SystemUnlock As Integer
     Dim TransOverride As Boolean = False
     Dim UseItemTranslation As Boolean = False
@@ -205,37 +204,6 @@ Public Class frmMain
                 btnLaunchPSO2.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
             End If
-            If e.KeyCode = Keys.K Then
-                SteamUnlock = 1
-                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *"
-            End If
-            If e.KeyCode = Keys.U AndAlso SteamUnlock = 1 Then
-                SteamUnlock = 2
-                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: **"
-            End If
-            If e.KeyCode = Keys.M AndAlso SteamUnlock = 2 Then
-                SteamUnlock = 3
-                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ***"
-            End If
-            If e.KeyCode = Keys.I AndAlso SteamUnlock = 3 Then
-                SteamUnlock = 4
-                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ****"
-            End If
-            If e.KeyCode = Keys.H AndAlso SteamUnlock = 4 Then
-                SteamUnlock = 5
-                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: *****"
-            End If
-            If e.KeyCode = Keys.O AndAlso SteamUnlock = 5 Then
-                SteamUnlock = 6
-                lblStatus.Text = "Please enter the remaining commands to unlock BETA Steam support: ******"
-                Application.DoEvents()
-                Thread.Sleep(2000)
-                lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
-                Application.DoEvents()
-                Thread.Sleep(2000)
-
-                frmVEDA.Show()
-            End If
         End If
     End Sub
 
@@ -309,21 +277,6 @@ Public Class frmMain
                         Log("Detected command argument -nodiag")
                         Log("Bypassing OS detection to fix compatibility!")
                         nodiag = True
-
-                    Case "-steam"
-                        Log("Detected -steam argument")
-                        If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamUID)) Then
-                            MsgBox("You need to open the PSO2 Normally and configure the Steam launch URL in the options.")
-                        End If
-
-                        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
-                        ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
-
-                        Log("Deleting item cache")
-                        DeleteFile(Dir() & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-                        Log("Launching PSO2 with -steam")
-
-                        Me.Close()
 
                     Case "-bypass"
                         Log("Detected command argument -bypass")
