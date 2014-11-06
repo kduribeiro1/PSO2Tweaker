@@ -49,10 +49,6 @@ Partial Class frmMain
         Me.tsmRestartDownload = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelProcessToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.seconds = New System.Windows.Forms.Timer(Me.components)
-        Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
-        Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
-        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.RibbonControl1 = New DevComponents.DotNetBar.RibbonControl()
         Me.Office2007StartButton1 = New DevComponents.DotNetBar.Office2007StartButton()
         Me.ItemContainer1 = New DevComponents.DotNetBar.ItemContainer()
@@ -125,10 +121,8 @@ Partial Class frmMain
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
         Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
         Me.lblORBLabel = New DevComponents.DotNetBar.LabelItem()
-        Me.StyleManager2 = New DevComponents.DotNetBar.StyleManager()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
-        Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
         Me.lblServerStatus = New System.Windows.Forms.Label()
         Me.lblServerStatusLabel = New DevComponents.DotNetBar.LabelX()
@@ -361,25 +355,6 @@ Partial Class frmMain
         '
         Me.CancelProcessToolStripMenuItem.Name = "CancelProcessToolStripMenuItem"
         resources.ApplyResources(Me.CancelProcessToolStripMenuItem, "CancelProcessToolStripMenuItem")
-        '
-        'seconds
-        '
-        Me.seconds.Interval = 10
-        '
-        'WebBrowser1
-        '
-        resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
-        Me.WebBrowser1.Name = "WebBrowser1"
-        '
-        'WebBrowser2
-        '
-        resources.ApplyResources(Me.WebBrowser2, "WebBrowser2")
-        Me.WebBrowser2.Name = "WebBrowser2"
-        '
-        'WebBrowser3
-        '
-        resources.ApplyResources(Me.WebBrowser3, "WebBrowser3")
-        Me.WebBrowser3.Name = "WebBrowser3"
         '
         'RibbonControl1
         '
@@ -813,11 +788,6 @@ Partial Class frmMain
         Me.lblORBLabel.Name = "lblORBLabel"
         resources.ApplyResources(Me.lblORBLabel, "lblORBLabel")
         '
-        'StyleManager2
-        '
-        Me.StyleManager2.ManagerColorTint = System.Drawing.SystemColors.ActiveBorder
-        Me.StyleManager2.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-        '
         'btnAnnouncements
         '
         Me.btnAnnouncements.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
@@ -831,15 +801,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.WebBrowser4, "WebBrowser4")
         Me.WebBrowser4.Name = "WebBrowser4"
         Me.WebBrowser4.Url = New System.Uri("", System.UriKind.Relative)
-        '
-        'ButtonX1
-        '
-        Me.ButtonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX1.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX1, "ButtonX1")
-        Me.ButtonX1.Name = "ButtonX1"
-        Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'txtPSO2DefaultINI
         '
@@ -885,12 +846,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
         Me.Controls.Add(Me.txtPSO2DefaultINI)
-        Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.WebBrowser4)
         Me.Controls.Add(Me.btnAnnouncements)
-        Me.Controls.Add(Me.WebBrowser3)
-        Me.Controls.Add(Me.WebBrowser2)
-        Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.btnLaunchPSO2)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.lblDirectory)
@@ -944,11 +901,7 @@ Partial Class frmMain
     Friend WithEvents btnLaunchPSO2 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents cmsProgressBar As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CancelDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents seconds As System.Windows.Forms.Timer
-    Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents CancelProcessToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
-    Friend WithEvents WebBrowser3 As System.Windows.Forms.WebBrowser
     Friend WithEvents RibbonControl1 As DevComponents.DotNetBar.RibbonControl
     Friend WithEvents Office2007StartButton1 As DevComponents.DotNetBar.Office2007StartButton
     Friend WithEvents ItemContainer1 As DevComponents.DotNetBar.ItemContainer
@@ -956,12 +909,10 @@ Partial Class frmMain
     Friend WithEvents ItemContainer4 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents btnOptions As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnExit As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents StyleManager2 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents btnPSO2Options As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnAnnouncements As DevComponents.DotNetBar.ButtonX
     Friend WithEvents lblORBLabel As DevComponents.DotNetBar.LabelItem
     Friend WithEvents WebBrowser4 As System.Windows.Forms.WebBrowser
-    Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents txtPSO2DefaultINI As System.Windows.Forms.TextBox
     Friend WithEvents tsmRestartDownload As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents lblServerStatus As System.Windows.Forms.Label

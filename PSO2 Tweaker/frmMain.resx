@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtHTML.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>23</value>
   </data>
   <data name="rtbDebug.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 297</value>
@@ -168,7 +168,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;rtbDebug.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>22</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>90, 17</value>
@@ -198,7 +198,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveCensor.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>21</value>
   </data>
   <data name="chkRemovePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -225,7 +225,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemovePC.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>20</value>
   </data>
   <data name="chkRemoveVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -252,7 +252,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveVita.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>19</value>
   </data>
   <metadata name="StyleManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 17</value>
@@ -276,7 +276,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PBMainBar.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>18</value>
   </data>
   <data name="chkRemoveNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -303,7 +303,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveNVidia.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>17</value>
   </data>
   <data name="chkRemoveSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -330,7 +330,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveSEGA.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>16</value>
   </data>
   <data name="chkSwapOP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -360,7 +360,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkSwapOP.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>24</value>
   </data>
   <data name="lblDirectoryLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -411,7 +411,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblDirectory.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>10</value>
   </data>
   <data name="lblStatus.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 246</value>
@@ -435,7 +435,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblStatus.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>9</value>
   </data>
   <data name="chkRestoreCensor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -462,7 +462,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreCensor.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>15</value>
   </data>
   <data name="chkRestorePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -489,7 +489,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestorePC.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>14</value>
   </data>
   <data name="chkRestoreVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -516,7 +516,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreVita.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>13</value>
   </data>
   <data name="chkRestoreNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -543,7 +543,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreNVidia.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>12</value>
   </data>
   <data name="chkRestoreSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -570,7 +570,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreSEGA.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>11</value>
   </data>
   <data name="btnApplyChanges.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 219</value>
@@ -624,7 +624,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnLaunchPSO2.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>8</value>
   </data>
   <metadata name="cmsProgressBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>461, 17</value>
@@ -655,90 +655,6 @@
   </data>
   <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <metadata name="seconds.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>365, 17</value>
-  </metadata>
-  <data name="WebBrowser1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 162</value>
-  </data>
-  <data name="WebBrowser1.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>19, 20</value>
-  </data>
-  <data name="WebBrowser1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 46</value>
-  </data>
-  <data name="WebBrowser1.TabIndex" type="System.Int32, mscorlib">
-    <value>67</value>
-  </data>
-  <data name="WebBrowser1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.Name" xml:space="preserve">
-    <value>WebBrowser1</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="WebBrowser2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 186</value>
-  </data>
-  <data name="WebBrowser2.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>19, 20</value>
-  </data>
-  <data name="WebBrowser2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 46</value>
-  </data>
-  <data name="WebBrowser2.TabIndex" type="System.Int32, mscorlib">
-    <value>68</value>
-  </data>
-  <data name="WebBrowser2.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser2.Name" xml:space="preserve">
-    <value>WebBrowser2</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser2.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="WebBrowser3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 177</value>
-  </data>
-  <data name="WebBrowser3.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>19, 20</value>
-  </data>
-  <data name="WebBrowser3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 46</value>
-  </data>
-  <data name="WebBrowser3.TabIndex" type="System.Int32, mscorlib">
-    <value>69</value>
-  </data>
-  <data name="WebBrowser3.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser3.Name" xml:space="preserve">
-    <value>WebBrowser3</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser3.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -1090,11 +1006,8 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>25</value>
   </data>
-  <metadata name="StyleManager2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>618, 17</value>
-  </metadata>
   <data name="btnAnnouncements.Location" type="System.Drawing.Point, System.Drawing">
     <value>406, 31</value>
   </data>
@@ -1120,7 +1033,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnAnnouncements.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="WebBrowser4.Location" type="System.Drawing.Point, System.Drawing">
     <value>420, 31</value>
@@ -1144,36 +1057,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;WebBrowser4.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="ButtonX1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>441, 240</value>
-  </data>
-  <data name="ButtonX1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 24</value>
-  </data>
-  <data name="ButtonX1.TabIndex" type="System.Int32, mscorlib">
-    <value>74</value>
-  </data>
-  <data name="ButtonX1.Text" xml:space="preserve">
-    <value>Launch from external shortcut</value>
-  </data>
-  <data name="ButtonX1.Tooltip" xml:space="preserve">
-    <value>Launch the game! o/</value>
-  </data>
-  <data name="ButtonX1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;ButtonX1.Name" xml:space="preserve">
-    <value>ButtonX1</value>
-  </data>
-  <data name="&gt;&gt;ButtonX1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ButtonX1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonX1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="txtPSO2DefaultINI.Location" type="System.Drawing.Point, System.Drawing">
@@ -7607,12 +7490,6 @@
   <data name="&gt;&gt;CancelProcessToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;seconds.Name" xml:space="preserve">
-    <value>seconds</value>
-  </data>
-  <data name="&gt;&gt;seconds.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;Office2007StartButton1.Name" xml:space="preserve">
     <value>Office2007StartButton1</value>
   </data>
@@ -8038,12 +7915,6 @@
   </data>
   <data name="&gt;&gt;lblORBLabel.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.LabelItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;StyleManager2.Name" xml:space="preserve">
-    <value>StyleManager2</value>
-  </data>
-  <data name="&gt;&gt;StyleManager2.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.StyleManager, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;tmrCheckServerStatus.Name" xml:space="preserve">
     <value>tmrCheckServerStatus</value>

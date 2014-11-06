@@ -18,9 +18,6 @@ Imports DevComponents.DotNetBar
 ' TODO: Rework backup hax to be stored in data\win32\backup\<patchname>
 
 Public Class frmMain
-    Const testfile As String = "http://arks-layer.com/Disko Warp x Pump It Up Pro 2 Official Soundtrack Sampler.mp3"
-    Const testfile_Size As Double = 1.91992 'MB
-
     Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
 
     Dim Cancelled As Boolean
@@ -46,7 +43,6 @@ Public Class frmMain
     Dim pso2RootDir As String
     Dim pso2WinDir As String
     Dim startPath As String = Application.StartupPath
-    Dim timer_start As Integer
     Dim totalsize2 As Long
 
 #Region "External Functions"
@@ -1733,30 +1729,6 @@ StartPrePatch:
         PBMainBar.Value = 0
         PBMainBar.Text = ""
         lblStatus.Text = ""
-    End Sub
-
-    Private Sub seconds_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles seconds.Tick
-        Me.timer_start += 1
-    End Sub
-
-    Private Sub DocumentCompleted()
-        Me.seconds.Stop()
-        Dim time_for_download = timer_start * 10
-        Dim velocity = testfile_Size / time_for_download * 1000
-        WriteDebugInfoSameLine(" Done!")
-        WriteDebugInfo(My.Resources.strYourDownloadSpeedIs & (Format(velocity, "0.0000") & " MB/s"))
-    End Sub
-
-    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
-        DocumentCompleted()
-    End Sub
-
-    Private Sub WebBrowser2_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
-        DocumentCompleted()
-    End Sub
-
-    Private Sub WebBrowser3_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
-        DocumentCompleted()
     End Sub
 
     Public Function Ping(ByVal server As String) As String
