@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
 Imports System.Collections.Generic
+Imports DevComponents.DotNetBar
 
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
@@ -48,6 +49,21 @@ Public Class frmPSO2Options
             End If
 
             Me.SuspendLayout()
+
+            Select Case RegKey.GetValue(Of String)(RegKey.Style)
+                Case "Blue"
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
+                Case "Black"
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
+                Case "Silver"
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Silver
+                Case "Vista Glass"
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+                Case "2010 Silver"
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2010Silver
+                Case "Windows 7 Blue"
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Windows7Blue
+            End Select
 
             Dim backColor = Me.BackColor
             TabControlPanel1.Style.BackColor1.Color = backColor

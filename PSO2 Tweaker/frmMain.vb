@@ -137,7 +137,6 @@ Public Class frmMain
             Case Else
                 StyleManager.Style = eStyle.Office2007Blue
         End Select
-
         Me.ResumeLayout(False)
     End Sub
 
