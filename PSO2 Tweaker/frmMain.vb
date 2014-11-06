@@ -44,6 +44,7 @@ Public Class frmMain
     Dim pso2WinDir As String
     Dim startPath As String = Application.StartupPath
     Dim totalsize2 As Long
+    Dim optionsFrm As frmOptions
 
 #Region "External Functions"
 
@@ -68,6 +69,7 @@ Public Class frmMain
         InitializeComponent()
 
         'Yo, fuck this shit. Shit is mad whack, yo.
+        Me.SuspendLayout()
         chkRemoveCensor.Text = My.Resources.strRemoveCensorFile
         chkRemovePC.Text = My.Resources.strRemovePCOpening
         chkRemoveVita.Text = My.Resources.strRemoveVitaOpening
@@ -110,6 +112,7 @@ Public Class frmMain
         btnResumePatching.Text = My.Resources.strResumePatching
         btnTerminate.Text = My.Resources.strTerminate
         ButtonItem7.Text = My.Resources.strLaunchChrome
+        Me.ResumeLayout(False)
     End Sub
 
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
@@ -205,11 +208,11 @@ Public Class frmMain
                 lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
                 Application.DoEvents()
                 Thread.Sleep(2000)
-                frmOptions.ButtonX4.Visible = True
-                frmOptions.ButtonX5.Visible = True
-                frmOptions.LabelX13.Visible = True
-                frmOptions.TextBoxX1.Visible = True
-                frmOptions.ButtonX3.Visible = True
+                optionsFrm.ButtonX4.Visible = True
+                optionsFrm.ButtonX5.Visible = True
+                optionsFrm.LabelX13.Visible = True
+                optionsFrm.TextBoxX1.Visible = True
+                optionsFrm.ButtonX3.Visible = True
 
                 frmVEDA.Show()
             End If
@@ -428,8 +431,7 @@ Public Class frmMain
                 RegKey.SetValue(Of String)(RegKey.UID, UIDSTRING)
             End If
 
-            Me.BackgroundImage = Nothing
-            frmOptions.BackgroundImage = Nothing
+            optionsFrm = New frmOptions()
 
             Log("Load more settings...")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
@@ -499,13 +501,13 @@ Public Class frmMain
                 frmPSO2Options.Slider1.TextColor = Color
                 frmPSO2Options.CheckBoxX1.TextColor = Color
                 Me.ForeColor = Color
-                frmOptions.ForeColor = Color
+                optionsFrm.ForeColor = Color
                 frmPSO2Options.ForeColor = Color
-                frmOptions.CheckBoxX1.TextColor = Color
-                frmOptions.CheckBoxX2.TextColor = Color
-                frmOptions.CheckBoxX3.TextColor = Color
-                frmOptions.CheckBoxX4.TextColor = Color
-                frmOptions.chkAutoRemoveCensor.TextColor = Color
+                optionsFrm.CheckBoxX1.TextColor = Color
+                optionsFrm.CheckBoxX2.TextColor = Color
+                optionsFrm.CheckBoxX3.TextColor = Color
+                optionsFrm.CheckBoxX4.TextColor = Color
+                optionsFrm.chkAutoRemoveCensor.TextColor = Color
                 chkRemoveCensor.TextColor = Color
                 chkRemoveNVidia.TextColor = Color
                 chkRemovePC.TextColor = Color
@@ -2942,7 +2944,6 @@ StartPrePatch:
             DLWUA("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
             If Cancelled Then Exit Sub
 
-
             If File.Exists((DirectoryString & "pso2updater.exe")) AndAlso startPath <> pso2RootDir Then DeleteFile((DirectoryString & "pso2updater.exe"))
             File.Move("pso2updater.exe", (DirectoryString & "pso2updater.exe"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
@@ -3106,11 +3107,11 @@ StartPrePatch:
     Private Sub chkAlwaysOnTop_Click(sender As Object, e As EventArgs) Handles chkAlwaysOnTop.Click
         If Me.Visible Then
             If chkAlwaysOnTop.Checked Then
-                frmOptions.TopMost = True
+                optionsFrm.TopMost = True
                 Me.TopMost = True
                 RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, True)
             Else
-                frmOptions.TopMost = False
+                optionsFrm.TopMost = False
                 Me.TopMost = False
                 RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
             End If
@@ -3135,12 +3136,12 @@ StartPrePatch:
     Private Sub btnOptions_Click(sender As Object, e As EventArgs) Handles btnOptions.Click
         Cursor = Cursors.WaitCursor
         Try
-            frmOptions.CMBStyle.SelectedIndex = -1
-            frmOptions.TopMost = Me.TopMost
-            frmOptions.Bounds = Me.Bounds
-            frmOptions.Top += 50
-            frmOptions.Left += 50
-            frmOptions.ShowDialog()
+            optionsFrm.CMBStyle.SelectedIndex = -1
+            optionsFrm.TopMost = Me.TopMost
+            optionsFrm.Bounds = Me.Bounds
+            optionsFrm.Top += 50
+            optionsFrm.Left += 50
+            optionsFrm.ShowDialog()
         Catch ex As Exception
             Log(ex.Message)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
