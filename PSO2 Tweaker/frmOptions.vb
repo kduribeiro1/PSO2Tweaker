@@ -136,7 +136,7 @@ Public Class frmOptions
         End If
     End Sub
 
-    Private Sub ComboBoxEx1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx1.SelectedIndexChanged
+    Private Sub ComboBoxEx1_SelectedIndexChanged(sender As Object, e As EventArgs)
         RegKey.SetValue(Of String)(RegKey.PatchServer, ComboBoxEx1.Text)
     End Sub
 
@@ -284,7 +284,7 @@ Public Class frmOptions
         End If
     End Sub
 
-    Private Sub ButtonX3_Click(sender As Object, e As EventArgs) Handles ButtonX3.Click
+    Private Sub ButtonX3_Click(sender As Object, e As EventArgs)
         If Not String.IsNullOrWhiteSpace(TextBoxX1.Text) Then
             Dim UIDString As String = TextBoxX1.Text.Replace("steam://rungameid/", "")
             RegKey.SetValue(Of String)(RegKey.SteamUID, UIDString)
@@ -292,7 +292,7 @@ Public Class frmOptions
         End If
     End Sub
 
-    Private Sub ButtonX5_Click(sender As Object, e As EventArgs) Handles ButtonX5.Click
+    Private Sub ButtonX5_Click(sender As Object, e As EventArgs)
         Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
         ShellExecute(Handle, "open", ("steam://rungameID/" & RegKey.GetValue(Of String)(RegKey.SteamUID)), " +0x33aca2b9 -pso2", "", 0)
     End Sub
