@@ -233,11 +233,6 @@ Public Class frmMain
                 lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
                 Application.DoEvents()
                 Thread.Sleep(2000)
-                optionsFrm.ButtonX4.Visible = True
-                optionsFrm.ButtonX5.Visible = True
-                optionsFrm.LabelX13.Visible = True
-                optionsFrm.TextBoxX1.Visible = True
-                optionsFrm.ButtonX3.Visible = True
 
                 frmVEDA.Show()
             End If

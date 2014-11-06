@@ -72,7 +72,6 @@ Public Class frmOptions
 
             LabelX1.Text = My.Resources.strChooseATheme
             LabelX2.Text = My.Resources.strChooseALanguage
-            LabelX3.Text = My.Resources.strChooseABackgroundImage
 
             CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
             CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall))
@@ -134,10 +133,6 @@ Public Class frmOptions
                     RegKey.SetValue(Of String)(RegKey.Style, "Blue")
             End Select
         End If
-    End Sub
-
-    Private Sub ComboBoxEx1_SelectedIndexChanged(sender As Object, e As EventArgs)
-        RegKey.SetValue(Of String)(RegKey.PatchServer, ComboBoxEx1.Text)
     End Sub
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
@@ -281,14 +276,6 @@ Public Class frmOptions
             Dim RemoteVersion3 As String = lines3(0)
             RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion3)
             MsgBox("PSO2 Installed version set to: " & RemoteVersion3)
-        End If
-    End Sub
-
-    Private Sub ButtonX3_Click(sender As Object, e As EventArgs)
-        If Not String.IsNullOrWhiteSpace(TextBoxX1.Text) Then
-            Dim UIDString As String = TextBoxX1.Text.Replace("steam://rungameid/", "")
-            RegKey.SetValue(Of String)(RegKey.SteamUID, UIDString)
-            MsgBox(UIDString)
         End If
     End Sub
 
