@@ -66,6 +66,8 @@ Public Class frmMain
             Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
         End If
 
+        optionsFrm = New frmOptions()
+
         InitializeComponent()
 
         'Yo, fuck this shit. Shit is mad whack, yo.
@@ -112,6 +114,30 @@ Public Class frmMain
         btnResumePatching.Text = My.Resources.strResumePatching
         btnTerminate.Text = My.Resources.strTerminate
         ButtonItem7.Text = My.Resources.strLaunchChrome
+
+        Select Case RegKey.GetValue(Of String)(RegKey.Style)
+            Case "Blue"
+                StyleManager.Style = eStyle.Office2007Blue
+
+            Case "Silver"
+                StyleManager.Style = eStyle.Office2007Silver
+
+            Case "Black"
+                StyleManager.Style = eStyle.Office2007Black
+
+            Case "Vista Glass"
+                StyleManager.Style = eStyle.Office2007VistaGlass
+
+            Case "2010 Silver"
+                StyleManager.Style = eStyle.Office2010Silver
+
+            Case "Windows 7 Blue"
+                StyleManager.Style = eStyle.Windows7Blue
+
+            Case Else
+                StyleManager.Style = eStyle.Office2007Blue
+        End Select
+
         Me.ResumeLayout(False)
     End Sub
 
@@ -431,46 +457,10 @@ Public Class frmMain
                 RegKey.SetValue(Of String)(RegKey.UID, UIDSTRING)
             End If
 
-            optionsFrm = New frmOptions()
-
             Log("Load more settings...")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ENPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.ENPatchVersion, "Not Installed")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
-
-            Dim style As String = RegKey.GetValue(Of String)(RegKey.Style)
-
-            If Not String.IsNullOrEmpty(style) Then
-                Select Case style
-                    Case "Blue"
-                        StyleManager1.ManagerStyle = eStyle.Office2007Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Blue
-
-                    Case "Silver"
-                        StyleManager1.ManagerStyle = eStyle.Office2007Silver
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Silver
-
-                    Case "Black"
-                        StyleManager1.ManagerStyle = eStyle.Office2007Black
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Black
-
-                    Case "Vista Glass"
-                        StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007VistaGlass
-
-                    Case "2010 Silver"
-                        StyleManager1.ManagerStyle = eStyle.Office2010Silver
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2010Silver
-
-                    Case "Windows 7 Blue"
-                        StyleManager1.ManagerStyle = eStyle.Windows7Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Windows7Blue
-
-                    Case Else
-                        StyleManager1.ManagerStyle = eStyle.Office2007Blue
-                        frmPSO2Options.StyleManager1.ManagerStyle = eStyle.Office2007Blue
-                End Select
-            End If
 
             Log("Loading textbox settings")
 
@@ -486,8 +476,7 @@ Public Class frmMain
 
             regValue = RegKey.GetValue(Of String)(RegKey.Color)
             If Not String.IsNullOrEmpty(regValue) Then
-                StyleManager1.ManagerColorTint = Color.FromArgb(Convert.ToInt32(regValue))
-                frmPSO2Options.StyleManager1.ManagerColorTint = Color.FromArgb(Convert.ToInt32(regValue))
+                StyleManager.ColorTint = Color.FromArgb(Convert.ToInt32(regValue))
             End If
 
             regValue = RegKey.GetValue(Of String)(RegKey.FontColor)

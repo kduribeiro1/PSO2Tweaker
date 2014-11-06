@@ -254,9 +254,6 @@
   <data name="&gt;&gt;chkRemoveVita.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
-  <metadata name="StyleManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>232, 17</value>
-  </metadata>
   <data name="PBMainBar.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 265</value>
   </data>
@@ -7465,12 +7462,6 @@
   </data>
   <data name="&gt;&gt;OpenFileDialog1.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StyleManager1.Name" xml:space="preserve">
-    <value>StyleManager1</value>
-  </data>
-  <data name="&gt;&gt;StyleManager1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.StyleManager, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;tsmRestartDownload.Name" xml:space="preserve">
     <value>tsmRestartDownload</value>

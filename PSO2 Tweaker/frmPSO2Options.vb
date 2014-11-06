@@ -47,23 +47,9 @@ Public Class frmPSO2Options
                 Exit Sub
             End If
 
-            Select Case RegKey.GetValue(Of String)(RegKey.Style)
-                Case "Blue"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-                Case "Black"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-                Case "Silver"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
-                Case "Vista Glass"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-                Case "2010 Silver"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-                Case "Windows 7 Blue"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
-            End Select
+            Me.SuspendLayout()
 
             Dim backColor = Me.BackColor
-
             TabControlPanel1.Style.BackColor1.Color = backColor
             TabControlPanel1.Style.BackColor2.Color = backColor
             TabControlPanel2.Style.BackColor1.Color = backColor
@@ -88,6 +74,7 @@ Public Class frmPSO2Options
             TabControlPanel3.StyleMouseOver.BackColor2.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
+
             Dim DevM As DEVMODE
             DevM.dmDeviceName = New String(Chr(0), 32)
             DevM.dmFormName = New String(Chr(0), 32)
@@ -132,6 +119,8 @@ Public Class frmPSO2Options
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Me.ResumeLayout(False)
         End Try
     End Sub
 

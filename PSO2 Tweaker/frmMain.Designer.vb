@@ -30,7 +30,6 @@ Partial Class frmMain
         Me.chkRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemovePC = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemoveVita = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.StyleManager1 = New DevComponents.DotNetBar.StyleManager()
         Me.PBMainBar = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.chkRemoveNVidia = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemoveSEGA = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -181,11 +180,6 @@ Partial Class frmMain
         Me.chkRemoveVita.BackgroundStyle.Class = ""
         Me.chkRemoveVita.Name = "chkRemoveVita"
         Me.chkRemoveVita.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'StyleManager1
-        '
-        Me.StyleManager1.ManagerColorTint = System.Drawing.SystemColors.ActiveBorder
-        Me.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
         '
         'PBMainBar
         '
@@ -884,7 +878,6 @@ Partial Class frmMain
     Friend WithEvents chkRemoveCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemovePC As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemoveVita As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents StyleManager1 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents PBMainBar As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents chkRemoveNVidia As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemoveSEGA As DevComponents.DotNetBar.Controls.CheckBoxX

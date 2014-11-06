@@ -2,11 +2,9 @@
 Imports System.IO
 Imports System.Net
 Imports System.Diagnostics
+Imports DevComponents.DotNetBar
 
 Public Class frmOptions
-
-    Dim DPISetting As String
-
     Private Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
 
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -30,6 +28,7 @@ Public Class frmOptions
 
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
+            Me.SuspendLayout()
             If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Color)) Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
             If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.FontColor)) Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
             If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxBGColor)) Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
@@ -93,6 +92,8 @@ Public Class frmOptions
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Me.ResumeLayout(False)
         End Try
     End Sub
 
@@ -105,31 +106,31 @@ Public Class frmOptions
 
             Select Case CMBStyle.Text
                 Case "Blue"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Silver"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Silver
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Black"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Vista Glass"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "2010 Silver"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2010Silver
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Windows 7 Blue"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Windows7Blue
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case Else
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
                     RegKey.SetValue(Of String)(RegKey.Style, "Blue")
             End Select
         End If
@@ -173,9 +174,7 @@ Public Class frmOptions
     End Sub
 
     Private Sub ColorPickerButton1_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton1.SelectedColorChanged
-        frmMain.StyleManager1.ManagerColorTint = ColorPickerButton1.SelectedColor
-        Me.StyleManager1.ManagerColorTint = ColorPickerButton1.SelectedColor
-        frmPSO2Options.StyleManager1.ManagerColorTint = ColorPickerButton1.SelectedColor
+        StyleManager.ColorTint = ColorPickerButton1.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.Color, (ColorPickerButton1.SelectedColor.ToArgb))
     End Sub
 

@@ -45,7 +45,6 @@ Partial Class frmOptions
         Me.ComboItem12 = New DevComponents.Editors.ComboItem()
         Me.ComboItem13 = New DevComponents.Editors.ComboItem()
         Me.LabelX3 = New DevComponents.DotNetBar.LabelX()
-        Me.StyleManager1 = New DevComponents.DotNetBar.StyleManager()
         Me.ColorPickerButton1 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
         Me.CheckBoxX1 = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -217,11 +216,6 @@ Partial Class frmOptions
         '
         Me.LabelX3.BackgroundStyle.Class = ""
         Me.LabelX3.Name = "LabelX3"
-        '
-        'StyleManager1
-        '
-        Me.StyleManager1.ManagerColorTint = System.Drawing.SystemColors.ActiveBorder
-        Me.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
         '
         'ColorPickerButton1
         '
@@ -668,7 +662,6 @@ Partial Class frmOptions
     Friend WithEvents ComboItem12 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem13 As DevComponents.Editors.ComboItem
     Friend WithEvents LabelX3 As DevComponents.DotNetBar.LabelX
-    Friend WithEvents StyleManager1 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents ComboItem29 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem30 As DevComponents.Editors.ComboItem
     Friend WithEvents ColorPickerButton1 As DevComponents.DotNetBar.ColorPickerButton
