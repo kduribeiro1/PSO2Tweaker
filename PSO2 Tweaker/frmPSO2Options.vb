@@ -1,10 +1,14 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
+Imports System.Collections.Generic
+Imports DevComponents.DotNetBar
 
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Integer, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Integer
+    Shared INICache As New Dictionary(Of String, String)
+
+    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As String, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Boolean
 
     <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
         <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmDeviceName As String
@@ -37,71 +41,61 @@ Public Class frmPSO2Options
 
     Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            If File.Exists(usersettingsfile) = False Then
+            If Not File.Exists(usersettingsfile) Then
                 MsgBox("Please launch PSO2 to generate a new user configuration file!")
                 Me.Visible = False
                 Me.Close()
                 Exit Sub
             End If
 
-            Select Case Helper.GetRegKey(Of String)("Style")
-                Case "Blue"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-                Case "Black"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Black
-                Case "Silver"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Silver
-                Case "Vista Glass"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-                Case "2010 Silver"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2010Silver
-                Case "Windows 7 Blue"
-                    StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Windows7Blue
-            End Select
+            Me.SuspendLayout()
 
             Dim backColor = Me.BackColor
-
             TabControlPanel1.Style.BackColor1.Color = backColor
             TabControlPanel1.Style.BackColor2.Color = backColor
-            TabControlPanel2.Style.BackColor1.Color = backColor
-            TabControlPanel2.Style.BackColor2.Color = backColor
-            TabControlPanel3.Style.BackColor1.Color = backColor
-            TabControlPanel3.Style.BackColor2.Color = backColor
-            TabControlPanel4.Style.BackColor1.Color = backColor
-            TabControlPanel4.Style.BackColor2.Color = backColor
-            TabControlPanel1.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel1.StyleMouseDown.BackColor2.Color = backColor
-            TabControlPanel2.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel2.StyleMouseDown.BackColor2.Color = backColor
-            TabControlPanel3.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel3.StyleMouseDown.BackColor2.Color = backColor
-            TabControlPanel4.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel4.StyleMouseDown.BackColor2.Color = backColor
             TabControlPanel1.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel1.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel1.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel1.StyleMouseDown.BackColor2.Color = backColor
+
+            TabControlPanel2.Style.BackColor1.Color = backColor
+            TabControlPanel2.Style.BackColor2.Color = backColor
             TabControlPanel2.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel2.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel2.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel2.StyleMouseDown.BackColor2.Color = backColor
+
+            TabControlPanel3.Style.BackColor1.Color = backColor
+            TabControlPanel3.Style.BackColor2.Color = backColor
             TabControlPanel3.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel3.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel3.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel3.StyleMouseDown.BackColor2.Color = backColor
+
+            TabControlPanel4.Style.BackColor1.Color = backColor
+            TabControlPanel4.Style.BackColor2.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel4.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel4.StyleMouseDown.BackColor2.Color = backColor
+
             Dim DevM As DEVMODE
-            DevM.dmDeviceName = New [String](New Char(32) {})
-            DevM.dmFormName = New [String](New Char(32) {})
+            DevM.dmDeviceName = New String(Chr(0), 32)
+            DevM.dmFormName = New String(Chr(0), 32)
             DevM.dmSize = CShort(Marshal.SizeOf(GetType(DEVMODE)))
 
             Dim modeIndex As Integer = 0
             ' 0 = The first mode
             While EnumDisplaySettings(Nothing, modeIndex, DevM)
                 ' Mode found
-                If ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) = False Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
+                If Not ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
 
                 ' The next mode
                 modeIndex += 1
             End While
-            Slider1.Value = ReadINISetting("DrawLevel")
-            ComboBoxEx1.SelectedIndex = ReadINISetting("TextureResolution")
-            ComboBoxEx7.SelectedIndex = ReadINISetting("InterfaceSize")
+            Slider1.Value = Convert.ToInt32(ReadINISetting("DrawLevel"))
+            ComboBoxEx1.SelectedIndex = Convert.ToInt32(ReadINISetting("TextureResolution"))
+            ComboBoxEx7.SelectedIndex = Convert.ToInt32(ReadINISetting("InterfaceSize"))
             ComboBoxEx6.Text = ReadINISetting("FrameKeep") & " FPS"
             If ComboBoxEx6.Text = "0 FPS" Then ComboBoxEx6.Text = "Unlimited FPS"
             If ReadINISetting("ShaderQuality") = "true" Then ComboBoxEx2.SelectedIndex = 0
@@ -119,7 +113,7 @@ Public Class frmPSO2Options
                 'Disable resolution thingie
             End If
             ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
-            If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text.ToString) = False Then ComboBoxEx5.SelectedIndex = 0
+            If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then ComboBoxEx5.SelectedIndex = 0
             CheckBoxX1.Checked = False
             If ReadINISetting("Y") = "99999" Then
                 If ReadINISetting("X") = "99999" Then
@@ -129,57 +123,52 @@ Public Class frmPSO2Options
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        Finally
+            Me.ResumeLayout(False)
         End Try
     End Sub
 
-    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0)
+    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
         Try
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
-            For i As Integer = LineToStartAt To TextLines.Count
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
-                    Return "Setting not found"
+            Dim returnValue = ""
+            If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
+
+            Dim TextLines As String() = File.ReadAllLines(usersettingsfile)
+            For i As Integer = LineToStartAt To (TextLines.Length - 1)
+                If Not String.IsNullOrEmpty(TextLines(i)) Then
+                    If TextLines(i).Contains(" " & SettingToRead & " ") Then
+                        Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                        Dim strReturn As String() = strLine.Split("="c)
+                        Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "").Replace(" "c, "")
+                        If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
+                        Return FinalString
+                    End If
                 End If
-                If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
-                    FinalString = FinalString.Replace(" ", "")
-                    Return FinalString
-                End If
-            Next i
+            Next
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
-        ' TODO: Actually fix the function
         Return ""
     End Function
 
     Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
         Try
+            INICache(SettingToSave) = Value
+
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Count
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
-                    Exit Sub
-                End If
+            For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains(" " & SettingToSave & " ") Then
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Count
-                        If j + 1 = TextLines.Count Then
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
                             TextBoxX1.AppendText("}")
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
@@ -202,11 +191,7 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Count
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
-                    Exit Sub
-                End If
+            For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Height =") Then
@@ -215,14 +200,12 @@ Public Class frmPSO2Options
                         End If
                     Next x
 
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Count
-                        If j + 1 = TextLines.Count Then
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
                             TextBoxX1.AppendText("}")
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
@@ -245,12 +228,7 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To TextLines.Count
-                'SettingToRead is FileType in the example
-                If i + 1 = TextLines.Count Then
-                    Exit Sub
-                End If
-
+            For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Width =") Then
@@ -259,15 +237,13 @@ Public Class frmPSO2Options
                         End If
                     Next x
 
-                    Dim strLine As String = TextLines(i).ToString
-                    strLine = strLine.Replace(vbTab, "")
-                    Dim strReturn As String() = strLine.Split("=")
-                    Dim FinalString As String = strReturn(1).Replace("""", "")
-                    FinalString = FinalString.Replace(",", "")
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
 
-                    For j = 0 To TextLines.Count
-                        If j + 1 = TextLines.Count Then
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
                             TextBoxX1.AppendText("}")
                             File.Delete(usersettingsfile)
                             File.WriteAllText(usersettingsfile, TextBoxX1.Text)
@@ -287,11 +263,11 @@ Public Class frmPSO2Options
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
         Try
             frmMain.Log("Saving Draw Level...")
-            SaveINISetting("DrawLevel", Slider1.Value.ToString)
+            SaveINISetting("DrawLevel", Slider1.Value.ToString())
             frmMain.Log("Saving Texture Resolution...")
-            SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex)
+            SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex.ToString())
             frmMain.Log("Saving Interface Size...")
-            SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex)
+            SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex.ToString())
             frmMain.Log("Saving Shader Quality...")
             If ComboBoxEx2.SelectedIndex = 0 Then SaveINISetting("ShaderQuality", "true")
             If ComboBoxEx2.SelectedIndex = 1 Then SaveINISetting("ShaderQuality", "false")
@@ -317,22 +293,22 @@ Public Class frmPSO2Options
                 SaveINISetting("VirtualFullScreen", "true")
             End If
 
-            If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) = False Then
+            If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then
                 MsgBox("Please select a supported resolution!")
                 Exit Sub
             End If
 
             frmMain.Log("Saving Resolution...")
             If ComboBoxEx5.SelectedText <> "x" Then
-                Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString
-                Dim RealResolution As String() = StrResolution.Split("x")
+                Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
+
+                Dim RealResolution As String() = StrResolution.Split("x"c)
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If
 
-            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString
-            FPS = FPS.Replace(" FPS", "")
-            FPS = FPS.Replace("Unlimited", "0")
+            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
+
             frmMain.Log("Saving FPS...")
             SaveINISetting("FrameKeep", FPS)
             frmMain.Log("Disabling Interface...")
@@ -340,8 +316,8 @@ Public Class frmPSO2Options
             If CheckBoxX1.Checked Then
                 If ReadINISetting("X") <> "99999" Then
                     If ReadINISetting("Y") <> "99999" Then
-                        Helper.SetRegKey(Of String)("OldX", ReadINISetting("X"))
-                        Helper.SetRegKey(Of String)("OldY", ReadINISetting("Y"))
+                        RegKey.SetValue(Of String)(RegKey.OldX, ReadINISetting("X"))
+                        RegKey.SetValue(Of String)(RegKey.OldY, ReadINISetting("Y"))
                         SaveINISetting("X", "99999")
                         SaveINISetting("Y", "99999")
                     End If
@@ -349,11 +325,11 @@ Public Class frmPSO2Options
             End If
 
             frmMain.Log("Enabling Interface...")
-            If CheckBoxX1.Checked = False Then
+            If Not CheckBoxX1.Checked Then
                 If ReadINISetting("X") = "99999" Then
                     If ReadINISetting("Y") = "99999" Then
-                        SaveINISetting("X", Helper.GetRegKey(Of String)("OldX"))
-                        SaveINISetting("Y", Helper.GetRegKey(Of String)("OldY"))
+                        SaveINISetting("X", RegKey.GetValue(Of String)(RegKey.OldX))
+                        SaveINISetting("Y", RegKey.GetValue(Of String)(RegKey.OldY))
                     End If
                 End If
             End If
@@ -367,9 +343,12 @@ Public Class frmPSO2Options
 
     Private Sub ComboBoxEx4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx4.SelectedIndexChanged
         Try
-            If ComboBoxEx4.SelectedIndex = 2 Then ComboBoxEx5.Enabled = False
-            If ComboBoxEx4.SelectedIndex = 1 Then ComboBoxEx5.Enabled = True
-            If ComboBoxEx4.SelectedIndex = 0 Then ComboBoxEx5.Enabled = True
+            'If ComboBoxEx4.SelectedIndex = 2 Then ComboBoxEx5.Enabled = False
+            'If ComboBoxEx4.SelectedIndex = 1 Then ComboBoxEx5.Enabled = True
+            'If ComboBoxEx4.SelectedIndex = 0 Then ComboBoxEx5.Enabled = True
+
+            ComboBoxEx5.Enabled = (ComboBoxEx4.SelectedIndex < 2)
+
         Catch ex As Exception
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)

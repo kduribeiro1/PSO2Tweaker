@@ -9,8 +9,8 @@
     ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
     Partial Friend Class MyApplication
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
-            If Helper.GetRegKey(Of Boolean)("Pastebin") Then
-                frmMain.Log(e.ToString)
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
+                frmMain.Log(e.ToString())
                 frmMain.PasteBinUpload()
             End If
         End Sub

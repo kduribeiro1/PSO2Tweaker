@@ -117,16 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LabelX10.Text" xml:space="preserve">
-    <value>Select the mode PSO2 will run in. Windowed mode makes it so that you can work with other windows while playing, Fullscreen takes up the entire screen, and Virtual Fullscreen takes up the entire screen, but allows you to ALT + TAB to other windows without crashing the game. </value>
-  </data>
   <data name="LabelX19.Text" xml:space="preserve">
     <value>If you're having issues with these settings not saving correctly, or issues in-game, you can try clicking "Troubleshooting -&gt; Reset PSO2 Settings" in the main window to restore your PSO2 settings to default.</value>
   </data>
   <data name="LabelX3.Text" xml:space="preserve">
     <value>The simple render setting changes the overall rendering level. If the number is set high, the general quality of graphics goes up, but the load on the PC increases. On some systems, the higher setting may not work correctly.</value>
   </data>
-  <metadata name="StyleManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="LabelX10.Text" xml:space="preserve">
+    <value>Select the mode PSO2 will run in. Windowed mode makes it so that you can work with other windows while playing, Fullscreen takes up the entire screen, and Virtual Fullscreen takes up the entire screen, but allows you to ALT + TAB to other windows without crashing the game. </value>
+  </data>
 </root>

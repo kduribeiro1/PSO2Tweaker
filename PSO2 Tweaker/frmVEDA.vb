@@ -65,19 +65,20 @@ Public Class frmVEDA
         Return Generator.Next(Min, Max)
     End Function
 
-    Public Sub WriteConsole(AddThisText)
-        WriteDebugInfo(AddThisText)
-        Application.DoEvents()
-        Threading.Thread.Sleep(GetRandom(30, 1000))
-    End Sub
-    Public Sub WriteConsoleAndOK(AddThisText)
-        WriteDebugInfoAndOK(AddThisText)
+    Public Sub WriteConsole(str As String)
+        WriteDebugInfo(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
 
-    Public Sub WriteConsoleAndWarning(AddThisText)
-        WriteDebugInfoAndWarning(AddThisText)
+    Public Sub WriteConsoleAndOK(str As String)
+        WriteDebugInfoAndOK(str)
+        Application.DoEvents()
+        Threading.Thread.Sleep(GetRandom(30, 1000))
+    End Sub
+
+    Public Sub WriteConsoleAndWarning(str As String)
+        WriteDebugInfoAndWarning(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
@@ -127,7 +128,7 @@ Public Class frmVEDA
         OpenFileDialog1.Title = "Please select the file you wish to MD5"
         OpenFileDialog1.FileName = "File"
         OpenFileDialog1.ShowDialog()
-        Dim StoryLocation As String = OpenFileDialog1.FileName.ToString()
+        Dim StoryLocation As String = OpenFileDialog1.FileName
         WriteDebugInfo("The MD5 of that file is: " & Helper.GetMD5(StoryLocation))
     End Sub
 
@@ -165,7 +166,7 @@ Public Class frmVEDA
 
         'list the names of all files in the specified directory
         For Each dra In diar1
-            File.AppendAllText("PSO2 Folder Contents.txt", (dra.ToString & vbCrLf))
+            File.AppendAllText("PSO2 Folder Contents.txt", (dra.ToString() & vbCrLf))
         Next
 
         frmMain.PasteBinUploadFile("PSO2 Folder Contents.txt")
@@ -199,7 +200,7 @@ Public Class frmVEDA
 
         'list the names of all files in the specified directory
         For Each dra In diar1
-            File.AppendAllText("Folder Contents.txt", (dra.ToString & vbCrLf))
+            File.AppendAllText("Folder Contents.txt", (dra.ToString() & vbCrLf))
         Next
 
         frmMain.PasteBinUploadFile("Folder Contents.txt")
@@ -236,13 +237,13 @@ Public Class frmVEDA
 
         'list the names of all files in the specified directory
         For Each dra In diar1
-            File.AppendAllText(DirectoryString & " \Story MD5HashList.txt", (dra.ToString & "," & Helper.GetMD5(DirectoryString & " \" & dra.ToString) & vbCrLf))
+            File.AppendAllText(DirectoryString & " \Story MD5HashList.txt", (dra.ToString() & "," & Helper.GetMD5(DirectoryString & " \" & dra.ToString()) & vbCrLf))
         Next
         WriteDebugInfo("Done.")
         Process.Start("explorer.exe " & DirectoryString)
     End Sub
 
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click
-        frmMain.DLWUA(txtAqua.Text, "testfile", True)
+        frmMain.DLWUA(txtAqua.Text, "testfile")
     End Sub
 End Class

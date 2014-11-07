@@ -41,11 +41,6 @@ Partial Class frmOptions
         Me.ComboItem8 = New DevComponents.Editors.ComboItem()
         Me.ComboItem14 = New DevComponents.Editors.ComboItem()
         Me.LabelX2 = New DevComponents.DotNetBar.LabelX()
-        Me.ComboBoxEx1 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
-        Me.ComboItem12 = New DevComponents.Editors.ComboItem()
-        Me.ComboItem13 = New DevComponents.Editors.ComboItem()
-        Me.LabelX3 = New DevComponents.DotNetBar.LabelX()
-        Me.StyleManager1 = New DevComponents.DotNetBar.StyleManager()
         Me.ColorPickerButton1 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
         Me.CheckBoxX1 = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -81,11 +76,6 @@ Partial Class frmOptions
         Me.ColorPickerButton3 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.LabelX12 = New DevComponents.DotNetBar.LabelX()
         Me.ColorPickerButton4 = New DevComponents.DotNetBar.ColorPickerButton()
-        Me.LabelX13 = New DevComponents.DotNetBar.LabelX()
-        Me.TextBoxX1 = New DevComponents.DotNetBar.Controls.TextBoxX()
-        Me.ButtonX3 = New DevComponents.DotNetBar.ButtonX()
-        Me.ButtonX4 = New DevComponents.DotNetBar.ButtonX()
-        Me.ButtonX5 = New DevComponents.DotNetBar.ButtonX()
         Me.CheckBoxX5 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkAutoRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.LabelX14 = New DevComponents.DotNetBar.LabelX()
@@ -189,39 +179,6 @@ Partial Class frmOptions
         '
         Me.LabelX2.BackgroundStyle.Class = ""
         Me.LabelX2.Name = "LabelX2"
-        '
-        'ComboBoxEx1
-        '
-        Me.ComboBoxEx1.DisplayMember = "Text"
-        Me.ComboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        resources.ApplyResources(Me.ComboBoxEx1, "ComboBoxEx1")
-        Me.ComboBoxEx1.FormattingEnabled = True
-        Me.ComboBoxEx1.Items.AddRange(New Object() {Me.ComboItem12, Me.ComboItem13})
-        Me.ComboBoxEx1.Name = "ComboBoxEx1"
-        Me.ComboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'ComboItem12
-        '
-        resources.ApplyResources(Me.ComboItem12, "ComboItem12")
-        '
-        'ComboItem13
-        '
-        resources.ApplyResources(Me.ComboItem13, "ComboItem13")
-        '
-        'LabelX3
-        '
-        resources.ApplyResources(Me.LabelX3, "LabelX3")
-        Me.LabelX3.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX3.BackgroundStyle.Class = ""
-        Me.LabelX3.Name = "LabelX3"
-        '
-        'StyleManager1
-        '
-        Me.StyleManager1.ManagerColorTint = System.Drawing.SystemColors.ActiveBorder
-        Me.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
         '
         'ColorPickerButton1
         '
@@ -501,49 +458,6 @@ Partial Class frmOptions
         Me.ColorPickerButton4.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
         Me.ColorPickerButton4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'LabelX13
-        '
-        resources.ApplyResources(Me.LabelX13, "LabelX13")
-        Me.LabelX13.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX13.BackgroundStyle.Class = ""
-        Me.LabelX13.Name = "LabelX13"
-        '
-        'TextBoxX1
-        '
-        '
-        '
-        '
-        Me.TextBoxX1.Border.Class = "TextBoxBorder"
-        resources.ApplyResources(Me.TextBoxX1, "TextBoxX1")
-        Me.TextBoxX1.Name = "TextBoxX1"
-        '
-        'ButtonX3
-        '
-        Me.ButtonX3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX3.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX3, "ButtonX3")
-        Me.ButtonX3.Name = "ButtonX3"
-        Me.ButtonX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'ButtonX4
-        '
-        Me.ButtonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX4, "ButtonX4")
-        Me.ButtonX4.Name = "ButtonX4"
-        Me.ButtonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'ButtonX5
-        '
-        Me.ButtonX5.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX5.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX5, "ButtonX5")
-        Me.ButtonX5.Name = "ButtonX5"
-        Me.ButtonX5.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
         'CheckBoxX5
         '
         Me.CheckBoxX5.BackColor = System.Drawing.Color.Transparent
@@ -602,11 +516,6 @@ Partial Class frmOptions
         Me.Controls.Add(Me.cmbPredownload)
         Me.Controls.Add(Me.chkAutoRemoveCensor)
         Me.Controls.Add(Me.CheckBoxX5)
-        Me.Controls.Add(Me.ButtonX5)
-        Me.Controls.Add(Me.ButtonX4)
-        Me.Controls.Add(Me.ButtonX3)
-        Me.Controls.Add(Me.TextBoxX1)
-        Me.Controls.Add(Me.LabelX13)
         Me.Controls.Add(Me.LabelX11)
         Me.Controls.Add(Me.ColorPickerButton3)
         Me.Controls.Add(Me.LabelX12)
@@ -630,8 +539,6 @@ Partial Class frmOptions
         Me.Controls.Add(Me.CheckBoxX1)
         Me.Controls.Add(Me.LabelX4)
         Me.Controls.Add(Me.ColorPickerButton1)
-        Me.Controls.Add(Me.ComboBoxEx1)
-        Me.Controls.Add(Me.LabelX3)
         Me.Controls.Add(Me.cmbLanguage)
         Me.Controls.Add(Me.LabelX2)
         Me.Controls.Add(Me.CMBStyle)
@@ -639,6 +546,7 @@ Partial Class frmOptions
         Me.DoubleBuffered = True
         Me.EnableGlass = False
         Me.FlattenMDIBorder = False
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmOptions"
@@ -663,11 +571,6 @@ Partial Class frmOptions
     Friend WithEvents ComboItem9 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem10 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem11 As DevComponents.Editors.ComboItem
-    Friend WithEvents ComboBoxEx1 As DevComponents.DotNetBar.Controls.ComboBoxEx
-    Friend WithEvents ComboItem12 As DevComponents.Editors.ComboItem
-    Friend WithEvents ComboItem13 As DevComponents.Editors.ComboItem
-    Friend WithEvents LabelX3 As DevComponents.DotNetBar.LabelX
-    Friend WithEvents StyleManager1 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents ComboItem29 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem30 As DevComponents.Editors.ComboItem
     Friend WithEvents ColorPickerButton1 As DevComponents.DotNetBar.ColorPickerButton
@@ -705,11 +608,6 @@ Partial Class frmOptions
     Friend WithEvents ColorPickerButton3 As DevComponents.DotNetBar.ColorPickerButton
     Friend WithEvents LabelX12 As DevComponents.DotNetBar.LabelX
     Friend WithEvents ColorPickerButton4 As DevComponents.DotNetBar.ColorPickerButton
-    Friend WithEvents LabelX13 As DevComponents.DotNetBar.LabelX
-    Friend WithEvents TextBoxX1 As DevComponents.DotNetBar.Controls.TextBoxX
-    Friend WithEvents ButtonX3 As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents ButtonX4 As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents ButtonX5 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents CheckBoxX5 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkAutoRemoveCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents ComboItem14 As DevComponents.Editors.ComboItem

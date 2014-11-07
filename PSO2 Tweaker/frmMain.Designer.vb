@@ -30,13 +30,11 @@ Partial Class frmMain
         Me.chkRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemovePC = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemoveVita = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.StyleManager1 = New DevComponents.DotNetBar.StyleManager()
-        Me.PB1 = New DevComponents.DotNetBar.Controls.ProgressBarX()
-        Me.QatCustomizeItem1 = New DevComponents.DotNetBar.QatCustomizeItem()
+        Me.PBMainBar = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.chkRemoveNVidia = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemoveSEGA = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkSwapOP = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.Label1 = New DevComponents.DotNetBar.LabelX()
+        Me.lblDirectoryLabel = New DevComponents.DotNetBar.LabelX()
         Me.lblDirectory = New DevComponents.DotNetBar.LabelX()
         Me.lblStatus = New DevComponents.DotNetBar.LabelX()
         Me.chkRestoreCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -46,22 +44,16 @@ Partial Class frmMain
         Me.chkRestoreSEGA = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.btnApplyChanges = New DevComponents.DotNetBar.ButtonX()
         Me.btnLaunchPSO2 = New DevComponents.DotNetBar.ButtonX()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.cmsProgressBar = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tsmRestartDownload = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelDownloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CancelProcessToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.seconds = New System.Windows.Forms.Timer(Me.components)
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
-        Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
-        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.RibbonControl1 = New DevComponents.DotNetBar.RibbonControl()
         Me.Office2007StartButton1 = New DevComponents.DotNetBar.Office2007StartButton()
         Me.ItemContainer1 = New DevComponents.DotNetBar.ItemContainer()
         Me.ItemContainer2 = New DevComponents.DotNetBar.ItemContainer()
         Me.ItemContainer3 = New DevComponents.DotNetBar.ItemContainer()
-        Me.Button1 = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnSelectPSODir = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonInstall = New DevComponents.DotNetBar.ButtonItem()
         Me.btnENPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
@@ -85,15 +77,13 @@ Partial Class frmMain
         Me.btnAnalyze = New DevComponents.DotNetBar.ButtonItem()
         Me.Button2 = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem10 = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnConnection = New DevComponents.DotNetBar.ButtonItem()
         Me.btnGameguard = New DevComponents.DotNetBar.ButtonItem()
-        Me.Button6 = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnFixPSO2EXEs = New DevComponents.DotNetBar.ButtonItem()
         Me.btnFixPermissions = New DevComponents.DotNetBar.ButtonItem()
         Me.btnCopyInfo = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem17 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnResetTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnResumePatching = New DevComponents.DotNetBar.ButtonItem()
-        Me.ButtonItem12 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnTerminate = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOtherStuff = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem7 = New DevComponents.DotNetBar.ButtonItem()
@@ -129,16 +119,15 @@ Partial Class frmMain
         Me.btnPSO2Options = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
         Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
-        Me.LabelItem1 = New DevComponents.DotNetBar.LabelItem()
-        Me.StyleManager2 = New DevComponents.DotNetBar.StyleManager()
+        Me.lblORBLabel = New DevComponents.DotNetBar.LabelItem()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
-        Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
+        Me.lblServerStatus = New System.Windows.Forms.Label()
+        Me.lblServerStatusLabel = New DevComponents.DotNetBar.LabelX()
         Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
-        Me.ContextMenuStrip1.SuspendLayout()
+        Me.DLS = New PSO2_Tweaker.MyWebClient()
+        Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtHTML
@@ -192,26 +181,17 @@ Partial Class frmMain
         Me.chkRemoveVita.Name = "chkRemoveVita"
         Me.chkRemoveVita.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'StyleManager1
-        '
-        Me.StyleManager1.ManagerColorTint = System.Drawing.SystemColors.ActiveBorder
-        Me.StyleManager1.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
-        '
-        'PB1
+        'PBMainBar
         '
         '
         '
         '
-        Me.PB1.BackgroundStyle.Class = ""
-        Me.PB1.ChunkColor2 = System.Drawing.Color.Red
-        resources.ApplyResources(Me.PB1, "PB1")
-        Me.PB1.Name = "PB1"
-        Me.PB1.TabStop = False
-        Me.PB1.TextVisible = True
-        '
-        'QatCustomizeItem1
-        '
-        Me.QatCustomizeItem1.Name = "QatCustomizeItem1"
+        Me.PBMainBar.BackgroundStyle.Class = ""
+        Me.PBMainBar.ChunkColor2 = System.Drawing.Color.Red
+        resources.ApplyResources(Me.PBMainBar, "PBMainBar")
+        Me.PBMainBar.Name = "PBMainBar"
+        Me.PBMainBar.TabStop = False
+        Me.PBMainBar.TextVisible = True
         '
         'chkRemoveNVidia
         '
@@ -246,15 +226,15 @@ Partial Class frmMain
         Me.chkSwapOP.Name = "chkSwapOP"
         Me.chkSwapOP.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'Label1
+        'lblDirectoryLabel
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.lblDirectoryLabel, "lblDirectoryLabel")
+        Me.lblDirectoryLabel.BackColor = System.Drawing.Color.Transparent
         '
         '
         '
-        Me.Label1.BackgroundStyle.Class = ""
-        Me.Label1.Name = "Label1"
+        Me.lblDirectoryLabel.BackgroundStyle.Class = ""
+        Me.lblDirectoryLabel.Name = "lblDirectoryLabel"
         '
         'lblDirectory
         '
@@ -349,11 +329,11 @@ Partial Class frmMain
         Me.btnLaunchPSO2.Name = "btnLaunchPSO2"
         Me.btnLaunchPSO2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'ContextMenuStrip1
+        'cmsProgressBar
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmRestartDownload, Me.CancelDownloadToolStripMenuItem, Me.CancelProcessToolStripMenuItem})
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
+        Me.cmsProgressBar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmRestartDownload, Me.CancelDownloadToolStripMenuItem, Me.CancelProcessToolStripMenuItem})
+        Me.cmsProgressBar.Name = "ContextMenuStrip1"
+        resources.ApplyResources(Me.cmsProgressBar, "cmsProgressBar")
         '
         'tsmRestartDownload
         '
@@ -370,35 +350,6 @@ Partial Class frmMain
         Me.CancelProcessToolStripMenuItem.Name = "CancelProcessToolStripMenuItem"
         resources.ApplyResources(Me.CancelProcessToolStripMenuItem, "CancelProcessToolStripMenuItem")
         '
-        'Label3
-        '
-        resources.ApplyResources(Me.Label3, "Label3")
-        Me.Label3.Name = "Label3"
-        '
-        'seconds
-        '
-        Me.seconds.Interval = 10
-        '
-        'Label4
-        '
-        resources.ApplyResources(Me.Label4, "Label4")
-        Me.Label4.Name = "Label4"
-        '
-        'WebBrowser1
-        '
-        resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
-        Me.WebBrowser1.Name = "WebBrowser1"
-        '
-        'WebBrowser2
-        '
-        resources.ApplyResources(Me.WebBrowser2, "WebBrowser2")
-        Me.WebBrowser2.Name = "WebBrowser2"
-        '
-        'WebBrowser3
-        '
-        resources.ApplyResources(Me.WebBrowser3, "WebBrowser3")
-        Me.WebBrowser3.Name = "WebBrowser3"
-        '
         'RibbonControl1
         '
         '
@@ -409,7 +360,7 @@ Partial Class frmMain
         resources.ApplyResources(Me.RibbonControl1, "RibbonControl1")
         Me.RibbonControl1.KeyTipsFont = New System.Drawing.Font("Tahoma", 7.0!)
         Me.RibbonControl1.Name = "RibbonControl1"
-        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1, Me.LabelItem1})
+        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1, Me.lblORBLabel})
         Me.RibbonControl1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.RibbonControl1.TabGroupHeight = 14
         '
@@ -454,14 +405,14 @@ Partial Class frmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Button1, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
-        'Button1
+        'btnSelectPSODir
         '
-        Me.Button1.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.Button1.Name = "Button1"
-        Me.Button1.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.Button1, "Button1")
+        Me.btnSelectPSODir.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnSelectPSODir.Name = "btnSelectPSODir"
+        Me.btnSelectPSODir.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnSelectPSODir, "btnSelectPSODir")
         '
         'ButtonInstall
         '
@@ -571,7 +522,7 @@ Partial Class frmMain
         'ButtonItem2
         '
         Me.ButtonItem2.Name = "ButtonItem2"
-        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnConnection, Me.btnGameguard, Me.Button6, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.ButtonItem12, Me.btnTerminate})
+        Me.ButtonItem2.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnAnalyze, Me.Button2, Me.ButtonItem10, Me.btnGameguard, Me.btnFixPSO2EXEs, Me.btnFixPermissions, Me.btnCopyInfo, Me.ButtonItem17, Me.btnResetTweaker, Me.btnResumePatching, Me.btnTerminate})
         resources.ApplyResources(Me.ButtonItem2, "ButtonItem2")
         '
         'btnAnalyze
@@ -589,21 +540,15 @@ Partial Class frmMain
         Me.ButtonItem10.Name = "ButtonItem10"
         resources.ApplyResources(Me.ButtonItem10, "ButtonItem10")
         '
-        'btnConnection
-        '
-        Me.btnConnection.Name = "btnConnection"
-        resources.ApplyResources(Me.btnConnection, "btnConnection")
-        Me.btnConnection.Visible = False
-        '
         'btnGameguard
         '
         Me.btnGameguard.Name = "btnGameguard"
         resources.ApplyResources(Me.btnGameguard, "btnGameguard")
         '
-        'Button6
+        'btnFixPSO2EXEs
         '
-        Me.Button6.Name = "Button6"
-        resources.ApplyResources(Me.Button6, "Button6")
+        Me.btnFixPSO2EXEs.Name = "btnFixPSO2EXEs"
+        resources.ApplyResources(Me.btnFixPSO2EXEs, "btnFixPSO2EXEs")
         '
         'btnFixPermissions
         '
@@ -629,11 +574,6 @@ Partial Class frmMain
         '
         Me.btnResumePatching.Name = "btnResumePatching"
         resources.ApplyResources(Me.btnResumePatching, "btnResumePatching")
-        '
-        'ButtonItem12
-        '
-        Me.ButtonItem12.Name = "ButtonItem12"
-        resources.ApplyResources(Me.ButtonItem12, "ButtonItem12")
         '
         'btnTerminate
         '
@@ -837,15 +777,10 @@ Partial Class frmMain
         Me.btnExit.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnExit, "btnExit")
         '
-        'LabelItem1
+        'lblORBLabel
         '
-        Me.LabelItem1.Name = "LabelItem1"
-        resources.ApplyResources(Me.LabelItem1, "LabelItem1")
-        '
-        'StyleManager2
-        '
-        Me.StyleManager2.ManagerColorTint = System.Drawing.SystemColors.ActiveBorder
-        Me.StyleManager2.ManagerStyle = DevComponents.DotNetBar.eStyle.Office2007Blue
+        Me.lblORBLabel.Name = "lblORBLabel"
+        resources.ApplyResources(Me.lblORBLabel, "lblORBLabel")
         '
         'btnAnnouncements
         '
@@ -853,7 +788,6 @@ Partial Class frmMain
         Me.btnAnnouncements.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
         resources.ApplyResources(Me.btnAnnouncements, "btnAnnouncements")
         Me.btnAnnouncements.Name = "btnAnnouncements"
-        Me.btnAnnouncements.Shape = New DevComponents.DotNetBar.RoundRectangleShapeDescriptor()
         Me.btnAnnouncements.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'WebBrowser4
@@ -862,59 +796,52 @@ Partial Class frmMain
         Me.WebBrowser4.Name = "WebBrowser4"
         Me.WebBrowser4.Url = New System.Uri("", System.UriKind.Relative)
         '
-        'ButtonX1
-        '
-        Me.ButtonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX1.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX1, "ButtonX1")
-        Me.ButtonX1.Name = "ButtonX1"
-        Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
         'txtPSO2DefaultINI
         '
         resources.ApplyResources(Me.txtPSO2DefaultINI, "txtPSO2DefaultINI")
         Me.txtPSO2DefaultINI.Name = "txtPSO2DefaultINI"
         Me.txtPSO2DefaultINI.ReadOnly = True
         '
-        'Label5
+        'lblServerStatus
         '
-        Me.Label5.BackColor = System.Drawing.Color.Transparent
-        resources.ApplyResources(Me.Label5, "Label5")
-        Me.Label5.Name = "Label5"
+        Me.lblServerStatus.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.lblServerStatus, "lblServerStatus")
+        Me.lblServerStatus.Name = "lblServerStatus"
         '
-        'LabelX1
+        'lblServerStatusLabel
         '
-        resources.ApplyResources(Me.LabelX1, "LabelX1")
-        Me.LabelX1.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.lblServerStatusLabel, "lblServerStatusLabel")
+        Me.lblServerStatusLabel.BackColor = System.Drawing.Color.Transparent
         '
         '
         '
-        Me.LabelX1.BackgroundStyle.Class = ""
-        Me.LabelX1.Name = "LabelX1"
+        Me.lblServerStatusLabel.BackgroundStyle.Class = ""
+        Me.lblServerStatusLabel.Name = "lblServerStatusLabel"
         '
         'tmrCheckServerStatus
         '
         Me.tmrCheckServerStatus.Enabled = True
         Me.tmrCheckServerStatus.Interval = 120000
         '
+        'DLS
+        '
+        Me.DLS.BaseAddress = ""
+        Me.DLS.CachePolicy = Nothing
+        Me.DLS.Credentials = Nothing
+        Me.DLS.timeout = 10000
+        Me.DLS.UseDefaultCredentials = False
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.LabelX1)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblServerStatus)
+        Me.Controls.Add(Me.lblServerStatusLabel)
+        Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
         Me.Controls.Add(Me.txtPSO2DefaultINI)
-        Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.WebBrowser4)
         Me.Controls.Add(Me.btnAnnouncements)
-        Me.Controls.Add(Me.WebBrowser3)
-        Me.Controls.Add(Me.WebBrowser2)
-        Me.Controls.Add(Me.WebBrowser1)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.btnLaunchPSO2)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.lblDirectory)
@@ -925,7 +852,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.chkRestoreCensor)
         Me.Controls.Add(Me.chkRemoveSEGA)
         Me.Controls.Add(Me.chkRemoveNVidia)
-        Me.Controls.Add(Me.PB1)
+        Me.Controls.Add(Me.PBMainBar)
         Me.Controls.Add(Me.chkRemoveVita)
         Me.Controls.Add(Me.chkRemovePC)
         Me.Controls.Add(Me.chkRemoveCensor)
@@ -940,7 +867,7 @@ Partial Class frmMain
         Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.Name = "frmMain"
-        Me.ContextMenuStrip1.ResumeLayout(False)
+        Me.cmsProgressBar.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -951,13 +878,11 @@ Partial Class frmMain
     Friend WithEvents chkRemoveCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemovePC As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemoveVita As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents StyleManager1 As DevComponents.DotNetBar.StyleManager
-    Friend WithEvents PB1 As DevComponents.DotNetBar.Controls.ProgressBarX
-    Friend WithEvents QatCustomizeItem1 As DevComponents.DotNetBar.QatCustomizeItem
+    Friend WithEvents PBMainBar As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents chkRemoveNVidia As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemoveSEGA As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkSwapOP As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents Label1 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents lblDirectoryLabel As DevComponents.DotNetBar.LabelX
     Friend WithEvents lblDirectory As DevComponents.DotNetBar.LabelX
     Friend WithEvents lblStatus As DevComponents.DotNetBar.LabelX
     Friend WithEvents chkRestoreCensor As DevComponents.DotNetBar.Controls.CheckBoxX
@@ -967,15 +892,9 @@ Partial Class frmMain
     Friend WithEvents chkRestoreSEGA As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents btnApplyChanges As DevComponents.DotNetBar.ButtonX
     Friend WithEvents btnLaunchPSO2 As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents cmsProgressBar As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CancelDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents seconds As System.Windows.Forms.Timer
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents CancelProcessToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
-    Friend WithEvents WebBrowser3 As System.Windows.Forms.WebBrowser
     Friend WithEvents RibbonControl1 As DevComponents.DotNetBar.RibbonControl
     Friend WithEvents Office2007StartButton1 As DevComponents.DotNetBar.Office2007StartButton
     Friend WithEvents ItemContainer1 As DevComponents.DotNetBar.ItemContainer
@@ -983,19 +902,17 @@ Partial Class frmMain
     Friend WithEvents ItemContainer4 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents btnOptions As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnExit As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents StyleManager2 As DevComponents.DotNetBar.StyleManager
     Friend WithEvents btnPSO2Options As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnAnnouncements As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents LabelItem1 As DevComponents.DotNetBar.LabelItem
+    Friend WithEvents lblORBLabel As DevComponents.DotNetBar.LabelItem
     Friend WithEvents WebBrowser4 As System.Windows.Forms.WebBrowser
-    Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents txtPSO2DefaultINI As System.Windows.Forms.TextBox
     Friend WithEvents tsmRestartDownload As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents LabelX1 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents lblServerStatus As System.Windows.Forms.Label
+    Friend WithEvents lblServerStatusLabel As DevComponents.DotNetBar.LabelX
     Friend WithEvents tmrCheckServerStatus As System.Windows.Forms.Timer
     Friend WithEvents ItemContainer3 As DevComponents.DotNetBar.ItemContainer
-    Friend WithEvents Button1 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnSelectPSODir As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnENPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnLargeFiles As DevComponents.DotNetBar.ButtonItem
@@ -1016,15 +933,13 @@ Partial Class frmMain
     Friend WithEvents btnAnalyze As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents Button2 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem10 As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnConnection As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnGameguard As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents Button6 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnFixPSO2EXEs As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnFixPermissions As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnCopyInfo As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem17 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnResetTweaker As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnResumePatching As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents ButtonItem12 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnTerminate As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnOtherStuff As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonItem7 As DevComponents.DotNetBar.ButtonItem
@@ -1059,5 +974,6 @@ Partial Class frmMain
     Friend WithEvents btnStoryPatchNew As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
 
 End Class

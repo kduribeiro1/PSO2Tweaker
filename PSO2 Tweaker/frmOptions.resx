@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
-    <value>37</value>
+    <value>30</value>
   </data>
   <data name="ComboItem1.Text" xml:space="preserve">
     <value>Blue</value>
@@ -183,7 +183,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CMBStyle.ZOrder" xml:space="preserve">
-    <value>36</value>
+    <value>29</value>
   </data>
   <data name="cmbLanguage.ItemHeight" type="System.Int32, mscorlib">
     <value>14</value>
@@ -231,7 +231,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbLanguage.ZOrder" xml:space="preserve">
-    <value>34</value>
+    <value>27</value>
   </data>
   <data name="LabelX2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -258,71 +258,8 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX2.ZOrder" xml:space="preserve">
-    <value>35</value>
+    <value>28</value>
   </data>
-  <data name="ComboBoxEx1.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ComboBoxEx1.ItemHeight" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="ComboItem12.Text" xml:space="preserve">
-    <value>Patch Server #1</value>
-  </data>
-  <data name="ComboItem13.Text" xml:space="preserve">
-    <value>Patch Server #2</value>
-  </data>
-  <data name="ComboBoxEx1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 317</value>
-  </data>
-  <data name="ComboBoxEx1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 20</value>
-  </data>
-  <data name="ComboBoxEx1.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;ComboBoxEx1.Name" xml:space="preserve">
-    <value>ComboBoxEx1</value>
-  </data>
-  <data name="&gt;&gt;ComboBoxEx1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.ComboBoxEx, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ComboBoxEx1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ComboBoxEx1.ZOrder" xml:space="preserve">
-    <value>32</value>
-  </data>
-  <data name="LabelX3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="LabelX3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 296</value>
-  </data>
-  <data name="LabelX3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 15</value>
-  </data>
-  <data name="LabelX3.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="LabelX3.Text" xml:space="preserve">
-    <value>Story Patch Server</value>
-  </data>
-  <data name="&gt;&gt;LabelX3.Name" xml:space="preserve">
-    <value>LabelX3</value>
-  </data>
-  <data name="&gt;&gt;LabelX3.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.LabelX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;LabelX3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;LabelX3.ZOrder" xml:space="preserve">
-    <value>33</value>
-  </data>
-  <metadata name="StyleManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>115, 17</value>
-  </metadata>
   <data name="ColorPickerButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29m
@@ -352,7 +289,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton1.ZOrder" xml:space="preserve">
-    <value>31</value>
+    <value>26</value>
   </data>
   <data name="LabelX4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -379,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX4.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>25</value>
   </data>
   <data name="CheckBoxX1.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 17</value>
@@ -403,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX1.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>24</value>
   </data>
   <data name="LabelX5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -430,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX5.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>23</value>
   </data>
   <data name="LabelX6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,7 +394,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX6.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>21</value>
   </data>
   <data name="ColorPickerButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -488,7 +425,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton2.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>22</value>
   </data>
   <data name="CheckBoxX2.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -515,7 +452,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX2.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>20</value>
   </data>
   <data name="CheckBoxX3.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 51</value>
@@ -539,7 +476,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX3.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>19</value>
   </data>
   <data name="CheckBoxX4.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 68</value>
@@ -563,7 +500,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX4.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>18</value>
   </data>
   <data name="ComboItem37.Text" xml:space="preserve">
     <value>Ask each time</value>
@@ -593,7 +530,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbBackupPreference.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>16</value>
   </data>
   <data name="LabelX7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -620,7 +557,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX7.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>17</value>
   </data>
   <data name="ButtonX1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 343</value>
@@ -644,7 +581,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ButtonX1.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>15</value>
   </data>
   <data name="ComboItem31.Text" xml:space="preserve">
     <value>Installed</value>
@@ -674,7 +611,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbStoryOverride.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>13</value>
   </data>
   <data name="LabelX8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -701,7 +638,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX8.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>14</value>
   </data>
   <data name="ComboItem34.Text" xml:space="preserve">
     <value>Not Installed</value>
@@ -731,7 +668,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbENOverride.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>11</value>
   </data>
   <data name="LabelX9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -758,7 +695,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX9.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>12</value>
   </data>
   <data name="ComboItem41.Text" xml:space="preserve">
     <value>Not Installed</value>
@@ -788,7 +725,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbLargeFilesOverride.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>9</value>
   </data>
   <data name="LabelX10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -815,7 +752,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX10.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>10</value>
   </data>
   <data name="btnPSO2Override.Location" type="System.Drawing.Point, System.Drawing">
     <value>107, 343</value>
@@ -839,7 +776,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnPSO2Override.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>8</value>
   </data>
   <data name="LabelX11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -866,7 +803,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX11.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="ColorPickerButton3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -897,7 +834,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton3.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>5</value>
   </data>
   <data name="LabelX12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -924,7 +861,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX12.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>6</value>
   </data>
   <data name="ColorPickerButton4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -955,142 +892,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton4.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="LabelX13.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="LabelX13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 385</value>
-  </data>
-  <data name="LabelX13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 15</value>
-  </data>
-  <data name="LabelX13.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
-  </data>
-  <data name="LabelX13.Text" xml:space="preserve">
-    <value>Steam Launch URL:</value>
-  </data>
-  <data name="LabelX13.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;LabelX13.Name" xml:space="preserve">
-    <value>LabelX13</value>
-  </data>
-  <data name="&gt;&gt;LabelX13.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.LabelX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;LabelX13.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;LabelX13.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="TextBoxX1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 384</value>
-  </data>
-  <data name="TextBoxX1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 20</value>
-  </data>
-  <data name="TextBoxX1.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
-  </data>
-  <data name="TextBoxX1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;TextBoxX1.Name" xml:space="preserve">
-    <value>TextBoxX1</value>
-  </data>
-  <data name="&gt;&gt;TextBoxX1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.TextBoxX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;TextBoxX1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TextBoxX1.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="ButtonX3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>375, 384</value>
-  </data>
-  <data name="ButtonX3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 20</value>
-  </data>
-  <data name="ButtonX3.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
-  </data>
-  <data name="ButtonX3.Text" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="ButtonX3.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;ButtonX3.Name" xml:space="preserve">
-    <value>ButtonX3</value>
-  </data>
-  <data name="&gt;&gt;ButtonX3.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ButtonX3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonX3.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="ButtonX4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>294, 342</value>
-  </data>
-  <data name="ButtonX4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 33</value>
-  </data>
-  <data name="ButtonX4.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
-  </data>
-  <data name="ButtonX4.Text" xml:space="preserve">
-    <value>Select Steam EXE</value>
-  </data>
-  <data name="ButtonX4.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;ButtonX4.Name" xml:space="preserve">
-    <value>ButtonX4</value>
-  </data>
-  <data name="&gt;&gt;ButtonX4.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ButtonX4.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonX4.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="ButtonX5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>238, 343</value>
-  </data>
-  <data name="ButtonX5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 33</value>
-  </data>
-  <data name="ButtonX5.TabIndex" type="System.Int32, mscorlib">
-    <value>41</value>
-  </data>
-  <data name="ButtonX5.Text" xml:space="preserve">
-    <value>&gt;Launch with Steam&lt;</value>
-  </data>
-  <data name="ButtonX5.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;ButtonX5.Name" xml:space="preserve">
-    <value>ButtonX5</value>
-  </data>
-  <data name="&gt;&gt;ButtonX5.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ButtonX5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonX5.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="CheckBoxX5.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 0</value>
@@ -1293,24 +1095,6 @@
   </data>
   <data name="&gt;&gt;ComboItem14.Type" xml:space="preserve">
     <value>DevComponents.Editors.ComboItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ComboItem12.Name" xml:space="preserve">
-    <value>ComboItem12</value>
-  </data>
-  <data name="&gt;&gt;ComboItem12.Type" xml:space="preserve">
-    <value>DevComponents.Editors.ComboItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;ComboItem13.Name" xml:space="preserve">
-    <value>ComboItem13</value>
-  </data>
-  <data name="&gt;&gt;ComboItem13.Type" xml:space="preserve">
-    <value>DevComponents.Editors.ComboItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;StyleManager1.Name" xml:space="preserve">
-    <value>StyleManager1</value>
-  </data>
-  <data name="&gt;&gt;StyleManager1.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.StyleManager, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;ComboItem37.Name" xml:space="preserve">
     <value>ComboItem37</value>
