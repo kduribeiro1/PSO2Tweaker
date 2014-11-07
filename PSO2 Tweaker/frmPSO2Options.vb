@@ -41,7 +41,7 @@ Public Class frmPSO2Options
 
     Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            If File.Exists(usersettingsfile) = False Then
+            If Not File.Exists(usersettingsfile) Then
                 MsgBox("Please launch PSO2 to generate a new user configuration file!")
                 Me.Visible = False
                 Me.Close()
@@ -50,46 +50,34 @@ Public Class frmPSO2Options
 
             Me.SuspendLayout()
 
-            Select Case RegKey.GetValue(Of String)(RegKey.Style)
-                Case "Blue"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
-                Case "Black"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
-                Case "Silver"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Silver
-                Case "Vista Glass"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
-                Case "2010 Silver"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2010Silver
-                Case "Windows 7 Blue"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Windows7Blue
-            End Select
-
             Dim backColor = Me.BackColor
             TabControlPanel1.Style.BackColor1.Color = backColor
             TabControlPanel1.Style.BackColor2.Color = backColor
-            TabControlPanel2.Style.BackColor1.Color = backColor
-            TabControlPanel2.Style.BackColor2.Color = backColor
-            TabControlPanel3.Style.BackColor1.Color = backColor
-            TabControlPanel3.Style.BackColor2.Color = backColor
-            TabControlPanel4.Style.BackColor1.Color = backColor
-            TabControlPanel4.Style.BackColor2.Color = backColor
-            TabControlPanel1.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel1.StyleMouseDown.BackColor2.Color = backColor
-            TabControlPanel2.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel2.StyleMouseDown.BackColor2.Color = backColor
-            TabControlPanel3.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel3.StyleMouseDown.BackColor2.Color = backColor
-            TabControlPanel4.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel4.StyleMouseDown.BackColor2.Color = backColor
             TabControlPanel1.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel1.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel1.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel1.StyleMouseDown.BackColor2.Color = backColor
+
+            TabControlPanel2.Style.BackColor1.Color = backColor
+            TabControlPanel2.Style.BackColor2.Color = backColor
             TabControlPanel2.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel2.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel2.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel2.StyleMouseDown.BackColor2.Color = backColor
+
+            TabControlPanel3.Style.BackColor1.Color = backColor
+            TabControlPanel3.Style.BackColor2.Color = backColor
             TabControlPanel3.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel3.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel3.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel3.StyleMouseDown.BackColor2.Color = backColor
+
+            TabControlPanel4.Style.BackColor1.Color = backColor
+            TabControlPanel4.Style.BackColor2.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel4.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel4.StyleMouseDown.BackColor2.Color = backColor
 
             Dim DevM As DEVMODE
             DevM.dmDeviceName = New String(Chr(0), 32)
@@ -100,7 +88,7 @@ Public Class frmPSO2Options
             ' 0 = The first mode
             While EnumDisplaySettings(Nothing, modeIndex, DevM)
                 ' Mode found
-                If ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) = False Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
+                If Not ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
 
                 ' The next mode
                 modeIndex += 1
@@ -125,7 +113,7 @@ Public Class frmPSO2Options
                 'Disable resolution thingie
             End If
             ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
-            If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) = False Then ComboBoxEx5.SelectedIndex = 0
+            If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then ComboBoxEx5.SelectedIndex = 0
             CheckBoxX1.Checked = False
             If ReadINISetting("Y") = "99999" Then
                 If ReadINISetting("X") = "99999" Then
@@ -305,7 +293,7 @@ Public Class frmPSO2Options
                 SaveINISetting("VirtualFullScreen", "true")
             End If
 
-            If ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) = False Then
+            If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then
                 MsgBox("Please select a supported resolution!")
                 Exit Sub
             End If
@@ -337,7 +325,7 @@ Public Class frmPSO2Options
             End If
 
             frmMain.Log("Enabling Interface...")
-            If CheckBoxX1.Checked = False Then
+            If Not CheckBoxX1.Checked Then
                 If ReadINISetting("X") = "99999" Then
                     If ReadINISetting("Y") = "99999" Then
                         SaveINISetting("X", RegKey.GetValue(Of String)(RegKey.OldX))
