@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>27</value>
   </data>
   <data name="ComboItem1.Text" xml:space="preserve">
     <value>Blue</value>
@@ -183,7 +183,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CMBStyle.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>26</value>
   </data>
   <data name="cmbLanguage.ItemHeight" type="System.Int32, mscorlib">
     <value>14</value>
@@ -231,7 +231,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbLanguage.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>24</value>
   </data>
   <data name="LabelX2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -258,7 +258,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX2.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>25</value>
   </data>
   <data name="ColorPickerButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -289,7 +289,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton1.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>23</value>
   </data>
   <data name="LabelX4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX4.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>22</value>
   </data>
   <data name="CheckBoxX1.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 17</value>
@@ -340,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX1.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>21</value>
   </data>
   <data name="LabelX5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX5.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>20</value>
   </data>
   <data name="LabelX6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -394,7 +394,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX6.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>18</value>
   </data>
   <data name="ColorPickerButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -425,82 +425,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton2.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="CheckBoxX2.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="CheckBoxX2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 34</value>
-  </data>
-  <data name="CheckBoxX2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 20</value>
-  </data>
-  <data name="CheckBoxX2.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="CheckBoxX2.Text" xml:space="preserve">
-    <value>Install EN Patch after updating</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX2.Name" xml:space="preserve">
-    <value>CheckBoxX2</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX2.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.CheckBoxX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX2.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="CheckBoxX3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 51</value>
-  </data>
-  <data name="CheckBoxX3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 20</value>
-  </data>
-  <data name="CheckBoxX3.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
-  </data>
-  <data name="CheckBoxX3.Text" xml:space="preserve">
-    <value>Install Large Files after updating</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX3.Name" xml:space="preserve">
-    <value>CheckBoxX3</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX3.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.CheckBoxX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX3.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="CheckBoxX4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 68</value>
-  </data>
-  <data name="CheckBoxX4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 20</value>
-  </data>
-  <data name="CheckBoxX4.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="CheckBoxX4.Text" xml:space="preserve">
-    <value>Install EN Story Patch after updating</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX4.Name" xml:space="preserve">
-    <value>CheckBoxX4</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX4.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.CheckBoxX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX4.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CheckBoxX4.ZOrder" xml:space="preserve">
-    <value>18</value>
   </data>
   <data name="ComboItem37.Text" xml:space="preserve">
     <value>Ask each time</value>

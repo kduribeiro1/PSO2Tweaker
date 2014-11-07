@@ -447,9 +447,6 @@ Public Class frmMain
                 optionsFrm.ForeColor = Color
                 PSO2OptionsFrm.ForeColor = Color
                 optionsFrm.CheckBoxX1.TextColor = Color
-                optionsFrm.CheckBoxX2.TextColor = Color
-                optionsFrm.CheckBoxX3.TextColor = Color
-                optionsFrm.CheckBoxX4.TextColor = Color
                 optionsFrm.chkAutoRemoveCensor.TextColor = Color
                 chkRemoveCensor.TextColor = Color
                 chkRemoveNVidia.TextColor = Color

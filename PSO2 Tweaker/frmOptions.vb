@@ -55,9 +55,6 @@ Public Class frmOptions
             LabelX2.Text = My.Resources.strChooseALanguage
 
             CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
-            CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall))
-            CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall))
-            CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall))
             CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SidebarEnabled))
 
             chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
@@ -137,17 +134,6 @@ Public Class frmOptions
         RegKey.SetValue(Of Integer)(RegKey.TextBoxBGColor, (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
 
-    Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
-        RegKey.SetValue(Of Boolean)(RegKey.ENPatchAfterInstall, CheckBoxX2.Checked)
-    End Sub
-
-    Private Sub CheckBoxX3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX3.CheckedChanged
-        RegKey.SetValue(Of Boolean)(RegKey.LargeFilesAfterInstall, CheckBoxX3.Checked)
-    End Sub
-
-    Private Sub CheckBoxX4_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX4.CheckedChanged
-        RegKey.SetValue(Of Boolean)(RegKey.StoryPatchAfterInstall, CheckBoxX4.Checked)
-    End Sub
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
         RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, CheckBoxX5.Checked)
@@ -233,9 +219,6 @@ Public Class frmOptions
         frmPSO2Options.TabItem3.TextColor = ColorPickerButton2.SelectedColor
         Me.ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
-        CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
-        CheckBoxX3.TextColor = ColorPickerButton2.SelectedColor
-        CheckBoxX4.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor

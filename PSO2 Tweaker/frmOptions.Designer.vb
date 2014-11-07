@@ -47,9 +47,6 @@ Partial Class frmOptions
         Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
         Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
         Me.ColorPickerButton2 = New DevComponents.DotNetBar.ColorPickerButton()
-        Me.CheckBoxX2 = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.CheckBoxX3 = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.CheckBoxX4 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.cmbBackupPreference = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem37 = New DevComponents.Editors.ComboItem()
         Me.ComboItem38 = New DevComponents.Editors.ComboItem()
@@ -240,39 +237,6 @@ Partial Class frmOptions
         Me.ColorPickerButton2.Name = "ColorPickerButton2"
         Me.ColorPickerButton2.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
         Me.ColorPickerButton2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'CheckBoxX2
-        '
-        Me.CheckBoxX2.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.CheckBoxX2.BackgroundStyle.Class = ""
-        resources.ApplyResources(Me.CheckBoxX2, "CheckBoxX2")
-        Me.CheckBoxX2.Name = "CheckBoxX2"
-        Me.CheckBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'CheckBoxX3
-        '
-        Me.CheckBoxX3.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.CheckBoxX3.BackgroundStyle.Class = ""
-        resources.ApplyResources(Me.CheckBoxX3, "CheckBoxX3")
-        Me.CheckBoxX3.Name = "CheckBoxX3"
-        Me.CheckBoxX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'CheckBoxX4
-        '
-        Me.CheckBoxX4.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.CheckBoxX4.BackgroundStyle.Class = ""
-        resources.ApplyResources(Me.CheckBoxX4, "CheckBoxX4")
-        Me.CheckBoxX4.Name = "CheckBoxX4"
-        Me.CheckBoxX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'cmbBackupPreference
         '
@@ -530,9 +494,6 @@ Partial Class frmOptions
         Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.cmbBackupPreference)
         Me.Controls.Add(Me.LabelX7)
-        Me.Controls.Add(Me.CheckBoxX4)
-        Me.Controls.Add(Me.CheckBoxX3)
-        Me.Controls.Add(Me.CheckBoxX2)
         Me.Controls.Add(Me.LabelX6)
         Me.Controls.Add(Me.ColorPickerButton2)
         Me.Controls.Add(Me.LabelX5)
@@ -579,9 +540,6 @@ Partial Class frmOptions
     Friend WithEvents LabelX5 As DevComponents.DotNetBar.LabelX
     Friend WithEvents LabelX6 As DevComponents.DotNetBar.LabelX
     Friend WithEvents ColorPickerButton2 As DevComponents.DotNetBar.ColorPickerButton
-    Friend WithEvents CheckBoxX2 As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents CheckBoxX3 As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents CheckBoxX4 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents cmbBackupPreference As DevComponents.DotNetBar.Controls.ComboBoxEx
     Friend WithEvents ComboItem37 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem38 As DevComponents.Editors.ComboItem
