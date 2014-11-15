@@ -30,7 +30,7 @@ Public Class frmMain
     Dim Override As Boolean = False
     Dim PSO2OptionsFrm As frmPSO2Options
     Dim Restartplz As Boolean
-    Dim SOMEOFTHEPREPATCHES As List(Of String)
+    Dim SOMEOFTHEPREPATCHES As Dictionary(Of String, String)
     Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
     Dim SystemUnlock As Integer
     Dim TransOverride As Boolean = False
@@ -1001,18 +1001,20 @@ Public Class frmMain
     End Sub
 
     Public Sub MergePrePatches()
-        Dim patches As New List(Of String)
+        Dim patches As New Dictionary(Of String, String)
 
         For i = 0 To 5
-            Dim patchlist = File.ReadAllText("patchlist" & i & ".txt")
+            Dim patchlist = File.ReadAllLines("patchlist" & i & ".txt")
 
             For index = 0 To (patchlist.Length - 1)
                 If String.IsNullOrEmpty(patchlist(index)) Then Continue For
 
-                Dim truefilename = (Regex.Split(patchlist(index), ".pat"))(0).Replace("data/win32/", "")
+                Dim splitLine = patchlist(index).Split(ControlChars.Tab)
+                Dim fileName = Path.GetFileNameWithoutExtension(splitLine(0).Replace("data/win32/", ""))
+                Dim hash = splitLine(2)
 
-                If (Not String.IsNullOrEmpty(truefilename)) AndAlso (Not patches.Contains(truefilename)) Then
-                    patches.Add(truefilename)
+                If (Not String.IsNullOrEmpty(fileName)) AndAlso (Not patches.ContainsKey(hash)) Then
+                    patches.Add(hash, fileName)
                 End If
             Next
         Next
@@ -1268,12 +1270,9 @@ Public Class frmMain
 StartPrePatch:
                         'Download prepatch
                         CancelledFull = False
-                        Dim filename As String() = Nothing
                         Dim truefilename As String = Nothing
                         Dim missingfiles As New List(Of String)
                         Dim NumberofChecks As Integer = 0
-                        Dim MD5 As String() = Nothing
-                        Dim TrueMD5 As String = Nothing
                         lblStatus.Text = ""
                         WriteDebugInfo("Downloading pre-patch filelist...")
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt")
@@ -1290,24 +1289,26 @@ StartPrePatch:
                         NumberofChecks = 0
                         missingfiles.Clear()
 
+                        SOMEOFTHEPREPATCHES.Remove("GameGuard.des")
+                        SOMEOFTHEPREPATCHES.Remove("PSO2JP.ini")
+                        SOMEOFTHEPREPATCHES.Remove("script/user_default.pso2")
+                        SOMEOFTHEPREPATCHES.Remove("script/user_intel.pso2")
+                        SOMEOFTHEPREPATCHES.Remove("")
+
                         For Each sBuffer In SOMEOFTHEPREPATCHES
                             If CancelledFull Then
                                 SOMEOFTHEPREPATCHES = Nothing
                                 Exit Sub
                             End If
 
-                            filename = Regex.Split(sBuffer, ".pat")
-                            truefilename = filename(0).Replace("data/win32/", "")
-                            MD5 = filename(1).Split(ControlChars.Tab)
-                            TrueMD5 = MD5(2)
-                            If truefilename <> "GameGuard.des" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
-                                If Not File.Exists(((pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) Then
-                                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
-                                    missingfiles.Add(truefilename)
-                                ElseIf Helper.GetMD5(((pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) <> TrueMD5 Then
-                                    If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
-                                    missingfiles.Add(truefilename)
-                                End If
+                            truefilename = sBuffer.Value
+
+                            If Not File.Exists(((pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) Then
+                                If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
+                                missingfiles.Add(truefilename)
+                            ElseIf Helper.GetMD5(((pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) <> sBuffer.Key Then
+                                If VedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
+                                missingfiles.Add(truefilename)
                             End If
 
                             NumberofChecks += 1
