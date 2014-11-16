@@ -674,6 +674,7 @@ Partial Class frmMain
         '
         Me.btnEXPFULL.Name = "btnEXPFULL"
         resources.ApplyResources(Me.btnEXPFULL, "btnEXPFULL")
+        Me.btnEXPFULL.Visible = False
         '
         'btnDonations
         '
@@ -828,6 +829,9 @@ Partial Class frmMain
         Me.DLS.BaseAddress = ""
         Me.DLS.CachePolicy = Nothing
         Me.DLS.Credentials = Nothing
+        Me.DLS.Encoding = CType(resources.GetObject("DLS.Encoding"), System.Text.Encoding)
+        Me.DLS.Headers = CType(resources.GetObject("DLS.Headers"), System.Net.WebHeaderCollection)
+        Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.timeout = 10000
         Me.DLS.UseDefaultCredentials = False
         '

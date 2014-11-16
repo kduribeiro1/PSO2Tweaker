@@ -1368,11 +1368,8 @@ StartPrePatch:
 
                 If Directory.Exists(pso2RootDir & "\_precede\data\win32\") Then
                     If ApplyPrePatch = "Yes" Then
-                        Dim ApplyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch download will be deleted.", vbYesNo)
-                        If ApplyPrePatchYesNo = vbNo Then
-                            WriteDebugInfoAndOK("Deleting pre-patch download...")
-                            Directory.Delete(pso2RootDir & "\_precede", True)
-                        ElseIf ApplyPrePatchYesNo = vbYes Then
+                        Dim ApplyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
+                        If ApplyPrePatchYesNo = vbYes Then
                             WriteDebugInfo("Installing prepatch, please wait...")
                             Application.DoEvents()
                             Dim di As New DirectoryInfo(pso2RootDir & "\_precede\data\win32\")
