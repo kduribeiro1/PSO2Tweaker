@@ -566,8 +566,6 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
-        ThreadPool.QueueUserWorkItem(AddressOf IsServerOnline, Nothing)
-
         Try
             Application.DoEvents()
 
@@ -3749,48 +3747,6 @@ SelectInstallFolder:
 
     Private Sub btnDonateToENPatchHost_Click(sender As Object, e As EventArgs) Handles btnDonateToENPatchHost.Click
         Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UB7UN9MQ7WZ44")
-    End Sub
-
-    Public Sub setserverstatus(ByVal serverstatus As String)
-        If serverstatus = "ONLINE!" Then
-            lblServerStatus.ForeColor = Color.Green
-            lblServerStatus.Text = "ONLINE!"
-        End If
-        If serverstatus = "OFFLINE" Then
-            lblServerStatus.ForeColor = Color.Red
-            lblServerStatus.Text = "OFFLINE"
-        End If
-    End Sub
-
-    Private Sub IsServerOnline(state As Object)
-        ' Evidently SEGA is dumb, so CK doesn't have to do crap! YOU'RE SAVED!
-
-        Dim ip As String = "gs016.pso2gs.net" ' Incase they need to use the proxy
-        Dim port As Integer = 12200
-
-        Try
-            Using sock As New TcpClient() With {.NoDelay = True, .ReceiveTimeout = 1000}
-                sock.BeginConnect(ip, port, Nothing, Nothing).AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1))
-
-                If Not sock.Connected Then
-                    Throw New Exception("Unable to connect!")
-                End If
-
-                lblServerStatus.Invoke(New Action(Of String)(AddressOf setserverstatus), "ONLINE!")
-            End Using
-        Catch ex As Exception
-            lblServerStatus.Invoke(New Action(Of String)(AddressOf setserverstatus), "OFFLINE")
-        End Try
-    End Sub
-
-    Private Sub tmrCheckServerStatus_Tick(sender As Object, e As EventArgs) Handles tmrCheckServerStatus.Tick
-        Dim Oldstatus As String = lblServerStatus.Text
-        ThreadPool.QueueUserWorkItem(AddressOf IsServerOnline, Nothing)
-
-        If lblServerStatus.Text <> Oldstatus Then
-            MsgBox("The server is now " & lblServerStatus.Text & "!")
-            If lblServerStatus.Text = "ONLINE" Then CheckForPSO2Updates()
-        End If
     End Sub
 
     Private Sub btnResetTweaker_Click(sender As Object, e As EventArgs) Handles btnResetTweaker.Click

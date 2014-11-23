@@ -123,8 +123,6 @@ Partial Class frmMain
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
-        Me.lblServerStatus = New System.Windows.Forms.Label()
-        Me.lblServerStatusLabel = New DevComponents.DotNetBar.LabelX()
         Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
         Me.DLS = New PSO2_Tweaker.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
@@ -803,22 +801,6 @@ Partial Class frmMain
         Me.txtPSO2DefaultINI.Name = "txtPSO2DefaultINI"
         Me.txtPSO2DefaultINI.ReadOnly = True
         '
-        'lblServerStatus
-        '
-        Me.lblServerStatus.BackColor = System.Drawing.Color.Transparent
-        resources.ApplyResources(Me.lblServerStatus, "lblServerStatus")
-        Me.lblServerStatus.Name = "lblServerStatus"
-        '
-        'lblServerStatusLabel
-        '
-        resources.ApplyResources(Me.lblServerStatusLabel, "lblServerStatusLabel")
-        Me.lblServerStatusLabel.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.lblServerStatusLabel.BackgroundStyle.Class = ""
-        Me.lblServerStatusLabel.Name = "lblServerStatusLabel"
-        '
         'tmrCheckServerStatus
         '
         Me.tmrCheckServerStatus.Enabled = True
@@ -839,8 +821,6 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.lblServerStatus)
-        Me.Controls.Add(Me.lblServerStatusLabel)
         Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
         Me.Controls.Add(Me.txtPSO2DefaultINI)
@@ -912,8 +892,6 @@ Partial Class frmMain
     Friend WithEvents WebBrowser4 As System.Windows.Forms.WebBrowser
     Friend WithEvents txtPSO2DefaultINI As System.Windows.Forms.TextBox
     Friend WithEvents tsmRestartDownload As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents lblServerStatus As System.Windows.Forms.Label
-    Friend WithEvents lblServerStatusLabel As DevComponents.DotNetBar.LabelX
     Friend WithEvents tmrCheckServerStatus As System.Windows.Forms.Timer
     Friend WithEvents ItemContainer3 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents btnSelectPSODir As DevComponents.DotNetBar.ButtonItem
