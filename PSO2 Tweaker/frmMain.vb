@@ -214,7 +214,6 @@ Public Class frmMain
         btnNewShit.Visible = True
 #End If
 
-        tmrCheckServerStatus.Start()
         Using g As Graphics = Me.CreateGraphics
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 DPISetting = g.DpiX

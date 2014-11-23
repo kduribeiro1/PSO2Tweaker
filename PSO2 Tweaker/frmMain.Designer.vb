@@ -123,7 +123,6 @@ Partial Class frmMain
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
-        Me.tmrCheckServerStatus = New System.Windows.Forms.Timer(Me.components)
         Me.DLS = New PSO2_Tweaker.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -801,11 +800,6 @@ Partial Class frmMain
         Me.txtPSO2DefaultINI.Name = "txtPSO2DefaultINI"
         Me.txtPSO2DefaultINI.ReadOnly = True
         '
-        'tmrCheckServerStatus
-        '
-        Me.tmrCheckServerStatus.Enabled = True
-        Me.tmrCheckServerStatus.Interval = 120000
-        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -892,7 +886,6 @@ Partial Class frmMain
     Friend WithEvents WebBrowser4 As System.Windows.Forms.WebBrowser
     Friend WithEvents txtPSO2DefaultINI As System.Windows.Forms.TextBox
     Friend WithEvents tsmRestartDownload As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tmrCheckServerStatus As System.Windows.Forms.Timer
     Friend WithEvents ItemContainer3 As DevComponents.DotNetBar.ItemContainer
     Friend WithEvents btnSelectPSODir As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
