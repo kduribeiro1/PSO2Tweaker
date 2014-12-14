@@ -39,6 +39,7 @@ Public Class RegKey
     Public Const TextBoxColor = "TextBoxColor"
     Public Const UID = "UID"
     Public Const UseItemTranslation = "UseItemTranslation"
+    Public Const SteamMode = "SteamMode"
 
     Private Shared RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)

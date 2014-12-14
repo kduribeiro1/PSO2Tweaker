@@ -123,8 +123,12 @@ Partial Class frmMain
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
+        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ClosePSO2TweakerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DLS = New PSO2_Tweaker.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtHTML
@@ -800,6 +804,22 @@ Partial Class frmMain
         Me.txtPSO2DefaultINI.Name = "txtPSO2DefaultINI"
         Me.txtPSO2DefaultINI.ReadOnly = True
         '
+        'NotifyIcon1
+        '
+        Me.NotifyIcon1.ContextMenuStrip = Me.ContextMenuStrip1
+        resources.ApplyResources(Me.NotifyIcon1, "NotifyIcon1")
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClosePSO2TweakerToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        resources.ApplyResources(Me.ContextMenuStrip1, "ContextMenuStrip1")
+        '
+        'ClosePSO2TweakerToolStripMenuItem
+        '
+        Me.ClosePSO2TweakerToolStripMenuItem.Name = "ClosePSO2TweakerToolStripMenuItem"
+        resources.ApplyResources(Me.ClosePSO2TweakerToolStripMenuItem, "ClosePSO2TweakerToolStripMenuItem")
+        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -846,6 +866,7 @@ Partial Class frmMain
         Me.MaximizeBox = False
         Me.Name = "frmMain"
         Me.cmsProgressBar.ResumeLayout(False)
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -950,5 +971,8 @@ Partial Class frmMain
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
+    Friend WithEvents NotifyIcon1 As System.Windows.Forms.NotifyIcon
+    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents ClosePSO2TweakerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

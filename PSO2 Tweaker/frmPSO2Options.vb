@@ -261,43 +261,44 @@ Public Class frmPSO2Options
     End Sub
 
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
-        Try
-            frmMain.Log("Saving Draw Level...")
-            SaveINISetting("DrawLevel", Slider1.Value.ToString())
-            frmMain.Log("Saving Texture Resolution...")
-            SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex.ToString())
-            frmMain.Log("Saving Interface Size...")
-            SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex.ToString())
-            frmMain.Log("Saving Shader Quality...")
-            If ComboBoxEx2.SelectedIndex = 0 Then SaveINISetting("ShaderQuality", "true")
-            If ComboBoxEx2.SelectedIndex = 1 Then SaveINISetting("ShaderQuality", "false")
-            frmMain.Log("Saving Movie Play...")
-            If ComboBoxEx3.SelectedIndex = 0 Then SaveINISetting("MoviePlay", "true")
-            If ComboBoxEx3.SelectedIndex = 1 Then SaveINISetting("MoviePlay", "false")
+        'Try
+        frmMain.Log("Saving Draw Level...")
+        SaveINISetting("DrawLevel", Slider1.Value.ToString())
+        frmMain.Log("Saving Texture Resolution...")
+        SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex.ToString())
+        frmMain.Log("Saving Interface Size...")
+        SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex.ToString())
+        frmMain.Log("Saving Shader Quality...")
+        If ComboBoxEx2.SelectedIndex = 0 Then SaveINISetting("ShaderQuality", "true")
+        If ComboBoxEx2.SelectedIndex = 1 Then SaveINISetting("ShaderQuality", "false")
+        frmMain.Log("Saving Movie Play...")
+        If ComboBoxEx3.SelectedIndex = 0 Then SaveINISetting("MoviePlay", "true")
+        If ComboBoxEx3.SelectedIndex = 1 Then SaveINISetting("MoviePlay", "false")
 
-            frmMain.Log("Saving Window Mode (Windowed)...")
-            If ComboBoxEx4.SelectedIndex = 0 Then
-                SaveINISetting("FullScreen", "false")
-                SaveINISetting("VirtualFullScreen", "false")
-            End If
+        frmMain.Log("Saving Window Mode (Windowed)...")
+        If ComboBoxEx4.SelectedIndex = 0 Then
+            SaveINISetting("FullScreen", "false")
+            SaveINISetting("VirtualFullScreen", "false")
+        End If
 
-            frmMain.Log("Saving Window Mode (Fullscreen)...")
-            If ComboBoxEx4.SelectedIndex = 1 Then
-                SaveINISetting("FullScreen", "true")
-                SaveINISetting("VirtualFullScreen", "false")
-            End If
+        frmMain.Log("Saving Window Mode (Fullscreen)...")
+        If ComboBoxEx4.SelectedIndex = 1 Then
+            SaveINISetting("FullScreen", "true")
+            SaveINISetting("VirtualFullScreen", "false")
+        End If
 
-            frmMain.Log("Saving Window Mode (Virtual Fullscreen)...")
-            If ComboBoxEx4.SelectedIndex = 2 Then
-                SaveINISetting("FullScreen", "false")
-                SaveINISetting("VirtualFullScreen", "true")
-            End If
+        frmMain.Log("Saving Window Mode (Virtual Fullscreen)...")
+        If ComboBoxEx4.SelectedIndex = 2 Then
+            SaveINISetting("FullScreen", "false")
+            SaveINISetting("VirtualFullScreen", "true")
+        End If
 
-            If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then
-                MsgBox("Please select a supported resolution!")
-                Exit Sub
-            End If
+        If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) AndAlso ComboBoxEx4.SelectedIndex <> 2 Then
+            MsgBox("Please select a supported resolution!")
+            Exit Sub
+        End If
 
+        If ComboBoxEx4.SelectedIndex <> 2 Then
             frmMain.Log("Saving Resolution...")
             If ComboBoxEx5.SelectedText <> "x" Then
                 Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
@@ -306,39 +307,40 @@ Public Class frmPSO2Options
                 SaveResolutionWidth(RealResolution(0))
                 SaveResolutionHeight(RealResolution(1))
             End If
+        End If
 
-            Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
+        Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
 
-            frmMain.Log("Saving FPS...")
-            SaveINISetting("FrameKeep", FPS)
-            frmMain.Log("Disabling Interface...")
+        frmMain.Log("Saving FPS...")
+        SaveINISetting("FrameKeep", FPS)
+        frmMain.Log("Disabling Interface...")
 
-            If CheckBoxX1.Checked Then
-                If ReadINISetting("X") <> "99999" Then
-                    If ReadINISetting("Y") <> "99999" Then
-                        RegKey.SetValue(Of String)(RegKey.OldX, ReadINISetting("X"))
-                        RegKey.SetValue(Of String)(RegKey.OldY, ReadINISetting("Y"))
-                        SaveINISetting("X", "99999")
-                        SaveINISetting("Y", "99999")
-                    End If
+        If CheckBoxX1.Checked Then
+            If ReadINISetting("X") <> "99999" Then
+                If ReadINISetting("Y") <> "99999" Then
+                    RegKey.SetValue(Of String)(RegKey.OldX, ReadINISetting("X"))
+                    RegKey.SetValue(Of String)(RegKey.OldY, ReadINISetting("Y"))
+                    SaveINISetting("X", "99999")
+                    SaveINISetting("Y", "99999")
                 End If
             End If
+        End If
 
-            frmMain.Log("Enabling Interface...")
-            If Not CheckBoxX1.Checked Then
-                If ReadINISetting("X") = "99999" Then
-                    If ReadINISetting("Y") = "99999" Then
-                        SaveINISetting("X", RegKey.GetValue(Of String)(RegKey.OldX))
-                        SaveINISetting("Y", RegKey.GetValue(Of String)(RegKey.OldY))
-                    End If
+        frmMain.Log("Enabling Interface...")
+        If Not CheckBoxX1.Checked Then
+            If ReadINISetting("X") = "99999" Then
+                If ReadINISetting("Y") = "99999" Then
+                    SaveINISetting("X", RegKey.GetValue(Of String)(RegKey.OldX))
+                    SaveINISetting("Y", RegKey.GetValue(Of String)(RegKey.OldY))
                 End If
             End If
+        End If
 
-            MsgBox("Settings saved!")
-        Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        End Try
+        MsgBox("Settings saved!")
+        'Catch ex As Exception
+        'frmMain.Log(ex.Message)
+        'frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        'End Try
     End Sub
 
     Private Sub ComboBoxEx4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx4.SelectedIndexChanged

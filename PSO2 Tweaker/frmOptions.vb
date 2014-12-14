@@ -31,9 +31,9 @@ Public Class frmOptions
             ' Otherwise, we'll assume is 96 or lower.
             Using g As Graphics = Me.CreateGraphics
                 If g.DpiX >= 120 Then
-                    Me.Size = New Size(583, 554)
+                    Me.Size = New Size(543, 476)
                 Else
-                    Me.Size = New Size(440, 451)
+                    Me.Size = New Size(400, 373)
                 End If
             End Using
 
@@ -56,6 +56,7 @@ Public Class frmOptions
 
             CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
             CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SidebarEnabled))
+            CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SteamMode))
 
             chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
             CMBStyle.Text = RegKey.GetValue(Of String)(RegKey.Style)
@@ -274,4 +275,8 @@ Public Class frmOptions
         End If
     End Sub
 
+    Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
+        'If CheckBoxX2.Checked = True AndAlso RegKey.GetValue(Of String)(RegKey.SteamMode) = "False" Then MsgBox("This will stop the Tweaker from closing after launching PSO2, so that steam says you're playing PSO2.")
+        RegKey.SetValue(Of String)(RegKey.SteamMode, CheckBoxX2.Checked.ToString)
+    End Sub
 End Class

@@ -397,6 +397,8 @@ Public Class frmMain
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.StoryPatchAfterInstall, False)
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LatestStoryBase)) Then RegKey.SetValue(Of String)(RegKey.LatestStoryBase, "Unknown")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyEnabled)) Then RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamMode)) Then RegKey.SetValue(Of String)(RegKey.SteamMode, "False")
+
 
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
                 btnAnnouncements.PerformClick()
@@ -1241,7 +1243,6 @@ Public Class frmMain
         Try
             Dim UpdateNeeded As Boolean
             Dim versionclient As New MyWebClient With {.timeout = 3000}
-            versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
             versionclient.DownloadFile("http://162.243.211.123/freedom/precede.txt", "precede.txt")
 
@@ -1393,6 +1394,7 @@ StartPrePatch:
             End If
 
             If ComingFromPrePatch Then Exit Sub
+            versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PSO2RemoteVersion)) Then
                 Dim lines2 = File.ReadAllLines("version.ver")
                 Dim RemoteVersion2 As String = lines2(0)
@@ -1634,6 +1636,16 @@ StartPrePatch:
             Loop
 
             DeleteFile(pso2launchpath & "\ddraw.dll")
+            If RegKey.GetValue(Of String)(RegKey.SteamMode) = "True" Then
+                'NotifyIcon1.Visible = True
+                'MsgBox("Minimizing to tray!")
+                'NotifyIcon1.ShowBalloonTip(3000, "", "PSO2 Tweaker minimized to tray - Close this when you close PSO2.", ToolTipIcon.Info)
+                'Exit Sub
+                File.Copy(pso2RootDir & "\pso2.exe", pso2RootDir & "\pso2.exe_backup")
+                Do Until FileInUse(pso2RootDir & "\pso2.exe") = False
+                    Threading.Thread.Sleep(5000)
+                Loop
+            End If
             Me.Close()
 
         Catch ex As Exception
@@ -1642,7 +1654,20 @@ StartPrePatch:
             Exit Sub
         End Try
     End Sub
-
+    Public Function FileInUse(ByVal sFile As String) As Boolean
+        Dim thisFileInUse As Boolean = False
+        If System.IO.File.Exists(sFile) Then
+            Try
+                File.Delete(sFile)
+                File.Copy(pso2RootDir & "\pso2.exe_backup", pso2RootDir & "\pso2.exe")
+                File.Delete(pso2RootDir & "\pso2.exe_backup")
+                ' thisFileInUse = False
+            Catch
+                thisFileInUse = True
+            End Try
+        End If
+        Return thisFileInUse
+    End Function
     Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
         Dim mouseArgs = DirectCast(e, MouseEventArgs)
 
@@ -2134,7 +2159,7 @@ StartPrePatch:
 
             If Cancelled Then Exit Sub
             Dim DirectoryString2 As String = pso2RootDir
-            DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            If File.Exists((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
 
@@ -2348,7 +2373,7 @@ StartPrePatch:
             Dim versionclient2 As New MyWebClient With {.timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
-            DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            If File.Exists((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
 
@@ -3234,7 +3259,7 @@ StartPrePatch:
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             If Cancelled Then Exit Sub
             Dim DirectoryString2 As String = pso2RootDir
-            DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            If File.Exists((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOK((My.Resources.strDownloadedandInstalled & "version file"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
@@ -4342,5 +4367,9 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
+    End Sub
+
+    Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClosePSO2TweakerToolStripMenuItem.Click
+        Application.Exit()
     End Sub
 End Class

@@ -79,6 +79,7 @@ Partial Class frmOptions
         Me.cmbPredownload = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem15 = New DevComponents.Editors.ComboItem()
         Me.ComboItem17 = New DevComponents.Editors.ComboItem()
+        Me.CheckBoxX2 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -472,10 +473,22 @@ Partial Class frmOptions
         '
         resources.ApplyResources(Me.ComboItem17, "ComboItem17")
         '
+        'CheckBoxX2
+        '
+        Me.CheckBoxX2.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.CheckBoxX2.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.CheckBoxX2, "CheckBoxX2")
+        Me.CheckBoxX2.Name = "CheckBoxX2"
+        Me.CheckBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
         'frmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.CheckBoxX2)
         Me.Controls.Add(Me.LabelX14)
         Me.Controls.Add(Me.cmbPredownload)
         Me.Controls.Add(Me.chkAutoRemoveCensor)
@@ -573,4 +586,5 @@ Partial Class frmOptions
     Friend WithEvents cmbPredownload As DevComponents.DotNetBar.Controls.ComboBoxEx
     Friend WithEvents ComboItem15 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem17 As DevComponents.Editors.ComboItem
+    Friend WithEvents CheckBoxX2 As DevComponents.DotNetBar.Controls.CheckBoxX
 End Class
