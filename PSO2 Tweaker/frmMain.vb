@@ -1641,10 +1641,12 @@ StartPrePatch:
                 'MsgBox("Minimizing to tray!")
                 'NotifyIcon1.ShowBalloonTip(3000, "", "PSO2 Tweaker minimized to tray - Close this when you close PSO2.", ToolTipIcon.Info)
                 'Exit Sub
-                File.Copy(pso2RootDir & "\pso2.exe", pso2RootDir & "\pso2.exe_backup")
+                File.Copy(pso2RootDir & "\pso2.exe", pso2RootDir & "\pso2.exe_backup", True)
                 Do Until FileInUse(pso2RootDir & "\pso2.exe") = False
-                    Threading.Thread.Sleep(5000)
+                    Threading.Thread.Sleep(1000)
                 Loop
+                File.Copy(pso2RootDir & "\pso2.exe_backup", pso2RootDir & "\pso2.exe", True)
+                File.Delete(pso2RootDir & "\pso2.exe_backup")
             End If
             Me.Close()
 
@@ -1659,8 +1661,6 @@ StartPrePatch:
         If System.IO.File.Exists(sFile) Then
             Try
                 File.Delete(sFile)
-                File.Copy(pso2RootDir & "\pso2.exe_backup", pso2RootDir & "\pso2.exe")
-                File.Delete(pso2RootDir & "\pso2.exe_backup")
                 ' thisFileInUse = False
             Catch
                 thisFileInUse = True
@@ -4369,7 +4369,7 @@ SelectInstallFolder:
         End Try
     End Sub
 
-    Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClosePSO2TweakerToolStripMenuItem.Click
+    Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Application.Exit()
     End Sub
 End Class
