@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("A program to modify/tweak settings/solve errors for PSO2!")> 
 <Assembly: AssemblyCompany("Arks-Layer")> 
 <Assembly: AssemblyProduct("PSO2 Tweaker")> 
-<Assembly: AssemblyCopyright("Copyright ©2014")> 
+<Assembly: AssemblyCopyright("Copyright ©2015")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
