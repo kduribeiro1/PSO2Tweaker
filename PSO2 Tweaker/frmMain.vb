@@ -35,6 +35,7 @@ Public Class frmMain
     Dim SystemUnlock As Integer
     Dim TransOverride As Boolean = False
     Dim UseItemTranslation As Boolean = False
+    Dim WayuIsAFailure As Boolean = False
     Dim VedaUnlocked As Boolean = False
     Dim args As String() = Environment.GetCommandLineArgs()
     Dim hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
@@ -273,6 +274,10 @@ Public Class frmMain
                     Case "-item"
                         Log("Detected command argument -item")
                         UseItemTranslation = True
+
+                    Case "-wayu"
+                        Log("Detected command argument -wayu")
+                        WayuIsAFailure = True
 
                     Case "-nodiag"
                         Log("Detected command argument -nodiag")
@@ -703,6 +708,12 @@ Public Class frmMain
 
             WriteDebugInfo(My.Resources.strIfAboveVersions)
 
+            If WayuIsAFailure = True Then
+                WriteDebugInfo("Skipping downloads for Wayu!")
+                GoTo SkipItemProxyDownload
+            End If
+
+
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseItemTranslation)) Then
                 RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, True)
             End If
@@ -754,6 +765,8 @@ Public Class frmMain
                     File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
                 End Using
             End If
+
+SkipItemProxyDownload:
 
             WriteDebugInfoSameLine(My.Resources.strDone)
 
@@ -1079,6 +1092,7 @@ Public Class frmMain
                 sBuffer = oReader.ReadLine()
                 RegKey.SetValue(Of String)(RegKey.NewVersionTemp, sBuffer)
                 RegKey.SetValue(Of String)(RegKey.NewStoryVersion, sBuffer)
+                Dim strNewDate As String = sBuffer
                 If sBuffer <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
@@ -1099,7 +1113,7 @@ Public Class frmMain
                         If MBVisitLink = vbNo Then Exit Sub
                     End If
 
-                    Dim UpdateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strStoryModeUpdate & strDownloadME, vbYesNo)
+                    Dim UpdateStoryYesNo As MsgBoxResult = MsgBox("A new story patch update is available as of " & strNewDate & " - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest story patch available from http://arks-layer.com, which seems to be from " & strDownloadME, vbYesNo)
                     If UpdateStoryYesNo = vbNo Then
                         Exit Sub
                     End If
@@ -4096,6 +4110,7 @@ SelectInstallFolder:
 
         If Directory.Exists(backupdir) Then processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
         If Not Directory.Exists(backupdir) Then
+            Log("[TRANSAM] Creating backup directory")
             Directory.CreateDirectory(backupdir)
             WriteDebugInfo(My.Resources.strCreatingBackupDirectory)
             processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
@@ -4103,7 +4118,10 @@ SelectInstallFolder:
 
         processStartInfo.WindowStyle = ProcessWindowStyle.Normal
         processStartInfo.UseShellExecute = True
+        Log("[TRANSAM] Starting shitstorm")
+        Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
         process = process.Start(processStartInfo)
+        Log("[TRANSAM] Program started")
         Do Until process.WaitForExit(1000)
         Loop
 
