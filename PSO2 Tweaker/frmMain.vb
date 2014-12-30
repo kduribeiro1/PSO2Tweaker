@@ -260,6 +260,11 @@ Public Class frmMain
             pso2RootDir = lblDirectory.Text
             pso2WinDir = (pso2RootDir & "\data\win32")
 
+            If Not Directory.Exists(pso2WinDir) Then
+                Directory.CreateDirectory(pso2WinDir)
+                'WriteDebugInfo("Creating win32 directory... Done!")
+            End If
+
             DeleteFile(pso2RootDir & "\ddraw.dll")
 
             For i As Integer = 1 To args.Length - 1
