@@ -258,7 +258,7 @@ Public Class frmMain
             End If
 
             pso2RootDir = lblDirectory.Text
-            pso2WinDir = (pso2RootDir & "\pso2_bin\data\win32")
+            pso2WinDir = (pso2RootDir & "\data\win32")
 
             If Not Directory.Exists(pso2WinDir) Then
                 Directory.CreateDirectory(pso2WinDir)
