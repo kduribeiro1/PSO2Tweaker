@@ -3430,12 +3430,13 @@ SelectInstallFolder:
 
             If dlgResult = DialogResult.OK Then
                 InstallFolder = MyFolderBrowser.SelectedPath
+                InstallFolder = InstallFolder
             End If
             If dlgResult = DialogResult.Cancel Then
                 WriteDebugInfo("Installation cancelled by user!")
                 Exit Sub
             End If
-            Dim CorrectYesNo As MsgBoxResult = MsgBox("You wish to install PSO2 into " & InstallFolder & "\PHANTASYSTARONLINE2\. Is this correct?", vbYesNoCancel)
+            Dim CorrectYesNo As MsgBoxResult = MsgBox("You wish to install PSO2 into " & (InstallFolder & "\PHANTASYSTARONLINE2\. Is this correct?").Replace("\\", "\"), vbYesNoCancel)
             If CorrectYesNo = vbCancel Then
                 WriteDebugInfo("Installation cancelled by user!")
                 Exit Sub
@@ -3446,6 +3447,7 @@ SelectInstallFolder:
             If CorrectYesNo = vbYes Then
                 ' TODO: Change over to the DriveInfo class
                 Dim pso2_binfolder As String = InstallFolder & "\PHANTASYSTARONLINE2\pso2_bin"
+                pso2_binfolder = pso2_binfolder.Replace("\\", "\")
                 Dim Searcher As ManagementObjectSearcher = New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk")
                 Dim InstallDrive As String = InstallFolder.TrimEnd(":"c).Replace("\"c, "")
                 For Each MGMT In Searcher.Get
@@ -3462,7 +3464,7 @@ SelectInstallFolder:
                         End If
                     End If
                 Next
-                Dim InstallENPatchesAfter As MsgBoxResult = MsgBox("Would you like the program to automatically install the core EN patch and Large Files EN patch after it's done updating the game?", vbYesNo)
+                'Dim InstallENPatchesAfter As MsgBoxResult = MsgBox("Would you like the program to automatically install the core EN patch and Large Files EN patch after it's done updating the game?", vbYesNo)
                 Dim FinalYesNo As MsgBoxResult = MsgBox("The program will now install the necessary files, create the folders, and set up the game. Afterwards, the program will automatically begin patching. Click ""OK"" to start.", MsgBoxStyle.OkCancel)
                 If FinalYesNo = vbCancel Then
                     WriteDebugInfo("Installation cancelled by user!")
@@ -3470,14 +3472,20 @@ SelectInstallFolder:
                 End If
                 If FinalYesNo = vbOK Then
                     Office2007StartButton1.Enabled = False
+                    'set the pso2Dir to the install patch
+                    pso2RootDir = pso2_binfolder
+                    lblDirectory.Text = pso2RootDir
                     Me.TopMost = True
                     Me.Show()
                     Me.TopMost = False
                     Application.DoEvents()
-                    WriteDebugInfo("Checking/Installing DirectX...")
-                    Dim client As New MyWebClient With {.timeout = 10000}
+                    WriteDebugInfo("Downloading DirectX setup...")
+                    'Dim client As New MyWebClient With {.timeout = 10000}
                     Try
-                        client.DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
+                        DLWUA("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
+                        WriteDebugInfoSameLine("Done!")
+                        WriteDebugInfo("Checking/Installing DirectX...")
+                        'client.DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
                         Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "dxwebsetup.exe", .Verb = "runas", .Arguments = "/Q", .UseShellExecute = True}
                         Dim process As Process = process.Start(processStartInfo)
                         Do Until process.WaitForExit(1000)
@@ -3487,6 +3495,8 @@ SelectInstallFolder:
                     Catch ex As Exception
                         WriteDebugInfo("DirectX installation failed! Please install it later if neccessary!")
                     End Try
+
+                    If File.Exists("dxwebsetup.exe") = True Then File.Delete("dxwebsetup.exe")
                     'Make a data folder, and a win32 folder under that
                     Directory.CreateDirectory(pso2_binfolder & "\data\win32\")
                     'Download required pso2 stuff
@@ -3502,11 +3512,9 @@ SelectInstallFolder:
                     WriteDebugInfoSameLine(My.Resources.strDone)
                     Application.DoEvents()
 
-                    'set the pso2Dir to the install patch
-                    pso2RootDir = pso2_binfolder
-                    lblDirectory.Text = pso2RootDir
                     RegKey.SetValue(Of String)(RegKey.PSO2Dir, pso2RootDir)
                     WriteDebugInfo(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
+                    pso2WinDir = (pso2RootDir & "\data\win32")
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ENPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.ENPatchVersion, "Not Installed")
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
@@ -3514,212 +3522,12 @@ SelectInstallFolder:
                     'Check for PSO2 Updates~
                     ButtonItem5.RaiseClick()
 
-                    If InstallENPatchesAfter = vbNo Then
-                        MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to restart the program.")
-                        Application.Restart()
-                        Exit Sub
-                    End If
-
-                    'Install patches after updating (silently, no damn popups)
-                    SilentENpatch()
-                    SilentLargeFiles()
-
-                    If Not chkItemTranslation.Checked Then
-                        chkItemTranslation.RaiseClick()
-                        WriteDebugInfo("Item patch enabled!")
-                    End If
-
-                    MsgBox("PSO2 installed and updated. English patches installed, game is ready to play!" & vbCrLf & "Press OK to restart the program.")
+                    MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to restart the program.")
                     Application.Restart()
                     Exit Sub
-                End If
             End If
         End If
-    End Sub
-
-    Public Sub SilentLargeFiles()
-        CancelledFull = False
-        Try
-            Dim strVersion As String
-            WriteDebugInfo(My.Resources.strDownloading & "Large Files....")
-            Application.DoEvents()
-            Dim net As New WebClient()
-            Dim src As String
-            If Not CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") Then
-                WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
-                WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
-                Exit Sub
-            End If
-            src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
-            ' Create a match using regular exp<b></b>ressions
-            'http://pso2.arghargh200.net/pso2/2013_05_22_largefiles.rar
-            Dim m As Match = Regex.Match(src, "<br /><a href="".*?.rar")
-            ' Spit out the value plucked from the code
-            txtHTML.Text = m.NextMatch.ToString()
-
-            Dim strDownloadME As String = txtHTML.Text
-            Dim Lastfilename As String() = strDownloadME.Split("/"c)
-            strVersion = Lastfilename(Lastfilename.Length - 1)
-            strVersion = strVersion.Replace(".rar", "")
-
-            Cancelled = False
-            If Not CheckLink(strDownloadME) Then
-                WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
-                WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
-                Exit Sub
-            End If
-            DLWUA(strDownloadME, "LargeFiles.rar")
-            If Cancelled Then Exit Sub
-            WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            Application.DoEvents()
-            If Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            Dim UnRarLocation As String = (startPath & "\unrar.exe")
-            Dim process As Process = process.Start(New ProcessStartInfo() With {.FileName = UnRarLocation, .Verb = "runas", .Arguments = "e LargeFiles.rar TEMPPATCHAIDAFOOL", .WindowStyle = ProcessWindowStyle.Normal, .UseShellExecute = True})
-            WriteDebugInfo(My.Resources.strWaitingforPatch)
-            If CancelledFull Then Exit Sub
-            Do Until process.WaitForExit(1000)
-            Loop
-            If CancelledFull Then Exit Sub
-            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-                WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As FileInfo() = di.GetFiles()
-            Dim dra As FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
-            Application.DoEvents()
-
-            'list the names of all files in the specified directory
-            Log("Extracted " & diar1.Length & " files from the patch")
-
-            If diar1.Length = 0 Then
-                WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
-                Exit Sub
-            End If
-
-            WriteDebugInfo(My.Resources.strInstallingPatch)
-
-            For Each dra In diar1
-                If CancelledFull Then Exit Sub
-                DeleteFile((pso2WinDir & "\" & dra.ToString()))
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
-            Next
-
-            My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-
-            FlashWindow(Me.Handle, True)
-            RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, strVersion)
-            WriteDebugInfo("Large Files installed!")
-
-            DeleteFile("LargeFiles.rar")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
-    End Sub
-
-    Public Sub SilentENpatch()
-        CancelledFull = False
-        Try
-            WriteDebugInfo(My.Resources.strDownloading & "EN patch...")
-            Application.DoEvents()
-
-            If Not CheckLink("http://psumods.co.uk/viewtopic.php?f=4&t=206") Then
-                WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
-                WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
-                Exit Sub
-            End If
-            Dim net As New WebClient()
-            Dim src = net.DownloadString("http://psumods.co.uk/viewtopic.php?f=4&t=206")
-
-            ' Create a match using regular exp<b></b>ressions
-            'http://pso2.arghargh200.net/pso2/patch_2013_04_24.rar
-            Dim m As Match = Regex.Match(src, "<br /><a href="".*?.rar")
-
-            ' Spit out the value plucked from the code
-            txtHTML.Text = m.Value
-            Dim strDownloadME As String = txtHTML.Text.Replace("<br /><a href=""", "")
-            Dim Lastfilename As String() = strDownloadME.Split("/"c)
-            Dim strVersion = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
-
-            Cancelled = False
-            If Not CheckLink(strDownloadME) Then
-                WriteDebugInfoAndFAILED("Failed to contact EN Patch website - Patch install/update canceled!")
-                WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
-                Exit Sub
-            End If
-
-            DLWUA(strDownloadME, "ENPatch.rar")
-            If Cancelled Then Exit Sub
-
-            WriteDebugInfo((My.Resources.strDownloadCompleteDownloaded & strDownloadME & ")"))
-            Application.DoEvents()
-            If Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-            Dim process As Process = Nothing
-            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            Dim UnRarLocation = (startPath & "\unrar.exe")
-            processStartInfo.FileName = UnRarLocation
-            processStartInfo.Verb = "runas"
-            processStartInfo.Arguments = ("e ENPatch.rar " & "TEMPPATCHAIDAFOOL")
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
-            process = process.Start(processStartInfo)
-            WriteDebugInfo(My.Resources.strWaitingforPatch)
-            Do Until process.WaitForExit(1000)
-            Loop
-            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-                WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New DirectoryInfo("TEMPPATCHAIDAFOOL")
-            Dim diar1 As FileInfo() = di.GetFiles()
-            Dim dra As FileInfo
-            WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
-            Application.DoEvents()
-            If CancelledFull Then Exit Sub
-
-            Log("Extracted " & diar1.Length & " files from the patch")
-
-            If diar1.Length = 0 Then
-                WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
-                Exit Sub
-            End If
-
-            WriteDebugInfo(My.Resources.strInstallingPatch)
-
-            For Each dra In diar1
-                If CancelledFull Then Exit Sub
-                DeleteFile((pso2WinDir & "\" & dra.ToString()))
-                File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
-            Next
-
-            My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
-
-            FlashWindow(Me.Handle, True)
-            WriteDebugInfo("English patch installed!")
-            RegKey.SetValue(Of String)(RegKey.ENPatchVersion, strVersion)
-            DeleteFile("ENPatch.rar")
-            UnlockGUI()
-        Catch ex As Exception
-            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
-            WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Exit Sub
-        End Try
+        End If
     End Sub
 
     Private Sub btnConfigureItemTranslation_Click(sender As Object, e As EventArgs) Handles btnConfigureItemTranslation.Click
