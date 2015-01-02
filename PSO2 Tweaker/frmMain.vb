@@ -15,7 +15,7 @@ Imports System.Threading
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
-' TODO: Rework backup hax to be stored in data\win32\backup\<patchname>
+' TODO: Rework backup hax to be stored in data\win32\backup\<patchname> | I did it because lazy [AIDA]
 
 Public Class frmMain
     Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
@@ -220,7 +220,8 @@ Public Class frmMain
                 DPISetting = g.DpiX
             End If
         End Using
-
+        'Attach the thread handler here
+        'Thread.Cur()
         Try
             btnAnnouncements.Text = ">"
             Dim procs As Process()
@@ -326,9 +327,10 @@ Public Class frmMain
                         End If
 
                         If UseItemTranslation Then
-                            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                            Log("Deleting item cache...")
-                            DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
+                            'Why did we ever delete the item cache? [AIDA]
+                            'Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                            'Log("Deleting item cache...")
+                            'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
 
                             'Download the latest translator.dll and translation.bin
                             Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
@@ -343,7 +345,7 @@ Public Class frmMain
                                     Exit For
                                 Catch ex As Exception
                                     If tries = 4 Then
-                                        Log("Failed to download translation files! (" & ex.Message & ")")
+                                        Log("Failed to download translation files! (" & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString & ")")
                                         Exit For
                                     End If
                                 End Try
@@ -356,7 +358,7 @@ Public Class frmMain
                                     Exit For
                                 Catch ex As Exception
                                     If tries = 4 Then
-                                        Log("Failed to download translation files! (" & ex.Message & ")")
+                                        Log("Failed to download translation files! (" & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString & ")")
                                         Exit Try
                                     End If
                                 End Try
@@ -408,7 +410,7 @@ Public Class frmMain
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LatestStoryBase)) Then RegKey.SetValue(Of String)(RegKey.LatestStoryBase, "Unknown")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyEnabled)) Then RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamMode)) Then RegKey.SetValue(Of String)(RegKey.SteamMode, "False")
-
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SidebarEnabled)) Then RegKey.SetValue(Of String)(RegKey.SidebarEnabled, "True")
 
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
                 btnAnnouncements.PerformClick()
@@ -529,7 +531,7 @@ Public Class frmMain
             WriteDebugInfoAndOK((My.Resources.strProgramOpeningSuccessfully & My.Application.Info.Version.ToString()))
             Application.DoEvents()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
@@ -573,7 +575,7 @@ Public Class frmMain
                 WriteDebugInfoAndWarning(My.Resources.strFailedToGetUpdateInfo)
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
@@ -776,7 +778,7 @@ SkipItemProxyDownload:
             WriteDebugInfoSameLine(My.Resources.strDone)
 
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
 
@@ -795,7 +797,7 @@ SkipItemProxyDownload:
         Try
             client.DownloadFile(DLLink1, (pso2RootDir & "\translator.dll"))
         Catch ex As Exception
-            MsgBox("Failed to download translation files! (" & ex.Message & ")")
+            MsgBox("Failed to download translation files! (" & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString & ")")
         End Try
 
         RegKey.SetValue(Of String)(RegKey.DLLMD5, Helper.GetMD5(pso2RootDir & "\translator.dll"))
@@ -803,7 +805,7 @@ SkipItemProxyDownload:
         Try
             client.DownloadFile(DLLink2, (pso2RootDir & "\translation.bin"))
         Catch ex As Exception
-            MsgBox("Failed to download translation files! (" & ex.Message & ")")
+            MsgBox("Failed to download translation files! (" & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString & ")")
         End Try
 
         ItemDownloadingDone = True
@@ -1190,7 +1192,7 @@ SkipItemProxyDownload:
                 Exit Sub
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -1218,7 +1220,7 @@ SkipItemProxyDownload:
                 End If
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -1248,7 +1250,7 @@ SkipItemProxyDownload:
                 End If
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -1433,7 +1435,7 @@ StartPrePatch:
                 ButtonItem5.RaiseClick()
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -1587,7 +1589,7 @@ StartPrePatch:
                 chkSwapOP.Text = "Swap PC/Vita Openings (UNKNOWN)"
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -1617,8 +1619,9 @@ StartPrePatch:
             PBMainBar.Text = ""
             WriteDebugInfo(My.Resources.strLaunchingPSO2)
 
-            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
+            'Why did we ever delete this? [AIDA]
+            'Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
 
             If chkItemTranslation.Checked Then
                 If Helper.GetMD5(pso2launchpath & "\translator.dll") <> RegKey.GetValue(Of String)(RegKey.DLLMD5) Then
@@ -1670,7 +1673,7 @@ StartPrePatch:
             Me.Close()
 
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -1770,7 +1773,7 @@ StartPrePatch:
             WriteDebugInfoAndOK(pso2RootDir & " " & My.Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -1803,7 +1806,7 @@ StartPrePatch:
             If doDownload Then
                 ' Here we parse the text file before passing it to the DownloadPatch function.
                 Dim url As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
-                DownloadPatch(url, "Large Files", "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backupPreLargeFiles")
+                DownloadPatch(url, "Large Files", "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backup\Large Files\")
             Else
                 WriteDebugInfo("Download was cancelled due to incompatibility.")
             End If
@@ -1877,7 +1880,7 @@ StartPrePatch:
             WriteDebugInfoAndOK((My.Resources.strExtractingTo & pso2WinDir))
             Application.DoEvents()
             'list the names of all files in the specified directory
-            Dim backupdir As String = (pso2WinDir & "\" & "backupPreSTORYPatch")
+            Dim backupdir As String = (pso2WinDir & "\" & "backup\Story Patch\")
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupdir) Then
                     My.Computer.FileSystem.DeleteDirectory(backupdir, FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -1955,7 +1958,7 @@ StartPrePatch:
                     client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
                 Catch ex As Exception
                     If index = 5 Then
-                        WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message & ")")
+                        WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString & ")")
                         Exit Try
                     End If
                 End Try
@@ -1968,7 +1971,7 @@ StartPrePatch:
                     client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
                 Catch ex As Exception
                     If index = 5 Then
-                        WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message & ")")
+                        WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString & ")")
                         Exit Try
                     End If
                 End Try
@@ -1996,8 +1999,9 @@ StartPrePatch:
 
         If Not chkItemTranslation.Checked Then
             WriteDebugInfoAndOK(My.Resources.strDeletingItemCache)
-            Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
+            'Why did we delete this? [AIDA]
+            'Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
 
             Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
@@ -2044,21 +2048,21 @@ StartPrePatch:
         Dim testfilesize As String()
         lblStatus.Text = ""
 
-        If Directory.Exists((pso2WinDir & "\backupPreENPatch")) Then
+        If Directory.Exists((pso2WinDir & "\backup\English Patch\")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             Override = True
             btnRestoreENBackup.RaiseClick()
             Override = False
         End If
 
-        If Directory.Exists((pso2WinDir & "\backupPreLargeFiles")) Then
+        If Directory.Exists((pso2WinDir & "\backup\Large Files\")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             Override = True
             btnRestoreLargeFilesBackup.RaiseClick()
             Override = False
         End If
 
-        If Directory.Exists((pso2WinDir & "\backupPreSTORYPatch")) Then
+        If Directory.Exists((pso2WinDir & "\backup\Story Patch\")) Then
             WriteDebugInfo(My.Resources.strStoryBackupFound)
             Override = True
             btnRestoreStoryBackup.RaiseClick()
@@ -2238,21 +2242,6 @@ StartPrePatch:
                 WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
             End If
 
-            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ENPatchAfterInstall)) Then
-                WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
-                btnENPatch.RaiseClick()
-            End If
-
-            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then
-                WriteDebugInfo(My.Resources.strAutoInstallingLF)
-                btnLargeFiles.RaiseClick()
-            End If
-
-            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
-                WriteDebugInfo(My.Resources.strAutoInstallingStoryPatch)
-                btnStory.RaiseClick()
-            End If
-
             WriteDebugInfoAndOK(My.Resources.strallDone)
             Exit Sub
         End If
@@ -2424,6 +2413,13 @@ StartPrePatch:
             Dim RemoteVersion3 As String = lines3(0)
             RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion3)
             UnlockGUI()
+
+            If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) Then
+                If File.Exists((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then My.Computer.FileSystem.DeleteFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
+                WriteDebugInfoAndOK(My.Resources.strRemoving & "Censor...")
+            End If
+
             WriteDebugInfoAndOK(My.Resources.strallDone)
             Exit Sub
         End If
@@ -2434,7 +2430,7 @@ StartPrePatch:
             File.Delete(path)
         Catch ex As Exception
             ' Aida put whatever you see fit here plz
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -2452,7 +2448,7 @@ StartPrePatch:
             End If
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
-                Dim backupfolder As String = "backupPreENPatch"
+                Dim backupfolder As String = "backup\English Patch\"
                 If Not Directory.Exists((pso2WinDir & "\" & backupfolder)) Then
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2WinDir & "\" & backupfolder))
                     Exit Sub
@@ -2477,7 +2473,7 @@ StartPrePatch:
                 Exit Sub
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -2496,7 +2492,7 @@ StartPrePatch:
             End If
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
-                Dim backupfolder As String = "backupPreLargeFiles"
+                Dim backupfolder As String = "backup\Large Files\"
                 If Not Directory.Exists((pso2WinDir & "\" & backupfolder)) Then
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2WinDir & "\" & backupfolder))
                     Exit Sub
@@ -2521,7 +2517,7 @@ StartPrePatch:
                 Exit Sub
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -2880,7 +2876,7 @@ StartPrePatch:
             End If
             WriteDebugInfoAndOK(My.Resources.strGGReset)
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -2939,7 +2935,7 @@ StartPrePatch:
             WriteDebugInfo(My.Resources.strAllNecessaryFiles)
             UnlockGUI()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -2958,7 +2954,7 @@ StartPrePatch:
             End If
             If Override Then backupyesno = MsgBoxResult.Yes
             If backupyesno = MsgBoxResult.Yes Then
-                Dim backupfolder As String = "backupPreSTORYPatch"
+                Dim backupfolder As String = "backup\Story Patch\"
                 If Not Directory.Exists((pso2WinDir & "\" & backupfolder)) Then
                     WriteDebugInfoAndFAILED(My.Resources.strCantFindBackupDirectory & (pso2WinDir & "\" & backupfolder))
                     Exit Sub
@@ -2983,7 +2979,7 @@ StartPrePatch:
                 Exit Sub
             End If
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -3022,7 +3018,7 @@ StartPrePatch:
             WriteDebugInfoSameLine(My.Resources.strDone)
             MsgBox(My.Resources.strFixPermissionsDone)
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -3065,7 +3061,7 @@ StartPrePatch:
     End Sub
 
     Private Sub btnOfficialPSO2JP_Click(sender As Object, e As EventArgs) Handles btnOfficialPSO2JP.Click
-        Process.Start("http://pso2.jp")
+        Process.Start("http://cyberk.it/pso2mirror/")
     End Sub
 
     Private Sub btnRegistration_Click(sender As Object, e As EventArgs) Handles btnRegistration.Click
@@ -3102,7 +3098,7 @@ StartPrePatch:
             PSO2OptionsFrm.Left += 50
             PSO2OptionsFrm.ShowDialog()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
             Cursor = Cursors.Default
@@ -3119,7 +3115,7 @@ StartPrePatch:
             optionsFrm.Left += 50
             optionsFrm.ShowDialog()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
             Cursor = Cursors.Default
@@ -3133,7 +3129,7 @@ StartPrePatch:
             ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
             ' Furthermore, we could also parse it from within the function.
             Dim url As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
-            DownloadPatch(url, "EN Patch", "ENPatch.rar", RegKey.ENPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR, "backupPreENPatch")
+            DownloadPatch(url, "EN Patch", "ENPatch.rar", RegKey.ENPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR, "backup\English Patch\")
         End Using
     End Sub
 
@@ -3190,21 +3186,21 @@ StartPrePatch:
     End Sub
 
     Private Sub btnUninstallENPatch_Click(sender As Object, e As EventArgs) Handles btnUninstallENPatch.Click
-        UninstallPatch("http://162.243.211.123/patches/enpatchfilelist.txt", "enpatchfilelist.txt", "backupPreENPatch", My.Resources.strENPatchUninstalled, RegKey.ENPatchVersion)
+        UninstallPatch("http://162.243.211.123/patches/enpatchfilelist.txt", "enpatchfilelist.txt", "backup\English Patch\", My.Resources.strENPatchUninstalled, RegKey.ENPatchVersion)
     End Sub
 
     Private Sub btnUninstallLargeFiles_Click(sender As Object, e As EventArgs) Handles btnUninstallLargeFiles.Click
-        UninstallPatch("http://162.243.211.123/patches/largefilelist.txt", "largefilelist.txt", "backupPreLargeFiles", My.Resources.strLFUninstalled, RegKey.LargeFilesVersion)
+        UninstallPatch("http://162.243.211.123/patches/largefilelist.txt", "largefilelist.txt", "backup\Large Files\", My.Resources.strLFUninstalled, RegKey.LargeFilesVersion)
     End Sub
 
     Private Sub btnUninstallStory_Click(sender As Object, e As EventArgs) Handles btnUninstallStory.Click
-        UninstallPatch("http://162.243.211.123/patches/storyfilelist.txt", "storyfilelist.txt", "backupPreSTORYPatch", My.Resources.strStoryPatchUninstalled, RegKey.StoryPatchVersion)
+        UninstallPatch("http://162.243.211.123/patches/storyfilelist.txt", "storyfilelist.txt", "backup\Story Patch\", My.Resources.strStoryPatchUninstalled, RegKey.StoryPatchVersion)
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
         DownloadPatch("http://dl.cyberman.me/pso2/rupatch.rar", "RU Patch", "RUPatch.rar", Nothing,
                       "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
-                      "Please select the pre-downloaded RU Patch RAR file", "backupPreRUPatch")
+                      "Please select the pre-downloaded RU Patch RAR file", "backup\Russian Patch\")
     End Sub
 
     Private Sub tsmRestartDownload_Click(sender As Object, e As EventArgs) Handles tsmRestartDownload.Click
@@ -3356,7 +3352,7 @@ StartPrePatch:
             Exit Sub
 
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             If ex.Message <> "Arithmetic operation resulted in an overflow." Then
                 WriteDebugInfo(My.Resources.strERROR & ex.Message)
                 Exit Sub
@@ -3625,7 +3621,7 @@ SelectInstallFolder:
             DeleteFile("LargeFiles.rar")
             UnlockGUI()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -3720,7 +3716,7 @@ SelectInstallFolder:
             DeleteFile("ENPatch.rar")
             UnlockGUI()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -3750,29 +3746,11 @@ SelectInstallFolder:
     Private Sub btnRunPSO2Linux_Click(sender As Object, e As EventArgs) Handles btnRunPSO2Linux.Click
         Process.Start("http://www.pso-world.com/forums/showthread.php?t=215642")
     End Sub
-
-    Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
-        Using net As New WebClient()
-            Dim page As String = net.DownloadString("http://162.243.211.123/pso2patches/espatch.html")
-            Dim match As Match = Regex.Match(page, "<b>(.{1,})</b>")
-
-            If (match.Success) Then
-                Dim url As String = "http://162.243.211.123/pso2patches/uploads/" & match.Groups(1).Value
-
-                DownloadPatch(url, "ES Patch", "ESPatch.rar", Nothing,
-                      "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
-                      "Please select the pre-downloaded ES Patch RAR file", "backupPreESPatch")
-            Else
-                MessageBox.Show("An error occurred while trying to parse the ES Patch page.", "Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            End If
-        End Using
-    End Sub
-
     Private Sub LoadSidebar(state As Object)
         Try
             WebBrowser4.Navigate("http://162.243.211.123/freedom/tweaker.html")
         Catch ex As Exception
-            WriteDebugInfo("Web Browser failed: " & ex.Message)
+            WriteDebugInfo("Web Browser failed: " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
         End Try
     End Sub
 
@@ -3795,7 +3773,7 @@ SelectInstallFolder:
     Private Sub btnResetTweaker_Click(sender As Object, e As EventArgs) Handles btnResetTweaker.Click
         Dim resetyesno As MsgBoxResult = MsgBox("This will erase all of the PSO2 Tweaker's settings, and restart the program. Continue?", vbYesNo)
         If resetyesno = vbYes Then
-            My.Computer.Registry.CurrentUser.DeleteSubKey("HKEY_CURRENT_USER\Software\AIDA", False)
+            My.Computer.Registry.CurrentUser.DeleteSubKeyTree("Software\AIDA", False)
             Log("All settings reset, restarting program!")
             Application.Restart()
         End If
@@ -3838,7 +3816,7 @@ SelectInstallFolder:
             frmDiagnostic.Left += 50
             frmDiagnostic.ShowDialog()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -3959,7 +3937,7 @@ SelectInstallFolder:
             WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
-            WriteDebugInfoAndFAILED("ERROR - " & ex.Message)
+            WriteDebugInfoAndFAILED("ERROR - " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
             Exit Sub
         End Try
@@ -4007,14 +3985,14 @@ SelectInstallFolder:
         'download all missingfiles
 
         'if file "currentpatchlist.txt" is not found then build list like SEGA's.
-        If Directory.Exists((pso2WinDir & "\backupPreENPatch")) Then
+        If Directory.Exists((pso2WinDir & "\backup\English Patch\")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             Override = True
             btnRestoreENBackup.RaiseClick()
             Override = False
         End If
 
-        If Directory.Exists((pso2WinDir & "\backupPreLargeFiles")) Then
+        If Directory.Exists((pso2WinDir & "\backup\Large Files\")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             Override = True
             btnRestoreLargeFilesBackup.RaiseClick()
@@ -4091,7 +4069,7 @@ SelectInstallFolder:
 
         Dim win32 As String = pso2WinDir
         Dim strStoryPatchLatestBase As String = ""
-        Dim backupdir As String = (pso2WinDir & "\" & "backupPreSTORYPatch")
+        Dim backupdir As String = (pso2WinDir & "\" & "backup\Story Patch\")
         Dim net As New WebClient()
         Dim src As String = net.DownloadString("http://arks-layer.com/story.php")
 
@@ -4125,6 +4103,7 @@ SelectInstallFolder:
         processStartInfo.UseShellExecute = True
         Log("[TRANSAM] Starting shitstorm")
         Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
+        MsgBox("ALL INFO: " & processStartInfo.ToString)
         process = process.Start(processStartInfo)
         Log("[TRANSAM] Program started")
         Do Until process.WaitForExit(1000)
@@ -4179,7 +4158,7 @@ SelectInstallFolder:
             WriteDebugInfo(patchname & " " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -4342,7 +4321,7 @@ SelectInstallFolder:
             DeleteFile(PatchName)
             UnlockGUI()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -4386,7 +4365,7 @@ SelectInstallFolder:
             RegKey.SetValue(Of String)(PatchVersionKey, "Not Installed")
             UnlockGUI()
         Catch ex As Exception
-            Log(ex.Message)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -4394,5 +4373,13 @@ SelectInstallFolder:
 
     Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Application.Exit()
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
+        Throw New Exception("This should be unhandled")
+    End Sub
+
+    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
+
     End Sub
 End Class

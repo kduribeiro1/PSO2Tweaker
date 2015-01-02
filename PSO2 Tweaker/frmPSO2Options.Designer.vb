@@ -25,6 +25,25 @@ Partial Class frmPSO2Options
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPSO2Options))
         Me.TabControl1 = New DevComponents.DotNetBar.TabControl()
+        Me.TabControlPanel1 = New DevComponents.DotNetBar.TabControlPanel()
+        Me.LabelX19 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX7 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
+        Me.ComboBoxEx2 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
+        Me.ComboItem4 = New DevComponents.Editors.ComboItem()
+        Me.ComboItem5 = New DevComponents.Editors.ComboItem()
+        Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
+        Me.ComboBoxEx1 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
+        Me.ComboItem1 = New DevComponents.Editors.ComboItem()
+        Me.ComboItem2 = New DevComponents.Editors.ComboItem()
+        Me.ComboItem3 = New DevComponents.Editors.ComboItem()
+        Me.LabelX3 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX2 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
+        Me.TextBoxX1 = New DevComponents.DotNetBar.Controls.TextBoxX()
+        Me.Slider1 = New DevComponents.DotNetBar.Controls.Slider()
+        Me.TabItem1 = New DevComponents.DotNetBar.TabItem(Me.components)
         Me.TabControlPanel3 = New DevComponents.DotNetBar.TabControlPanel()
         Me.LabelX16 = New DevComponents.DotNetBar.LabelX()
         Me.ComboBoxEx7 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
@@ -57,25 +76,6 @@ Partial Class frmPSO2Options
         Me.ComboItem7 = New DevComponents.Editors.ComboItem()
         Me.LabelX9 = New DevComponents.DotNetBar.LabelX()
         Me.TabItem2 = New DevComponents.DotNetBar.TabItem(Me.components)
-        Me.TabControlPanel1 = New DevComponents.DotNetBar.TabControlPanel()
-        Me.LabelX19 = New DevComponents.DotNetBar.LabelX()
-        Me.LabelX7 = New DevComponents.DotNetBar.LabelX()
-        Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
-        Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
-        Me.ComboBoxEx2 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
-        Me.ComboItem4 = New DevComponents.Editors.ComboItem()
-        Me.ComboItem5 = New DevComponents.Editors.ComboItem()
-        Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
-        Me.ComboBoxEx1 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
-        Me.ComboItem1 = New DevComponents.Editors.ComboItem()
-        Me.ComboItem2 = New DevComponents.Editors.ComboItem()
-        Me.ComboItem3 = New DevComponents.Editors.ComboItem()
-        Me.LabelX3 = New DevComponents.DotNetBar.LabelX()
-        Me.LabelX2 = New DevComponents.DotNetBar.LabelX()
-        Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
-        Me.TextBoxX1 = New DevComponents.DotNetBar.Controls.TextBoxX()
-        Me.Slider1 = New DevComponents.DotNetBar.Controls.Slider()
-        Me.TabItem1 = New DevComponents.DotNetBar.TabItem(Me.components)
         Me.TabControlPanel4 = New DevComponents.DotNetBar.TabControlPanel()
         Me.LabelX18 = New DevComponents.DotNetBar.LabelX()
         Me.CheckBoxX1 = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -83,9 +83,9 @@ Partial Class frmPSO2Options
         Me.btnSaveSettings = New DevComponents.DotNetBar.ButtonX()
         CType(Me.TabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
+        Me.TabControlPanel1.SuspendLayout()
         Me.TabControlPanel3.SuspendLayout()
         Me.TabControlPanel2.SuspendLayout()
-        Me.TabControlPanel1.SuspendLayout()
         Me.TabControlPanel4.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -128,6 +128,236 @@ Partial Class frmPSO2Options
         Me.TabControl1.Tabs.Add(Me.TabItem3)
         Me.TabControl1.Tabs.Add(Me.TabItem4)
         Me.TabControl1.Text = "TabControl1"
+        '
+        'TabControlPanel1
+        '
+        Me.TabControlPanel1.CanvasColor = System.Drawing.Color.Transparent
+        Me.TabControlPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.TabControlPanel1.Controls.Add(Me.LabelX19)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX7)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX6)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX5)
+        Me.TabControlPanel1.Controls.Add(Me.ComboBoxEx2)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX4)
+        Me.TabControlPanel1.Controls.Add(Me.ComboBoxEx1)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX3)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX2)
+        Me.TabControlPanel1.Controls.Add(Me.LabelX1)
+        Me.TabControlPanel1.Controls.Add(Me.TextBoxX1)
+        Me.TabControlPanel1.Controls.Add(Me.Slider1)
+        Me.TabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControlPanel1.Location = New System.Drawing.Point(0, 26)
+        Me.TabControlPanel1.Name = "TabControlPanel1"
+        Me.TabControlPanel1.Padding = New System.Windows.Forms.Padding(1)
+        Me.TabControlPanel1.Size = New System.Drawing.Size(593, 360)
+        Me.TabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.Transparent
+        Me.TabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
+        Me.TabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.Transparent
+        Me.TabControlPanel1.Style.BorderSide = CType(((DevComponents.DotNetBar.eBorderSide.Left Or DevComponents.DotNetBar.eBorderSide.Right) _
+            Or DevComponents.DotNetBar.eBorderSide.Bottom), DevComponents.DotNetBar.eBorderSide)
+        Me.TabControlPanel1.Style.BorderWidth = 0
+        Me.TabControlPanel1.Style.GradientAngle = 90
+        Me.TabControlPanel1.StyleMouseDown.BorderWidth = 0
+        Me.TabControlPanel1.StyleMouseOver.BorderWidth = 0
+        Me.TabControlPanel1.TabIndex = 1
+        Me.TabControlPanel1.TabItem = Me.TabItem1
+        '
+        'LabelX19
+        '
+        Me.LabelX19.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX19.BackgroundStyle.Class = ""
+        Me.LabelX19.Location = New System.Drawing.Point(209, 256)
+        Me.LabelX19.Name = "LabelX19"
+        Me.LabelX19.Size = New System.Drawing.Size(160, 90)
+        Me.LabelX19.TabIndex = 11
+        Me.LabelX19.Text = resources.GetString("LabelX19.Text")
+        Me.LabelX19.WordWrap = True
+        '
+        'LabelX7
+        '
+        Me.LabelX7.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX7.BackgroundStyle.Class = ""
+        Me.LabelX7.Location = New System.Drawing.Point(14, 203)
+        Me.LabelX7.Name = "LabelX7"
+        Me.LabelX7.Size = New System.Drawing.Size(161, 96)
+        Me.LabelX7.TabIndex = 10
+        Me.LabelX7.Text = "This determines how good the textures in-game will look. Compressed will take les" & _
+    "s power, but High Definition will look better."
+        Me.LabelX7.WordWrap = True
+        '
+        'LabelX6
+        '
+        Me.LabelX6.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX6.BackgroundStyle.Class = ""
+        Me.LabelX6.Location = New System.Drawing.Point(417, 209)
+        Me.LabelX6.Name = "LabelX6"
+        Me.LabelX6.Size = New System.Drawing.Size(160, 90)
+        Me.LabelX6.TabIndex = 9
+        Me.LabelX6.Text = "Caution: If the shader setting ""Simple"" is selected, the game will be less demand" & _
+    "ing on your PC, but you will not be able to change some of the render settings i" & _
+    "n the in-game options menu."
+        Me.LabelX6.WordWrap = True
+        '
+        'LabelX5
+        '
+        Me.LabelX5.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX5.BackgroundStyle.Class = ""
+        Me.LabelX5.Location = New System.Drawing.Point(432, 147)
+        Me.LabelX5.Name = "LabelX5"
+        Me.LabelX5.Size = New System.Drawing.Size(121, 19)
+        Me.LabelX5.TabIndex = 8
+        Me.LabelX5.Text = "Shader Quality:"
+        '
+        'ComboBoxEx2
+        '
+        Me.ComboBoxEx2.DisplayMember = "Text"
+        Me.ComboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.ComboBoxEx2.FormattingEnabled = True
+        Me.ComboBoxEx2.ItemHeight = 14
+        Me.ComboBoxEx2.Items.AddRange(New Object() {Me.ComboItem4, Me.ComboItem5})
+        Me.ComboBoxEx2.Location = New System.Drawing.Point(432, 167)
+        Me.ComboBoxEx2.Name = "ComboBoxEx2"
+        Me.ComboBoxEx2.Size = New System.Drawing.Size(122, 20)
+        Me.ComboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.ComboBoxEx2.TabIndex = 7
+        '
+        'ComboItem4
+        '
+        Me.ComboItem4.Text = "Normal"
+        '
+        'ComboItem5
+        '
+        Me.ComboItem5.Text = "Simple (No shaders)"
+        '
+        'LabelX4
+        '
+        Me.LabelX4.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX4.BackgroundStyle.Class = ""
+        Me.LabelX4.Location = New System.Drawing.Point(14, 148)
+        Me.LabelX4.Name = "LabelX4"
+        Me.LabelX4.Size = New System.Drawing.Size(121, 19)
+        Me.LabelX4.TabIndex = 6
+        Me.LabelX4.Text = "Texture Resolution:"
+        '
+        'ComboBoxEx1
+        '
+        Me.ComboBoxEx1.DisplayMember = "Text"
+        Me.ComboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.ComboBoxEx1.FormattingEnabled = True
+        Me.ComboBoxEx1.ItemHeight = 14
+        Me.ComboBoxEx1.Items.AddRange(New Object() {Me.ComboItem1, Me.ComboItem2, Me.ComboItem3})
+        Me.ComboBoxEx1.Location = New System.Drawing.Point(14, 167)
+        Me.ComboBoxEx1.Name = "ComboBoxEx1"
+        Me.ComboBoxEx1.Size = New System.Drawing.Size(122, 20)
+        Me.ComboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.ComboBoxEx1.TabIndex = 5
+        '
+        'ComboItem1
+        '
+        Me.ComboItem1.Text = "Compressed"
+        '
+        'ComboItem2
+        '
+        Me.ComboItem2.Text = "Standard"
+        '
+        'ComboItem3
+        '
+        Me.ComboItem3.Text = "High Resolution"
+        '
+        'LabelX3
+        '
+        Me.LabelX3.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX3.BackgroundStyle.Class = ""
+        Me.LabelX3.Location = New System.Drawing.Point(51, 52)
+        Me.LabelX3.Name = "LabelX3"
+        Me.LabelX3.Size = New System.Drawing.Size(503, 89)
+        Me.LabelX3.TabIndex = 4
+        Me.LabelX3.Text = resources.GetString("LabelX3.Text")
+        Me.LabelX3.WordWrap = True
+        '
+        'LabelX2
+        '
+        Me.LabelX2.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX2.BackgroundStyle.Class = ""
+        Me.LabelX2.Location = New System.Drawing.Point(572, 17)
+        Me.LabelX2.Name = "LabelX2"
+        Me.LabelX2.Size = New System.Drawing.Size(10, 29)
+        Me.LabelX2.TabIndex = 3
+        Me.LabelX2.Text = "5"
+        '
+        'LabelX1
+        '
+        Me.LabelX1.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX1.BackgroundStyle.Class = ""
+        Me.LabelX1.Location = New System.Drawing.Point(4, 17)
+        Me.LabelX1.Name = "LabelX1"
+        Me.LabelX1.Size = New System.Drawing.Size(10, 29)
+        Me.LabelX1.TabIndex = 2
+        Me.LabelX1.Text = "1"
+        '
+        'TextBoxX1
+        '
+        '
+        '
+        '
+        Me.TextBoxX1.Border.Class = "TextBoxBorder"
+        Me.TextBoxX1.Location = New System.Drawing.Point(0, 306)
+        Me.TextBoxX1.Multiline = True
+        Me.TextBoxX1.Name = "TextBoxX1"
+        Me.TextBoxX1.Size = New System.Drawing.Size(10, 10)
+        Me.TextBoxX1.TabIndex = 1
+        Me.TextBoxX1.Visible = False
+        '
+        'Slider1
+        '
+        Me.Slider1.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.Slider1.BackgroundStyle.Class = ""
+        Me.Slider1.LabelPosition = DevComponents.DotNetBar.eSliderLabelPosition.Top
+        Me.Slider1.Location = New System.Drawing.Point(14, 4)
+        Me.Slider1.Maximum = 5
+        Me.Slider1.Minimum = 1
+        Me.Slider1.Name = "Slider1"
+        Me.Slider1.Size = New System.Drawing.Size(556, 42)
+        Me.Slider1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.Slider1.TabIndex = 0
+        Me.Slider1.Text = "Simple Render Setting"
+        Me.Slider1.Value = 1
+        '
+        'TabItem1
+        '
+        Me.TabItem1.AttachedControl = Me.TabControlPanel1
+        Me.TabItem1.BackColor = System.Drawing.Color.Transparent
+        Me.TabItem1.BorderColor = System.Drawing.Color.Transparent
+        Me.TabItem1.DarkBorderColor = System.Drawing.Color.Transparent
+        Me.TabItem1.Name = "TabItem1"
+        Me.TabItem1.Text = "Rendering Settings"
         '
         'TabControlPanel3
         '
@@ -459,236 +689,6 @@ Partial Class frmPSO2Options
         Me.TabItem2.Name = "TabItem2"
         Me.TabItem2.Text = "Basic Settings"
         '
-        'TabControlPanel1
-        '
-        Me.TabControlPanel1.CanvasColor = System.Drawing.Color.Transparent
-        Me.TabControlPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        Me.TabControlPanel1.Controls.Add(Me.LabelX19)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX7)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX6)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX5)
-        Me.TabControlPanel1.Controls.Add(Me.ComboBoxEx2)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX4)
-        Me.TabControlPanel1.Controls.Add(Me.ComboBoxEx1)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX3)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX2)
-        Me.TabControlPanel1.Controls.Add(Me.LabelX1)
-        Me.TabControlPanel1.Controls.Add(Me.TextBoxX1)
-        Me.TabControlPanel1.Controls.Add(Me.Slider1)
-        Me.TabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControlPanel1.Location = New System.Drawing.Point(0, 26)
-        Me.TabControlPanel1.Name = "TabControlPanel1"
-        Me.TabControlPanel1.Padding = New System.Windows.Forms.Padding(1)
-        Me.TabControlPanel1.Size = New System.Drawing.Size(593, 360)
-        Me.TabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.Transparent
-        Me.TabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
-        Me.TabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.Transparent
-        Me.TabControlPanel1.Style.BorderSide = CType(((DevComponents.DotNetBar.eBorderSide.Left Or DevComponents.DotNetBar.eBorderSide.Right) _
-            Or DevComponents.DotNetBar.eBorderSide.Bottom), DevComponents.DotNetBar.eBorderSide)
-        Me.TabControlPanel1.Style.BorderWidth = 0
-        Me.TabControlPanel1.Style.GradientAngle = 90
-        Me.TabControlPanel1.StyleMouseDown.BorderWidth = 0
-        Me.TabControlPanel1.StyleMouseOver.BorderWidth = 0
-        Me.TabControlPanel1.TabIndex = 1
-        Me.TabControlPanel1.TabItem = Me.TabItem1
-        '
-        'LabelX19
-        '
-        Me.LabelX19.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX19.BackgroundStyle.Class = ""
-        Me.LabelX19.Location = New System.Drawing.Point(209, 256)
-        Me.LabelX19.Name = "LabelX19"
-        Me.LabelX19.Size = New System.Drawing.Size(160, 90)
-        Me.LabelX19.TabIndex = 11
-        Me.LabelX19.Text = resources.GetString("LabelX19.Text")
-        Me.LabelX19.WordWrap = True
-        '
-        'LabelX7
-        '
-        Me.LabelX7.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX7.BackgroundStyle.Class = ""
-        Me.LabelX7.Location = New System.Drawing.Point(14, 203)
-        Me.LabelX7.Name = "LabelX7"
-        Me.LabelX7.Size = New System.Drawing.Size(161, 96)
-        Me.LabelX7.TabIndex = 10
-        Me.LabelX7.Text = "This determines how good the textures in-game will look. Compressed will take les" & _
-    "s power, but High Definition will look better."
-        Me.LabelX7.WordWrap = True
-        '
-        'LabelX6
-        '
-        Me.LabelX6.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX6.BackgroundStyle.Class = ""
-        Me.LabelX6.Location = New System.Drawing.Point(417, 209)
-        Me.LabelX6.Name = "LabelX6"
-        Me.LabelX6.Size = New System.Drawing.Size(160, 90)
-        Me.LabelX6.TabIndex = 9
-        Me.LabelX6.Text = "Caution: If the shader setting ""Simple"" is selected, the game will be less demand" & _
-    "ing on your PC, but you will not be able to change some of the render settings i" & _
-    "n the in-game options menu."
-        Me.LabelX6.WordWrap = True
-        '
-        'LabelX5
-        '
-        Me.LabelX5.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX5.BackgroundStyle.Class = ""
-        Me.LabelX5.Location = New System.Drawing.Point(432, 147)
-        Me.LabelX5.Name = "LabelX5"
-        Me.LabelX5.Size = New System.Drawing.Size(121, 19)
-        Me.LabelX5.TabIndex = 8
-        Me.LabelX5.Text = "Shader Quality:"
-        '
-        'ComboBoxEx2
-        '
-        Me.ComboBoxEx2.DisplayMember = "Text"
-        Me.ComboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.ComboBoxEx2.FormattingEnabled = True
-        Me.ComboBoxEx2.ItemHeight = 14
-        Me.ComboBoxEx2.Items.AddRange(New Object() {Me.ComboItem4, Me.ComboItem5})
-        Me.ComboBoxEx2.Location = New System.Drawing.Point(432, 167)
-        Me.ComboBoxEx2.Name = "ComboBoxEx2"
-        Me.ComboBoxEx2.Size = New System.Drawing.Size(122, 20)
-        Me.ComboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        Me.ComboBoxEx2.TabIndex = 7
-        '
-        'ComboItem4
-        '
-        Me.ComboItem4.Text = "Normal"
-        '
-        'ComboItem5
-        '
-        Me.ComboItem5.Text = "Simple (No shaders)"
-        '
-        'LabelX4
-        '
-        Me.LabelX4.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX4.BackgroundStyle.Class = ""
-        Me.LabelX4.Location = New System.Drawing.Point(14, 148)
-        Me.LabelX4.Name = "LabelX4"
-        Me.LabelX4.Size = New System.Drawing.Size(121, 19)
-        Me.LabelX4.TabIndex = 6
-        Me.LabelX4.Text = "Texture Resolution:"
-        '
-        'ComboBoxEx1
-        '
-        Me.ComboBoxEx1.DisplayMember = "Text"
-        Me.ComboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.ComboBoxEx1.FormattingEnabled = True
-        Me.ComboBoxEx1.ItemHeight = 14
-        Me.ComboBoxEx1.Items.AddRange(New Object() {Me.ComboItem1, Me.ComboItem2, Me.ComboItem3})
-        Me.ComboBoxEx1.Location = New System.Drawing.Point(14, 167)
-        Me.ComboBoxEx1.Name = "ComboBoxEx1"
-        Me.ComboBoxEx1.Size = New System.Drawing.Size(122, 20)
-        Me.ComboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        Me.ComboBoxEx1.TabIndex = 5
-        '
-        'ComboItem1
-        '
-        Me.ComboItem1.Text = "Compressed"
-        '
-        'ComboItem2
-        '
-        Me.ComboItem2.Text = "Standard"
-        '
-        'ComboItem3
-        '
-        Me.ComboItem3.Text = "High Resolution"
-        '
-        'LabelX3
-        '
-        Me.LabelX3.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX3.BackgroundStyle.Class = ""
-        Me.LabelX3.Location = New System.Drawing.Point(51, 52)
-        Me.LabelX3.Name = "LabelX3"
-        Me.LabelX3.Size = New System.Drawing.Size(503, 89)
-        Me.LabelX3.TabIndex = 4
-        Me.LabelX3.Text = resources.GetString("LabelX3.Text")
-        Me.LabelX3.WordWrap = True
-        '
-        'LabelX2
-        '
-        Me.LabelX2.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX2.BackgroundStyle.Class = ""
-        Me.LabelX2.Location = New System.Drawing.Point(572, 17)
-        Me.LabelX2.Name = "LabelX2"
-        Me.LabelX2.Size = New System.Drawing.Size(10, 29)
-        Me.LabelX2.TabIndex = 3
-        Me.LabelX2.Text = "5"
-        '
-        'LabelX1
-        '
-        Me.LabelX1.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX1.BackgroundStyle.Class = ""
-        Me.LabelX1.Location = New System.Drawing.Point(4, 17)
-        Me.LabelX1.Name = "LabelX1"
-        Me.LabelX1.Size = New System.Drawing.Size(10, 29)
-        Me.LabelX1.TabIndex = 2
-        Me.LabelX1.Text = "1"
-        '
-        'TextBoxX1
-        '
-        '
-        '
-        '
-        Me.TextBoxX1.Border.Class = "TextBoxBorder"
-        Me.TextBoxX1.Location = New System.Drawing.Point(0, 306)
-        Me.TextBoxX1.Multiline = True
-        Me.TextBoxX1.Name = "TextBoxX1"
-        Me.TextBoxX1.Size = New System.Drawing.Size(10, 10)
-        Me.TextBoxX1.TabIndex = 1
-        Me.TextBoxX1.Visible = False
-        '
-        'Slider1
-        '
-        Me.Slider1.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.Slider1.BackgroundStyle.Class = ""
-        Me.Slider1.LabelPosition = DevComponents.DotNetBar.eSliderLabelPosition.Top
-        Me.Slider1.Location = New System.Drawing.Point(14, 4)
-        Me.Slider1.Maximum = 5
-        Me.Slider1.Minimum = 1
-        Me.Slider1.Name = "Slider1"
-        Me.Slider1.Size = New System.Drawing.Size(556, 42)
-        Me.Slider1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        Me.Slider1.TabIndex = 0
-        Me.Slider1.Text = "Simple Render Setting"
-        Me.Slider1.Value = 1
-        '
-        'TabItem1
-        '
-        Me.TabItem1.AttachedControl = Me.TabControlPanel1
-        Me.TabItem1.BackColor = System.Drawing.Color.Transparent
-        Me.TabItem1.BorderColor = System.Drawing.Color.Transparent
-        Me.TabItem1.DarkBorderColor = System.Drawing.Color.Transparent
-        Me.TabItem1.Name = "TabItem1"
-        Me.TabItem1.Text = "Rendering Settings"
-        '
         'TabControlPanel4
         '
         Me.TabControlPanel4.CanvasColor = System.Drawing.Color.Transparent
@@ -782,11 +782,11 @@ Partial Class frmPSO2Options
         Me.TopRightCornerSize = 0
         CType(Me.TabControl1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
+        Me.TabControlPanel1.ResumeLayout(False)
         Me.TabControlPanel3.ResumeLayout(False)
         Me.TabControlPanel3.PerformLayout()
         Me.TabControlPanel2.ResumeLayout(False)
         Me.TabControlPanel2.PerformLayout()
-        Me.TabControlPanel1.ResumeLayout(False)
         Me.TabControlPanel4.ResumeLayout(False)
         Me.ResumeLayout(False)
 

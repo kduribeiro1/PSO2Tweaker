@@ -146,24 +146,6 @@
   <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
     <value>28</value>
   </data>
-  <data name="ComboItem1.Text" xml:space="preserve">
-    <value>Blue</value>
-  </data>
-  <data name="ComboItem2.Text" xml:space="preserve">
-    <value>Black</value>
-  </data>
-  <data name="ComboItem3.Text" xml:space="preserve">
-    <value>Silver</value>
-  </data>
-  <data name="ComboItem4.Text" xml:space="preserve">
-    <value>Vista Glass</value>
-  </data>
-  <data name="ComboItem29.Text" xml:space="preserve">
-    <value>2010 Silver</value>
-  </data>
-  <data name="ComboItem30.Text" xml:space="preserve">
-    <value>Windows 7 Blue</value>
-  </data>
   <data name="CMBStyle.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 80</value>
   </data>
@@ -185,8 +167,47 @@
   <data name="&gt;&gt;CMBStyle.ZOrder" xml:space="preserve">
     <value>27</value>
   </data>
+  <data name="ComboItem1.Text" xml:space="preserve">
+    <value>Blue</value>
+  </data>
+  <data name="ComboItem2.Text" xml:space="preserve">
+    <value>Black</value>
+  </data>
+  <data name="ComboItem3.Text" xml:space="preserve">
+    <value>Silver</value>
+  </data>
+  <data name="ComboItem4.Text" xml:space="preserve">
+    <value>Vista Glass</value>
+  </data>
+  <data name="ComboItem29.Text" xml:space="preserve">
+    <value>2010 Silver</value>
+  </data>
+  <data name="ComboItem30.Text" xml:space="preserve">
+    <value>Windows 7 Blue</value>
+  </data>
   <data name="cmbLanguage.ItemHeight" type="System.Int32, mscorlib">
     <value>14</value>
+  </data>
+  <data name="cmbLanguage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 32</value>
+  </data>
+  <data name="cmbLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 20</value>
+  </data>
+  <data name="cmbLanguage.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;cmbLanguage.Name" xml:space="preserve">
+    <value>cmbLanguage</value>
+  </data>
+  <data name="&gt;&gt;cmbLanguage.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.Controls.ComboBoxEx, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;cmbLanguage.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmbLanguage.ZOrder" xml:space="preserve">
+    <value>25</value>
   </data>
   <data name="ComboItem5.Text" xml:space="preserve">
     <value>English</value>
@@ -211,27 +232,6 @@
   </data>
   <data name="ComboItem14.Text" xml:space="preserve">
     <value>Polish</value>
-  </data>
-  <data name="cmbLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 32</value>
-  </data>
-  <data name="cmbLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 20</value>
-  </data>
-  <data name="cmbLanguage.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;cmbLanguage.Name" xml:space="preserve">
-    <value>cmbLanguage</value>
-  </data>
-  <data name="&gt;&gt;cmbLanguage.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.ComboBoxEx, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;cmbLanguage.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;cmbLanguage.ZOrder" xml:space="preserve">
-    <value>25</value>
   </data>
   <data name="LabelX2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX1.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>1</value>
   </data>
   <data name="LabelX5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX5.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>22</value>
   </data>
   <data name="LabelX6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -394,7 +394,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX6.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="ColorPickerButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -425,16 +425,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton2.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="ComboItem37.Text" xml:space="preserve">
-    <value>Ask each time</value>
-  </data>
-  <data name="ComboItem38.Text" xml:space="preserve">
-    <value>Always backup</value>
-  </data>
-  <data name="ComboItem39.Text" xml:space="preserve">
-    <value>Never backup</value>
+    <value>21</value>
   </data>
   <data name="cmbBackupPreference.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 124</value>
@@ -455,7 +446,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbBackupPreference.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
+  </data>
+  <data name="ComboItem37.Text" xml:space="preserve">
+    <value>Ask each time</value>
+  </data>
+  <data name="ComboItem38.Text" xml:space="preserve">
+    <value>Always backup</value>
+  </data>
+  <data name="ComboItem39.Text" xml:space="preserve">
+    <value>Never backup</value>
   </data>
   <data name="LabelX7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -482,7 +482,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX7.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="ButtonX1.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 294</value>
@@ -506,16 +506,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ButtonX1.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="ComboItem31.Text" xml:space="preserve">
-    <value>Installed</value>
-  </data>
-  <data name="ComboItem32.Text" xml:space="preserve">
-    <value>Not Installed</value>
-  </data>
-  <data name="ComboItem33.Text" xml:space="preserve">
-    <value>LatestVersion</value>
+    <value>17</value>
   </data>
   <data name="cmbStoryOverride.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 268</value>
@@ -536,7 +527,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbStoryOverride.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
+  </data>
+  <data name="ComboItem31.Text" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="ComboItem32.Text" xml:space="preserve">
+    <value>Not Installed</value>
+  </data>
+  <data name="ComboItem33.Text" xml:space="preserve">
+    <value>LatestVersion</value>
   </data>
   <data name="LabelX8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -563,16 +563,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX8.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="ComboItem34.Text" xml:space="preserve">
-    <value>Not Installed</value>
-  </data>
-  <data name="ComboItem36.Text" xml:space="preserve">
-    <value>Latest version: </value>
-  </data>
-  <data name="ComboItem35.Text" xml:space="preserve">
-    <value>Last installed version: </value>
+    <value>16</value>
   </data>
   <data name="cmbENOverride.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 172</value>
@@ -593,7 +584,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbENOverride.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
+  </data>
+  <data name="ComboItem34.Text" xml:space="preserve">
+    <value>Not Installed</value>
+  </data>
+  <data name="ComboItem36.Text" xml:space="preserve">
+    <value>Latest version: </value>
+  </data>
+  <data name="ComboItem35.Text" xml:space="preserve">
+    <value>Last installed version: </value>
   </data>
   <data name="LabelX9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -620,16 +620,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX9.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="ComboItem41.Text" xml:space="preserve">
-    <value>Not Installed</value>
-  </data>
-  <data name="ComboItem42.Text" xml:space="preserve">
-    <value>LatestVersion</value>
-  </data>
-  <data name="ComboItem40.Text" xml:space="preserve">
-    <value>Whatever</value>
+    <value>14</value>
   </data>
   <data name="cmbLargeFilesOverride.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 220</value>
@@ -650,7 +641,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbLargeFilesOverride.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
+  </data>
+  <data name="ComboItem41.Text" xml:space="preserve">
+    <value>Not Installed</value>
+  </data>
+  <data name="ComboItem42.Text" xml:space="preserve">
+    <value>LatestVersion</value>
+  </data>
+  <data name="ComboItem40.Text" xml:space="preserve">
+    <value>Whatever</value>
   </data>
   <data name="LabelX10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -677,7 +677,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX10.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="btnPSO2Override.Location" type="System.Drawing.Point, System.Drawing">
     <value>110, 294</value>
@@ -701,7 +701,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnPSO2Override.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="LabelX11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -728,7 +728,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX11.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="ColorPickerButton3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -759,7 +759,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton3.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="LabelX12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -786,7 +786,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX12.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="ColorPickerButton4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -817,7 +817,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton4.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="CheckBoxX5.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 2</value>
@@ -841,7 +841,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX5.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="chkAutoRemoveCensor.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 34</value>
@@ -865,7 +865,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkAutoRemoveCensor.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="LabelX14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -892,13 +892,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX14.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="ComboItem15.Text" xml:space="preserve">
-    <value>Ask each time</value>
-  </data>
-  <data name="ComboItem17.Text" xml:space="preserve">
-    <value>Never ask</value>
+    <value>3</value>
   </data>
   <data name="cmbPredownload.Location" type="System.Drawing.Point, System.Drawing">
     <value>212, 79</value>
@@ -919,7 +913,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbPredownload.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
+  </data>
+  <data name="ComboItem15.Text" xml:space="preserve">
+    <value>Ask each time</value>
+  </data>
+  <data name="ComboItem17.Text" xml:space="preserve">
+    <value>Never ask</value>
   </data>
   <data name="CheckBoxX2.Location" type="System.Drawing.Point, System.Drawing">
     <value>234, 302</value>
@@ -943,7 +943,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX2.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

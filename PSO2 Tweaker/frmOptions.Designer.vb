@@ -488,10 +488,11 @@ Partial Class frmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.chkAutoRemoveCensor)
+        Me.Controls.Add(Me.CheckBoxX1)
         Me.Controls.Add(Me.CheckBoxX2)
         Me.Controls.Add(Me.LabelX14)
         Me.Controls.Add(Me.cmbPredownload)
-        Me.Controls.Add(Me.chkAutoRemoveCensor)
         Me.Controls.Add(Me.CheckBoxX5)
         Me.Controls.Add(Me.LabelX11)
         Me.Controls.Add(Me.ColorPickerButton3)
@@ -510,7 +511,6 @@ Partial Class frmOptions
         Me.Controls.Add(Me.LabelX6)
         Me.Controls.Add(Me.ColorPickerButton2)
         Me.Controls.Add(Me.LabelX5)
-        Me.Controls.Add(Me.CheckBoxX1)
         Me.Controls.Add(Me.LabelX4)
         Me.Controls.Add(Me.ColorPickerButton1)
         Me.Controls.Add(Me.cmbLanguage)

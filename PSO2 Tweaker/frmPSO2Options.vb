@@ -42,10 +42,8 @@ Public Class frmPSO2Options
     Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not File.Exists(usersettingsfile) Then
-                MsgBox("Please launch PSO2 to generate a new user configuration file!")
-                Me.Visible = False
-                Me.Close()
-                Exit Sub
+                File.WriteAllText(usersettingsfile, frmMain.txtPSO2DefaultINI.Text)
+                frmMain.WriteDebugInfo("Generating new PSO2 Settings file... Done!")
             End If
 
             Me.SuspendLayout()
@@ -355,5 +353,9 @@ Public Class frmPSO2Options
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
+    End Sub
+
+    Private Sub TabControlPanel1_Click(sender As Object, e As EventArgs) Handles TabControlPanel1.Click
+
     End Sub
 End Class
