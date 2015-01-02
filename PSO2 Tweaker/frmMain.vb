@@ -393,7 +393,7 @@ Public Class frmMain
 
             'Normal Tweaker startup
             CancelledFull = False
-
+FormLoad:
             If File.Exists(pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2RootDir & "\ddraw.dll")
 
             Log("Loading settings...")
@@ -530,6 +530,7 @@ Public Class frmMain
 
             WriteDebugInfoAndOK((My.Resources.strProgramOpeningSuccessfully & My.Application.Info.Version.ToString()))
             Application.DoEvents()
+
         Catch ex As Exception
             Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
@@ -3522,9 +3523,8 @@ SelectInstallFolder:
                     'Check for PSO2 Updates~
                     ButtonItem5.RaiseClick()
 
-                    MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to restart the program.")
-                    Application.Restart()
-                    Exit Sub
+                    MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
+                    Me.Refresh()
             End If
         End If
         End If
