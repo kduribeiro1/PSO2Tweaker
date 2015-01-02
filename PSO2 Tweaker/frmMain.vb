@@ -4103,7 +4103,7 @@ SelectInstallFolder:
         processStartInfo.UseShellExecute = True
         Log("[TRANSAM] Starting shitstorm")
         Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
-        MsgBox("ALL INFO: " & processStartInfo.ToString)
+        'MsgBox("ALL INFO: " & processStartInfo.ToString)
         process = process.Start(processStartInfo)
         Log("[TRANSAM] Program started")
         Do Until process.WaitForExit(1000)

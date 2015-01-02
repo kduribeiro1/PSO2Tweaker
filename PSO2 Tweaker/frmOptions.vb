@@ -78,7 +78,7 @@ Public Class frmOptions
     Private Sub UpdateVersion(key As String, str As String)
         Dim value As String = str.Replace("Latest version: ", "").Replace("Last installed: ", "")
         RegKey.SetValue(Of String)(key, value)
-        MsgBox(value)
+        If value <> "" Then MsgBox("Selected value changed to: " & value)
     End Sub
 
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
