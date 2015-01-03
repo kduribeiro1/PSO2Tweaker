@@ -1265,10 +1265,8 @@ SkipItemProxyDownload:
     Public Sub CheckForPSO2Updates()
         Try
             Dim UpdateNeeded As Boolean
-            Dim versionclient As New MyWebClient With {.timeout = 3000}
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
-            versionclient.DownloadFile("http://162.243.211.123/freedom/precede.txt", "precede.txt")
-
+            DLWUA("http://162.243.211.123/freedom/precede.txt", "precede.txt")
             If ComingFromPrePatch Then GoTo StartPrePatch
 
             Dim FirstTimechecking As Boolean = False
@@ -1383,7 +1381,7 @@ StartPrePatch:
 
             'Check whether or not to apply pre-patch shit. Ugh.
             If Directory.Exists(pso2RootDir & "\_precede\") Then
-                versionclient.DownloadFile("http://162.243.211.123/freedom/precede_apply.txt", "precede_apply.txt")
+                DLWUA("http://162.243.211.123/freedom/precede_apply.txt", "precede_apply.txt")
                 Dim prepatchapply = File.ReadAllLines("precede_apply.txt")
                 Dim ApplyPrePatch As String = prepatchapply(0)
 
@@ -1417,15 +1415,13 @@ StartPrePatch:
             End If
 
             If ComingFromPrePatch Then Exit Sub
-            Log("Attempting download...")
-            versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-            Log("Downloaded file!")
+            DLWUA("http://arks-layer.com/vanila/version.txt", "version.ver")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PSO2RemoteVersion)) Then
                 Dim lines2 = File.ReadAllLines("version.ver")
                 Dim RemoteVersion2 As String = lines2(0)
                 RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion2)
             End If
-            Log("Checking file...")
+
             Dim lines = File.ReadAllLines("version.ver")
             Dim RemoteVersion As String = lines(0)
             If RegKey.GetValue(Of String)(RegKey.PSO2RemoteVersion) <> RemoteVersion Then
@@ -1434,7 +1430,7 @@ StartPrePatch:
                 Dim UpdateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewPSO2Update, vbYesNo)
                 If UpdateStoryYesNo = vbNo Then UpdateNeeded = False
             End If
-            Log("Checking if an update is necessary...")
+
             If UpdateNeeded Then
                 ButtonItem5.RaiseClick()
             End If
@@ -1593,7 +1589,7 @@ StartPrePatch:
                 chkSwapOP.Text = "Swap PC/Vita Openings (UNKNOWN)"
             End If
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
