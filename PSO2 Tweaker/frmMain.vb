@@ -222,6 +222,7 @@ Public Class frmMain
         End Using
         'Attach the thread handler here
         'Thread.Cur()
+
         Try
             btnAnnouncements.Text = ">"
             Dim procs As Process()
@@ -1121,7 +1122,7 @@ SkipItemProxyDownload:
                         If MBVisitLink = vbNo Then Exit Sub
                     End If
 
-                    Dim UpdateStoryYesNo As MsgBoxResult = MsgBox("A new story patch update is available as of " & strNewDate & " - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest story patch available from http://arks-layer.com, which seems to be from " & strDownloadME, vbYesNo)
+                    Dim UpdateStoryYesNo As MsgBoxResult = MsgBox("A new story patch update is available as of " & strNewDate & " - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest story patch available from http://arks-layer.com (" & strDownloadME & "), or used the new method to install the story patch.", vbYesNo)
                     If UpdateStoryYesNo = vbNo Then
                         Exit Sub
                     End If
@@ -3431,7 +3432,6 @@ SelectInstallFolder:
 
             If dlgResult = DialogResult.OK Then
                 InstallFolder = MyFolderBrowser.SelectedPath
-                InstallFolder = InstallFolder
             End If
             If dlgResult = DialogResult.Cancel Then
                 WriteDebugInfo("Installation cancelled by user!")
@@ -3898,8 +3898,8 @@ SelectInstallFolder:
         'execute pso2-transam stuff with -b flag for backup
         Dim process As Process = Nothing
         Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
-
-        If Directory.Exists(backupdir) Then processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
+        Dim counter = My.Computer.FileSystem.GetFiles(backupdir)
+        If Directory.Exists(backupdir) And Convert.ToInt64(counter.Count) > 0 Then processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
         If Not Directory.Exists(backupdir) Then
             Log("[TRANSAM] Creating backup directory")
             Directory.CreateDirectory(backupdir)
