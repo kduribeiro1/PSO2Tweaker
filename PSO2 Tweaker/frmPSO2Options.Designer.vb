@@ -76,23 +76,32 @@ Partial Class frmPSO2Options
         Me.ComboItem7 = New DevComponents.Editors.ComboItem()
         Me.LabelX9 = New DevComponents.DotNetBar.LabelX()
         Me.TabItem2 = New DevComponents.DotNetBar.TabItem(Me.components)
+        Me.TabControlPanel5 = New DevComponents.DotNetBar.TabControlPanel()
+        Me.SBGM = New DevComponents.DotNetBar.Controls.Slider()
+        Me.TabItem7 = New DevComponents.DotNetBar.TabItem(Me.components)
         Me.TabControlPanel4 = New DevComponents.DotNetBar.TabControlPanel()
         Me.LabelX18 = New DevComponents.DotNetBar.LabelX()
         Me.CheckBoxX1 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.TabItem4 = New DevComponents.DotNetBar.TabItem(Me.components)
         Me.btnSaveSettings = New DevComponents.DotNetBar.ButtonX()
+        Me.TabItem5 = New DevComponents.DotNetBar.TabItem(Me.components)
+        Me.TabItem6 = New DevComponents.DotNetBar.TabItem(Me.components)
+        Me.SIGM = New DevComponents.DotNetBar.Controls.Slider()
+        Me.SVOICE = New DevComponents.DotNetBar.Controls.Slider()
+        Me.SSE = New DevComponents.DotNetBar.Controls.Slider()
         CType(Me.TabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabControlPanel1.SuspendLayout()
         Me.TabControlPanel3.SuspendLayout()
         Me.TabControlPanel2.SuspendLayout()
+        Me.TabControlPanel5.SuspendLayout()
         Me.TabControlPanel4.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
         '
         Me.TabControl1.BackColor = System.Drawing.Color.Transparent
-        Me.TabControl1.CanReorderTabs = True
+        Me.TabControl1.CanReorderTabs = False
         Me.TabControl1.ColorScheme.TabBackground = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabBackground2 = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabBorder = System.Drawing.Color.Transparent
@@ -102,30 +111,34 @@ Partial Class frmPSO2Options
         Me.TabControl1.ColorScheme.TabItemBorderLight = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabItemHotBackground = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabItemHotBackground2 = System.Drawing.Color.Transparent
-        Me.TabControl1.ColorScheme.TabItemHotBorder = System.Drawing.Color.Transparent
+        Me.TabControl1.ColorScheme.TabItemHotBorder = System.Drawing.Color.Black
         Me.TabControl1.ColorScheme.TabItemHotBorderDark = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabItemHotBorderLight = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabItemSelectedBackground = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabItemSelectedBackground2 = System.Drawing.Color.Transparent
-        Me.TabControl1.ColorScheme.TabItemSelectedBorder = System.Drawing.Color.Transparent
+        Me.TabControl1.ColorScheme.TabItemSelectedBorder = System.Drawing.Color.Black
         Me.TabControl1.ColorScheme.TabItemSelectedBorderDark = System.Drawing.Color.Transparent
+        Me.TabControl1.ColorScheme.TabItemSelectedBorderLight = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabPanelBackground = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabPanelBackground2 = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabPanelBorder = System.Drawing.Color.Transparent
         Me.TabControl1.Controls.Add(Me.TabControlPanel1)
-        Me.TabControl1.Controls.Add(Me.TabControlPanel3)
-        Me.TabControl1.Controls.Add(Me.TabControlPanel2)
+        Me.TabControl1.Controls.Add(Me.TabControlPanel5)
         Me.TabControl1.Controls.Add(Me.TabControlPanel4)
-        Me.TabControl1.Location = New System.Drawing.Point(-3, 0)
+        Me.TabControl1.Controls.Add(Me.TabControlPanel2)
+        Me.TabControl1.Controls.Add(Me.TabControlPanel3)
+        Me.TabControl1.Location = New System.Drawing.Point(-1, -2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedTabFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.TabControl1.SelectedTabIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(593, 386)
+        Me.TabControl1.Size = New System.Drawing.Size(591, 388)
+        Me.TabControl1.Style = DevComponents.DotNetBar.eTabStripStyle.VS2005
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.TabLayoutType = DevComponents.DotNetBar.eTabLayoutType.FixedWithNavigationBox
         Me.TabControl1.Tabs.Add(Me.TabItem1)
         Me.TabControl1.Tabs.Add(Me.TabItem2)
         Me.TabControl1.Tabs.Add(Me.TabItem3)
+        Me.TabControl1.Tabs.Add(Me.TabItem7)
         Me.TabControl1.Tabs.Add(Me.TabItem4)
         Me.TabControl1.Text = "TabControl1"
         '
@@ -146,10 +159,11 @@ Partial Class frmPSO2Options
         Me.TabControlPanel1.Controls.Add(Me.TextBoxX1)
         Me.TabControlPanel1.Controls.Add(Me.Slider1)
         Me.TabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControlPanel1.Location = New System.Drawing.Point(0, 26)
+        Me.TabControlPanel1.Location = New System.Drawing.Point(0, 25)
         Me.TabControlPanel1.Name = "TabControlPanel1"
         Me.TabControlPanel1.Padding = New System.Windows.Forms.Padding(1)
-        Me.TabControlPanel1.Size = New System.Drawing.Size(593, 360)
+        Me.TabControlPanel1.Size = New System.Drawing.Size(591, 363)
+        Me.TabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
         Me.TabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.Transparent
@@ -354,10 +368,12 @@ Partial Class frmPSO2Options
         '
         Me.TabItem1.AttachedControl = Me.TabControlPanel1
         Me.TabItem1.BackColor = System.Drawing.Color.Transparent
-        Me.TabItem1.BorderColor = System.Drawing.Color.Transparent
+        Me.TabItem1.BorderColor = System.Drawing.Color.Black
         Me.TabItem1.DarkBorderColor = System.Drawing.Color.Transparent
+        Me.TabItem1.LightBorderColor = System.Drawing.Color.Transparent
         Me.TabItem1.Name = "TabItem1"
         Me.TabItem1.Text = "Rendering Settings"
+        Me.TabItem1.TextColor = System.Drawing.Color.Black
         '
         'TabControlPanel3
         '
@@ -376,11 +392,11 @@ Partial Class frmPSO2Options
         Me.TabControlPanel3.Controls.Add(Me.ComboBoxEx4)
         Me.TabControlPanel3.Controls.Add(Me.LabelX11)
         Me.TabControlPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControlPanel3.Location = New System.Drawing.Point(0, 26)
+        Me.TabControlPanel3.Location = New System.Drawing.Point(0, 25)
         Me.TabControlPanel3.MarkupUsesStyleAlignment = True
         Me.TabControlPanel3.Name = "TabControlPanel3"
         Me.TabControlPanel3.Padding = New System.Windows.Forms.Padding(1)
-        Me.TabControlPanel3.Size = New System.Drawing.Size(593, 360)
+        Me.TabControlPanel3.Size = New System.Drawing.Size(591, 363)
         Me.TabControlPanel3.Style.BackColor1.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel3.Style.BackColor2.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel3.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
@@ -610,6 +626,7 @@ Partial Class frmPSO2Options
         'TabItem3
         '
         Me.TabItem3.AttachedControl = Me.TabControlPanel3
+        Me.TabItem3.BorderColor = System.Drawing.Color.Black
         Me.TabItem3.Name = "TabItem3"
         Me.TabItem3.Text = "Screen Setup"
         '
@@ -619,10 +636,10 @@ Partial Class frmPSO2Options
         Me.TabControlPanel2.Controls.Add(Me.ComboBoxEx3)
         Me.TabControlPanel2.Controls.Add(Me.LabelX9)
         Me.TabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControlPanel2.Location = New System.Drawing.Point(0, 26)
+        Me.TabControlPanel2.Location = New System.Drawing.Point(0, 25)
         Me.TabControlPanel2.Name = "TabControlPanel2"
         Me.TabControlPanel2.Padding = New System.Windows.Forms.Padding(1)
-        Me.TabControlPanel2.Size = New System.Drawing.Size(593, 360)
+        Me.TabControlPanel2.Size = New System.Drawing.Size(591, 363)
         Me.TabControlPanel2.Style.BackColor1.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel2.Style.BackColor2.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
@@ -686,8 +703,53 @@ Partial Class frmPSO2Options
         'TabItem2
         '
         Me.TabItem2.AttachedControl = Me.TabControlPanel2
+        Me.TabItem2.BorderColor = System.Drawing.Color.Black
         Me.TabItem2.Name = "TabItem2"
         Me.TabItem2.Text = "Basic Settings"
+        '
+        'TabControlPanel5
+        '
+        Me.TabControlPanel5.Controls.Add(Me.SSE)
+        Me.TabControlPanel5.Controls.Add(Me.SVOICE)
+        Me.TabControlPanel5.Controls.Add(Me.SIGM)
+        Me.TabControlPanel5.Controls.Add(Me.SBGM)
+        Me.TabControlPanel5.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControlPanel5.Location = New System.Drawing.Point(0, 25)
+        Me.TabControlPanel5.Name = "TabControlPanel5"
+        Me.TabControlPanel5.Padding = New System.Windows.Forms.Padding(1)
+        Me.TabControlPanel5.Size = New System.Drawing.Size(591, 363)
+        Me.TabControlPanel5.Style.BackColor1.Color = System.Drawing.Color.Transparent
+        Me.TabControlPanel5.Style.BackColor2.Color = System.Drawing.Color.Transparent
+        Me.TabControlPanel5.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
+        Me.TabControlPanel5.Style.BorderColor.Color = System.Drawing.Color.Transparent
+        Me.TabControlPanel5.Style.BorderSide = CType(((DevComponents.DotNetBar.eBorderSide.Left Or DevComponents.DotNetBar.eBorderSide.Right) _
+            Or DevComponents.DotNetBar.eBorderSide.Bottom), DevComponents.DotNetBar.eBorderSide)
+        Me.TabControlPanel5.Style.GradientAngle = 90
+        Me.TabControlPanel5.TabIndex = 5
+        Me.TabControlPanel5.TabItem = Me.TabItem7
+        '
+        'SBGM
+        '
+        Me.SBGM.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.SBGM.BackgroundStyle.Class = ""
+        Me.SBGM.LabelPosition = DevComponents.DotNetBar.eSliderLabelPosition.Top
+        Me.SBGM.Location = New System.Drawing.Point(14, 4)
+        Me.SBGM.Name = "SBGM"
+        Me.SBGM.Size = New System.Drawing.Size(556, 42)
+        Me.SBGM.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.SBGM.TabIndex = 0
+        Me.SBGM.Text = "Background Music Volume"
+        Me.SBGM.Value = 0
+        '
+        'TabItem7
+        '
+        Me.TabItem7.AttachedControl = Me.TabControlPanel5
+        Me.TabItem7.BorderColor = System.Drawing.Color.Black
+        Me.TabItem7.Name = "TabItem7"
+        Me.TabItem7.Text = "Sound Settings"
         '
         'TabControlPanel4
         '
@@ -695,10 +757,10 @@ Partial Class frmPSO2Options
         Me.TabControlPanel4.Controls.Add(Me.LabelX18)
         Me.TabControlPanel4.Controls.Add(Me.CheckBoxX1)
         Me.TabControlPanel4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControlPanel4.Location = New System.Drawing.Point(0, 26)
+        Me.TabControlPanel4.Location = New System.Drawing.Point(0, 25)
         Me.TabControlPanel4.Name = "TabControlPanel4"
         Me.TabControlPanel4.Padding = New System.Windows.Forms.Padding(1)
-        Me.TabControlPanel4.Size = New System.Drawing.Size(593, 360)
+        Me.TabControlPanel4.Size = New System.Drawing.Size(591, 363)
         Me.TabControlPanel4.Style.BackColor1.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel4.Style.BackColor2.Color = System.Drawing.Color.Transparent
         Me.TabControlPanel4.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine
@@ -745,6 +807,7 @@ Partial Class frmPSO2Options
         'TabItem4
         '
         Me.TabItem4.AttachedControl = Me.TabControlPanel4
+        Me.TabItem4.BorderColor = System.Drawing.Color.Black
         Me.TabItem4.Name = "TabItem4"
         Me.TabItem4.Text = "Hidden Settings"
         '
@@ -758,6 +821,65 @@ Partial Class frmPSO2Options
         Me.btnSaveSettings.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.btnSaveSettings.TabIndex = 1
         Me.btnSaveSettings.Text = "Save Settings"
+        '
+        'TabItem5
+        '
+        Me.TabItem5.AttachedControl = Me.TabControlPanel3
+        Me.TabItem5.Name = "TabItem5"
+        Me.TabItem5.Text = "Screen Setup"
+        '
+        'TabItem6
+        '
+        Me.TabItem6.Name = "TabItem6"
+        Me.TabItem6.Text = "TabItem6"
+        '
+        'SIGM
+        '
+        Me.SIGM.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.SIGM.BackgroundStyle.Class = ""
+        Me.SIGM.LabelPosition = DevComponents.DotNetBar.eSliderLabelPosition.Top
+        Me.SIGM.Location = New System.Drawing.Point(14, 244)
+        Me.SIGM.Name = "SIGM"
+        Me.SIGM.Size = New System.Drawing.Size(556, 42)
+        Me.SIGM.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.SIGM.TabIndex = 1
+        Me.SIGM.Text = "In-Game Movie Volume"
+        Me.SIGM.Value = 0
+        '
+        'SVOICE
+        '
+        Me.SVOICE.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.SVOICE.BackgroundStyle.Class = ""
+        Me.SVOICE.LabelPosition = DevComponents.DotNetBar.eSliderLabelPosition.Top
+        Me.SVOICE.Location = New System.Drawing.Point(14, 164)
+        Me.SVOICE.Name = "SVOICE"
+        Me.SVOICE.Size = New System.Drawing.Size(556, 42)
+        Me.SVOICE.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.SVOICE.TabIndex = 2
+        Me.SVOICE.Text = "Character Voice Volume"
+        Me.SVOICE.Value = 0
+        '
+        'SSE
+        '
+        Me.SSE.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.SSE.BackgroundStyle.Class = ""
+        Me.SSE.LabelPosition = DevComponents.DotNetBar.eSliderLabelPosition.Top
+        Me.SSE.Location = New System.Drawing.Point(14, 84)
+        Me.SSE.Name = "SSE"
+        Me.SSE.Size = New System.Drawing.Size(556, 42)
+        Me.SSE.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.SSE.TabIndex = 1
+        Me.SSE.Text = "Sound Effect Volume"
+        Me.SSE.Value = 0
         '
         'frmPSO2Options
         '
@@ -787,6 +909,7 @@ Partial Class frmPSO2Options
         Me.TabControlPanel3.PerformLayout()
         Me.TabControlPanel2.ResumeLayout(False)
         Me.TabControlPanel2.PerformLayout()
+        Me.TabControlPanel5.ResumeLayout(False)
         Me.TabControlPanel4.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -848,4 +971,12 @@ Partial Class frmPSO2Options
     Friend WithEvents TabItem4 As DevComponents.DotNetBar.TabItem
     Friend WithEvents LabelX18 As DevComponents.DotNetBar.LabelX
     Friend WithEvents LabelX19 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents TabControlPanel5 As DevComponents.DotNetBar.TabControlPanel
+    Friend WithEvents SBGM As DevComponents.DotNetBar.Controls.Slider
+    Friend WithEvents TabItem7 As DevComponents.DotNetBar.TabItem
+    Friend WithEvents TabItem5 As DevComponents.DotNetBar.TabItem
+    Friend WithEvents TabItem6 As DevComponents.DotNetBar.TabItem
+    Friend WithEvents SSE As DevComponents.DotNetBar.Controls.Slider
+    Friend WithEvents SVOICE As DevComponents.DotNetBar.Controls.Slider
+    Friend WithEvents SIGM As DevComponents.DotNetBar.Controls.Slider
 End Class

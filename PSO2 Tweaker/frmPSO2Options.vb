@@ -77,6 +77,13 @@ Public Class frmPSO2Options
             TabControlPanel4.StyleMouseDown.BackColor1.Color = backColor
             TabControlPanel4.StyleMouseDown.BackColor2.Color = backColor
 
+            TabControlPanel5.Style.BackColor1.Color = backColor
+            TabControlPanel5.Style.BackColor2.Color = backColor
+            TabControlPanel5.StyleMouseOver.BackColor1.Color = backColor
+            TabControlPanel5.StyleMouseOver.BackColor2.Color = backColor
+            TabControlPanel5.StyleMouseDown.BackColor1.Color = backColor
+            TabControlPanel5.StyleMouseDown.BackColor2.Color = backColor
+
             Dim DevM As DEVMODE
             DevM.dmDeviceName = New String(Chr(0), 32)
             DevM.dmFormName = New String(Chr(0), 32)
@@ -91,7 +98,12 @@ Public Class frmPSO2Options
                 ' The next mode
                 modeIndex += 1
             End While
+
             Slider1.Value = Convert.ToInt32(ReadINISetting("DrawLevel"))
+            SBGM.Value = Convert.ToInt32(ReadINISetting("Bgm"))
+            SSE.Value = Convert.ToInt32(ReadINISetting("Se"))
+            SVOICE.Value = Convert.ToInt32(ReadINISetting("Voice"))
+            SIGM.Value = Convert.ToInt32(ReadINISetting("Movie"))
             ComboBoxEx1.SelectedIndex = Convert.ToInt32(ReadINISetting("TextureResolution"))
             ComboBoxEx7.SelectedIndex = Convert.ToInt32(ReadINISetting("InterfaceSize"))
             ComboBoxEx6.Text = ReadINISetting("FrameKeep") & " FPS"
@@ -219,6 +231,7 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
+
     Public Sub SaveResolutionWidth(ByRef Value As String)
         Try
             TextBoxX1.Text = ""
@@ -257,7 +270,82 @@ Public Class frmPSO2Options
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
+    Public Sub SaveResolutionHeight3D(ByRef Value As String)
+        Try
+            TextBoxX1.Text = ""
+            Dim SettingString As String = File.ReadAllText(usersettingsfile)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim i As Integer
+            Dim j As Integer
+            For i = 0 To (TextLines.Length - 1)
+                If TextLines(i).Contains("Windows = {") Then
+                    For x = 1 To 9
+                        If TextLines(i + x).Contains("Height3d =") Then
+                            i = i + x
+                            Exit For
+                        End If
+                    Next x
 
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
+                            TextBoxX1.AppendText("}")
+                            File.Delete(usersettingsfile)
+                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            Exit Sub
+                        End If
+                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                    Next j
+                End If
+            Next i
+        Catch ex As Exception
+            frmMain.Log(ex.Message)
+            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        End Try
+    End Sub
+
+
+    Public Sub SaveResolutionWidth3D(ByRef Value As String)
+        Try
+            TextBoxX1.Text = ""
+            Dim SettingString As String = File.ReadAllText(usersettingsfile)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim i As Integer
+            Dim j As Integer
+            For i = 0 To (TextLines.Length - 1)
+                If TextLines(i).Contains("Windows = {") Then
+                    For x = 1 To 9
+                        If TextLines(i + x).Contains("Width3d =") Then
+                            i = i + x
+                            Exit For
+                        End If
+                    Next x
+
+                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
+
+                    For j = 0 To TextLines.Length
+                        If j + 1 = TextLines.Length Then
+                            TextBoxX1.AppendText("}")
+                            File.Delete(usersettingsfile)
+                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            Exit Sub
+                        End If
+                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                    Next j
+
+                End If
+            Next i
+        Catch ex As Exception
+            frmMain.Log(ex.Message)
+            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        End Try
+    End Sub
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
         'Try
         frmMain.Log("Saving Draw Level...")
@@ -273,47 +361,53 @@ Public Class frmPSO2Options
         If ComboBoxEx3.SelectedIndex = 0 Then SaveINISetting("MoviePlay", "true")
         If ComboBoxEx3.SelectedIndex = 1 Then SaveINISetting("MoviePlay", "false")
 
-        frmMain.Log("Saving Window Mode (Windowed)...")
         If ComboBoxEx4.SelectedIndex = 0 Then
+            frmMain.Log("Saving Window Mode (Windowed)...")
             SaveINISetting("FullScreen", "false")
             SaveINISetting("VirtualFullScreen", "false")
         End If
 
-        frmMain.Log("Saving Window Mode (Fullscreen)...")
         If ComboBoxEx4.SelectedIndex = 1 Then
+            frmMain.Log("Saving Window Mode (Fullscreen)...")
             SaveINISetting("FullScreen", "true")
             SaveINISetting("VirtualFullScreen", "false")
         End If
 
-        frmMain.Log("Saving Window Mode (Virtual Fullscreen)...")
         If ComboBoxEx4.SelectedIndex = 2 Then
+            frmMain.Log("Saving Window Mode (Virtual Fullscreen)...")
             SaveINISetting("FullScreen", "false")
             SaveINISetting("VirtualFullScreen", "true")
         End If
 
-        If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) AndAlso ComboBoxEx4.SelectedIndex <> 2 Then
+        If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then
             MsgBox("Please select a supported resolution!")
             Exit Sub
         End If
 
-        If ComboBoxEx4.SelectedIndex <> 2 Then
-            frmMain.Log("Saving Resolution...")
-            If ComboBoxEx5.SelectedText <> "x" Then
-                Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
+        frmMain.Log("Saving Resolution...")
+        If ComboBoxEx5.SelectedText <> "x" Then
+            Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
 
-                Dim RealResolution As String() = StrResolution.Split("x"c)
-                SaveResolutionWidth(RealResolution(0))
-                SaveResolutionHeight(RealResolution(1))
-            End If
+            Dim RealResolution As String() = StrResolution.Split("x"c)
+            SaveResolutionWidth(RealResolution(0))
+            SaveResolutionHeight(RealResolution(1))
+            SaveResolutionWidth3D(RealResolution(0))
+            SaveResolutionHeight3D(RealResolution(1))
         End If
 
         Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
 
         frmMain.Log("Saving FPS...")
         SaveINISetting("FrameKeep", FPS)
-        frmMain.Log("Disabling Interface...")
+
+        frmMain.Log("Saving Volume...")
+        SaveINISetting("Bgm", SBGM.Value.ToString())
+        SaveINISetting("Voice", SVOICE.Value.ToString())
+        SaveINISetting("Movie", SIGM.Value.ToString())
+        SaveINISetting("Se", SSE.Value.ToString())
 
         If CheckBoxX1.Checked Then
+            frmMain.Log("Disabling Interface...")
             If ReadINISetting("X") <> "99999" Then
                 If ReadINISetting("Y") <> "99999" Then
                     RegKey.SetValue(Of String)(RegKey.OldX, ReadINISetting("X"))
@@ -324,8 +418,8 @@ Public Class frmPSO2Options
             End If
         End If
 
-        frmMain.Log("Enabling Interface...")
         If Not CheckBoxX1.Checked Then
+            frmMain.Log("Enabling Interface...")
             If ReadINISetting("X") = "99999" Then
                 If ReadINISetting("Y") = "99999" Then
                     SaveINISetting("X", RegKey.GetValue(Of String)(RegKey.OldX))
@@ -341,18 +435,20 @@ Public Class frmPSO2Options
         'End Try
     End Sub
 
-    Private Sub ComboBoxEx4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEx4.SelectedIndexChanged
-        Try
-            'If ComboBoxEx4.SelectedIndex = 2 Then ComboBoxEx5.Enabled = False
-            'If ComboBoxEx4.SelectedIndex = 1 Then ComboBoxEx5.Enabled = True
-            'If ComboBoxEx4.SelectedIndex = 0 Then ComboBoxEx5.Enabled = True
+    Private Sub SBGM_ValueChanged(sender As Object, e As EventArgs) Handles SBGM.ValueChanged
+        SBGM.Text = "Background Music Volume - " & SBGM.Value
+    End Sub
 
-            ComboBoxEx5.Enabled = (ComboBoxEx4.SelectedIndex < 2)
+    Private Sub SSE_ValueChanged(sender As Object, e As EventArgs) Handles SSE.ValueChanged
+        SSE.Text = "Sound Effect Volume - " & SSE.Value
+    End Sub
 
-        Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
-        End Try
+    Private Sub SVOICE_ValueChanged(sender As Object, e As EventArgs) Handles SVOICE.ValueChanged
+        SVOICE.Text = "Character Voice Volume - " & SVOICE.Value
+    End Sub
+
+    Private Sub SIGM_ValueChanged(sender As Object, e As EventArgs) Handles SIGM.ValueChanged
+        SIGM.Text = "In-Game Movie Volume - " & SIGM.Value
     End Sub
 
     Private Sub TabControlPanel1_Click(sender As Object, e As EventArgs) Handles TabControlPanel1.Click

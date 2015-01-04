@@ -456,6 +456,7 @@ FormLoad:
                 PSO2OptionsFrm.TabItem3.TextColor = Color
                 PSO2OptionsFrm.TabItem4.TextColor = Color
                 PSO2OptionsFrm.Slider1.TextColor = Color
+                PSO2OptionsFrm.SBGM.TextColor = Color
                 PSO2OptionsFrm.CheckBoxX1.TextColor = Color
                 Me.ForeColor = Color
                 optionsFrm.ForeColor = Color
