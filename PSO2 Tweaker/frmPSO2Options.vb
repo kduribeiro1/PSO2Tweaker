@@ -207,14 +207,21 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
+            Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Height =") Then
                             i = i + x
+                            Contains = True
                             Exit For
                         End If
                     Next x
+
+                    If Contains = False Then
+                        frmMain.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        Exit Sub
+                    End If
 
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
@@ -245,14 +252,21 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
+            Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Width =") Then
                             i = i + x
+                            Contains = True
                             Exit For
                         End If
                     Next x
+
+                    If Contains = False Then
+                        frmMain.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        Exit Sub
+                    End If
 
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
@@ -283,14 +297,21 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
+            Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Height3d =") Then
                             i = i + x
+                            Contains = True
                             Exit For
                         End If
                     Next x
+
+                    If Contains = False Then
+                        frmMain.WriteDebugInfo("Couldn't find Height3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        Exit Sub
+                    End If
 
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
@@ -321,14 +342,21 @@ Public Class frmPSO2Options
             Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
+            Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
                     For x = 1 To 9
                         If TextLines(i + x).Contains("Width3d =") Then
                             i = i + x
+                            Contains = True
                             Exit For
                         End If
                     Next x
+
+                    If Contains = False Then
+                        frmMain.WriteDebugInfo("Couldn't find Width3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        Exit Sub
+                    End If
 
                     Dim strLine As String = TextLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
