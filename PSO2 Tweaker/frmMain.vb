@@ -3914,14 +3914,14 @@ SelectInstallFolder:
                 processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & win32 & """")
             End If
 
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
+            processStartInfo.UseShellExecute = False
             Log("[TRANSAM] Starting shitstorm")
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
             Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             'MsgBox("ALL INFO: " & processStartInfo.ToString)
             process = process.Start(processStartInfo)
             Log("[TRANSAM] Program started")
+
             Do Until process.WaitForExit(1000)
             Loop
 
@@ -3935,7 +3935,7 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strStoryPatchInstalled)
             CheckForStoryUpdates()
         Catch ex As Exception
-            WriteDebugInfoAndFAILED("ERROR - " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
+            MsgBox("ERROR - " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
             Exit Sub
         End Try
     End Sub
