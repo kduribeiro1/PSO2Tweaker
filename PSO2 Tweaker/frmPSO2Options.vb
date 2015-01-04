@@ -6,7 +6,7 @@ Imports DevComponents.DotNetBar
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-    Shared INICache As New Dictionary(Of String, String)
+    'Shared INICache As New Dictionary(Of String, String)
 
     Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As String, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Boolean
 
@@ -99,6 +99,12 @@ Public Class frmPSO2Options
                 modeIndex += 1
             End While
 
+            Dim CurrentHeight As String = ReadINISetting("Height3d")
+            Dim CurrentWidth As String = ReadINISetting("Width3d")
+
+            Dim FullRes As String = CurrentWidth & "x" & CurrentHeight
+            'MsgBox(FullRes)
+            ComboBoxEx5.Text = FullRes
             Slider1.Value = Convert.ToInt32(ReadINISetting("DrawLevel"))
             SBGM.Value = Convert.ToInt32(ReadINISetting("Bgm"))
             SSE.Value = Convert.ToInt32(ReadINISetting("Se"))
@@ -122,7 +128,7 @@ Public Class frmPSO2Options
                 ComboBoxEx4.SelectedIndex = 2
                 'Disable resolution thingie
             End If
-            ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
+            'ComboBoxEx5.Text = ReadINISetting("Width", 240) & "x" & ReadINISetting("Height", 240)
             If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then ComboBoxEx5.SelectedIndex = 0
             CheckBoxX1.Checked = False
             If ReadINISetting("Y") = "99999" Then
@@ -141,7 +147,7 @@ Public Class frmPSO2Options
     Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
         Try
             Dim returnValue = ""
-            If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
+            'If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
 
             Dim TextLines As String() = File.ReadAllLines(usersettingsfile)
             For i As Integer = LineToStartAt To (TextLines.Length - 1)
@@ -150,7 +156,7 @@ Public Class frmPSO2Options
                         Dim strLine As String = TextLines(i).Replace(vbTab, "")
                         Dim strReturn As String() = strLine.Split("="c)
                         Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "").Replace(" "c, "")
-                        If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
+                        'If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
                         Return FinalString
                     End If
                 End If
@@ -164,7 +170,7 @@ Public Class frmPSO2Options
 
     Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
         Try
-            INICache(SettingToSave) = Value
+            'INICache(SettingToSave) = Value
 
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
@@ -385,15 +391,15 @@ Public Class frmPSO2Options
         End If
 
         frmMain.Log("Saving Resolution...")
-        If ComboBoxEx5.SelectedText <> "x" Then
-            Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
+        'If ComboBoxEx5.SelectedText <> "x" Then
+        Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
 
-            Dim RealResolution As String() = StrResolution.Split("x"c)
-            SaveResolutionWidth(RealResolution(0))
-            SaveResolutionHeight(RealResolution(1))
-            SaveResolutionWidth3D(RealResolution(0))
-            SaveResolutionHeight3D(RealResolution(1))
-        End If
+        Dim RealResolution As String() = StrResolution.Split("x"c)
+        SaveResolutionWidth(RealResolution(0))
+        SaveResolutionHeight(RealResolution(1))
+        SaveResolutionWidth3D(RealResolution(0))
+        SaveResolutionHeight3D(RealResolution(1))
+        'End If
 
         Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
 
@@ -449,9 +455,5 @@ Public Class frmPSO2Options
 
     Private Sub SIGM_ValueChanged(sender As Object, e As EventArgs) Handles SIGM.ValueChanged
         SIGM.Text = "In-Game Movie Volume - " & SIGM.Value
-    End Sub
-
-    Private Sub TabControlPanel1_Click(sender As Object, e As EventArgs) Handles TabControlPanel1.Click
-
     End Sub
 End Class
