@@ -10,10 +10,10 @@ Public Class frmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Color)) Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.FontColor)) Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxBGColor)) Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
-            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.TextBoxColor)) Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
+            If (RegKey.GetValue(Of Integer)(RegKey.Color)) <> 0 Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
+            If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
+            If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
+            If (RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)) <> 0 Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
 
             Dim BackupMode = GetBackupMode(RegKey.Backup)
 
@@ -221,6 +221,8 @@ Public Class frmOptions
         Me.ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
+        chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
+        CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
         frmMain.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor

@@ -430,25 +430,23 @@ FormLoad:
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ENPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.ENPatchVersion, "Not Installed")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
 
-            Log("Loading textbox settings")
+            Log("Loading color stuff...")
 
-            Dim regValue As String
+            Dim regValue As Integer
 
-            regValue = RegKey.GetValue(Of String)(RegKey.TextBoxBGColor)
-            If Not String.IsNullOrEmpty(regValue) Then rtbDebug.BackColor = Color.FromArgb(Convert.ToInt32(regValue))
+            regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)
+            If regValue = 0 Then RegKey.SetValue(Of Integer)(RegKey.TextBoxBGColor, 4294967295)
+            If regValue <> 0 Then rtbDebug.BackColor = Color.FromArgb(Convert.ToInt32(regValue))
 
-            regValue = RegKey.GetValue(Of String)(RegKey.TextBoxColor)
-            If Not String.IsNullOrEmpty(regValue) Then rtbDebug.ForeColor = Color.FromArgb(Convert.ToInt32(regValue))
+            regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)
+            If regValue <> 0 Then rtbDebug.ForeColor = Color.FromArgb(Convert.ToInt32(regValue))
 
-            Log("Colors")
 
-            regValue = RegKey.GetValue(Of String)(RegKey.Color)
-            If Not String.IsNullOrEmpty(regValue) Then
-                StyleManager.ColorTint = Color.FromArgb(Convert.ToInt32(regValue))
-            End If
+            regValue = RegKey.GetValue(Of Integer)(RegKey.Color)
+            If regValue <> 0 Then StyleManager.ColorTint = Color.FromArgb(Convert.ToInt32(regValue))
 
-            regValue = RegKey.GetValue(Of String)(RegKey.FontColor)
-            If Not String.IsNullOrEmpty(regValue) Then
+            regValue = RegKey.GetValue(Of Integer)(RegKey.FontColor)
+            If regValue <> 0 Then
                 Dim Color As System.Drawing.Color = Color.FromArgb(Convert.ToInt32(regValue))
                 PSO2OptionsFrm.TabControl1.ColorScheme.TabItemSelectedText = Color
                 PSO2OptionsFrm.TabItem1.TextColor = Color
