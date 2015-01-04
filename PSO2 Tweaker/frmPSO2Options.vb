@@ -103,7 +103,7 @@ Public Class frmPSO2Options
             Dim CurrentWidth As String = ReadINISetting("Width3d")
 
             Dim FullRes As String = CurrentWidth & "x" & CurrentHeight
-            'MsgBox(FullRes)
+
             ComboBoxEx5.Text = FullRes
             Slider1.Value = Convert.ToInt32(ReadINISetting("DrawLevel"))
             SBGM.Value = Convert.ToInt32(ReadINISetting("Bgm"))

@@ -218,6 +218,7 @@ Public Class frmOptions
         frmPSO2Options.TabItem1.TextColor = ColorPickerButton2.SelectedColor
         frmPSO2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
         frmPSO2Options.TabItem3.TextColor = ColorPickerButton2.SelectedColor
+        frmPSO2Options.TabItem7.TextColor = ColorPickerButton2.SelectedColor
         Me.ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
