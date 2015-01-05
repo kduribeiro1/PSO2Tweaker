@@ -10,7 +10,7 @@
     Partial Friend Class MyApplication
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
-                frmMain.Log("Exception: " & e.ToString & "/ Message: " & e.Exception.Message.ToString() & " /InnerException: " & e.Exception.InnerException.ToString & "/ Source: " & e.Exception.Source.ToString)
+                frmMain.Log("Exception: " & e.ToString & "/ Message: " & e.Exception.Source)
                 frmMain.PasteBinUpload()
             End If
         End Sub

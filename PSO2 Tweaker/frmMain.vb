@@ -1589,7 +1589,7 @@ StartPrePatch:
                 chkSwapOP.Text = "Swap PC/Vita Openings (UNKNOWN)"
             End If
         Catch ex As Exception
-            Log(ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
+            Log(ex.Message.ToString)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
@@ -3556,7 +3556,7 @@ SelectInstallFolder:
         Try
             WebBrowser4.Navigate("http://162.243.211.123/freedom/tweaker.html")
         Catch ex As Exception
-            WriteDebugInfo("Web Browser failed: " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
+            WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
     End Sub
 
@@ -3743,7 +3743,7 @@ SelectInstallFolder:
             WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
-            WriteDebugInfoAndFAILED("ERROR - " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
+            WriteDebugInfoAndFAILED("ERROR - " & ex.Message.ToString)
             If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
             Exit Sub
         End Try
@@ -3935,7 +3935,7 @@ SelectInstallFolder:
             WriteDebugInfo(My.Resources.strStoryPatchInstalled)
             CheckForStoryUpdates()
         Catch ex As Exception
-            MsgBox("ERROR - " & ex.Message.ToString & " InnerException: " & ex.InnerException.ToString & " Source: " & ex.Source.ToString)
+            MsgBox("ERROR - " & ex.Message.ToString)
             Exit Sub
         End Try
     End Sub
