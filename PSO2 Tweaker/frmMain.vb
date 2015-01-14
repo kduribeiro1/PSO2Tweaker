@@ -46,7 +46,7 @@ Public Class frmMain
     Dim pso2WinDir As String
     Dim startPath As String = Application.StartupPath
     Dim totalsize2 As Long
-    Dim FreedomURL As String = ""
+    Dim FreedomURL As String = "http://162.243.211.123/freedom/"
 
 #Region "External Functions"
 
@@ -397,6 +397,13 @@ Public Class frmMain
             CancelledFull = False
 FormLoad:
             If File.Exists(pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2RootDir & "\ddraw.dll")
+            Log("Starting shitstorm...")
+            Dim justice As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
+            FreedomURL = justice.DownloadString("http://arks-layer.com/freedom.txt")
+            If FreedomURL.Contains("freedom") = False Then
+                Log("Reverting to default freedom...")
+                FreedomURL = "http://162.243.211.123/freedom/"
+            End If
 
             Log("Loading settings...")
 
@@ -541,8 +548,6 @@ FormLoad:
         Try
             DeleteFile(startPath & "\version.xml")
             WriteDebugInfo(My.Resources.strCheckingforupdatesPleasewaitamoment)
-            Dim justice As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
-            FreedomURL = justice.DownloadString("http://arks-layer.com/freedom.txt")
             Dim wc As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
             Dim source = wc.DownloadString(FreedomURL & "version.xml")
 
@@ -3184,6 +3189,7 @@ StartPrePatch:
         If Me.Visible Then
             If e.Url.ToString() <> FreedomURL & "tweaker.html" Then
                 Process.Start(e.Url.ToString())
+                Log("Trying to load URL for sidebar: " & e.Url.ToString)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
             End If
         End If
