@@ -2,17 +2,17 @@
 
 Public Class frmVEDA
     Private Sub WriteDebugInfo(ByVal AddThisText As String)
-        rtbStatus.Text = rtbStatus.Text & vbCrLf & AddThisText
+        rtbStatus.Text &= (vbCrLf & AddThisText)
         Log(AddThisText)
     End Sub
 
     Private Sub WriteDebugInfoSameLine(ByVal AddThisText As String)
-        rtbStatus.Text = rtbStatus.Text & " " & AddThisText
+        rtbStatus.Text &= (" " & AddThisText)
         Log(AddThisText)
     End Sub
 
     Private Sub WriteDebugInfoAndOK(ByVal AddThisText As String)
-        rtbStatus.Text = rtbStatus.Text & vbCrLf & AddThisText
+        rtbStatus.Text &= (vbCrLf & AddThisText)
         rtbStatus.Select(rtbStatus.TextLength, 0)
         rtbStatus.SelectionColor = Color.Green
         rtbStatus.AppendText(" [OK!]")
@@ -21,7 +21,7 @@ Public Class frmVEDA
     End Sub
 
     Private Sub WriteDebugInfoAndWarning(ByVal AddThisText As String)
-        rtbStatus.Text = rtbStatus.Text & vbCrLf & AddThisText
+        rtbStatus.Text &= (vbCrLf & AddThisText)
         rtbStatus.Select(rtbStatus.TextLength, 0)
         rtbStatus.SelectionColor = Color.Red
         rtbStatus.AppendText(" [WARNING!]")
@@ -30,7 +30,7 @@ Public Class frmVEDA
     End Sub
 
     Private Sub WriteDebugInfoAndFAILED(ByVal AddThisText As String)
-        rtbStatus.Text = rtbStatus.Text & vbCrLf & AddThisText
+        rtbStatus.Text &= (vbCrLf & AddThisText)
         rtbStatus.Select(rtbStatus.TextLength, 0)
         rtbStatus.SelectionColor = Color.Red
         rtbStatus.AppendText(" [FAILED!]")

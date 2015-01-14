@@ -146,7 +146,7 @@ Public Class frmPSO2Options
 
     Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
         Try
-            Dim returnValue = ""
+            'Dim returnValue = ""
             'If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
 
             Dim TextLines As String() = File.ReadAllLines(usersettingsfile)
@@ -210,9 +210,9 @@ Public Class frmPSO2Options
             Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
-                    For x = 1 To 9
+                    For x As Integer = 1 To 9
                         If TextLines(i + x).Contains("Height =") Then
-                            i = i + x
+                            i += x
                             Contains = True
                             Exit For
                         End If
@@ -255,9 +255,9 @@ Public Class frmPSO2Options
             Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
-                    For x = 1 To 9
+                    For x As Integer = 1 To 9
                         If TextLines(i + x).Contains("Width =") Then
-                            i = i + x
+                            i += x
                             Contains = True
                             Exit For
                         End If
@@ -300,9 +300,9 @@ Public Class frmPSO2Options
             Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
-                    For x = 1 To 9
+                    For x As Integer = 1 To 9
                         If TextLines(i + x).Contains("Height3d =") Then
-                            i = i + x
+                            i += x
                             Contains = True
                             Exit For
                         End If
@@ -345,9 +345,9 @@ Public Class frmPSO2Options
             Dim Contains As Boolean = False
             For i = 0 To (TextLines.Length - 1)
                 If TextLines(i).Contains("Windows = {") Then
-                    For x = 1 To 9
+                    For x As Integer = 1 To 9
                         If TextLines(i + x).Contains("Width3d =") Then
-                            i = i + x
+                            i += x
                             Contains = True
                             Exit For
                         End If
