@@ -57,8 +57,8 @@ Partial Class frmMain
         Me.ButtonInstall = New DevComponents.DotNetBar.ButtonItem()
         Me.btnENPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnStory = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStoryPatchNew = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnStory = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
@@ -429,15 +429,15 @@ Partial Class frmMain
         Me.btnLargeFiles.Name = "btnLargeFiles"
         resources.ApplyResources(Me.btnLargeFiles, "btnLargeFiles")
         '
-        'btnStory
-        '
-        Me.btnStory.Name = "btnStory"
-        resources.ApplyResources(Me.btnStory, "btnStory")
-        '
         'btnStoryPatchNew
         '
         Me.btnStoryPatchNew.Name = "btnStoryPatchNew"
         resources.ApplyResources(Me.btnStoryPatchNew, "btnStoryPatchNew")
+        '
+        'btnStory
+        '
+        Me.btnStory.Name = "btnStory"
+        resources.ApplyResources(Me.btnStory, "btnStory")
         '
         'btnRussianPatch
         '

@@ -7514,16 +7514,16 @@
   <data name="&gt;&gt;btnLargeFiles.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;btnStory.Name" xml:space="preserve">
-    <value>btnStory</value>
-  </data>
-  <data name="&gt;&gt;btnStory.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
   <data name="&gt;&gt;btnStoryPatchNew.Name" xml:space="preserve">
     <value>btnStoryPatchNew</value>
   </data>
   <data name="&gt;&gt;btnStoryPatchNew.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;btnStory.Name" xml:space="preserve">
+    <value>btnStory</value>
+  </data>
+  <data name="&gt;&gt;btnStory.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnRussianPatch.Name" xml:space="preserve">
@@ -7896,7 +7896,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.0.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.1.9, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMain</value>

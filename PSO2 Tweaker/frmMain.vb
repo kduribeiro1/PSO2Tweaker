@@ -46,6 +46,7 @@ Public Class frmMain
     Dim pso2WinDir As String
     Dim startPath As String = Application.StartupPath
     Dim totalsize2 As Long
+    Dim FreedomURL As String = ""
 
 #Region "External Functions"
 
@@ -334,8 +335,8 @@ Public Class frmMain
                             'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
 
                             'Download the latest translator.dll and translation.bin
-                            Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
-                            Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
+                            Dim DLLink1 As String = FreedomURL & "translator.dll"
+                            Dim DLLink2 As String = FreedomURL & "translation.bin"
                             Log(My.Resources.strDownloadingItemTranslationFiles)
                             Dim client As New WebClient
 
@@ -540,8 +541,10 @@ FormLoad:
         Try
             DeleteFile(startPath & "\version.xml")
             WriteDebugInfo(My.Resources.strCheckingforupdatesPleasewaitamoment)
+            Dim justice As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
+            FreedomURL = justice.DownloadString("http://arks-layer.com/freedom.txt")
             Dim wc As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
-            Dim source = wc.DownloadString("http://162.243.211.123/freedom/version.xml")
+            Dim source = wc.DownloadString(FreedomURL & "version.xml")
 
             If source.Contains("<VersionHistory>") Then
                 Dim xm As New Xml.XmlDocument
@@ -565,7 +568,7 @@ FormLoad:
                     Dim updateyesno As MsgBoxResult = MsgBox(My.Resources.strYouareusinganoutdatedversionoftheprogram & My.Application.Info.Version.ToString() & My.Resources.strAndthelatestis & currentVersion & My.Resources.strWouldyouliketodownloadthenewversion & vbCrLf & vbCrLf & My.Resources.strChanges & vbCrLf & changelogtotal, MsgBoxStyle.YesNo)
                     If updateyesno = MsgBoxResult.Yes Then
                         WriteDebugInfo(My.Resources.strDownloadingUpdate)
-                        DLWUA("http://162.243.211.123/freedom/PSO2%20Tweaker%20Updater.exe", "PSO2 Tweaker Updater.exe")
+                        DLWUA(FreedomURL & "PSO2%20Tweaker%20Updater.exe", "PSO2 Tweaker Updater.exe")
                         Process.Start(Environment.CurrentDirectory & "\PSO2 Tweaker Updater.exe")
                         Application.DoEvents()
                         Exit Sub
@@ -605,14 +608,14 @@ FormLoad:
             If Not File.Exists("7za.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "7za.exe...")
                 Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe")
+                DLWUA(FreedomURL & "7za.exe", "7za.exe")
             End If
 
             For index = 1 To 5
                 If Helper.GetMD5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
                     WriteDebugInfo(My.Resources.strYour7zipiscorrupt)
                     Application.DoEvents()
-                    DLWUA("http://162.243.211.123/freedom/7za.exe", "7za.exe")
+                    DLWUA(FreedomURL & "7za.exe", "7za.exe")
                 Else
                     Exit For
                 End If
@@ -621,14 +624,14 @@ FormLoad:
             If Not File.Exists("UnRar.exe") Then
                 WriteDebugInfo(My.Resources.strDownloading & "UnRar.exe...")
                 Application.DoEvents()
-                DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe")
+                DLWUA(FreedomURL & "UnRAR.exe", "UnRAR.exe")
             End If
 
             For index = 1 To 5
                 If Helper.GetMD5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
                     WriteDebugInfo(My.Resources.strYourUnrariscorrupt)
                     Application.DoEvents()
-                    DLWUA("http://162.243.211.123/freedom/UnRAR.exe", "UnRAR.exe")
+                    DLWUA(FreedomURL & "UnRAR.exe", "UnRAR.exe")
                 Else
                     Exit For
                 End If
@@ -792,8 +795,8 @@ SkipItemProxyDownload:
     End Sub
 
     Public Sub DownloadItemTranslationFiles(state As Object)
-        Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
-        Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
+        Dim DLLink1 As String = FreedomURL & "translator.dll"
+        Dim DLLink2 As String = FreedomURL & "translation.bin"
         Dim client As New WebClient
 
         Try
@@ -1087,7 +1090,7 @@ SkipItemProxyDownload:
     Public Sub CheckForStoryUpdates()
         Try
             If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) = "Not Installed" Then Exit Sub
-            DLWUA("http://162.243.211.123/patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
+            DLWUA(FreedomURL & "patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
             Dim sBuffer As String
             Dim filename As String()
             Dim truefilename As String
@@ -1102,6 +1105,7 @@ SkipItemProxyDownload:
                 RegKey.SetValue(Of String)(RegKey.NewVersionTemp, sBuffer)
                 RegKey.SetValue(Of String)(RegKey.NewStoryVersion, sBuffer)
                 Dim strNewDate As String = sBuffer
+                MsgBox(strNewDate)
                 If sBuffer <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
@@ -1159,7 +1163,7 @@ SkipItemProxyDownload:
                     lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
                     Application.DoEvents()
                     Cancelled = False
-                    DLWUA(("http://162.243.211.123/patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z")
+                    DLWUA((FreedomURL & "patchfiles/" & downloadstring & ".7z"), downloadstring & ".7z")
                     If Cancelled Then Exit Sub
                     'Delete the existing file FIRST
                     If Not File.Exists(downloadstring & ".7z") Then
@@ -1207,7 +1211,7 @@ SkipItemProxyDownload:
 
             Application.DoEvents()
             Dim net As MyWebClient = New MyWebClient() With {.timeout = 10000}
-            Dim strDownloadME As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
+            Dim strDownloadME As String = net.DownloadString(FreedomURL & "patches/enpatch.txt")
             Dim Lastfilename As String() = strDownloadME.Split("/"c)
             Dim strVersion As String = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
 
@@ -1236,7 +1240,7 @@ SkipItemProxyDownload:
             End If
             Application.DoEvents()
             Dim net As MyWebClient = New MyWebClient() With {.timeout = 10000}
-            Dim src As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
+            Dim src As String = net.DownloadString(FreedomURL & "patches/largefiles.txt")
             Dim strDownloadME As String = src
             Dim Lastfilename As String() = strDownloadME.Split("/"c)
             Dim strVersion As String = Lastfilename(Lastfilename.Length - 1).Replace(".rar", "")
@@ -1266,7 +1270,7 @@ SkipItemProxyDownload:
         Try
             Dim UpdateNeeded As Boolean
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
-            DLWUA("http://162.243.211.123/freedom/precede.txt", "precede.txt")
+            DLWUA(FreedomURL & "precede.txt", "precede.txt")
             If ComingFromPrePatch Then GoTo StartPrePatch
 
             Dim FirstTimechecking As Boolean = False
@@ -1381,7 +1385,7 @@ StartPrePatch:
 
             'Check whether or not to apply pre-patch shit. Ugh.
             If Directory.Exists(pso2RootDir & "\_precede\") Then
-                DLWUA("http://162.243.211.123/freedom/precede_apply.txt", "precede_apply.txt")
+                DLWUA(FreedomURL & "precede_apply.txt", "precede_apply.txt")
                 Dim prepatchapply = File.ReadAllLines("precede_apply.txt")
                 Dim ApplyPrePatch As String = prepatchapply(0)
 
@@ -1787,7 +1791,7 @@ StartPrePatch:
         Using net As New WebClient()
             ' This parses the sidebar page for compatibility
             ' First it downloads the page and splits it by line
-            Dim compat As String() = Regex.Split(net.DownloadString("http://162.243.211.123/freedom/tweaker.html"), "\r\n|\r|\n")
+            Dim compat As String() = Regex.Split(net.DownloadString(FreedomURL & "tweaker.html"), "\r\n|\r|\n")
             Dim doDownload As Boolean = True
 
             ' Then for each string in the split page, it does a regex match to grab the compatibility.
@@ -1805,7 +1809,7 @@ StartPrePatch:
 
             If doDownload Then
                 ' Here we parse the text file before passing it to the DownloadPatch function.
-                Dim url As String = net.DownloadString("http://162.243.211.123/patches/largefiles.txt")
+                Dim url As String = net.DownloadString(FreedomURL & "patches/largefiles.txt")
                 DownloadPatch(url, "Large Files", "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse, "backup\Large Files\")
             Else
                 WriteDebugInfo("Download was cancelled due to incompatibility.")
@@ -1949,8 +1953,8 @@ StartPrePatch:
 
             WriteDebugInfoAndOK(My.Resources.strDownloadingLatestItemTranslationFiles)
             'Download translator.dll and translation.bin
-            Dim DLLink1 As String = "http://162.243.211.123/freedom/translator.dll"
-            Dim DLLink2 As String = "http://162.243.211.123/freedom/translation.bin"
+            Dim DLLink1 As String = FreedomURL & "translator.dll"
+            Dim DLLink2 As String = FreedomURL & "translation.bin"
             Dim client As New WebClient
 
             For index = 1 To 5
@@ -3128,7 +3132,7 @@ StartPrePatch:
         Using net As New WebClient()
             ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
             ' Furthermore, we could also parse it from within the function.
-            Dim url As String = net.DownloadString("http://162.243.211.123/patches/enpatch.txt")
+            Dim url As String = net.DownloadString(FreedomURL & "patches/enpatch.txt")
             DownloadPatch(url, "EN Patch", "ENPatch.rar", RegKey.ENPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR, "backup\English Patch\")
         End Using
     End Sub
@@ -3178,7 +3182,7 @@ StartPrePatch:
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Me.Visible Then
-            If e.Url.ToString() <> "http://162.243.211.123/freedom/tweaker.html" Then
+            If e.Url.ToString() <> FreedomURL & "tweaker.html" Then
                 Process.Start(e.Url.ToString())
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
             End If
@@ -3186,15 +3190,15 @@ StartPrePatch:
     End Sub
 
     Private Sub btnUninstallENPatch_Click(sender As Object, e As EventArgs) Handles btnUninstallENPatch.Click
-        UninstallPatch("http://162.243.211.123/patches/enpatchfilelist.txt", "enpatchfilelist.txt", "backup\English Patch\", My.Resources.strENPatchUninstalled, RegKey.ENPatchVersion)
+        UninstallPatch(FreedomURL & "patches/enpatchfilelist.txt", "enpatchfilelist.txt", "backup\English Patch\", My.Resources.strENPatchUninstalled, RegKey.ENPatchVersion)
     End Sub
 
     Private Sub btnUninstallLargeFiles_Click(sender As Object, e As EventArgs) Handles btnUninstallLargeFiles.Click
-        UninstallPatch("http://162.243.211.123/patches/largefilelist.txt", "largefilelist.txt", "backup\Large Files\", My.Resources.strLFUninstalled, RegKey.LargeFilesVersion)
+        UninstallPatch(FreedomURL & "patches/largefilelist.txt", "largefilelist.txt", "backup\Large Files\", My.Resources.strLFUninstalled, RegKey.LargeFilesVersion)
     End Sub
 
     Private Sub btnUninstallStory_Click(sender As Object, e As EventArgs) Handles btnUninstallStory.Click
-        UninstallPatch("http://162.243.211.123/patches/storyfilelist.txt", "storyfilelist.txt", "backup\Story Patch\", My.Resources.strStoryPatchUninstalled, RegKey.StoryPatchVersion)
+        UninstallPatch(FreedomURL & "patches/storyfilelist.txt", "storyfilelist.txt", "backup\Story Patch\", My.Resources.strStoryPatchUninstalled, RegKey.StoryPatchVersion)
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
@@ -3554,7 +3558,7 @@ SelectInstallFolder:
     End Sub
     Private Sub LoadSidebar(state As Object)
         Try
-            WebBrowser4.Navigate("http://162.243.211.123/freedom/tweaker.html")
+            WebBrowser4.Navigate(FreedomURL & "tweaker.html")
         Catch ex As Exception
             WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
@@ -3887,11 +3891,10 @@ SelectInstallFolder:
             Dim strDownloadME As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
             strStoryPatchLatestBase = strDownloadME
             strStoryPatchLatestBase = strStoryPatchLatestBase.Replace("/", "-")
-
             WriteDebugInfoAndOK("Downloading story patch info... ")
-            DLWUA("http://162.243.211.123/freedom/pso2.stripped.db", "pso2.stripped.db")
+            DLWUA(FreedomURL & "pso2.stripped.db", "pso2.stripped.db")
             WriteDebugInfoAndOK("Downloading Trans-Am tool... ")
-            DLWUA("http://162.243.211.123/freedom/pso2-transam.exe", "pso2-transam.exe")
+            DLWUA(FreedomURL & "pso2-transam.exe", "pso2-transam.exe")
 
             'execute pso2-transam stuff with -b flag for backup
             Dim process As Process = Nothing
