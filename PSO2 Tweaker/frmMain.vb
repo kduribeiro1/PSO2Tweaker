@@ -15,6 +15,7 @@ Imports System.Threading
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
+' TODO: Rework backup hax to be stored in data\win32\backup\<patchname> | I did it because lazy [AIDA]
 
 Public Class frmMain
     Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
@@ -394,6 +395,7 @@ Public Class frmMain
 
             'Normal Tweaker startup
             CancelledFull = False
+FormLoad:
             If File.Exists(pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then DeleteFile(pso2RootDir & "\ddraw.dll")
             Log("Starting shitstorm...")
             Dim justice As MyWebClient = New MyWebClient() With {.timeout = 10000, .Proxy = Nothing}
@@ -508,7 +510,7 @@ Public Class frmMain
             Me.TopMost = isTopMost
             chkAlwaysOnTop.Checked = isTopMost
 
-            If File.Exists((startPath & "\logfile.txt")) AndAlso Helper.GetFileSize((startPath & "\logfile.txt")) > 30720 Then
+            If File.Exists((startPath & "\logfile.txt")) AndAlso GetFileSize((startPath & "\logfile.txt")) > 30720 Then
                 File.WriteAllText((startPath & "\logfile.txt"), "")
             End If
 
@@ -598,9 +600,9 @@ Public Class frmMain
             End If
 
             If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If Helper.GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso Helper.GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strNotSwapped & ")"
-                ElseIf Helper.GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso Helper.GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                ElseIf GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & " (" & My.Resources.strSwapped & ")"
                 End If
             End If
@@ -723,61 +725,65 @@ Public Class frmMain
 
             WriteDebugInfo(My.Resources.strIfAboveVersions)
 
-            If WayuIsAFailure Then
+            If WayuIsAFailure = True Then
                 WriteDebugInfo("Skipping downloads for Wayu!")
-            Else
-                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseItemTranslation)) Then
-                    RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, True)
-                End If
-
-                UseItemTranslation = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseItemTranslation))
-
-                If UseItemTranslation Then
-                    chkItemTranslation.Checked = True
-                    WriteDebugInfo("Downloading latest item patch files...")
-                    ItemDownloadingDone = False
-                    ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
-
-                    Do Until ItemDownloadingDone = True
-                        Application.DoEvents()
-                        Thread.Sleep(16)
-                    Loop
-                End If
-
-                Dim hostname As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
-                Dim ip As IPAddress() = hostname.AddressList
-
-                If Not ip(0).ToString().Contains("210.189.") AndAlso Not ItemDownloadingDone Then
-                    WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
-                    ItemDownloadingDone = False
-                    ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
-
-                    Do Until ItemDownloadingDone = True
-                        Application.DoEvents()
-                        Thread.Sleep(16)
-                    Loop
-
-                    If Not File.Exists(pso2RootDir & "\translation.cfg") Then
-                        File.WriteAllText(pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
-                    End If
-
-                    Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
-                        Dim BuiltFile As New List(Of String)
-                        Dim currentLine As String
-
-                        Do
-                            currentLine = reader.ReadLine()
-                            If (currentLine Is Nothing) Then Exit Do
-
-                            If currentLine.Contains("TranslationPath:") Then currentLine = "TranslationPath:"
-                            BuiltFile.Add(currentLine)
-                        Loop
-
-                        reader.Close()
-                        File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
-                    End Using
-                End If
+                GoTo SkipItemProxyDownload
             End If
+
+
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseItemTranslation)) Then
+                RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, True)
+            End If
+
+            UseItemTranslation = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseItemTranslation))
+
+            If UseItemTranslation Then
+                chkItemTranslation.Checked = True
+                WriteDebugInfo("Downloading latest item patch files...")
+                ItemDownloadingDone = False
+                ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
+
+                Do Until ItemDownloadingDone = True
+                    Application.DoEvents()
+                    Thread.Sleep(16)
+                Loop
+            End If
+
+            Dim hostname As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
+            Dim ip As IPAddress() = hostname.AddressList
+
+            If Not ip(0).ToString().Contains("210.189.") AndAlso Not ItemDownloadingDone Then
+                WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
+                ItemDownloadingDone = False
+                ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
+
+                Do Until ItemDownloadingDone = True
+                    Application.DoEvents()
+                    Thread.Sleep(16)
+                Loop
+
+                If Not File.Exists(pso2RootDir & "\translation.cfg") Then
+                    File.WriteAllText(pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
+                End If
+
+                Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
+                    Dim BuiltFile As New List(Of String)
+                    Dim currentLine As String = ""
+
+                    Do
+                        currentLine = reader.ReadLine()
+                        If (currentLine Is Nothing) Then Exit Do
+
+                        If currentLine.Contains("TranslationPath:") Then currentLine = "TranslationPath:"
+                        BuiltFile.Add(currentLine)
+                    Loop
+
+                    reader.Close()
+                    File.WriteAllLines(pso2RootDir & "\translation.cfg", BuiltFile.ToArray())
+                End Using
+            End If
+
+SkipItemProxyDownload:
 
             WriteDebugInfoSameLine(My.Resources.strDone)
 
@@ -815,11 +821,16 @@ Public Class frmMain
         ItemDownloadingDone = True
     End Sub
 
+    Private Function GetFileSize(ByVal MyFilePath As String) As Long
+        Dim MyFile As New FileInfo(MyFilePath)
+        Return MyFile.Length
+    End Function
+
     Public Sub WriteDebugInfo(ByVal AddThisText As String)
         If rtbDebug.InvokeRequired Then
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfo), Text)
         Else
-            rtbDebug.Text &= (vbCrLf & AddThisText)
+            rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
@@ -829,7 +840,7 @@ Public Class frmMain
         If rtbDebug.InvokeRequired Then
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfoSameLine), Text)
         Else
-            rtbDebug.Text &= (" " & AddThisText)
+            rtbDebug.Text = rtbDebug.Text & " " & AddThisText
             Dim TimeFormatted As String = DateTime.Now.ToString("G")
             File.AppendAllText((startPath & "\logfile.txt"), TimeFormatted & " " & AddThisText & vbCrLf)
         End If
@@ -839,7 +850,7 @@ Public Class frmMain
         If rtbDebug.InvokeRequired Then
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfoAndOK), Text)
         Else
-            rtbDebug.Text &= (vbCrLf & AddThisText)
+            rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
             rtbDebug.Select(rtbDebug.TextLength, 0)
             rtbDebug.SelectionColor = Color.Green
             rtbDebug.AppendText(" [OK!]")
@@ -853,7 +864,7 @@ Public Class frmMain
         If rtbDebug.InvokeRequired Then
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfoAndWarning), Text)
         Else
-            rtbDebug.Text &= (vbCrLf & AddThisText)
+            rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
             rtbDebug.Select(rtbDebug.TextLength, 0)
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(" [WARNING!]")
@@ -869,7 +880,7 @@ Public Class frmMain
         Else
             If AddThisText = "ERROR - Index was outside the bounds of the array." Then Exit Sub
             If AddThisText = "ERROR - Object reference not set to an instance of an object." Then Exit Sub
-            rtbDebug.Text &= (vbCrLf & AddThisText)
+            rtbDebug.Text = rtbDebug.Text & vbCrLf & AddThisText
             rtbDebug.Select(rtbDebug.TextLength, 0)
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(My.Resources.strFAILED)
@@ -1021,10 +1032,10 @@ Public Class frmMain
     Public Sub MergePrePatches()
         Dim patches As New Dictionary(Of String, String)
 
-        For i As Integer = 0 To 5
+        For i = 0 To 5
             Dim patchlist = File.ReadAllLines("patchlist" & i & ".txt")
 
-            For index As Integer = 0 To (patchlist.Length - 1)
+            For index = 0 To (patchlist.Length - 1)
                 If String.IsNullOrEmpty(patchlist(index)) Then Continue For
 
                 Dim splitLine = patchlist(index).Split(ControlChars.Tab)
@@ -1151,7 +1162,7 @@ Public Class frmMain
 
                 WriteDebugInfo("Downloading/Installing updates using Patch Server #4 (New York)")
 
-                For Each downloadstring As String In missingfiles
+                For Each downloadstring In missingfiles
                     'Download the missing files:
                     downloaded += 1
                     lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
@@ -1256,6 +1267,10 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Sub DeleteDirectory(path As String)
+        If Directory.Exists(path) Then Directory.Delete(path, True)
+    End Sub
+
     Public Sub CheckForPSO2Updates()
         Try
             Dim UpdateNeeded As Boolean
@@ -1283,9 +1298,9 @@ Public Class frmMain
 StartPrePatch:
                         'Download prepatch
                         CancelledFull = False
-                        Dim truefilename As String
+                        Dim truefilename As String = Nothing
                         Dim missingfiles As New List(Of String)
-                        Dim NumberofChecks As Integer
+                        Dim NumberofChecks As Integer = 0
                         lblStatus.Text = ""
                         WriteDebugInfo("Downloading pre-patch filelist...")
                         DLWUA("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt")
@@ -1335,7 +1350,7 @@ StartPrePatch:
                         Dim downloaded As Long = 0
                         Dim totaldownloaded As Long = 0
 
-                        For Each downloadstring As String In missingfiles
+                        For Each downloadstring In missingfiles
                             If CancelledFull Then Exit Sub
                             'Download the missing files:
                             'WHAT THE FUCK IS GOING ON HERE?
@@ -1389,10 +1404,10 @@ StartPrePatch:
                             Dim diar1 As FileInfo() = di.GetFiles()
 
                             'list the names of all files in the specified directory
-                            Dim downloadstring As String
+                            Dim downloadstring As String = ""
                             Dim count As Integer = 0
                             Dim counter = My.Computer.FileSystem.GetFiles(pso2RootDir & "\_precede\data\win32\")
-                            For Each dra As FileInfo In diar1
+                            For Each dra In diar1
                                 If counter.Count = 0 Then Exit For
                                 downloadstring = dra.Name
                                 DeleteFile((pso2WinDir & "\" & downloadstring))
@@ -1402,7 +1417,7 @@ StartPrePatch:
                                 Application.DoEvents()
                             Next
                             WriteDebugInfoSameLine("Done!")
-                            Helper.DeleteDirectory(pso2RootDir & "\_precede")
+                            DeleteDirectory(pso2RootDir & "\_precede")
                         End If
                     End If
                 End If
@@ -1568,13 +1583,13 @@ StartPrePatch:
                 My.Computer.FileSystem.RenameFile((pso2WinDir & "\" & "VitaOpening"), "a44fbb2aeb8084c5a5fbe80e219a9927")
             End If
             If File.Exists((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) AndAlso File.Exists((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) Then
-                If Helper.GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso Helper.GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 167479840 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 151540352 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & "(" & My.Resources.strNotSwapped & ")"
                     WriteDebugInfo(My.Resources.strallDone)
                     UnlockGUI()
                     Exit Sub
                 End If
-                If Helper.GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso Helper.GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
+                If GetFileSize((pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) = 151540352 AndAlso GetFileSize((pso2WinDir & "\" & "a93adc766eb3510f7b5c279551a45585")) = 167479840 Then
                     chkSwapOP.Text = My.Resources.strSwapPCVitaOpenings & "(" & My.Resources.strSwapped & ")"
                     WriteDebugInfo(My.Resources.strallDone)
                     UnlockGUI()
@@ -1708,21 +1723,21 @@ StartPrePatch:
         lblStatus.Text = ""
     End Sub
 
-    'Public Function Ping(ByVal server As String) As String
-    '    'Switch is a class already, for what it is worth
-    '    Dim Response As NetworkInformation.PingReply
-    '    Dim SendPing As New NetworkInformation.Ping
+    Public Function Ping(ByVal server As String) As String
+        'Switch is a class already, for what it is worth
+        Dim Response As NetworkInformation.PingReply
+        Dim SendPing As New NetworkInformation.Ping
 
-    '    Try
-    '        Response = SendPing.Send(server)
-    '        If Response.Status = NetworkInformation.IPStatus.Success Then
-    '            Return Response.RoundtripTime.ToString()
-    '        End If
-    '    Catch ex As Exception
-    '    End Try
+        Try
+            Response = SendPing.Send(server)
+            If Response.Status = NetworkInformation.IPStatus.Success Then
+                Return Response.RoundtripTime.ToString()
+            End If
+        Catch ex As Exception
+        End Try
 
-    '    Return "ERROR"
-    'End Function
+        Return "ERROR"
+    End Function
 
     Private Sub CancelProcessToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CancelProcessToolStripMenuItem.Click
         If DLS.IsBusy Then DLS.CancelAsync()
@@ -1787,9 +1802,9 @@ StartPrePatch:
             ' Then for each string in the split page, it does a regex match to grab the compatibility.
             ' This way we can avoid .replace.replace.replace.replace.replace and just get straight to the point;
             ' is it equal to "Compatible"
-            For Each str As String In compat
-                If Regex.IsMatch(str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>") Then
-                    If Not Regex.Match(str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
+            For Each s In compat
+                If Regex.IsMatch(s, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>") Then
+                    If Not Regex.Match(s, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
                         Dim ReallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
 
                         doDownload = If(ReallyInstall = MsgBoxResult.No, False, True)
@@ -1947,7 +1962,7 @@ StartPrePatch:
             Dim DLLink2 As String = FreedomURL & "translation.bin"
             Dim client As New WebClient
 
-            For index As Integer = 1 To 5
+            For index = 1 To 5
                 Try
                     client.DownloadFile(DLLink1, (pso2launchpath & "\translator.dll"))
                 Catch ex As Exception
@@ -1960,7 +1975,7 @@ StartPrePatch:
 
             RegKey.SetValue(Of String)(RegKey.DLLMD5, Helper.GetMD5(pso2launchpath & "\translator.dll"))
 
-            For index As Integer = 1 To 5
+            For index = 1 To 5
                 Try
                     client.DownloadFile(DLLink2, (pso2launchpath & "\translation.bin"))
                 Catch ex As Exception
@@ -1974,7 +1989,7 @@ StartPrePatch:
             'Start the shitstorm
             Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
                 Dim BuiltFile As New List(Of String)
-                Dim currentLine As String
+                Dim currentLine As String = ""
 
                 Do
                     currentLine = reader.ReadLine()
@@ -2000,7 +2015,7 @@ StartPrePatch:
 
             Using reader As New StreamReader(pso2RootDir & "\translation.cfg")
                 Dim BuiltFile As New List(Of String)
-                Dim currentLine As String
+                Dim currentLine As String = ""
 
                 Do
                     currentLine = reader.ReadLine()
@@ -2029,15 +2044,15 @@ StartPrePatch:
         End If
 
         Dim filedownloader As New WebClient()
-        Dim sBuffer As String
+        Dim sBuffer As String = Nothing
         Dim filename As String() = Nothing
-        Dim truefilename As String
+        Dim truefilename As String = Nothing
         Dim missingfiles As New List(Of String)
         Dim filedownloader2 As New WebClient()
         Dim missingfiles2 As New List(Of String)
         Dim NumberofChecks As Integer = 0
         Dim MD5 As String() = Nothing
-        Dim TrueMD5 As String
+        Dim TrueMD5 As String = Nothing
         Dim totalfilesize As Long = 0
         Dim testfilesize As String()
         lblStatus.Text = ""
@@ -2132,7 +2147,9 @@ StartPrePatch:
             Dim totaldownloaded As Long = 0
             DeleteFile("resume.txt")
 
-            File.AppendAllLines("resume.txt", missingfiles)
+            For Each downloadstring In missingfiles
+                File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
+            Next
 
             For Each downloadstring In missingfiles
                 If CancelledFull Then Exit Sub
@@ -2696,9 +2713,11 @@ StartPrePatch:
             Dim totaldownloaded As Long = 0
             DeleteFile("resume.txt")
 
-            File.AppendAllLines("resume.txt", missingfiles)
+            For Each downloadstring In missingfiles
+                File.AppendAllText("resume.txt", (downloadstring & vbCrLf))
+            Next
 
-            For Each downloadstring As String In missingfiles
+            For Each downloadstring In missingfiles
                 'Download the missing files:
                 Cancelled = False
                 downloaded += 1
@@ -2729,7 +2748,9 @@ StartPrePatch:
 
             DeleteFile("resume.txt")
 
-            File.AppendAllLines("resume.txt", missingfiles2)
+            For Each downloadstring2 In missingfiles2
+                File.AppendAllText("resume.txt", (downloadstring2 & vbCrLf))
+            Next
 
             Dim totaldownload2 As Long = missingfiles2.Count
             Dim downloaded2 As Long = 0
@@ -3205,7 +3226,7 @@ StartPrePatch:
         CancelledFull = False
 
         Try
-            Dim sBuffer As String
+            Dim sBuffer As String = Nothing
             Dim missingfiles As New List(Of String)
             missingfiles.Clear()
             Using oReader As StreamReader = File.OpenText("resume.txt")
@@ -3221,7 +3242,7 @@ StartPrePatch:
             Dim totaldownload As Long = missingfiles.Count
             Dim downloaded As Long = 0
             Dim totaldownloaded As Long = 0
-            For Each downloadstring As String In missingfiles
+            For Each downloadstring In missingfiles
                 If CancelledFull Then Exit Sub
                 'Download the missing files:
                 'WHAT THE FUCK IS GOING ON HERE?v3
@@ -3389,7 +3410,7 @@ StartPrePatch:
     End Sub
 
     Public Shared Function GetDownloadsPath() As String
-        Dim path__1 As String
+        Dim path__1 As String = Nothing
         If Environment.OSVersion.Version.Major >= 6 Then
             Dim pathPtr As IntPtr
             Dim hr As Integer = SHGetKnownFolderPath(FolderDownloads, 0, IntPtr.Zero, pathPtr)
@@ -3521,7 +3542,6 @@ SelectInstallFolder:
         frmItemConfig.Show()
     End Sub
 
-    ' TODO: This is a bit off I'll look into it later
     Public Function CheckLink(ByVal Url As String) As Boolean
         Dim req As HttpWebRequest = TryCast(WebRequest.Create(Url), HttpWebRequest)
         req.Timeout = 5000
@@ -3644,7 +3664,7 @@ SelectInstallFolder:
                 Exit Sub
             End If
 
-            For index As Integer = 0 To (proxyInfo.Host.Length - 1)
+            For index = 0 To (proxyInfo.Host.Length - 1)
                 If Char.IsLetter(proxyInfo.Host(index)) Then
                     Dim ips = Dns.GetHostAddresses(proxyInfo.Host)
                     proxyInfo.Host = ips(0).ToString()
@@ -3659,7 +3679,7 @@ SelectInstallFolder:
             Dim AlreadyModified As Boolean = False
 
             Using reader As New StreamReader(hostsFilePath)
-                Dim currentLine As String
+                Dim currentLine As String = ""
 
                 Do
                     currentLine = reader.ReadLine()
@@ -3743,7 +3763,7 @@ SelectInstallFolder:
         Dim builtFile = New List(Of String)
 
         Using reader As New StreamReader(hostsFilePath)
-            Dim currentLine As String
+            Dim currentLine As String = ""
 
             Do
                 currentLine = reader.ReadLine()
@@ -3803,7 +3823,6 @@ SelectInstallFolder:
             Dim di As New DirectoryInfo(pso2RootDir & "\data\win32\")
             Dim diar1 As FileInfo() = di.GetFiles()
 
-            ' TODO: There is be a better way to do this
             For Each dra In diar1
                 File.AppendAllText("old_patchlist.txt", "data/win32/" & dra.Name & ".pat" & vbTab & dra.Length & vbTab & Helper.GetMD5(pso2RootDir & "\data\win32\" & dra.Name) & vbNewLine)
                 count += 1
@@ -3838,8 +3857,8 @@ SelectInstallFolder:
 
         'Rewrite this to support the new format
 
-        Dim SEGALine As String
-        Dim SEGAFilename As String
+        Dim SEGALine As String = ""
+        Dim SEGAFilename As String = ""
         Dim missingfiles As New List(Of String)
         Dim oldarray = File.ReadAllLines("old_patchlist.txt")
 
@@ -3865,7 +3884,7 @@ SelectInstallFolder:
             End If
 
             Dim win32 As String = pso2WinDir
-            Dim strStoryPatchLatestBase As String
+            Dim strStoryPatchLatestBase As String = ""
             Dim backupdir As String = (pso2WinDir & "\" & "backup\Story Patch\")
             Dim net As New WebClient()
             Dim src As String = net.DownloadString("http://arks-layer.com/story.php")
@@ -4152,7 +4171,7 @@ SelectInstallFolder:
 
             WriteDebugInfo(My.Resources.strUninstallingPatch)
 
-            For index As Integer = 0 To (missingfiles.Length - 1)
+            For index = 0 To (missingfiles.Length - 1)
                 If CancelledFull Then Exit Sub
 
                 'Download JP file
@@ -4181,15 +4200,15 @@ SelectInstallFolder:
         End Try
     End Sub
 
-    'Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs)
-    '    Application.Exit()
-    'End Sub
+    Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs)
+        Application.Exit()
+    End Sub
 
-    'Private Sub Button1_Click_1(sender As Object, e As EventArgs)
-    '    Throw New Exception("This should be unhandled")
-    'End Sub
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
+        Throw New Exception("This should be unhandled")
+    End Sub
 
-    'Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
+    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
 
-    'End Sub
+    End Sub
 End Class
