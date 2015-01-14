@@ -10,6 +10,15 @@ Public Class Helper
 
     Public Shared DefaltCultureInfo As CultureInfo = New System.Globalization.CultureInfo("en")
 
+    Public Shared Function GetFileSize(ByVal MyFilePath As String) As Long
+        Dim MyFile As New FileInfo(MyFilePath)
+        Return MyFile.Length
+    End Function
+
+    Public Shared Sub DeleteDirectory(path As String)
+        If Directory.Exists(path) Then Directory.Delete(path, True)
+    End Sub
+
     Public Shared Function GetMD5(ByVal path As String) As String
         Try
             Using stream As FileStream = File.Open(path, FileMode.Open)

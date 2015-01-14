@@ -16,7 +16,7 @@ Public Class frmDiagnostic
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim TotalString As String = ""
-        Dim CurrentLine As String = ""
+        Dim CurrentLine As String
 
         Using xRead As New StreamReader("C:\WINDOWS\system32\drivers\etc\hosts")
             Do Until xRead.EndOfStream
@@ -55,8 +55,8 @@ Public Class frmDiagnostic
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir))
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
-        Dim fileSize As Long = 0
-        Dim filename As String = ""
+        Dim fileSize As Long
+        Dim filename As String
         Dim TotalString As String = "Listing of pso2_bin files: "
 
         For Each fileInfo As FileInfo In filesInfo
