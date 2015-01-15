@@ -3521,13 +3521,13 @@ SelectInstallFolder:
         frmItemConfig.Show()
     End Sub
 
-    ' TODO: This is a bit off I'll look into it later
     Public Function CheckLink(ByVal Url As String) As Boolean
-        Dim req As HttpWebRequest = TryCast(WebRequest.Create(Url), HttpWebRequest)
-        req.Timeout = 5000
-        req.Method = "HEAD"
         Try
-            Using rsp As HttpWebResponse = TryCast(req.GetResponse(), HttpWebResponse)
+            Dim req As HttpWebRequest = CType(WebRequest.Create(Url), HttpWebRequest)
+            req.Timeout = 5000
+            req.Method = "HEAD"
+
+            Using rsp As WebResponse = req.GetResponse()
                 Return True
             End Using
         Catch ex As WebException
@@ -3803,13 +3803,14 @@ SelectInstallFolder:
             Dim di As New DirectoryInfo(pso2RootDir & "\data\win32\")
             Dim diar1 As FileInfo() = di.GetFiles()
 
-            ' TODO: There is be a better way to do this
-            For Each dra In diar1
-                File.AppendAllText("old_patchlist.txt", "data/win32/" & dra.Name & ".pat" & vbTab & dra.Length & vbTab & Helper.GetMD5(pso2RootDir & "\data\win32\" & dra.Name) & vbNewLine)
-                count += 1
-                lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Length & ")"
-                Application.DoEvents()
-            Next
+            Using writer As New StreamWriter("old_patchlist.txt", True)
+                For Each dra In diar1
+                    writer.WriteLine("data/win32/" & dra.Name & ".pat" & vbTab & dra.Length & vbTab & Helper.GetMD5(pso2RootDir & "\data\win32\" & dra.Name))
+                    count += 1
+                    lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Length & ")"
+                    Application.DoEvents()
+                Next
+            End Using
 
             WriteDebugInfoSameLine("Done!")
         End If
