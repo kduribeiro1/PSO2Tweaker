@@ -958,6 +958,7 @@ Public Class frmMain
         File.AppendAllText((startPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
     End Sub
 
+    ' TODO: Should be moved to helper and reworked a bit
     Public Sub PasteBinUpload()
         ServicePointManager.Expect100Continue = False
         Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText((startPath & "\logfile.txt"))
@@ -969,6 +970,7 @@ Public Class frmMain
         Process.Start(Encoding.ASCII.GetString(rd))
     End Sub
 
+    ' TODO: Should be moved to helper and reworked a bit
     Public Sub PasteBinUploadFile(ByRef FileToUpload As String)
         ServicePointManager.Expect100Continue = False
         Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText(FileToUpload)
@@ -1672,9 +1674,10 @@ StartPrePatch:
             Exit Sub
         End Try
     End Sub
+
     Public Function FileInUse(ByVal sFile As String) As Boolean
         Dim thisFileInUse As Boolean = False
-        If System.IO.File.Exists(sFile) Then
+        If File.Exists(sFile) Then
             Try
                 File.Delete(sFile)
                 ' thisFileInUse = False
@@ -1684,6 +1687,7 @@ StartPrePatch:
         End If
         Return thisFileInUse
     End Function
+
     Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
         Dim mouseArgs = DirectCast(e, MouseEventArgs)
 
@@ -1707,22 +1711,6 @@ StartPrePatch:
         PBMainBar.Text = ""
         lblStatus.Text = ""
     End Sub
-
-    'Public Function Ping(ByVal server As String) As String
-    '    'Switch is a class already, for what it is worth
-    '    Dim Response As NetworkInformation.PingReply
-    '    Dim SendPing As New NetworkInformation.Ping
-
-    '    Try
-    '        Response = SendPing.Send(server)
-    '        If Response.Status = NetworkInformation.IPStatus.Success Then
-    '            Return Response.RoundtripTime.ToString()
-    '        End If
-    '    Catch ex As Exception
-    '    End Try
-
-    '    Return "ERROR"
-    'End Function
 
     Private Sub CancelProcessToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CancelProcessToolStripMenuItem.Click
         If DLS.IsBusy Then DLS.CancelAsync()
@@ -3521,20 +3509,6 @@ SelectInstallFolder:
         frmItemConfig.Show()
     End Sub
 
-    Public Function CheckLink(ByVal Url As String) As Boolean
-        Try
-            Dim req As HttpWebRequest = CType(WebRequest.Create(Url), HttpWebRequest)
-            req.Timeout = 5000
-            req.Method = "HEAD"
-
-            Using rsp As WebResponse = req.GetResponse()
-                Return True
-            End Using
-        Catch ex As WebException
-            Return False
-        End Try
-    End Function
-
     Private Sub btnSymbolEditor_Click(sender As Object, e As EventArgs) Handles btnSymbolEditor.Click
         Process.Start("http://www.pso-world.com/forums/showthread.php?t=215777")
     End Sub
@@ -3542,6 +3516,7 @@ SelectInstallFolder:
     Private Sub btnRunPSO2Linux_Click(sender As Object, e As EventArgs) Handles btnRunPSO2Linux.Click
         Process.Start("http://www.pso-world.com/forums/showthread.php?t=215642")
     End Sub
+
     Private Sub LoadSidebar(state As Object)
         Try
             WebBrowser4.Navigate(FreedomURL & "tweaker.html")
@@ -4026,7 +4001,7 @@ SelectInstallFolder:
 
                 Cancelled = False
 
-                If Not CheckLink(PatchURL) Then
+                If Not Helper.CheckLink(PatchURL) Then
                     WriteDebugInfoAndFAILED("Failed to contact " & PatchName & " website - Patch install/update canceled!")
                     WriteDebugInfo("Please visit http://goo.gl/YzCE7 for more information!")
                     Exit Sub
@@ -4181,16 +4156,4 @@ SelectInstallFolder:
             Exit Sub
         End Try
     End Sub
-
-    'Private Sub ClosePSO2TweakerToolStripMenuItem_Click(sender As Object, e As EventArgs)
-    '    Application.Exit()
-    'End Sub
-
-    'Private Sub Button1_Click_1(sender As Object, e As EventArgs)
-    '    Throw New Exception("This should be unhandled")
-    'End Sub
-
-    'Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
-
-    'End Sub
 End Class

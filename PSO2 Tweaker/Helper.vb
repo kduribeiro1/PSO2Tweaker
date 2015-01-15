@@ -2,6 +2,7 @@
 Imports System.Collections.Generic
 Imports System.Globalization
 Imports System.IO
+Imports System.Net
 
 Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
@@ -18,6 +19,20 @@ Public Class Helper
     Public Shared Sub DeleteDirectory(path As String)
         If Directory.Exists(path) Then Directory.Delete(path, True)
     End Sub
+
+    Public Shared Function CheckLink(ByVal Url As String) As Boolean
+        Try
+            Dim request As HttpWebRequest = CType(WebRequest.Create(Url), HttpWebRequest)
+            request.Timeout = 5000
+            request.Method = "HEAD"
+
+            Using response As WebResponse = request.GetResponse()
+                Return True
+            End Using
+        Catch
+            Return False
+        End Try
+    End Function
 
     Public Shared Function GetMD5(ByVal path As String) As String
         Try

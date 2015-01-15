@@ -135,7 +135,6 @@ Public Class frmOptions
         RegKey.SetValue(Of Integer)(RegKey.TextBoxBGColor, (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
 
-
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
         RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, CheckBoxX5.Checked)
     End Sub
