@@ -47,18 +47,6 @@ Public Class frmMain
     Dim totalsize2 As Long
     Dim FreedomURL As String = "http://162.243.211.123/freedom/"
 
-#Region "External Functions"
-
-    Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As IntPtr
-
-    Private Declare Function FlashWindow Lib "user32" (ByVal hwnd As IntPtr, ByVal bInvert As Boolean) As Boolean
-
-    Private Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-
-    Private Declare Function SHGetKnownFolderPath Lib "shell32" (ByRef id As Guid, flags As Integer, token As IntPtr, ByRef path As IntPtr) As Integer
-
-#End Region
-
     Sub New()
         Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
 
@@ -304,7 +292,7 @@ Public Class frmMain
                         Log("Setting environment variable")
                         Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
                         Log("Launching PSO2")
-                        ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                        External.ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
                         Me.Hide()
                         Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
                             procs = Process.GetProcessesByName("pso2")
@@ -372,7 +360,7 @@ Public Class frmMain
                         Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
 
                         Log("Launching PSO2")
-                        ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                        External.ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
 
                         DeleteFile("LanguagePack.rar")
                         If UseItemTranslation Then
@@ -1646,10 +1634,10 @@ StartPrePatch:
             End Try
 
             Me.Hide()
-            Dim hWnd As IntPtr = FindWindow("Phantasy Star Online 2", Nothing)
+            Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
 
             Do Until hWnd <> IntPtr.Zero
-                hWnd = FindWindow("Phantasy Star Online 2", Nothing)
+                hWnd = External.FindWindow("Phantasy Star Online 2", Nothing)
                 Thread.Sleep(10)
             Loop
 
@@ -1896,7 +1884,7 @@ StartPrePatch:
             Next
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If backupyesno = MsgBoxResult.No Then
-                FlashWindow(Me.Handle, True)
+                External.FlashWindow(Me.Handle, True)
                 'Story Patch 3-12-2014.rar
                 Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
                 RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, StoryPatchFilename)
@@ -1905,7 +1893,7 @@ StartPrePatch:
                 CheckForStoryUpdates()
             End If
             If backupyesno = MsgBoxResult.Yes Then
-                FlashWindow(Me.Handle, True)
+                External.FlashWindow(Me.Handle, True)
                 'Story Patch 3-12-2014.rar
                 Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
                 RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, StoryPatchFilename)
@@ -2446,7 +2434,7 @@ StartPrePatch:
                     File.Move(((pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
                 My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
-                FlashWindow(Me.Handle, True)
+                External.FlashWindow(Me.Handle, True)
                 WriteDebugInfo(My.Resources.strBackupRestored)
                 UnlockGUI()
             Else
@@ -3380,7 +3368,7 @@ StartPrePatch:
         Dim path__1 As String
         If Environment.OSVersion.Version.Major >= 6 Then
             Dim pathPtr As IntPtr
-            Dim hr As Integer = SHGetKnownFolderPath(FolderDownloads, 0, IntPtr.Zero, pathPtr)
+            Dim hr As Integer = External.SHGetKnownFolderPath(FolderDownloads, 0, IntPtr.Zero, pathPtr)
             If hr = 0 Then
                 path__1 = Marshal.PtrToStringUni(pathPtr)
                 Marshal.FreeCoTaskMem(pathPtr)
@@ -3500,8 +3488,8 @@ SelectInstallFolder:
 
                     MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
                     Me.Refresh()
+                End If
             End If
-        End If
         End If
     End Sub
 
@@ -3894,7 +3882,7 @@ SelectInstallFolder:
             DeleteFile("pso2.stripped.db")
             DeleteFile("pso2-transam.exe")
 
-            FlashWindow(Me.Handle, True)
+            External.FlashWindow(Me.Handle, True)
             'Story Patch 3-12-2014.rar
             RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, strStoryPatchLatestBase.Replace("-", "/"))
             RegKey.SetValue(Of String)(RegKey.LatestStoryBase, strStoryPatchLatestBase.Replace("-", "/"))
@@ -3940,7 +3928,7 @@ SelectInstallFolder:
 
             Application.DoEvents()
             File.Move(filename, (pso2WinDir & "\" & filename))
-            FlashWindow(Me.Handle, True)
+            External.FlashWindow(Me.Handle, True)
             WriteDebugInfo(patchname & " " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
@@ -4095,12 +4083,12 @@ SelectInstallFolder:
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If backupyesno = MsgBoxResult.No Then
-                FlashWindow(Me.Handle, True)
+                External.FlashWindow(Me.Handle, True)
                 WriteDebugInfo("English patch " & My.Resources.strInstalledUpdated)
                 If Not String.IsNullOrEmpty(VersionString) Then RegKey.SetValue(Of String)(VersionString, strVersion)
             End If
             If backupyesno = MsgBoxResult.Yes Then
-                FlashWindow(Me.Handle, True)
+                External.FlashWindow(Me.Handle, True)
                 WriteDebugInfo(("English patch " & My.Resources.strInstalledUpdatedBackup & backupstr))
                 If Not String.IsNullOrEmpty(VersionString) Then RegKey.SetValue(Of String)(VersionString, strVersion)
             End If
@@ -4146,7 +4134,7 @@ SelectInstallFolder:
                 My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & BackupDir), FileIO.DeleteDirectoryOption.DeleteAllContents)
             End If
 
-            FlashWindow(Me.Handle, True)
+            External.FlashWindow(Me.Handle, True)
             WriteDebugInfo(ConsoleMessage)
             RegKey.SetValue(Of String)(PatchVersionKey, "Not Installed")
             UnlockGUI()

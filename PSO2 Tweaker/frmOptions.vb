@@ -5,8 +5,6 @@ Imports System.Diagnostics
 Imports DevComponents.DotNetBar
 
 Public Class frmOptions
-    Private Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             Me.SuspendLayout()

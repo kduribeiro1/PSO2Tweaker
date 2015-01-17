@@ -8,37 +8,6 @@ Public Class frmPSO2Options
     Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
     'Shared INICache As New Dictionary(Of String, String)
 
-    Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As String, ByVal iModeNum As Integer, ByRef lpDevMode As DEVMODE) As Boolean
-
-    <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
-        <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmDeviceName As String
-        Public dmSpecVersion As Short
-        Public dmDriverVersion As Short
-        Public dmSize As Short
-        Public dmDriverExtra As Short
-        Public dmFields As Integer
-        Public dmOrientation As Short
-        Public dmPaperSize As Short
-        Public dmPaperLength As Short
-        Public dmPaperWidth As Short
-        Public dmScale As Short
-        Public dmCopies As Short
-        Public dmDefaultSource As Short
-        Public dmPrintQuality As Short
-        Public dmColor As Short
-        Public dmDuplex As Short
-        Public dmYResolution As Short
-        Public dmTTOption As Short
-        Public dmCollate As Short
-        <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmFormName As String
-        Public dmUnusedPadding As Short
-        Public dmBitsPerPel As Short
-        Public dmPelsWidth As Integer
-        Public dmPelsHeight As Integer
-        Public dmDisplayFlags As Integer
-        Public dmDisplayFrequency As Integer
-    End Structure
-
     Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not File.Exists(usersettingsfile) Then
@@ -84,14 +53,14 @@ Public Class frmPSO2Options
             TabControlPanel5.StyleMouseDown.BackColor1.Color = backColor
             TabControlPanel5.StyleMouseDown.BackColor2.Color = backColor
 
-            Dim DevM As DEVMODE
+            Dim DevM As External.DEVMODE
             DevM.dmDeviceName = New String(Chr(0), 32)
             DevM.dmFormName = New String(Chr(0), 32)
-            DevM.dmSize = CShort(Marshal.SizeOf(GetType(DEVMODE)))
+            DevM.dmSize = CShort(Marshal.SizeOf(GetType(External.DEVMODE)))
 
             Dim modeIndex As Integer = 0
             ' 0 = The first mode
-            While EnumDisplaySettings(Nothing, modeIndex, DevM)
+            While External.EnumDisplaySettings(Nothing, modeIndex, DevM)
                 ' Mode found
                 If Not ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
 

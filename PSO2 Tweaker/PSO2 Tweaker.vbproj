@@ -148,6 +148,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Enums\Languages.vb" />
+    <Compile Include="External.vb" />
     <Compile Include="MD5Provider.vb" />
     <Compile Include="RegKey.vb" />
     <Compile Include="frmDiagnostic.Designer.vb">
