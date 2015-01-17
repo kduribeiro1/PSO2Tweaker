@@ -144,7 +144,7 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Function ReadINISetting(ByRef SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
+    Public Function ReadINISetting(SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
         Try
             'Dim returnValue = ""
             'If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
@@ -168,7 +168,7 @@ Public Class frmPSO2Options
         Return ""
     End Function
 
-    Public Sub SaveINISetting(ByRef SettingToSave As String, ByRef Value As String)
+    Public Sub SaveINISetting(SettingToSave As String, Value As String)
         Try
             'INICache(SettingToSave) = Value
 
@@ -200,7 +200,7 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Sub SaveResolutionHeight(ByRef Value As String)
+    Public Sub SaveResolutionHeight(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
@@ -244,8 +244,7 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-
-    Public Sub SaveResolutionWidth(ByRef Value As String)
+    Public Sub SaveResolutionWidth(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
@@ -290,7 +289,8 @@ Public Class frmPSO2Options
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
-    Public Sub SaveResolutionHeight3D(ByRef Value As String)
+
+    Public Sub SaveResolutionHeight3D(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
@@ -334,8 +334,7 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-
-    Public Sub SaveResolutionWidth3D(ByRef Value As String)
+    Public Sub SaveResolutionWidth3D(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)

@@ -100,7 +100,7 @@ Public Class frmOptions
         End If
     End Sub
 
-    Private Function GetBackupMode(ByRef Key As String) As String
+    Private Function GetBackupMode(Key As String) As String
         Dim Value As String = RegKey.GetValue(Of String)(Key)
         Select Case Value
             Case "Ask"

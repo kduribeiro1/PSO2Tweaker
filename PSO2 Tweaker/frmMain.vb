@@ -954,7 +954,7 @@ Public Class frmMain
         Me.Enabled = True
     End Sub
 
-    Public Sub Log(ByRef Text As String)
+    Public Sub Log(Text As String)
         File.AppendAllText((startPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
     End Sub
 
@@ -971,7 +971,7 @@ Public Class frmMain
     End Sub
 
     ' TODO: Should be moved to helper and reworked a bit
-    Public Sub PasteBinUploadFile(ByRef FileToUpload As String)
+    Public Sub PasteBinUploadFile(FileToUpload As String)
         ServicePointManager.Expect100Continue = False
         Dim fi As String = "?api_paste_private=" & 1 & "&api_option=paste" & "&api_paste_name=Error Log report" & "&api_paste_format=text" & "&api_paste_expire_date=N" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&api_paste_code=" & File.ReadAllText(FileToUpload)
         Dim w As New WebClient()
@@ -1042,7 +1042,7 @@ Public Class frmMain
         SOMEOFTHEPREPATCHES = patches
     End Sub
 
-    Private Function CheckIfRunning(ByRef ProcessName As String) As Boolean
+    Private Function CheckIfRunning(ProcessName As String) As Boolean
         processes = Process.GetProcessesByName(ProcessName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 

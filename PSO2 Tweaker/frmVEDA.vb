@@ -50,7 +50,7 @@ Public Class frmVEDA
         rtbStatus.SelectionStart = rtbStatus.Text.Length
     End Sub
 
-    Public Sub Log(ByRef Text As String)
+    Public Sub Log(Text As String)
         Dim TimeFormatted As String
         Dim time As DateTime = DateTime.Now
         TimeFormatted = time.ToString("G")

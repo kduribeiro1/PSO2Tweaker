@@ -59,7 +59,7 @@ Public Class RegKey
         End Try
     End Function
 
-    Public Shared Sub SetValue(Of T)(ByRef Key As String, ByRef Value As T)
+    Public Shared Sub SetValue(Of T)(Key As String, Value As T)
         My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", Key, Value)
         RegistryCache(Key) = Value
     End Sub
