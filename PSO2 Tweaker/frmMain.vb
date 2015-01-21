@@ -17,12 +17,13 @@ Imports System.Threading
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
 
 Public Class frmMain
-    Shared FolderDownloads As New Guid("374DE290-123F-4565-9164-39C4925E467B")
-
     Dim Cancelled As Boolean
     Dim CancelledFull As Boolean
     Dim ComingFromOldFiles As Boolean = False
+
+    ' TODO: I don't think this needs to exist
     Dim ComingFromPrePatch As Boolean = False
+
     Dim DPISetting As Single
     Dim ItemDownloadingDone As Boolean
     Dim MileyCyrus As Integer
@@ -482,7 +483,7 @@ Public Class frmMain
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage)) Then RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "No")
 
-            If startPath = GetDownloadsPath() Then
+            If startPath = Helper.GetDownloadsPath() Then
                 If RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage) = "No" Then
                     MsgBox("Please be aware - Due to various Windows 7/8 issues, this program might not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
                     RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "Yes")
@@ -3363,22 +3364,6 @@ StartPrePatch:
             WriteDebugInfoSameLine(My.Resources.strDone)
         End If
     End Sub
-
-    Public Shared Function GetDownloadsPath() As String
-        Dim path__1 As String
-        If Environment.OSVersion.Version.Major >= 6 Then
-            Dim pathPtr As IntPtr
-            Dim hr As Integer = External.SHGetKnownFolderPath(FolderDownloads, 0, IntPtr.Zero, pathPtr)
-            If hr = 0 Then
-                path__1 = Marshal.PtrToStringUni(pathPtr)
-                Marshal.FreeCoTaskMem(pathPtr)
-                Return path__1
-            End If
-        End If
-        path__1 = Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.Personal))
-        path__1 = Path.Combine(path__1, "Downloads")
-        Return path__1
-    End Function
 
     Private Sub btnInstallPSO2_Click(sender As Object, e As EventArgs) Handles btnInstallPSO2.Click
         Dim InstallFolder As String = ""
