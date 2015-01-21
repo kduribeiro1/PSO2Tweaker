@@ -21,9 +21,6 @@ Public Class frmMain
     Dim CancelledFull As Boolean
     Dim ComingFromOldFiles As Boolean = False
 
-    ' TODO: I don't think this needs to exist
-    Dim ComingFromPrePatch As Boolean = False
-
     Dim DPISetting As Single
     Dim ItemDownloadingDone As Boolean
     Dim MileyCyrus As Integer
@@ -685,7 +682,7 @@ Public Class frmMain
             WriteDebugInfo(My.Resources.strCheckingforPSO2Updates)
             Application.DoEvents()
 
-            CheckForPSO2Updates()
+            CheckForPSO2Updates(False)
             WriteDebugInfoSameLine(My.Resources.strDone)
             Application.DoEvents()
 
@@ -1247,7 +1244,8 @@ Public Class frmMain
         End Try
     End Sub
 
-    Public Sub CheckForPSO2Updates()
+    ' TODO: this function
+    Public Sub CheckForPSO2Updates(ComingFromPrePatch As Boolean)
         Try
             Dim UpdateNeeded As Boolean
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
@@ -3549,8 +3547,7 @@ SelectInstallFolder:
     End Sub
 
     Private Sub btnDownloadPrepatch_Click(sender As Object, e As EventArgs) Handles btnDownloadPrepatch.Click
-        ComingFromPrePatch = True
-        CheckForPSO2Updates()
+        CheckForPSO2Updates(True)
     End Sub
 
     Private Sub btnCopyInfo_Click_1(sender As Object, e As EventArgs) Handles btnCopyInfo.Click
