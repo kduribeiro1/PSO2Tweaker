@@ -2,7 +2,6 @@
 Imports System.IO
 Imports System.Net
 Imports System.Runtime.InteropServices
-Imports System.Text
 
 Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
