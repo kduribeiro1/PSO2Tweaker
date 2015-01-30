@@ -168,7 +168,7 @@ Public Class FrmVeda
             File.AppendAllText("PSO2 Folder Contents.txt", (dra.ToString() & vbCrLf))
         Next
 
-        frmMain.PasteBinUploadFile("PSO2 Folder Contents.txt")
+        Helper.PasteBinUploadFile("PSO2 Folder Contents.txt")
     End Sub
 
     Private Sub btnAnyDir_Click(sender As Object, e As EventArgs) Handles btnAnyDir.Click
@@ -201,7 +201,7 @@ Public Class FrmVeda
             File.AppendAllText("Folder Contents.txt", (dra.ToString() & vbCrLf))
         Next
 
-        frmMain.PasteBinUploadFile("Folder Contents.txt")
+        Helper.PasteBinUploadFile("Folder Contents.txt")
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

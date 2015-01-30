@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Net
 Imports System.Runtime.InteropServices
+Imports System.Text
 
 Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
@@ -18,6 +19,18 @@ Public Class Helper
 
     Public Shared Sub DeleteDirectory(path As String)
         If Directory.Exists(path) Then Directory.Delete(path, True)
+    End Sub
+
+    Public Shared Sub PasteBinUploadFile(fileToUpload As String)
+        ServicePointManager.Expect100Continue = False
+
+        Using client As New WebClient()
+            client.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
+            Dim data As String = "?api_paste_private=1&api_option=paste&api_paste_name=Error Log report&api_paste_format=text&api_paste_expire_date=N&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f&api_paste_code=" & File.ReadAllText(fileToUpload)
+            Dim responce = client.UploadString("http://pastebin.com/api/api_post.php", "POST", data)
+            MsgBox(My.Resources.strPleasecopytheURL)
+            Process.Start(responce)
+        End Using
     End Sub
 
     Public Shared Function CheckLink(ByVal url As String) As Boolean
@@ -38,7 +51,7 @@ Public Class Helper
         Dim path1 As String
         If Environment.OSVersion.Version.Major >= 6 Then
             Dim pathPtr As IntPtr
-            Dim hr As Integer = External.SHGetKnownFolderPath(FolderDownloads, 0, IntPtr.Zero, pathPtr)
+            Dim hr As Integer = External.ShGetKnownFolderPath(FolderDownloads, 0, IntPtr.Zero, pathPtr)
             If hr = 0 Then
                 path1 = Marshal.PtrToStringUni(pathPtr)
                 Marshal.FreeCoTaskMem(pathPtr)
@@ -53,7 +66,7 @@ Public Class Helper
     Public Shared Function GetMd5(ByVal path As String) As String
         Try
             Using stream As FileStream = File.Open(path, FileMode.Open)
-                Return GetMD5(stream)
+                Return GetMd5(stream)
             End Using
         Catch
         End Try
