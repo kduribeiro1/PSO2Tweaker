@@ -6,10 +6,10 @@ Public Class frmVEDA
         Log(AddThisText)
     End Sub
 
-    Private Sub WriteDebugInfoSameLine(ByVal AddThisText As String)
-        rtbStatus.Text &= (" " & AddThisText)
-        Log(AddThisText)
-    End Sub
+    '    Private Sub WriteDebugInfoSameLine(ByVal AddThisText As String)
+    '        rtbStatus.Text &= (" " & AddThisText)
+    '        Log(AddThisText)
+    '    End Sub
 
     Private Sub WriteDebugInfoAndOK(ByVal AddThisText As String)
         rtbStatus.Text &= (vbCrLf & AddThisText)
@@ -29,18 +29,18 @@ Public Class frmVEDA
         Log((AddThisText & " [WARNING!]"))
     End Sub
 
-    Private Sub WriteDebugInfoAndFAILED(ByVal AddThisText As String)
-        rtbStatus.Text &= (vbCrLf & AddThisText)
-        rtbStatus.Select(rtbStatus.TextLength, 0)
-        rtbStatus.SelectionColor = Color.Red
-        rtbStatus.AppendText(" [FAILED!]")
-        rtbStatus.SelectionColor = rtbStatus.ForeColor
-        Log((AddThisText & " [FAILED!]"))
-    End Sub
+    '    Private Sub WriteDebugInfoAndFAILED(ByVal AddThisText As String)
+    '        rtbStatus.Text &= (vbCrLf & AddThisText)
+    '        rtbStatus.Select(rtbStatus.TextLength, 0)
+    '        rtbStatus.SelectionColor = Color.Red
+    '        rtbStatus.AppendText(" [FAILED!]")
+    '        rtbStatus.SelectionColor = rtbStatus.ForeColor
+    '        Log((AddThisText & " [FAILED!]"))
+    '    End Sub
 
-    Private Sub ClearDebugInfo()
-        rtbStatus.Text = ""
-    End Sub
+    '    Private Sub ClearDebugInfo()
+    '        rtbStatus.Text = ""
+    '    End Sub
 
     Private Sub rtbStatus_LinkClicked(sender As Object, e As LinkClickedEventArgs) Handles rtbStatus.LinkClicked
         Process.Start(e.LinkText)
@@ -50,38 +50,38 @@ Public Class frmVEDA
         rtbStatus.SelectionStart = rtbStatus.Text.Length
     End Sub
 
-    Public Sub Log(Text As String)
+    Private Sub Log(output As String)
         Dim TimeFormatted As String
         Dim time As DateTime = DateTime.Now
         TimeFormatted = time.ToString("G")
-        File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & ": " & Text & vbCrLf)
+        File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & ": " & output & vbCrLf)
     End Sub
 
-    Public Function GetRandom(ByVal Min As Integer, ByVal Max As Integer) As Integer
+    Private Function GetRandom(ByVal Min As Integer, ByVal Max As Integer) As Integer
         ' by making Generator static, we preserve the same instance '
         ' (i.e., do not create new instances with the same seed over and over) '
         ' between calls '
-        Static Generator As System.Random = New System.Random()
+        Static Generator As Random = New Random()
         Return Generator.Next(Min, Max)
     End Function
 
-    Public Sub WriteConsole(str As String)
-        WriteDebugInfo(str)
-        Application.DoEvents()
-        Threading.Thread.Sleep(GetRandom(30, 1000))
-    End Sub
+    '    Public Sub WriteConsole(str As String)
+    '        WriteDebugInfo(str)
+    '        Application.DoEvents()
+    '        Threading.Thread.Sleep(GetRandom(30, 1000))
+    '    End Sub
 
-    Public Sub WriteConsoleAndOK(str As String)
+    Private Sub WriteConsoleAndOK(str As String)
         WriteDebugInfoAndOK(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
 
-    Public Sub WriteConsoleAndWarning(str As String)
-        WriteDebugInfoAndWarning(str)
-        Application.DoEvents()
-        Threading.Thread.Sleep(GetRandom(30, 1000))
-    End Sub
+    '    Public Sub WriteConsoleAndWarning(str As String)
+    '        WriteDebugInfoAndWarning(str)
+    '        Application.DoEvents()
+    '        Threading.Thread.Sleep(GetRandom(30, 1000))
+    '    End Sub
 
     Private Sub frmVEDA_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         rtbStatus.Height = 408
@@ -134,7 +134,7 @@ Public Class frmVEDA
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         frmMain.Show()
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub btnShorten_Click(sender As Object, e As EventArgs) Handles btnShorten.Click
@@ -175,7 +175,7 @@ Public Class frmVEDA
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
         Dim DirectoryString As String
-        Dim MyFolderBrowser As New System.Windows.Forms.FolderBrowserDialog
+        Dim MyFolderBrowser As New Windows.Forms.FolderBrowserDialog
 
         ' Description that displays above the dialog box control.
         MyFolderBrowser.Description = "Select the folder you'd like to list"
@@ -208,7 +208,7 @@ Public Class frmVEDA
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
         Dim DirectoryString As String
-        Dim MyFolderBrowser As New System.Windows.Forms.FolderBrowserDialog
+        Dim MyFolderBrowser As New Windows.Forms.FolderBrowserDialog
 
         ' Description that displays above the dialog box control.
         MyFolderBrowser.Description = "Select the folder you'd like to make the MD5HashList of."

@@ -13,40 +13,40 @@ Imports System.Threading
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
 
 Public Class frmMain
+    ReadOnly PSO2OptionsFrm As frmPSO2Options
+    ReadOnly args As String() = Environment.GetCommandLineArgs()
+    ReadOnly hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
+    ReadOnly optionsFrm As frmOptions
+    ReadOnly startPath As String = Application.StartupPath
+
     Dim Cancelled As Boolean
     Dim CancelledFull As Boolean
     Dim ComingFromOldFiles As Boolean = False
-
     Dim DPISetting As Single
+    Dim FreedomURL As String = "http://162.243.211.123/freedom/"
     Dim ItemDownloadingDone As Boolean
     Dim MileyCyrus As Integer
     Dim Override As Boolean = False
-    Dim PSO2OptionsFrm As frmPSO2Options
     Dim Restartplz As Boolean
     Dim SOMEOFTHEPREPATCHES As Dictionary(Of String, String)
     Dim SOMEOFTHETHINGS As Dictionary(Of String, String)
     Dim SystemUnlock As Integer
     Dim TransOverride As Boolean = False
     Dim UseItemTranslation As Boolean = False
-    Dim WayuIsAFailure As Boolean = False
     Dim VedaUnlocked As Boolean = False
-    Dim args As String() = Environment.GetCommandLineArgs()
-    Dim hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
+    Dim WayuIsAFailure As Boolean = False
     Dim nodiag As Boolean = False
-    Dim optionsFrm As frmOptions
     Dim processes As Process()
     Dim pso2RootDir As String
     Dim pso2WinDir As String
-    Dim startPath As String = Application.StartupPath
     Dim totalsize2 As Long
-    Dim FreedomURL As String = "http://162.243.211.123/freedom/"
 
     Sub New()
         Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
 
         If Not String.IsNullOrEmpty(locale) Then
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(locale)
-            Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(locale)
+            Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(locale)
+            Thread.CurrentThread.CurrentCulture = New Globalization.CultureInfo(locale)
         End If
 
         PSO2OptionsFrm = New frmPSO2Options()
@@ -55,7 +55,7 @@ Public Class frmMain
         InitializeComponent()
 
         'Yo, fuck this shit. Shit is mad whack, yo.
-        Me.SuspendLayout()
+        SuspendLayout()
         chkRemoveCensor.Text = My.Resources.strRemoveCensorFile
         chkRemovePC.Text = My.Resources.strRemovePCOpening
         chkRemoveVita.Text = My.Resources.strRemoveVitaOpening
@@ -121,7 +121,7 @@ Public Class frmMain
             Case Else
                 StyleManager.Style = eStyle.Office2007Blue
         End Select
-        Me.ResumeLayout(False)
+        ResumeLayout(False)
     End Sub
 
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
@@ -185,7 +185,7 @@ Public Class frmMain
                 lblStatus.Text = "[ACCESS GRANTED - PSO2 TWERKER]"
                 Application.DoEvents()
                 Thread.Sleep(2000)
-                Me.Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString())
+                Text = ("PSO2 Twerker ver " & My.Application.Info.Version.ToString())
                 btnLaunchPSO2.Text = "Twerk it!"
                 chkItemTranslation.Text = "Twerk on Robin Thicke"
             End If
@@ -197,7 +197,7 @@ Public Class frmMain
         btnNewShit.Visible = True
 #End If
 
-        Using g As Graphics = Me.CreateGraphics
+        Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 DPISetting = g.DpiX
             End If
@@ -287,7 +287,7 @@ Public Class frmMain
                         Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
                         Log("Launching PSO2")
                         External.ShellExecute(Handle, "open", (pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
-                        Me.Hide()
+                        Hide()
                         Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
                             procs = Process.GetProcessesByName("pso2")
                             For Each proc As Process In procs
@@ -297,7 +297,7 @@ Public Class frmMain
                             Next
                             Thread.Sleep(1000)
                         Loop
-                        Me.Close()
+                        Close()
 
                     Case "-pso2"
                         Log("Detected command argument -pso2")
@@ -358,7 +358,7 @@ Public Class frmMain
 
                         DeleteFile("LanguagePack.rar")
                         If UseItemTranslation Then
-                            Me.Hide()
+                            Hide()
                             Do Until File.Exists(pso2RootDir & "\ddraw.dll") = False
                                 procs = Process.GetProcessesByName("pso2")
                                 For Each proc As Process In procs
@@ -370,7 +370,7 @@ Public Class frmMain
                             Loop
                         End If
 
-                        Me.Close()
+                        Close()
                 End Select
             Next
 
@@ -435,7 +435,7 @@ Public Class frmMain
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.FontColor)
             If regValue <> 0 Then
-                Dim Color As System.Drawing.Color = Color.FromArgb(Convert.ToInt32(regValue))
+                Dim Color As Color = Color.FromArgb(Convert.ToInt32(regValue))
                 PSO2OptionsFrm.TabControl1.ColorScheme.TabItemSelectedText = Color
                 PSO2OptionsFrm.TabItem1.TextColor = Color
                 PSO2OptionsFrm.TabItem2.TextColor = Color
@@ -445,7 +445,7 @@ Public Class frmMain
                 PSO2OptionsFrm.Slider1.TextColor = Color
                 PSO2OptionsFrm.SBGM.TextColor = Color
                 PSO2OptionsFrm.CheckBoxX1.TextColor = Color
-                Me.ForeColor = Color
+                ForeColor = Color
                 optionsFrm.ForeColor = Color
                 PSO2OptionsFrm.ForeColor = Color
                 optionsFrm.CheckBoxX1.TextColor = Color
@@ -470,9 +470,9 @@ Public Class frmMain
                 Application.ExitThread()
             End If
 
-            Me.Text = ("PSO2 Tweaker ver " & My.Application.Info.Version.ToString())
+            Text = ("PSO2 Tweaker ver " & My.Application.Info.Version.ToString())
             Application.DoEvents()
-            Me.Show()
+            Show()
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage)) Then RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "No")
 
@@ -487,7 +487,7 @@ Public Class frmMain
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)) Then RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
             Dim isTopMost = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop))
-            Me.TopMost = isTopMost
+            TopMost = isTopMost
             chkAlwaysOnTop.Checked = isTopMost
 
             If File.Exists((startPath & "\logfile.txt")) AndAlso Helper.GetFileSize((startPath & "\logfile.txt")) > 30720 Then
@@ -661,8 +661,8 @@ Public Class frmMain
                 WriteDebugInfo(My.Resources.strLoadingSidebar)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
 
-                If DPISetting = 96 Then Me.Width = 796
-                If DPISetting = 120 Then Me.Width = 1060
+                If DPISetting = 96 Then Width = 796
+                If DPISetting = 120 Then Width = 1060
                 btnAnnouncements.Text = "<"
             End If
 
@@ -775,7 +775,7 @@ Public Class frmMain
         btnLaunchPSO2.Enabled = True
     End Sub
 
-    Public Sub DownloadItemTranslationFiles(state As Object)
+    Private Sub DownloadItemTranslationFiles(state As Object)
         Dim DLLink1 As String = FreedomURL & "translator.dll"
         Dim DLLink2 As String = FreedomURL & "translation.bin"
         Dim client As New WebClient
@@ -887,7 +887,7 @@ Public Class frmMain
         'Put your progress UI here, you can cancel download by uncommenting the line below
     End Sub
 
-    Public Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs) Handles DLS.DownloadFileCompleted
+    Private Sub OnFileDownloadCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs) Handles DLS.DownloadFileCompleted
         PBMainBar.Value = 0
         PBMainBar.Text = ""
     End Sub
@@ -919,7 +919,7 @@ Public Class frmMain
                 End While
                 DLS.DownloadFileAsync((New Uri(Address)), Filename)
             End If
-            If Not Me.Visible Then
+            If Not Visible Then
                 DLS.CancelAsync()
                 Cancelled = True
                 CancelledFull = True
@@ -929,15 +929,15 @@ Public Class frmMain
     End Sub
 
     Private Sub LockGUI()
-        Me.Enabled = False
+        Enabled = False
     End Sub
 
     Private Sub UnlockGUI()
-        Me.Enabled = True
+        Enabled = True
     End Sub
 
-    Public Sub Log(Text As String)
-        File.AppendAllText((startPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & Text & vbCrLf)
+    Public Sub Log(output As String)
+        File.AppendAllText((startPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
     End Sub
 
     ' TODO: Should be moved to helper and reworked a bit
@@ -1002,7 +1002,7 @@ Public Class frmMain
         SOMEOFTHETHINGS = files
     End Sub
 
-    Public Sub MergePrePatches()
+    Private Sub MergePrePatches()
         Dim patches As New Dictionary(Of String, String)
 
         For i As Integer = 0 To 5
@@ -1065,7 +1065,7 @@ Public Class frmMain
         Application.Exit()
     End Sub
 
-    Public Sub CheckForStoryUpdates()
+    Private Sub CheckForStoryUpdates()
         Try
             If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) = "Not Installed" Then Exit Sub
             DLWUA(FreedomURL & "patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
@@ -1148,7 +1148,7 @@ Public Class frmMain
                         WriteDebugInfoAndFAILED("File " & (downloadstring & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
                     DeleteFile((pso2WinDir & "\" & downloadstring))
-                    Dim process As Process = Nothing
+                    Dim process As Process
                     Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
                     Dim UnRarLocation As String = (startPath & "\7za.exe")
                     processStartInfo.FileName = UnRarLocation
@@ -1182,7 +1182,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Public Sub CheckForENPatchUpdates()
+    Private Sub CheckForENPatchUpdates()
         Dim UpdateNeeded As Boolean
         Try
             If RegKey.GetValue(Of String)(RegKey.ENPatchVersion) = "Not Installed" Then Exit Sub
@@ -1210,7 +1210,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Public Sub CheckForLargeFilesUpdates()
+    Private Sub CheckForLargeFilesUpdates()
         Dim UpdateNeeded As Boolean
         Try
             If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) = "Not Installed" Then
@@ -1241,7 +1241,7 @@ Public Class frmMain
     End Sub
 
     ' TODO: this function
-    Public Sub CheckForPSO2Updates(ComingFromPrePatch As Boolean)
+    Private Sub CheckForPSO2Updates(ComingFromPrePatch As Boolean)
         Try
             Dim UpdateNeeded As Boolean
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
@@ -1628,7 +1628,7 @@ StartPrePatch:
                 shell.Start()
             End Try
 
-            Me.Hide()
+            Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
 
             Do Until hWnd <> IntPtr.Zero
@@ -1644,12 +1644,12 @@ StartPrePatch:
                 'Exit Sub
                 File.Copy(pso2RootDir & "\pso2.exe", pso2RootDir & "\pso2.exe_backup", True)
                 Do Until FileInUse(pso2RootDir & "\pso2.exe") = False
-                    Threading.Thread.Sleep(1000)
+                    Thread.Sleep(1000)
                 Loop
                 File.Copy(pso2RootDir & "\pso2.exe_backup", pso2RootDir & "\pso2.exe", True)
                 File.Delete(pso2RootDir & "\pso2.exe_backup")
             End If
-            Me.Close()
+            Close()
 
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -1658,7 +1658,7 @@ StartPrePatch:
         End Try
     End Sub
 
-    Public Function FileInUse(ByVal sFile As String) As Boolean
+    Private Function FileInUse(ByVal sFile As String) As Boolean
         Dim thisFileInUse As Boolean = False
         If File.Exists(sFile) Then
             Try
@@ -1763,7 +1763,7 @@ StartPrePatch:
                     If Not Regex.Match(str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
                         Dim ReallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
 
-                        doDownload = If(ReallyInstall = MsgBoxResult.No, False, True)
+                        doDownload = ReallyInstall <> MsgBoxResult.No
                     End If
                 End If
             Next
@@ -1821,7 +1821,7 @@ StartPrePatch:
             If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
             End If
-            Dim process As Process = Nothing
+            Dim process As Process
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation As String = (startPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
@@ -1878,8 +1878,9 @@ StartPrePatch:
                 File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (pso2WinDir & "\" & dra.ToString()))
             Next
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            ' TODO: Less redundant pls - SF94
             If backupyesno = MsgBoxResult.No Then
-                External.FlashWindow(Me.Handle, True)
+                External.FlashWindow(Handle, True)
                 'Story Patch 3-12-2014.rar
                 Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
                 RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, StoryPatchFilename)
@@ -1888,7 +1889,7 @@ StartPrePatch:
                 CheckForStoryUpdates()
             End If
             If backupyesno = MsgBoxResult.Yes Then
-                External.FlashWindow(Me.Handle, True)
+                External.FlashWindow(Handle, True)
                 'Story Patch 3-12-2014.rar
                 Dim StoryPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
                 RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, StoryPatchFilename)
@@ -2000,12 +2001,12 @@ StartPrePatch:
         End If
 
         Dim sBuffer As String
-        Dim filename As String() = Nothing
+        Dim filename As String()
         Dim truefilename As String
         Dim missingfiles As New List(Of String)
         Dim missingfiles2 As New List(Of String)
         Dim NumberofChecks As Integer = 0
-        Dim MD5 As String() = Nothing
+        Dim MD5 As String()
         Dim TrueMD5 As String
         Dim totalfilesize As Long = 0
         Dim testfilesize As String()
@@ -2062,8 +2063,8 @@ StartPrePatch:
         ' Mike: No idea what you were doing here. Hope I didn't break anything.
         Dim result As MsgBoxResult = MsgBoxResult.No
         If Not ComingFromOldFiles Then
-            Me.TopMost = False
-            If chkAlwaysOnTop.Checked Then Me.TopMost = True
+            TopMost = False
+            If chkAlwaysOnTop.Checked Then TopMost = True
         End If
 
         If result = MsgBoxResult.Yes OrElse ComingFromOldFiles Then
@@ -2426,7 +2427,7 @@ StartPrePatch:
                     File.Move(((pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (win32 & "\" & dra.ToString()))
                 Next
                 My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & backupfolder), FileIO.DeleteDirectoryOption.DeleteAllContents)
-                External.FlashWindow(Me.Handle, True)
+                External.FlashWindow(Handle, True)
                 WriteDebugInfo(My.Resources.strBackupRestored)
                 UnlockGUI()
             Else
@@ -3029,14 +3030,14 @@ StartPrePatch:
     End Sub
 
     Private Sub chkAlwaysOnTop_Click(sender As Object, e As EventArgs) Handles chkAlwaysOnTop.Click
-        If Me.Visible Then
+        If Visible Then
             If chkAlwaysOnTop.Checked Then
                 optionsFrm.TopMost = True
-                Me.TopMost = True
+                TopMost = True
                 RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, True)
             Else
                 optionsFrm.TopMost = False
-                Me.TopMost = False
+                TopMost = False
                 RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
             End If
         End If
@@ -3045,7 +3046,7 @@ StartPrePatch:
     Private Sub btnPSO2Options_Click(sender As Object, e As EventArgs) Handles btnPSO2Options.Click
         Cursor = Cursors.WaitCursor
         Try
-            PSO2OptionsFrm.TopMost = Me.TopMost
+            PSO2OptionsFrm.TopMost = TopMost
             PSO2OptionsFrm.Top += 50
             PSO2OptionsFrm.Left += 50
             PSO2OptionsFrm.ShowDialog()
@@ -3061,8 +3062,8 @@ StartPrePatch:
         Cursor = Cursors.WaitCursor
         Try
             optionsFrm.CMBStyle.SelectedIndex = -1
-            optionsFrm.TopMost = Me.TopMost
-            optionsFrm.Bounds = Me.Bounds
+            optionsFrm.TopMost = TopMost
+            optionsFrm.Bounds = Bounds
             optionsFrm.Top += 50
             optionsFrm.Left += 50
             optionsFrm.ShowDialog()
@@ -3086,7 +3087,7 @@ StartPrePatch:
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub btnEXPFULL_Click(sender As Object, e As EventArgs) Handles btnEXPFULL.Click
@@ -3095,8 +3096,8 @@ StartPrePatch:
 
     Private Sub btnAnnouncements_Click(sender As Object, e As EventArgs) Handles btnAnnouncements.Click
         If DPISetting = 96 Then
-            If Me.Width = 420 Then
-                Me.Width = 796
+            If Width = 420 Then
+                Width = 796
                 btnAnnouncements.Text = "<"
                 If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
@@ -3104,15 +3105,15 @@ StartPrePatch:
                 End If
                 Exit Sub
             End If
-            If Me.Width = 796 Then
-                Me.Width = 420
+            If Width = 796 Then
+                Width = 420
                 btnAnnouncements.Text = ">"
                 Exit Sub
             End If
         End If
         If DPISetting = 120 Then
-            If Me.Width = 560 Then
-                Me.Width = 1060
+            If Width = 560 Then
+                Width = 1060
                 btnAnnouncements.Text = "<"
                 If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
                     WriteDebugInfo(My.Resources.strLoadingSidebarPage)
@@ -3120,8 +3121,8 @@ StartPrePatch:
                 End If
                 Exit Sub
             End If
-            If Me.Width = 1060 Then
-                Me.Width = 560
+            If Width = 1060 Then
+                Width = 560
                 btnAnnouncements.Text = ">"
                 Exit Sub
             End If
@@ -3129,7 +3130,7 @@ StartPrePatch:
     End Sub
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
-        If Me.Visible Then
+        If Visible Then
             If e.Url.ToString() <> FreedomURL & "tweaker.html" Then
                 Process.Start(e.Url.ToString())
                 Log("Trying to load URL for sidebar: " & e.Url.ToString)
@@ -3410,9 +3411,9 @@ SelectInstallFolder:
                     'set the pso2Dir to the install patch
                     pso2RootDir = pso2_binfolder
                     lblDirectory.Text = pso2RootDir
-                    Me.TopMost = True
-                    Me.Show()
-                    Me.TopMost = False
+                    TopMost = True
+                    Show()
+                    TopMost = False
                     Application.DoEvents()
                     WriteDebugInfo("Downloading DirectX setup...")
                     'Dim client As New MyWebClient With {.timeout = 10000}
@@ -3458,7 +3459,7 @@ SelectInstallFolder:
                     ButtonItem5.RaiseClick()
 
                     MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
-                    Me.Refresh()
+                    Refresh()
                 End If
             End If
         End If
@@ -3540,7 +3541,7 @@ SelectInstallFolder:
 
     Private Sub btnCopyInfo_Click_1(sender As Object, e As EventArgs) Handles btnCopyInfo.Click
         Try
-            frmDiagnostic.TopMost = Me.TopMost
+            frmDiagnostic.TopMost = TopMost
             frmDiagnostic.Top += 50
             frmDiagnostic.Left += 50
             frmDiagnostic.ShowDialog()
@@ -3818,7 +3819,7 @@ SelectInstallFolder:
             DLWUA(FreedomURL & "pso2-transam.exe", "pso2-transam.exe")
 
             'execute pso2-transam stuff with -b flag for backup
-            Dim process As Process = Nothing
+            Dim process As Process
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
             If Directory.Exists(backupdir) Then
                 Dim counter = My.Computer.FileSystem.GetFiles(backupdir)
@@ -3852,7 +3853,7 @@ SelectInstallFolder:
             DeleteFile("pso2.stripped.db")
             DeleteFile("pso2-transam.exe")
 
-            External.FlashWindow(Me.Handle, True)
+            External.FlashWindow(Handle, True)
             'Story Patch 3-12-2014.rar
             RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, strStoryPatchLatestBase.Replace("-", "/"))
             RegKey.SetValue(Of String)(RegKey.LatestStoryBase, strStoryPatchLatestBase.Replace("-", "/"))
@@ -3898,7 +3899,7 @@ SelectInstallFolder:
 
             Application.DoEvents()
             File.Move(filename, (pso2WinDir & "\" & filename))
-            External.FlashWindow(Me.Handle, True)
+            External.FlashWindow(Handle, True)
             WriteDebugInfo(patchname & " " & My.Resources.strInstalledUpdated)
             UnlockGUI()
         Catch ex As Exception
@@ -3990,7 +3991,7 @@ SelectInstallFolder:
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
             End If
 
-            Dim process As Process = Nothing
+            Dim process As Process
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             Dim UnRarLocation As String = (startPath & "\unrar.exe")
             processStartInfo.FileName = UnRarLocation
@@ -4053,12 +4054,12 @@ SelectInstallFolder:
 
             My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", FileIO.DeleteDirectoryOption.DeleteAllContents)
             If backupyesno = MsgBoxResult.No Then
-                External.FlashWindow(Me.Handle, True)
+                External.FlashWindow(Handle, True)
                 WriteDebugInfo("English patch " & My.Resources.strInstalledUpdated)
                 If Not String.IsNullOrEmpty(VersionString) Then RegKey.SetValue(Of String)(VersionString, strVersion)
             End If
             If backupyesno = MsgBoxResult.Yes Then
-                External.FlashWindow(Me.Handle, True)
+                External.FlashWindow(Handle, True)
                 WriteDebugInfo(("English patch " & My.Resources.strInstalledUpdatedBackup & backupstr))
                 If Not String.IsNullOrEmpty(VersionString) Then RegKey.SetValue(Of String)(VersionString, strVersion)
             End If
@@ -4104,7 +4105,7 @@ SelectInstallFolder:
                 My.Computer.FileSystem.DeleteDirectory((pso2WinDir & "\" & BackupDir), FileIO.DeleteDirectoryOption.DeleteAllContents)
             End If
 
-            External.FlashWindow(Me.Handle, True)
+            External.FlashWindow(Handle, True)
             WriteDebugInfo(ConsoleMessage)
             RegKey.SetValue(Of String)(PatchVersionKey, "Not Installed")
             UnlockGUI()

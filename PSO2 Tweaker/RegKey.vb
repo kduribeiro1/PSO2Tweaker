@@ -9,7 +9,6 @@ Public Class RegKey
     Public Const ENPatchAfterInstall = "ENPatchAfterInstall"
     Public Const ENPatchVersion = "ENPatchVersion"
     Public Const FontColor = "FontColor"
-    Public Const FontColors = "FontColor"
     Public Const LargeFilesAfterInstall = "LargeFilesAfterInstall"
     Public Const LargeFilesVersion = "LargeFilesVersion"
     Public Const LatestStoryBase = "LatestStoryBase"
@@ -41,9 +40,8 @@ Public Class RegKey
     Public Const UseItemTranslation = "UseItemTranslation"
     Public Const SteamMode = "SteamMode"
 
-    Private Shared RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
-    Private Shared RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
-
+    Private Shared ReadOnly RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
+    Private Shared ReadOnly RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
 
     Public Shared Function GetValue(Of T)(Key As String) As T
         Try

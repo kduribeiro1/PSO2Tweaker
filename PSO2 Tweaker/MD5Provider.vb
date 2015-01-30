@@ -5,9 +5,9 @@ Imports System.Runtime.InteropServices
 Public NotInheritable Class MD5Provider
     Implements IDisposable
 
-    Private _bufferSize As Integer
-    Private hProv As IntPtr = IntPtr.Zero
-    Private buffer As Byte()
+    Private ReadOnly _bufferSize As Integer
+    Private ReadOnly hProv As IntPtr = IntPtr.Zero
+    Private ReadOnly buffer As Byte()
 
     <DllImport("advapi32.dll", CharSet:=CharSet.None, ExactSpelling:=False, SetLastError:=True)>
     Private Shared Function CryptAcquireContext(ByRef hProv As IntPtr, ByVal pszContainer As String, ByVal pszProvider As String, ByVal dwProvType As UInteger, ByVal dwFlags As UInteger) As Boolean

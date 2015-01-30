@@ -2,54 +2,54 @@
 Imports System.Runtime.InteropServices
 
 Public Class frmPSO2Options
-    Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
-    Dim usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
+    ReadOnly Documents As String = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
+    ReadOnly usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
     'Shared INICache As New Dictionary(Of String, String)
 
-    Public Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not File.Exists(usersettingsfile) Then
                 File.WriteAllText(usersettingsfile, frmMain.txtPSO2DefaultINI.Text)
                 frmMain.WriteDebugInfo("Generating new PSO2 Settings file... Done!")
             End If
 
-            Me.SuspendLayout()
+            SuspendLayout()
 
-            Dim backColor = Me.BackColor
-            TabControlPanel1.Style.BackColor1.Color = backColor
-            TabControlPanel1.Style.BackColor2.Color = backColor
-            TabControlPanel1.StyleMouseOver.BackColor1.Color = backColor
-            TabControlPanel1.StyleMouseOver.BackColor2.Color = backColor
-            TabControlPanel1.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel1.StyleMouseDown.BackColor2.Color = backColor
+            Dim tmpBackColor As Color = BackColor
+            TabControlPanel1.Style.BackColor1.Color = tmpBackColor
+            TabControlPanel1.Style.BackColor2.Color = tmpBackColor
+            TabControlPanel1.StyleMouseOver.BackColor1.Color = tmpBackColor
+            TabControlPanel1.StyleMouseOver.BackColor2.Color = tmpBackColor
+            TabControlPanel1.StyleMouseDown.BackColor1.Color = tmpBackColor
+            TabControlPanel1.StyleMouseDown.BackColor2.Color = tmpBackColor
 
-            TabControlPanel2.Style.BackColor1.Color = backColor
-            TabControlPanel2.Style.BackColor2.Color = backColor
-            TabControlPanel2.StyleMouseOver.BackColor1.Color = backColor
-            TabControlPanel2.StyleMouseOver.BackColor2.Color = backColor
-            TabControlPanel2.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel2.StyleMouseDown.BackColor2.Color = backColor
+            TabControlPanel2.Style.BackColor1.Color = tmpBackColor
+            TabControlPanel2.Style.BackColor2.Color = tmpBackColor
+            TabControlPanel2.StyleMouseOver.BackColor1.Color = tmpBackColor
+            TabControlPanel2.StyleMouseOver.BackColor2.Color = tmpBackColor
+            TabControlPanel2.StyleMouseDown.BackColor1.Color = tmpBackColor
+            TabControlPanel2.StyleMouseDown.BackColor2.Color = tmpBackColor
 
-            TabControlPanel3.Style.BackColor1.Color = backColor
-            TabControlPanel3.Style.BackColor2.Color = backColor
-            TabControlPanel3.StyleMouseOver.BackColor1.Color = backColor
-            TabControlPanel3.StyleMouseOver.BackColor2.Color = backColor
-            TabControlPanel3.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel3.StyleMouseDown.BackColor2.Color = backColor
+            TabControlPanel3.Style.BackColor1.Color = tmpBackColor
+            TabControlPanel3.Style.BackColor2.Color = tmpBackColor
+            TabControlPanel3.StyleMouseOver.BackColor1.Color = tmpBackColor
+            TabControlPanel3.StyleMouseOver.BackColor2.Color = tmpBackColor
+            TabControlPanel3.StyleMouseDown.BackColor1.Color = tmpBackColor
+            TabControlPanel3.StyleMouseDown.BackColor2.Color = tmpBackColor
 
-            TabControlPanel4.Style.BackColor1.Color = backColor
-            TabControlPanel4.Style.BackColor2.Color = backColor
-            TabControlPanel4.StyleMouseOver.BackColor1.Color = backColor
-            TabControlPanel4.StyleMouseOver.BackColor2.Color = backColor
-            TabControlPanel4.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel4.StyleMouseDown.BackColor2.Color = backColor
+            TabControlPanel4.Style.BackColor1.Color = tmpBackColor
+            TabControlPanel4.Style.BackColor2.Color = tmpBackColor
+            TabControlPanel4.StyleMouseOver.BackColor1.Color = tmpBackColor
+            TabControlPanel4.StyleMouseOver.BackColor2.Color = tmpBackColor
+            TabControlPanel4.StyleMouseDown.BackColor1.Color = tmpBackColor
+            TabControlPanel4.StyleMouseDown.BackColor2.Color = tmpBackColor
 
-            TabControlPanel5.Style.BackColor1.Color = backColor
-            TabControlPanel5.Style.BackColor2.Color = backColor
-            TabControlPanel5.StyleMouseOver.BackColor1.Color = backColor
-            TabControlPanel5.StyleMouseOver.BackColor2.Color = backColor
-            TabControlPanel5.StyleMouseDown.BackColor1.Color = backColor
-            TabControlPanel5.StyleMouseDown.BackColor2.Color = backColor
+            TabControlPanel5.Style.BackColor1.Color = tmpBackColor
+            TabControlPanel5.Style.BackColor2.Color = tmpBackColor
+            TabControlPanel5.StyleMouseOver.BackColor1.Color = tmpBackColor
+            TabControlPanel5.StyleMouseOver.BackColor2.Color = tmpBackColor
+            TabControlPanel5.StyleMouseDown.BackColor1.Color = tmpBackColor
+            TabControlPanel5.StyleMouseDown.BackColor2.Color = tmpBackColor
 
             Dim DevM As External.DEVMODE
             DevM.dmDeviceName = New String(Chr(0), 32)
@@ -107,11 +107,11 @@ Public Class frmPSO2Options
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
-            Me.ResumeLayout(False)
+            ResumeLayout(False)
         End Try
     End Sub
 
-    Public Function ReadINISetting(SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
+    Private Function ReadINISetting(SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
         Try
             'Dim returnValue = ""
             'If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
@@ -135,13 +135,13 @@ Public Class frmPSO2Options
         Return ""
     End Function
 
-    Public Sub SaveINISetting(SettingToSave As String, Value As String)
+    Private Sub SaveINISetting(SettingToSave As String, Value As String)
         Try
             'INICache(SettingToSave) = Value
 
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To (TextLines.Length - 1)
@@ -167,11 +167,11 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Sub SaveResolutionHeight(Value As String)
+    Private Sub SaveResolutionHeight(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             Dim Contains As Boolean = False
@@ -211,11 +211,11 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Sub SaveResolutionWidth(Value As String)
+    Private Sub SaveResolutionWidth(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             Dim Contains As Boolean = False
@@ -257,11 +257,11 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Sub SaveResolutionHeight3D(Value As String)
+    Private Sub SaveResolutionHeight3D(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             Dim Contains As Boolean = False
@@ -301,11 +301,11 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Public Sub SaveResolutionWidth3D(Value As String)
+    Private Sub SaveResolutionWidth3D(Value As String)
         Try
             TextBoxX1.Text = ""
             Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, System.StringSplitOptions.RemoveEmptyEntries)
+            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
             Dim Contains As Boolean = False

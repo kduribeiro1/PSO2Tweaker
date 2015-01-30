@@ -18,7 +18,7 @@ Public Class frmItemConfig
         End If
 
         File.WriteAllLines(pso2launchpath & "\translation.cfg", data)
-        Me.Hide()
+        Hide()
     End Sub
 
     Private Sub chkLogging_CheckedChanged(sender As Object, e As EventArgs) Handles chkLogging.CheckedChanged

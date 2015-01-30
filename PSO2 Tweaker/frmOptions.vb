@@ -7,7 +7,7 @@ Imports DevComponents.DotNetBar
 Public Class frmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            Me.SuspendLayout()
+            SuspendLayout()
             If (RegKey.GetValue(Of Integer)(RegKey.Color)) <> 0 Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
             If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
@@ -27,11 +27,11 @@ Public Class frmOptions
 
             ' Checks if the DPI greater or equal to 120, and sets accordingly.
             ' Otherwise, we'll assume is 96 or lower.
-            Using g As Graphics = Me.CreateGraphics
+            Using g As Graphics = CreateGraphics
                 If g.DpiX >= 120 Then
-                    Me.Size = New Size(543, 476)
+                    Size = New Size(543, 476)
                 Else
-                    Me.Size = New Size(400, 373)
+                    Size = New Size(400, 373)
                 End If
             End Using
 
@@ -41,7 +41,7 @@ Public Class frmOptions
                 Dim Locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
 
                 cmbLanguage.Text = Locale.ToString()
-                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(CType(Locale, LangCode).ToString())
+                Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(CType(Locale, LangCode).ToString())
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             Catch ex As Exception
                 cmbLanguage.Text = "English"
@@ -69,7 +69,7 @@ Public Class frmOptions
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
-            Me.ResumeLayout(False)
+            ResumeLayout(False)
         End Try
     End Sub
 
@@ -81,7 +81,7 @@ Public Class frmOptions
 
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         SetLocale()
-        Me.CMBStyle.SelectedIndex = -1
+        CMBStyle.SelectedIndex = -1
     End Sub
 
     Private Sub SetLocale()
@@ -92,7 +92,7 @@ Public Class frmOptions
             Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             RegKey.SetValue(Of String)(RegKey.Locale, "en")
         Else
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(SelectedLocale)
+            Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(SelectedLocale)
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             RegKey.SetValue(Of String)(RegKey.Locale, SelectedLocale)
         End If
@@ -216,7 +216,7 @@ Public Class frmOptions
         frmPSO2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
         frmPSO2Options.TabItem3.TextColor = ColorPickerButton2.SelectedColor
         frmPSO2Options.TabItem7.TextColor = ColorPickerButton2.SelectedColor
-        Me.ForeColor = ColorPickerButton2.SelectedColor
+        ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
