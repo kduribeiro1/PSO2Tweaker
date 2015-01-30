@@ -9,9 +9,9 @@ Public Class External
 
     Public Declare Auto Function ShellExecute Lib "shell32" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
 
-    Public Declare Function SHGetKnownFolderPath Lib "shell32" (ByRef id As Guid, flags As Integer, token As IntPtr, ByRef path As IntPtr) As Integer
+    Public Declare Function ShGetKnownFolderPath Lib "shell32" Alias "SHGetKnownFolderPath" (ByRef id As Guid, flags As Integer, token As IntPtr, ByRef path As IntPtr) As Integer
 
-    <StructLayout(LayoutKind.Sequential)> Public Structure DEVMODE
+    <StructLayout(LayoutKind.Sequential)> Public Structure Devmode
         <MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst:=32)> Public dmDeviceName As String
         Public dmSpecVersion As Short
         Public dmDriverVersion As Short

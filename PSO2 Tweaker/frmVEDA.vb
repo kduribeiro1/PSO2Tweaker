@@ -1,9 +1,9 @@
 ﻿Imports System.IO
 
-Public Class frmVEDA
-    Private Sub WriteDebugInfo(ByVal AddThisText As String)
-        rtbStatus.Text &= (vbCrLf & AddThisText)
-        Log(AddThisText)
+Public Class FrmVeda
+    Private Sub WriteDebugInfo(ByVal addThisText As String)
+        rtbStatus.Text &= (vbCrLf & addThisText)
+        Log(addThisText)
     End Sub
 
     '    Private Sub WriteDebugInfoSameLine(ByVal AddThisText As String)
@@ -11,22 +11,22 @@ Public Class frmVEDA
     '        Log(AddThisText)
     '    End Sub
 
-    Private Sub WriteDebugInfoAndOK(ByVal AddThisText As String)
-        rtbStatus.Text &= (vbCrLf & AddThisText)
+    Private Sub WriteDebugInfoAndOk(ByVal addThisText As String)
+        rtbStatus.Text &= (vbCrLf & addThisText)
         rtbStatus.Select(rtbStatus.TextLength, 0)
         rtbStatus.SelectionColor = Color.Green
         rtbStatus.AppendText(" [OK!]")
         rtbStatus.SelectionColor = rtbStatus.ForeColor
-        Log((AddThisText & " [OK!]"))
+        Log((addThisText & " [OK!]"))
     End Sub
 
-    Private Sub WriteDebugInfoAndWarning(ByVal AddThisText As String)
-        rtbStatus.Text &= (vbCrLf & AddThisText)
+    Private Sub WriteDebugInfoAndWarning(ByVal addThisText As String)
+        rtbStatus.Text &= (vbCrLf & addThisText)
         rtbStatus.Select(rtbStatus.TextLength, 0)
         rtbStatus.SelectionColor = Color.Red
         rtbStatus.AppendText(" [WARNING!]")
         rtbStatus.SelectionColor = rtbStatus.ForeColor
-        Log((AddThisText & " [WARNING!]"))
+        Log((addThisText & " [WARNING!]"))
     End Sub
 
     '    Private Sub WriteDebugInfoAndFAILED(ByVal AddThisText As String)
@@ -51,18 +51,19 @@ Public Class frmVEDA
     End Sub
 
     Private Sub Log(output As String)
-        Dim TimeFormatted As String
+        Dim timeFormatted As String
         Dim time As DateTime = DateTime.Now
-        TimeFormatted = time.ToString("G")
-        File.AppendAllText((Application.StartupPath & "\logfile.txt"), TimeFormatted & ": " & output & vbCrLf)
+        timeFormatted = time.ToString("G")
+        File.AppendAllText((Application.StartupPath & "\logfile.txt"), timeFormatted & ": " & output & vbCrLf)
     End Sub
 
-    Private Function GetRandom(ByVal Min As Integer, ByVal Max As Integer) As Integer
+    ' TODOL Might need to redo this
+    Private Function GetRandom(ByVal min As Integer, ByVal max As Integer) As Integer
         ' by making Generator static, we preserve the same instance '
         ' (i.e., do not create new instances with the same seed over and over) '
         ' between calls '
-        Static Generator As Random = New Random()
-        Return Generator.Next(Min, Max)
+        Static generator As Random = New Random()
+        Return generator.Next(min, max)
     End Function
 
     '    Public Sub WriteConsole(str As String)
@@ -71,8 +72,8 @@ Public Class frmVEDA
     '        Threading.Thread.Sleep(GetRandom(30, 1000))
     '    End Sub
 
-    Private Sub WriteConsoleAndOK(str As String)
-        WriteDebugInfoAndOK(str)
+    Private Sub WriteConsoleAndOk(str As String)
+        WriteDebugInfoAndOk(str)
         Application.DoEvents()
         Threading.Thread.Sleep(GetRandom(30, 1000))
     End Sub
@@ -128,8 +129,7 @@ Public Class frmVEDA
         OpenFileDialog1.Title = "Please select the file you wish to MD5"
         OpenFileDialog1.FileName = "File"
         OpenFileDialog1.ShowDialog()
-        Dim StoryLocation As String = OpenFileDialog1.FileName
-        WriteDebugInfo("The MD5 of that file is: " & Helper.GetMD5(StoryLocation))
+        WriteDebugInfo("The MD5 of that file is: " & Helper.GetMD5(OpenFileDialog1.FileName))
     End Sub
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
@@ -154,11 +154,11 @@ Public Class frmVEDA
     Private Sub btnListDir_Click(sender As Object, e As EventArgs) Handles btnListDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
-        Dim DirectoryString As String
-        Dim pso2launchpath As String
-        DirectoryString = frmMain.lblDirectory.Text
-        pso2launchpath = DirectoryString.Replace("\data\win32", "")
-        Dim di As New DirectoryInfo(pso2launchpath)
+        Dim directoryString As String
+        Dim pso2Launchpath As String
+        directoryString = FrmMain.lblDirectory.Text
+        pso2Launchpath = directoryString.Replace("\data\win32", "")
+        Dim di As New DirectoryInfo(pso2Launchpath)
         Dim diar1 As FileInfo() = di.GetFiles()
         Dim dra As FileInfo
         File.Delete("PSO2 Folder Contents.txt")
@@ -174,24 +174,24 @@ Public Class frmVEDA
     Private Sub btnAnyDir_Click(sender As Object, e As EventArgs) Handles btnAnyDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
-        Dim DirectoryString As String
-        Dim MyFolderBrowser As New Windows.Forms.FolderBrowserDialog
+        Dim directoryString As String
+        Dim myFolderBrowser As New Windows.Forms.FolderBrowserDialog
 
         ' Description that displays above the dialog box control.
-        MyFolderBrowser.Description = "Select the folder you'd like to list"
+        myFolderBrowser.Description = "Select the folder you'd like to list"
 
         ' Sets the root folder where the browsing starts from 
-        MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+        myFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
 
-        Dim dlgResult As DialogResult = MyFolderBrowser.ShowDialog()
+        Dim dlgResult As DialogResult = myFolderBrowser.ShowDialog()
 
         If dlgResult = Windows.Forms.DialogResult.OK Then
-            DirectoryString = MyFolderBrowser.SelectedPath
+            directoryString = myFolderBrowser.SelectedPath
         Else
             Exit Sub
         End If
 
-        Dim di As New DirectoryInfo(DirectoryString)
+        Dim di As New DirectoryInfo(directoryString)
         Dim diar1 As FileInfo() = di.GetFiles()
         Dim dra As FileInfo
         File.Delete("Folder Contents.txt")
@@ -207,24 +207,24 @@ Public Class frmVEDA
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
-        Dim DirectoryString As String
-        Dim MyFolderBrowser As New Windows.Forms.FolderBrowserDialog
+        Dim directoryString As String
+        Dim myFolderBrowser As New Windows.Forms.FolderBrowserDialog
 
         ' Description that displays above the dialog box control.
-        MyFolderBrowser.Description = "Select the folder you'd like to make the MD5HashList of."
+        myFolderBrowser.Description = "Select the folder you'd like to make the MD5HashList of."
 
         ' Sets the root folder where the browsing starts from 
-        MyFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+        myFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
 
-        Dim dlgResult As DialogResult = MyFolderBrowser.ShowDialog()
+        Dim dlgResult As DialogResult = myFolderBrowser.ShowDialog()
 
         If dlgResult = Windows.Forms.DialogResult.OK Then
-            DirectoryString = MyFolderBrowser.SelectedPath
+            directoryString = myFolderBrowser.SelectedPath
         Else
             Exit Sub
         End If
 
-        Dim di As New DirectoryInfo(DirectoryString)
+        Dim di As New DirectoryInfo(directoryString)
         Dim diar1 As FileInfo() = di.GetFiles()
         Dim dra As FileInfo
 
@@ -234,10 +234,10 @@ Public Class frmVEDA
 
         'list the names of all files in the specified directory
         For Each dra In diar1
-            File.AppendAllText(DirectoryString & " \Story MD5HashList.txt", (dra.ToString() & "," & Helper.GetMD5(DirectoryString & " \" & dra.ToString()) & vbCrLf))
+            File.AppendAllText(directoryString & " \Story MD5HashList.txt", (dra.ToString() & "," & Helper.GetMD5(directoryString & " \" & dra.ToString()) & vbCrLf))
         Next
         WriteDebugInfo("Done.")
-        Process.Start("explorer.exe " & DirectoryString)
+        Process.Start("explorer.exe " & directoryString)
     End Sub
 
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click

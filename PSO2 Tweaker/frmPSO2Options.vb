@@ -1,15 +1,15 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
 
-Public Class frmPSO2Options
-    ReadOnly Documents As String = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
-    ReadOnly usersettingsfile As String = (Documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
+Public Class FrmPso2Options
+    ReadOnly _documents As String = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
+    ReadOnly _usersettingsfile As String = (_documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
     'Shared INICache As New Dictionary(Of String, String)
 
     Private Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            If Not File.Exists(usersettingsfile) Then
-                File.WriteAllText(usersettingsfile, frmMain.txtPSO2DefaultINI.Text)
+            If Not File.Exists(_usersettingsfile) Then
+                File.WriteAllText(_usersettingsfile, frmMain.txtPSO2DefaultINI.Text)
                 frmMain.WriteDebugInfo("Generating new PSO2 Settings file... Done!")
             End If
 
@@ -51,27 +51,27 @@ Public Class frmPSO2Options
             TabControlPanel5.StyleMouseDown.BackColor1.Color = tmpBackColor
             TabControlPanel5.StyleMouseDown.BackColor2.Color = tmpBackColor
 
-            Dim DevM As External.DEVMODE
-            DevM.dmDeviceName = New String(Chr(0), 32)
-            DevM.dmFormName = New String(Chr(0), 32)
-            DevM.dmSize = CShort(Marshal.SizeOf(GetType(External.DEVMODE)))
+            Dim devM As External.DEVMODE
+            devM.dmDeviceName = New String(Chr(0), 32)
+            devM.dmFormName = New String(Chr(0), 32)
+            devM.dmSize = CShort(Marshal.SizeOf(GetType(External.DEVMODE)))
 
             Dim modeIndex As Integer = 0
             ' 0 = The first mode
-            While External.EnumDisplaySettings(Nothing, modeIndex, DevM)
+            While External.EnumDisplaySettings(Nothing, modeIndex, devM)
                 ' Mode found
-                If Not ComboBoxEx5.Items.Contains(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight) Then ComboBoxEx5.Items.Add(DevM.dmPelsWidth & "x" & DevM.dmPelsHeight)
+                If Not ComboBoxEx5.Items.Contains(devM.dmPelsWidth & "x" & devM.dmPelsHeight) Then ComboBoxEx5.Items.Add(devM.dmPelsWidth & "x" & devM.dmPelsHeight)
 
                 ' The next mode
                 modeIndex += 1
             End While
 
-            Dim CurrentHeight As String = ReadINISetting("Height3d")
-            Dim CurrentWidth As String = ReadINISetting("Width3d")
+            Dim currentHeight As String = ReadINISetting("Height3d")
+            Dim currentWidth As String = ReadINISetting("Width3d")
 
-            Dim FullRes As String = CurrentWidth & "x" & CurrentHeight
+            Dim fullRes As String = currentWidth & "x" & currentHeight
 
-            ComboBoxEx5.Text = FullRes
+            ComboBoxEx5.Text = fullRes
             Slider1.Value = Convert.ToInt32(ReadINISetting("DrawLevel"))
             SBGM.Value = Convert.ToInt32(ReadINISetting("Bgm"))
             SSE.Value = Convert.ToInt32(ReadINISetting("Se"))
@@ -111,187 +111,187 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Private Function ReadINISetting(SettingToRead As String, Optional ByVal LineToStartAt As Integer = 0) As String
+    Private Function ReadIniSetting(settingToRead As String, Optional ByVal lineToStartAt As Integer = 0) As String
         Try
             'Dim returnValue = ""
             'If INICache.TryGetValue(SettingToRead, returnValue) Then Return returnValue
 
-            Dim TextLines As String() = File.ReadAllLines(usersettingsfile)
-            For i As Integer = LineToStartAt To (TextLines.Length - 1)
-                If Not String.IsNullOrEmpty(TextLines(i)) Then
-                    If TextLines(i).Contains(" " & SettingToRead & " ") Then
-                        Dim strLine As String = TextLines(i).Replace(vbTab, "")
+            Dim textLines As String() = File.ReadAllLines(_usersettingsfile)
+            For i As Integer = lineToStartAt To (textLines.Length - 1)
+                If Not String.IsNullOrEmpty(textLines(i)) Then
+                    If textLines(i).Contains(" " & settingToRead & " ") Then
+                        Dim strLine As String = textLines(i).Replace(vbTab, "")
                         Dim strReturn As String() = strLine.Split("="c)
-                        Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "").Replace(" "c, "")
+                        Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "").Replace(" "c, "")
                         'If FinalString IsNot Nothing Then INICache.Add(SettingToRead, FinalString)
-                        Return FinalString
+                        Return finalString
                     End If
                 End If
             Next
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            FrmMain.Log(ex.Message)
+            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
         Return ""
     End Function
 
-    Private Sub SaveINISetting(SettingToSave As String, Value As String)
+    Private Sub SaveIniSetting(settingToSave As String, value As String)
         Try
             'INICache(SettingToSave) = Value
 
             TextBoxX1.Text = ""
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+            Dim settingString As String = File.ReadAllText(_usersettingsfile)
+            Dim textLines As String() = settingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To (TextLines.Length - 1)
-                If TextLines(i).Contains(" " & SettingToSave & " ") Then
-                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+            For i = 0 To (textLines.Length - 1)
+                If textLines(i).Contains(" " & settingToSave & " ") Then
+                    Dim strLine As String = textLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
-                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Length
-                        If j + 1 = TextLines.Length Then
+                    Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    textLines(i) = textLines(i).Replace(finalString, (" " & value))
+                    For j = 0 To textLines.Length
+                        If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
-                            File.Delete(usersettingsfile)
-                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            File.Delete(_usersettingsfile)
+                            File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
-                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                        TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
                 End If
             Next i
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            FrmMain.Log(ex.Message)
+            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
-    Private Sub SaveResolutionHeight(Value As String)
+    Private Sub SaveResolutionHeight(value As String)
         Try
             TextBoxX1.Text = ""
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+            Dim settingString As String = File.ReadAllText(_usersettingsfile)
+            Dim textLines As String() = settingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            Dim Contains As Boolean = False
-            For i = 0 To (TextLines.Length - 1)
-                If TextLines(i).Contains("Windows = {") Then
+            Dim contains As Boolean = False
+            For i = 0 To (textLines.Length - 1)
+                If textLines(i).Contains("Windows = {") Then
                     For x As Integer = 1 To 9
-                        If TextLines(i + x).Contains("Height =") Then
+                        If textLines(i + x).Contains("Height =") Then
                             i += x
-                            Contains = True
+                            contains = True
                             Exit For
                         End If
                     Next x
 
-                    If Contains = False Then
-                        frmMain.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                    If contains = False Then
+                        FrmMain.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Exit Sub
                     End If
 
-                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strLine As String = textLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
-                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Length
-                        If j + 1 = TextLines.Length Then
+                    Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    textLines(i) = textLines(i).Replace(finalString, (" " & value))
+                    For j = 0 To textLines.Length
+                        If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
-                            File.Delete(usersettingsfile)
-                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            File.Delete(_usersettingsfile)
+                            File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
-                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                        TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
                 End If
             Next i
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            FrmMain.Log(ex.Message)
+            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
-    Private Sub SaveResolutionWidth(Value As String)
+    Private Sub SaveResolutionWidth(value As String)
         Try
             TextBoxX1.Text = ""
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+            Dim settingString As String = File.ReadAllText(_usersettingsfile)
+            Dim textLines As String() = settingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            Dim Contains As Boolean = False
-            For i = 0 To (TextLines.Length - 1)
-                If TextLines(i).Contains("Windows = {") Then
+            Dim contains As Boolean = False
+            For i = 0 To (textLines.Length - 1)
+                If textLines(i).Contains("Windows = {") Then
                     For x As Integer = 1 To 9
-                        If TextLines(i + x).Contains("Width =") Then
+                        If textLines(i + x).Contains("Width =") Then
                             i += x
-                            Contains = True
+                            contains = True
                             Exit For
                         End If
                     Next x
 
-                    If Contains = False Then
-                        frmMain.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                    If contains = False Then
+                        FrmMain.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Exit Sub
                     End If
 
-                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strLine As String = textLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
-                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
+                    Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    textLines(i) = textLines(i).Replace(finalString, (" " & value))
 
-                    For j = 0 To TextLines.Length
-                        If j + 1 = TextLines.Length Then
+                    For j = 0 To textLines.Length
+                        If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
-                            File.Delete(usersettingsfile)
-                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            File.Delete(_usersettingsfile)
+                            File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
-                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                        TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
 
                 End If
             Next i
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            FrmMain.Log(ex.Message)
+            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
-    Private Sub SaveResolutionHeight3D(Value As String)
+    Private Sub SaveResolutionHeight3D(value As String)
         Try
             TextBoxX1.Text = ""
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+            Dim settingString As String = File.ReadAllText(_usersettingsfile)
+            Dim textLines As String() = settingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            Dim Contains As Boolean = False
-            For i = 0 To (TextLines.Length - 1)
-                If TextLines(i).Contains("Windows = {") Then
+            Dim contains As Boolean = False
+            For i = 0 To (textLines.Length - 1)
+                If textLines(i).Contains("Windows = {") Then
                     For x As Integer = 1 To 9
-                        If TextLines(i + x).Contains("Height3d =") Then
+                        If textLines(i + x).Contains("Height3d =") Then
                             i += x
-                            Contains = True
+                            contains = True
                             Exit For
                         End If
                     Next x
 
-                    If Contains = False Then
+                    If contains = False Then
                         frmMain.WriteDebugInfo("Couldn't find Height3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Exit Sub
                     End If
 
-                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strLine As String = textLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
-                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
-                    For j = 0 To TextLines.Length
-                        If j + 1 = TextLines.Length Then
+                    Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    textLines(i) = textLines(i).Replace(finalString, (" " & value))
+                    For j = 0 To textLines.Length
+                        If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
-                            File.Delete(usersettingsfile)
-                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            File.Delete(_usersettingsfile)
+                            File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
-                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                        TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
                 End If
             Next i
@@ -301,42 +301,42 @@ Public Class frmPSO2Options
         End Try
     End Sub
 
-    Private Sub SaveResolutionWidth3D(Value As String)
+    Private Sub SaveResolutionWidth3D(value As String)
         Try
             TextBoxX1.Text = ""
-            Dim SettingString As String = File.ReadAllText(usersettingsfile)
-            Dim TextLines As String() = SettingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+            Dim settingString As String = File.ReadAllText(_usersettingsfile)
+            Dim textLines As String() = settingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
             Dim i As Integer
             Dim j As Integer
-            Dim Contains As Boolean = False
-            For i = 0 To (TextLines.Length - 1)
-                If TextLines(i).Contains("Windows = {") Then
+            Dim contains As Boolean = False
+            For i = 0 To (textLines.Length - 1)
+                If textLines(i).Contains("Windows = {") Then
                     For x As Integer = 1 To 9
-                        If TextLines(i + x).Contains("Width3d =") Then
+                        If textLines(i + x).Contains("Width3d =") Then
                             i += x
-                            Contains = True
+                            contains = True
                             Exit For
                         End If
                     Next x
 
-                    If Contains = False Then
+                    If contains = False Then
                         frmMain.WriteDebugInfo("Couldn't find Width3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Exit Sub
                     End If
 
-                    Dim strLine As String = TextLines(i).Replace(vbTab, "")
+                    Dim strLine As String = textLines(i).Replace(vbTab, "")
                     Dim strReturn As String() = strLine.Split("="c)
-                    Dim FinalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
-                    TextLines(i) = TextLines(i).Replace(FinalString, (" " & Value))
+                    Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    textLines(i) = textLines(i).Replace(finalString, (" " & value))
 
-                    For j = 0 To TextLines.Length
-                        If j + 1 = TextLines.Length Then
+                    For j = 0 To textLines.Length
+                        If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
-                            File.Delete(usersettingsfile)
-                            File.WriteAllText(usersettingsfile, TextBoxX1.Text)
+                            File.Delete(_usersettingsfile)
+                            File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
                             Exit Sub
                         End If
-                        TextBoxX1.AppendText(TextLines(j) & vbCrLf)
+                        TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
 
                 End If
@@ -386,19 +386,19 @@ Public Class frmPSO2Options
 
         frmMain.Log("Saving Resolution...")
         'If ComboBoxEx5.SelectedText <> "x" Then
-        Dim StrResolution As String = ComboBoxEx5.SelectedItem.ToString()
+        Dim strResolution As String = ComboBoxEx5.SelectedItem.ToString()
 
-        Dim RealResolution As String() = StrResolution.Split("x"c)
-        SaveResolutionWidth(RealResolution(0))
-        SaveResolutionHeight(RealResolution(1))
-        SaveResolutionWidth3D(RealResolution(0))
-        SaveResolutionHeight3D(RealResolution(1))
+        Dim realResolution As String() = strResolution.Split("x"c)
+        SaveResolutionWidth(realResolution(0))
+        SaveResolutionHeight(realResolution(1))
+        SaveResolutionWidth3D(realResolution(0))
+        SaveResolutionHeight3D(realResolution(1))
         'End If
 
-        Dim FPS As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
+        Dim fps As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
 
-        frmMain.Log("Saving FPS...")
-        SaveINISetting("FrameKeep", FPS)
+        FrmMain.Log("Saving FPS...")
+        SaveINISetting("FrameKeep", fps)
 
         frmMain.Log("Saving Volume...")
         SaveINISetting("Bgm", SBGM.Value.ToString())

@@ -5,7 +5,7 @@ Public Class MyWebClient
 
     Private _timeout As Integer
 
-    Public Property timeout As Integer
+    Public Property Timeout As Integer
         Get
             timeout = _timeout
         End Get

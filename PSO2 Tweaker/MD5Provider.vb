@@ -2,12 +2,12 @@
 Imports System.IO
 Imports System.Runtime.InteropServices
 
-Public NotInheritable Class MD5Provider
+Public NotInheritable Class Md5Provider
     Implements IDisposable
 
     Private ReadOnly _bufferSize As Integer
-    Private ReadOnly hProv As IntPtr = IntPtr.Zero
-    Private ReadOnly buffer As Byte()
+    Private ReadOnly _hProv As IntPtr = IntPtr.Zero
+    Private ReadOnly _buffer As Byte()
 
     <DllImport("advapi32.dll", CharSet:=CharSet.None, ExactSpelling:=False, SetLastError:=True)>
     Private Shared Function CryptAcquireContext(ByRef hProv As IntPtr, ByVal pszContainer As String, ByVal pszProvider As String, ByVal dwProvType As UInteger, ByVal dwFlags As UInteger) As Boolean
@@ -35,8 +35,8 @@ Public NotInheritable Class MD5Provider
 
     Public Sub New(Optional ByVal bufferSize As Integer = &H1000)
         _bufferSize = bufferSize
-        buffer = New Byte(_bufferSize - 1) {}
-        CryptAcquireContext(hProv, Nothing, Nothing, 1, &HF0000000UI)
+        _buffer = New Byte(_bufferSize - 1) {}
+        CryptAcquireContext(_hProv, Nothing, Nothing, 1, &HF0000000UI)
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -45,18 +45,18 @@ Public NotInheritable Class MD5Provider
     End Sub
 
     Public Sub Dispose() Implements IDisposable.Dispose
-        CryptReleaseContext(hProv, 0)
+        CryptReleaseContext(_hProv, 0)
         GC.SuppressFinalize(Me)
     End Sub
 
     Public Function ComputeHash(ByVal stream As Stream) As Byte()
         Dim hHash As IntPtr = IntPtr.Zero
-        CryptCreateHash(hProv, &H8003, IntPtr.Zero, 0, hHash)
-        Dim bytesRead As Integer = stream.Read(buffer, 0, _bufferSize)
+        CryptCreateHash(_hProv, &H8003, IntPtr.Zero, 0, hHash)
+        Dim bytesRead As Integer = stream.Read(_buffer, 0, _bufferSize)
 
         While bytesRead > 0
-            CryptHashData(hHash, buffer, bytesRead, 0)
-            bytesRead = stream.Read(buffer, 0, _bufferSize)
+            CryptHashData(hHash, _buffer, bytesRead, 0)
+            bytesRead = stream.Read(_buffer, 0, _bufferSize)
         End While
 
         Dim hash(15) As Byte

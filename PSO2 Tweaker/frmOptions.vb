@@ -4,7 +4,7 @@ Imports System.Net
 Imports System.Diagnostics
 Imports DevComponents.DotNetBar
 
-Public Class frmOptions
+Public Class FrmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             SuspendLayout()
@@ -13,21 +13,21 @@ Public Class frmOptions
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)) <> 0 Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
 
-            Dim BackupMode = GetBackupMode(RegKey.Backup)
+            Dim backupMode = GetBackupMode(RegKey.Backup)
 
-            If Not String.IsNullOrEmpty(BackupMode) Then
-                cmbBackupPreference.Text = BackupMode
+            If Not String.IsNullOrEmpty(backupMode) Then
+                cmbBackupPreference.Text = backupMode
             End If
 
-            BackupMode = GetBackupMode(RegKey.PreDownloadedRAR)
+            backupMode = GetBackupMode(RegKey.PreDownloadedRar)
 
-            If Not String.IsNullOrEmpty(BackupMode) Then
-                cmbPredownload.Text = BackupMode
+            If Not String.IsNullOrEmpty(backupMode) Then
+                cmbPredownload.Text = backupMode
             End If
 
             ' Checks if the DPI greater or equal to 120, and sets accordingly.
             ' Otherwise, we'll assume is 96 or lower.
-            Using g As Graphics = CreateGraphics
+            Using g As Graphics = CreateGraphics()
                 If g.DpiX >= 120 Then
                     Size = New Size(543, 476)
                 Else
@@ -38,10 +38,10 @@ Public Class frmOptions
             ' Here we pull the locale setting from registry and apply it to the form.
             ' Reads locale from registry and converts from LangCode (e.g "en") to Language (e.g "English")
             Try
-                Dim Locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
+                Dim locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
 
-                cmbLanguage.Text = Locale.ToString()
-                Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(CType(Locale, LangCode).ToString())
+                cmbLanguage.Text = locale.ToString()
+                Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(CType(locale, LangCode).ToString())
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             Catch ex As Exception
                 cmbLanguage.Text = "English"
@@ -85,22 +85,22 @@ Public Class frmOptions
     End Sub
 
     Private Sub SetLocale()
-        Dim SelectedLocale As String = [Enum].GetName(GetType(LangCode), cmbLanguage.SelectedIndex)
+        Dim selectedLocale As String = [Enum].GetName(GetType(LangCode), cmbLanguage.SelectedIndex)
 
-        If String.IsNullOrEmpty(SelectedLocale) Then
+        If String.IsNullOrEmpty(selectedLocale) Then
             Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
             Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             RegKey.SetValue(Of String)(RegKey.Locale, "en")
         Else
-            Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(SelectedLocale)
+            Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(selectedLocale)
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
-            RegKey.SetValue(Of String)(RegKey.Locale, SelectedLocale)
+            RegKey.SetValue(Of String)(RegKey.Locale, selectedLocale)
         End If
     End Sub
 
-    Private Function GetBackupMode(Key As String) As String
-        Dim Value As String = RegKey.GetValue(Of String)(Key)
-        Select Case Value
+    Private Function GetBackupMode(key As String) As String
+        Dim value As String = RegKey.GetValue(Of String)(key)
+        Select Case value
             Case "Ask"
                 Return "Ask every time"
             Case "Always"
@@ -167,13 +167,13 @@ Public Class frmOptions
     End Sub
 
     Private Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
-        Dim YesNo As MsgBoxResult = MsgBox("This will tell the Tweaker you have the latest version of PSO2 installed - Be aware that this cannot be undone, and should only be used if you update the game outside of the Tweaker. Do you want to continue?", vbYesNo)
+        Dim yesNo As MsgBoxResult = MsgBox("This will tell the Tweaker you have the latest version of PSO2 installed - Be aware that this cannot be undone, and should only be used if you update the game outside of the Tweaker. Do you want to continue?", vbYesNo)
 
-        If YesNo = vbYes Then
+        If yesNo = vbYes Then
             Dim lines3 = File.ReadAllLines("version.ver")
-            Dim RemoteVersion3 As String = lines3(0)
-            RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion3)
-            MsgBox("PSO2 Installed version set to: " & RemoteVersion3)
+            Dim remoteVersion3 As String = lines3(0)
+            RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, remoteVersion3)
+            MsgBox("PSO2 Installed version set to: " & remoteVersion3)
         End If
     End Sub
 
@@ -191,8 +191,8 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
-        Dim DownloadClient As New WebClient
-        DownloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
+        Dim downloadClient As New WebClient
+        downloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
 
         Dim processStartInfo = New ProcessStartInfo()
         processStartInfo.FileName = (Application.StartupPath & "\unrar.exe").Replace("\\", "\")

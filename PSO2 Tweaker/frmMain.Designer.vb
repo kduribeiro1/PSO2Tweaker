@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMain
+Partial Class FrmMain
     Inherits DevComponents.DotNetBar.Office2007Form
 
     'Form overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMain))
         Me.txtHTML = New System.Windows.Forms.TextBox()
         Me.rtbDebug = New System.Windows.Forms.RichTextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -808,7 +808,7 @@ Partial Class frmMain
         Me.DLS.Encoding = CType(resources.GetObject("DLS.Encoding"), System.Text.Encoding)
         Me.DLS.Headers = CType(resources.GetObject("DLS.Headers"), System.Net.WebHeaderCollection)
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
-        Me.DLS.timeout = 10000
+        Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
         '
         'frmMain
