@@ -146,10 +146,11 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="Enums\Languages.vb" />
     <Compile Include="External.vb" />
+    <Compile Include="Languages.vb" />
     <Compile Include="MD5Provider.vb" />
+    <Compile Include="My\ApplicationEvents.vb" />
+    <Compile Include="My\Settings.vb" />
     <Compile Include="RegKey.vb" />
     <Compile Include="frmDiagnostic.Designer.vb">
       <DependentUpon>frmDiagnostic.vb</DependentUpon>
@@ -248,7 +249,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PSO2ProxyInfo.vb" />
-    <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmDiagnostic.resx">

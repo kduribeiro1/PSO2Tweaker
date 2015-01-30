@@ -27,7 +27,7 @@ Public Class Helper
             request.Method = "HEAD"
 
             Using response As WebResponse = request.GetResponse()
-                Return True
+                Return (response IsNot Nothing)
             End Using
         Catch
             Return False

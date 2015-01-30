@@ -197,6 +197,7 @@ Public Class FrmMain
         btnNewShit.Visible = True
 #End If
 
+        ' TODO: Do we really need DPI stuff?
         Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 _dpiSetting = g.DpiX
@@ -2060,7 +2061,7 @@ StartPrePatch:
         UnlockGui()
 
         ' TODO: What's going on here?
-        Dim result As MsgBoxResult = MsgBoxResult.No
+        Const result As MsgBoxResult = MsgBoxResult.No
         If Not _comingFromOldFiles Then
             TopMost = False
             If chkAlwaysOnTop.Checked Then TopMost = True
@@ -2084,7 +2085,7 @@ StartPrePatch:
                         If Not File.Exists((_pso2WinDir & "\" & truefilename)) Then
                             If _vedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
                             missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMD5((_pso2WinDir & "\" & truefilename)) <> trueMd5 Then
+                        ElseIf Helper.GetMd5((_pso2WinDir & "\" & truefilename)) <> trueMd5 Then
                             If _vedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
                             missingfiles.Add(truefilename)
                         End If
@@ -2189,7 +2190,7 @@ StartPrePatch:
             RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
             RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
             RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
-            RegKey.SetValue(Of String)(RegKey.Pso2PatchlistMd5, Helper.GetMD5("patchlist.txt"))
+            RegKey.SetValue(Of String)(RegKey.Pso2PatchlistMd5, Helper.GetMd5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
             Dim lines2 = File.ReadAllLines("version.ver")
@@ -2229,11 +2230,7 @@ StartPrePatch:
             PBMainBar.Maximum = length
             _cancelled = False
 
-            Dim fileLengths = New Dictionary(Of String, Long)
-
-            For Each fileinfo As FileInfo In New DirectoryInfo(dataPath).EnumerateFiles()
-                fileLengths.Add(fileinfo.Name, fileinfo.Length)
-            Next
+            Dim fileLengths = New DirectoryInfo(dataPath).EnumerateFiles().ToDictionary(Function(fileinfo) fileinfo.Name, Function(fileinfo) fileinfo.Length)
 
             Dim fileNames = fileLengths.Keys
 
@@ -3318,7 +3315,7 @@ StartPrePatch:
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
         ' TODO: What is going on with this?
-        Dim x As Integer = 0
+        Const x As Integer = 0
 
         If _processes.Length > x Then
             Dim closeItYesNo As MsgBoxResult = MsgBox("You need to have all Chrome windows closed before launching in this mode. Would you like to close all open Chrome windows now?", vbYesNo)
@@ -3357,7 +3354,7 @@ StartPrePatch:
         Dim installFolder As String = ""
 
         ' TODO: Why is this like this?
-        Dim installYesNo As MsgBoxResult = vbYes
+        Const installYesNo As MsgBoxResult = vbYes
         If installYesNo = vbNo Then
             WriteDebugInfo("You can view more information about the installer at:" & vbCrLf & "http://arks-layer.com/setup.php")
             Exit Sub
