@@ -1,7 +1,5 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
-Imports System.Collections.Generic
-Imports DevComponents.DotNetBar
 
 Public Class frmPSO2Options
     Dim Documents As String = (System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")

@@ -3,11 +3,7 @@ Imports Microsoft.Win32
 Imports System.IO
 Imports System.Management
 Imports System.Net
-Imports System.Net.Sockets
-Imports System.Reflection
-Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization.Json
-Imports System.Security.AccessControl
 Imports System.Security.Principal
 Imports System.Text
 Imports System.Text.RegularExpressions
@@ -427,7 +423,7 @@ Public Class frmMain
             Dim regValue As Integer
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)
-            If regValue = 0 Then RegKey.SetValue(Of Integer)(RegKey.TextBoxBGColor, 4294967295)
+            If regValue = 0 Then RegKey.SetValue(Of UInteger)(RegKey.TextBoxBGColor, 4294967295)
             If regValue <> 0 Then rtbDebug.BackColor = Color.FromArgb(Convert.ToInt32(regValue))
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)
@@ -2003,12 +1999,10 @@ StartPrePatch:
             Exit Sub
         End If
 
-        Dim filedownloader As New WebClient()
         Dim sBuffer As String
         Dim filename As String() = Nothing
         Dim truefilename As String
         Dim missingfiles As New List(Of String)
-        Dim filedownloader2 As New WebClient()
         Dim missingfiles2 As New List(Of String)
         Dim NumberofChecks As Integer = 0
         Dim MD5 As String() = Nothing
@@ -2340,7 +2334,6 @@ StartPrePatch:
             Next
 
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
-            Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String = (pso2RootDir & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()
@@ -2534,17 +2527,14 @@ StartPrePatch:
             SelectPSO2Directory()
             Exit Sub
         End If
-        Dim filedownloader As New WebClient()
         Dim sBuffer As String
         Dim filename As String()
         Dim truefilename As String
         Dim missingfiles As New List(Of String)
-        Dim filedownloader2 As New WebClient()
         Dim sBuffer2 As String
         Dim filename2 As String()
         Dim truefilename2 As String
         Dim missingfiles2 As New List(Of String)
-        Dim missingfiles3 As New List(Of String)
         Dim NumberofChecks As Integer
         LockGUI()
         WriteDebugInfo(My.Resources.strDownloadingPatchFile1)
@@ -2851,7 +2841,6 @@ StartPrePatch:
                 SelectPSO2Directory()
                 Exit Sub
             End If
-            Dim filedownloader As New WebClient()
             Dim DirectoryString As String = (pso2RootDir & "\")
             Cancelled = False
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
@@ -3229,7 +3218,6 @@ StartPrePatch:
             Next
             DeleteFile("resume.txt")
             If missingfiles.Count = 0 Then WriteDebugInfo(My.Resources.strYouAppearToBeUpToDate)
-            Dim filedownloader3 As New WebClient()
             Dim DirectoryString As String = (pso2RootDir & "\")
             WriteDebugInfo(My.Resources.strDownloading & "version file...")
             Application.DoEvents()

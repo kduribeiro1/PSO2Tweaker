@@ -154,7 +154,6 @@ Public Class frmVEDA
     Private Sub btnListDir_Click(sender As Object, e As EventArgs) Handles btnListDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
-        Dim files As New List(Of String)
         Dim DirectoryString As String
         Dim pso2launchpath As String
         DirectoryString = frmMain.lblDirectory.Text
@@ -175,7 +174,6 @@ Public Class frmVEDA
     Private Sub btnAnyDir_Click(sender As Object, e As EventArgs) Handles btnAnyDir.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
-        Dim files As New List(Of String)
         Dim DirectoryString As String
         Dim MyFolderBrowser As New System.Windows.Forms.FolderBrowserDialog
 
@@ -209,7 +207,6 @@ Public Class frmVEDA
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
-        Dim files As New List(Of String)
         Dim DirectoryString As String
         Dim MyFolderBrowser As New System.Windows.Forms.FolderBrowserDialog
 

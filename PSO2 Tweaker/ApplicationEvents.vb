@@ -14,18 +14,6 @@
                 frmMain.PasteBinUpload()
             End If
         End Sub
-
-        Public Function PasteBinUpload(ByVal code As String) As String
-            System.Net.ServicePointManager.Expect100Continue = False
-            Dim pr As Integer = 0
-            Dim fi As String = "?paste_private=" & 0 & "&paste_format=text" & "&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f" & "&paste_code=" & "test"
-            Dim w As New System.Net.WebClient()
-            w.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
-            Dim pd As Byte() = System.Text.Encoding.ASCII.GetBytes(fi)
-            Dim rd As Byte() = w.UploadData("http://pastebin.com/api_public.php", "POST", pd)
-            Dim r As String = System.Text.Encoding.ASCII.GetString(rd)
-            Return r
-        End Function
     End Class
 End Namespace
 

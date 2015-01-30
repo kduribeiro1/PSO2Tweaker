@@ -1,6 +1,4 @@
-﻿Imports Microsoft.Win32
-Imports System.Collections.Generic
-Imports System.Globalization
+﻿Imports System.Globalization
 Imports System.IO
 Imports System.Net
 Imports System.Runtime.InteropServices
