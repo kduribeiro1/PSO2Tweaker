@@ -1,7 +1,6 @@
 ﻿Imports DevComponents.DotNetBar
 Imports Microsoft.Win32
 Imports System.IO
-Imports System.Management
 Imports System.Net
 Imports System.Runtime.Serialization.Json
 Imports System.Security.Principal
@@ -3359,26 +3358,21 @@ SelectInstallFolder:
                 GoTo SelectInstallFolder
             End If
             If correctYesNo = vbYes Then
-                ' TODO: Change over to the DriveInfo class
-                Dim pso2Binfolder As String = installFolder & "\PHANTASYSTARONLINE2\pso2_bin"
-                pso2Binfolder = pso2Binfolder.Replace("\\", "\")
-                Dim searcher As ManagementObjectSearcher = New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk")
-                Dim installDrive As String = installFolder.TrimEnd(":"c).Replace("\"c, "")
-                For Each MGMT In searcher.Get
-                    If Convert.ToString(MGMT("MediaType")) = "12" Then
-                        If Convert.ToString(MGMT("DeviceID")) = installDrive Then
-                            If Convert.ToInt64(MGMT("Size")) < 26992893636 Then
-                                MsgBox("There is not enough space on the selected disk to install PSO2. Please select a different drive. (Requires 16GB of free space)")
-                                GoTo SelectInstallFolder
-                            End If
-                            If Convert.ToInt64(MGMT("FreeSpace")) < 26992893636 Then
-                                MsgBox("There is not enough free space on the selected disk to install PSO2. Please free up some space or select a different drive. (Requires 16GB of free space)")
-                                GoTo SelectInstallFolder
-                            End If
+                Dim pso2Binfolder As String = (installFolder & "\PHANTASYSTARONLINE2\pso2_bin").Replace("\\", "\")
+
+                For Each drive In DriveInfo.GetDrives()
+                    If (drive.DriveType = DriveType.Fixed) AndAlso (installFolder(0) = drive.Name(0)) Then
+                        If drive.TotalSize < 26992893636 Then
+                            MsgBox("There is not enough space on the selected disk to install PSO2. Please select a different drive. (Requires 16GB of free space)")
+                            GoTo SelectInstallFolder
+                        End If
+                        If drive.AvailableFreeSpace < 26992893636 Then
+                            MsgBox("There is not enough free space on the selected disk to install PSO2. Please free up some space or select a different drive. (Requires 16GB of free space)")
+                            GoTo SelectInstallFolder
                         End If
                     End If
                 Next
-                'Dim InstallENPatchesAfter As MsgBoxResult = MsgBox("Would you like the program to automatically install the core EN patch and Large Files EN patch after it's done updating the game?", vbYesNo)
+
                 Dim finalYesNo As MsgBoxResult = MsgBox("The program will now install the necessary files, create the folders, and set up the game. Afterwards, the program will automatically begin patching. Click ""OK"" to start.", MsgBoxStyle.OkCancel)
                 If finalYesNo = vbCancel Then
                     WriteDebugInfo("Installation cancelled by user!")
