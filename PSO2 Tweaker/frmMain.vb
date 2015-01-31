@@ -3760,7 +3760,7 @@ SelectInstallFolder:
             segaLine = _someofthethings.Values(i)
             If String.IsNullOrEmpty(segaLine) Then Continue For
 
-            segaFilename = segaLine.Remove(segaLine.IndexOf(".pat")).Replace("data/win32/", "")
+            segaFilename = segaLine.Remove(segaLine.IndexOf(".pat", StringComparison.Ordinal)).Replace("data/win32/", "")
             lblStatus.Text = "Checking file " & i & " / " & totalfiles.Length
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
