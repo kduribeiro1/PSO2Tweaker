@@ -1060,7 +1060,6 @@ Public Class FrmMain
                 RegKey.SetValue(Of String)(RegKey.NewVersionTemp, sBuffer)
                 RegKey.SetValue(Of String)(RegKey.NewStoryVersion, sBuffer)
                 Dim strNewDate As String = sBuffer
-                MsgBox(strNewDate)
                 If sBuffer <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
                     updateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
