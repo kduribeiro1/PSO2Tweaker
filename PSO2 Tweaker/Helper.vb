@@ -20,6 +20,18 @@ Public Class Helper
         If Directory.Exists(path) Then Directory.Delete(path, True)
     End Sub
 
+    Public Shared Function IsFileInUse(ByVal path As String) As Boolean
+        Try
+            Using stream = File.Open(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
+                stream.Close()
+            End Using
+        Catch
+            Return True
+        End Try
+
+        Return False
+    End Function
+
     Public Shared Sub PasteBinUploadFile(fileToUpload As String)
         ServicePointManager.Expect100Continue = False
 

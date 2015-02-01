@@ -195,7 +195,6 @@ Public Class FrmMain
         btnNewShit.Visible = True
 #End If
 
-        ' TODO: Do we really need DPI stuff?
         Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 _dpiSetting = g.DpiX
@@ -1616,12 +1615,8 @@ StartPrePatch:
 
             DeleteFile(pso2Launchpath & "\ddraw.dll")
             If RegKey.GetValue(Of String)(RegKey.SteamMode) = "True" Then
-                'NotifyIcon1.Visible = True
-                'MsgBox("Minimizing to tray!")
-                'NotifyIcon1.ShowBalloonTip(3000, "", "PSO2 Tweaker minimized to tray - Close this when you close PSO2.", ToolTipIcon.Info)
-                'Exit Sub
                 File.Copy(_pso2RootDir & "\pso2.exe", _pso2RootDir & "\pso2.exe_backup", True)
-                Do Until FileInUse(_pso2RootDir & "\pso2.exe") = False
+                Do Until Helper.IsFileInUse(_pso2RootDir & "\pso2.exe") = False
                     Thread.Sleep(1000)
                 Loop
                 File.Copy(_pso2RootDir & "\pso2.exe_backup", _pso2RootDir & "\pso2.exe", True)
@@ -1635,19 +1630,6 @@ StartPrePatch:
             Exit Sub
         End Try
     End Sub
-
-    Private Function FileInUse(ByVal sFile As String) As Boolean
-        Dim thisFileInUse As Boolean = False
-        If File.Exists(sFile) Then
-            Try
-                File.Delete(sFile)
-                ' thisFileInUse = False
-            Catch
-                thisFileInUse = True
-            End Try
-        End If
-        Return thisFileInUse
-    End Function
 
     Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
         Dim mouseArgs = DirectCast(e, MouseEventArgs)
@@ -1799,14 +1781,13 @@ StartPrePatch:
             If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
             End If
-            Dim process As Process
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             processStartInfo.FileName = (_startPath & "\unrar.exe")
             processStartInfo.Verb = "runas"
             processStartInfo.Arguments = ("e " & """" & storyLocation & """" & " TEMPSTORYAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            process = process.Start(processStartInfo)
+            Dim process As Process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
             If _cancelledFull Then Exit Sub
             Do Until process.WaitForExit(1000)
@@ -1818,7 +1799,6 @@ StartPrePatch:
             End If
             Dim di As New DirectoryInfo("TEMPSTORYAIDAFOOL")
             Dim diar1 As FileInfo() = di.GetFiles()
-            Dim dra As FileInfo
             WriteDebugInfoAndOk((My.Resources.strExtractingTo & _pso2WinDir))
             Application.DoEvents()
             'list the names of all files in the specified directory
@@ -1840,7 +1820,7 @@ StartPrePatch:
                 Exit Sub
             End If
             WriteDebugInfo(My.Resources.strInstallingPatch)
-            For Each dra In diar1
+            For Each dra As FileInfo In diar1
                 If _cancelledFull Then Exit Sub
                 If backupyesno = MsgBoxResult.Yes Then
                     If File.Exists((_pso2WinDir & "\" & dra.ToString())) Then
@@ -2732,6 +2712,7 @@ StartPrePatch:
         ButtonItem5.RaiseClick()
     End Sub
 
+    ' TODO: See about removing RegistryKey
     Private Sub btnGameguard_Click(sender As Object, e As EventArgs) Handles btnGameguard.Click
         Try
             Dim systempath As String
@@ -2886,13 +2867,11 @@ StartPrePatch:
                     Exit Sub
                 End If
                 Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
-                Dim diar1 As FileInfo() = di.GetFiles()
-                Dim dra As FileInfo
                 WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
                 Application.DoEvents()
                 'list the names of all files in the specified directory
                 Dim win32 As String = _pso2WinDir
-                For Each dra In diar1
+                For Each dra As FileInfo In di.GetFiles()
                     If File.Exists(win32 & "\" & dra.ToString()) Then
                         DeleteFile(win32 & "\" & dra.ToString())
                     End If
@@ -3554,7 +3533,6 @@ SelectInstallFolder:
                 If Char.IsLetter(proxyInfo.Host(index)) Then
                     Dim ips = Dns.GetHostAddresses(proxyInfo.Host)
                     proxyInfo.Host = ips(0).ToString()
-
                     Exit For
                 End If
             Next
@@ -3650,7 +3628,6 @@ SelectInstallFolder:
 
         Using reader As New StreamReader(_hostsFilePath)
             Dim currentLine As String
-
             Do
                 currentLine = reader.ReadLine()
                 If (currentLine Is Nothing) Then Exit Do
@@ -3701,16 +3678,15 @@ SelectInstallFolder:
             _override = False
         End If
 
-        Dim count As Integer = 0
         Dim totalfiles = Directory.GetFiles(_pso2RootDir & "\data\win32\")
 
         If Not File.Exists("old_patchlist.txt") Then
             WriteDebugInfo("Building file list... ")
             Dim di As New DirectoryInfo(_pso2RootDir & "\data\win32\")
-            Dim diar1 As FileInfo() = di.GetFiles()
 
             Using writer As New StreamWriter("old_patchlist.txt", True)
-                For Each dra In diar1
+                Dim count As Integer = 0
+                For Each dra In di.GetFiles()
                     writer.WriteLine("data/win32/" & dra.Name & ".pat" & vbTab & dra.Length & vbTab & Helper.GetMd5(_pso2RootDir & "\data\win32\" & dra.Name))
                     count += 1
                     lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Length & ")"
@@ -3791,7 +3767,7 @@ SelectInstallFolder:
             Dlwua(_freedomUrl & "pso2-transam.exe", "pso2-transam.exe")
 
             'execute pso2-transam stuff with -b flag for backup
-            Dim process As Process
+
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
             If Directory.Exists(backupdir) Then
                 Dim counter = My.Computer.FileSystem.GetFiles(backupdir)
@@ -3816,7 +3792,7 @@ SelectInstallFolder:
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
             Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             'MsgBox("ALL INFO: " & processStartInfo.ToString)
-            process = process.Start(processStartInfo)
+            Dim process As Process = process.Start(processStartInfo)
             Log("[TRANSAM] Program started")
 
             Do Until process.WaitForExit(1000)
