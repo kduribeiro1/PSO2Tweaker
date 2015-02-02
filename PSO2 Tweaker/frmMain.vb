@@ -16,6 +16,7 @@ Public Class FrmMain
     ReadOnly _hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
     ReadOnly _optionsFrm As frmOptions
     ReadOnly _startPath As String = Application.StartupPath
+    ReadOnly _myDocuments As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
 
     Dim _cancelled As Boolean
     Dim _cancelledFull As Boolean
@@ -34,7 +35,6 @@ Public Class FrmMain
     Dim _vedaUnlocked As Boolean = False
     Dim _wayuIsAFailure As Boolean = False
     Dim _nodiag As Boolean = False
-    Dim _processes As Process()
     Dim _pso2RootDir As String
     Dim _pso2WinDir As String
     Dim _totalsize2 As Long
@@ -308,11 +308,6 @@ Public Class FrmMain
                         End If
 
                         If _useItemTranslation Then
-                            'Why did we ever delete the item cache? [AIDA]
-                            'Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                            'Log("Deleting item cache...")
-                            'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-
                             'Download the latest translator.dll and translation.bin
                             Dim dlLink1 As String = _freedomUrl & "translator.dll"
                             Dim dlLink2 As String = _freedomUrl & "translation.bin"
@@ -426,7 +421,6 @@ Public Class FrmMain
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)
             If regValue <> 0 Then rtbDebug.ForeColor = Color.FromArgb(Convert.ToInt32(regValue))
-
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.Color)
             If regValue <> 0 Then StyleManager.ColorTint = Color.FromArgb(Convert.ToInt32(regValue))
@@ -776,23 +770,24 @@ Public Class FrmMain
     Private Sub DownloadItemTranslationFiles(state As Object)
         Dim dlLink1 As String = _freedomUrl & "translator.dll"
         Dim dlLink2 As String = _freedomUrl & "translation.bin"
-        Dim client As New WebClient
 
-        Try
-            client.DownloadFile(dlLink1, (_pso2RootDir & "\translator.dll"))
-        Catch ex As Exception
-            MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-        End Try
+        Using client As New WebClient
+            Try
+                client.DownloadFile(dlLink1, (_pso2RootDir & "\translator.dll"))
+            Catch ex As Exception
+                MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+            End Try
 
-        RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMD5(_pso2RootDir & "\translator.dll"))
+            RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(_pso2RootDir & "\translator.dll"))
 
-        Try
-            client.DownloadFile(dlLink2, (_pso2RootDir & "\translation.bin"))
-        Catch ex As Exception
-            MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-        End Try
+            Try
+                client.DownloadFile(dlLink2, (_pso2RootDir & "\translation.bin"))
+            Catch ex As Exception
+                MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+            End Try
 
-        _itemDownloadingDone = True
+            _itemDownloadingDone = True
+        End Using
     End Sub
 
     Public Sub WriteDebugInfo(ByVal addThisText As String)
@@ -854,8 +849,7 @@ Public Class FrmMain
             rtbDebug.SelectionColor = Color.Red
             rtbDebug.AppendText(My.Resources.strFAILED)
             rtbDebug.SelectionColor = rtbDebug.ForeColor
-            Dim timeFormatted As String = DateTime.Now.ToString("G")
-            File.AppendAllText((_startPath & "\logfile.txt"), timeFormatted & " " & (addThisText & " [FAILED!]") & vbCrLf)
+            File.AppendAllText((_startPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [FAILED!]") & vbCrLf)
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
                 Dim upload As MsgBoxResult = MsgBox(My.Resources.strSomethingWentWrongUpload, vbYesNo)
                 If upload = MsgBoxResult.Yes Then
@@ -1002,12 +996,12 @@ Public Class FrmMain
     End Sub
 
     Private Function CheckIfRunning(processName As String) As Boolean
-        _processes = Process.GetProcessesByName(processName)
+        Dim processes = Process.GetProcessesByName(processName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
         Dim x As Integer = If(processName = "PSO2 Tweaker", 1, 0)
 
-        If _processes.Length > x Then
+        If processes.Length > x Then
             Dim closeItYesNo As MsgBoxResult = MsgBox("It seems that " & processName.Replace(".exe", "") & " is already running. Would you like to close it?", vbYesNo)
 
             If closeItYesNo = vbYes Then
@@ -1054,7 +1048,7 @@ Public Class FrmMain
             Dim trueMd5 As String
             Dim updateNeeded As Boolean = False
             numberofChecks = 0
-            missingfiles.Clear()
+
             Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
                 sBuffer = oReader.ReadLine()
                 RegKey.SetValue(Of String)(RegKey.NewVersionTemp, sBuffer)
@@ -1574,10 +1568,6 @@ StartPrePatch:
             PBMainBar.Text = ""
             WriteDebugInfo(My.Resources.strLaunchingPSO2)
 
-            'Why did we ever delete this? [AIDA]
-            'Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
-
             If chkItemTranslation.Checked Then
                 If Helper.GetMd5(pso2Launchpath & "\translator.dll") <> RegKey.GetValue(Of String)(RegKey.Dllmd5) Then
                     MsgBox(My.Resources.strTranslationFilesDontMatch)
@@ -1921,9 +1911,6 @@ StartPrePatch:
 
         If Not chkItemTranslation.Checked Then
             WriteDebugInfoAndOk(My.Resources.strDeletingItemCache)
-            'Why did we delete this? [AIDA]
-            'Dim dir As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            'DeleteFile(dir & "\SEGA\PHANTASYSTARONLINE2\item_name_cache.dat")
             WriteDebugInfoSameLine(My.Resources.strDone)
 
             Using reader As New StreamReader(_pso2RootDir & "\translation.cfg")
@@ -2026,7 +2013,6 @@ StartPrePatch:
         If result = MsgBoxResult.Yes OrElse _comingFromOldFiles Then
             WriteDebugInfo(My.Resources.strCheckingforNewContent)
             numberofChecks = 0
-            missingfiles.Clear()
 
             Using oReader As StreamReader = File.OpenText("patchlist.txt")
                 If _cancelledFull Then Exit Sub
@@ -2100,8 +2086,8 @@ StartPrePatch:
 
             If _cancelled Then Exit Sub
             Dim directoryString2 As String = _pso2RootDir
-            If File.Exists((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
-            File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            If File.Exists((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            File.Copy("version.ver", (_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOk((My.Resources.strDownloadedandInstalled & "version file"))
 
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
@@ -2294,8 +2280,8 @@ StartPrePatch:
             Dim versionclient2 As New MyWebClient With {.Timeout = 3000}
             versionclient2.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
-            If File.Exists((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
-            File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            If File.Exists((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            File.Copy("version.ver", (_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOk((My.Resources.strDownloadedandInstalled & "version file"))
 
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
@@ -2930,7 +2916,7 @@ StartPrePatch:
     Private Sub ButtonItem17_Click(sender As Object, e As EventArgs) Handles ButtonItem17.Click
         Dim whatthefuck As MsgBoxResult = MsgBox(My.Resources.strAreYouSureResetPSO2Settings, MsgBoxStyle.YesNo)
         If whatthefuck = MsgBoxResult.Yes Then
-            Dim documents As String = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
+            Dim documents As String = (_myDocuments & "\")
             Dim usersettingsfile As String = (documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
             File.WriteAllText(usersettingsfile, txtPSO2DefaultINI.Text)
             WriteDebugInfoAndOk(My.Resources.strPSO2SettingsReset)
@@ -3123,7 +3109,7 @@ StartPrePatch:
         Try
             Dim sBuffer As String
             Dim missingfiles As New List(Of String)
-            missingfiles.Clear()
+
             Using oReader As StreamReader = File.OpenText("resume.txt")
                 WriteDebugInfoAndOk(My.Resources.strFoundIncompleteJob)
                 If _cancelledFull Then Exit Sub
@@ -3150,8 +3136,6 @@ StartPrePatch:
                 _cancelled = False
                 Dlwua(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
                 Dim info7 As New FileInfo(downloadstring)
-                'Dim length2 As Long
-                'If File.Exists(downloadstring) Then length2 = info7.Length
                 If info7.Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
                     Dlwua(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
@@ -3178,13 +3162,12 @@ StartPrePatch:
             versionclient.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
             If _cancelled Then Exit Sub
             Dim directoryString2 As String = _pso2RootDir
-            If File.Exists((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
-            File.Copy("version.ver", (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            If File.Exists((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver")) = True Then DeleteFile((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+            File.Copy("version.ver", (_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
             WriteDebugInfoAndOk((My.Resources.strDownloadedandInstalled & "version file"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2launcher.exe...")
             Application.DoEvents()
-            Dim procs = Process.GetProcessesByName("pso2launcher")
-            For Each proc As Process In procs
+            For Each proc As Process In Process.GetProcessesByName("pso2launcher")
                 If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
             Next
             Dlwua("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe")
@@ -3194,8 +3177,7 @@ StartPrePatch:
             WriteDebugInfoAndOk((My.Resources.strDownloadedandInstalled & "pso2launcher.exe"))
             WriteDebugInfo(My.Resources.strDownloading & "pso2updater.exe...")
             Application.DoEvents()
-            procs = Process.GetProcessesByName("pso2updater")
-            For Each proc As Process In procs
+            For Each proc As Process In Process.GetProcessesByName("pso2updater")
                 If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
             Next
             Dlwua("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
@@ -3205,9 +3187,7 @@ StartPrePatch:
             WriteDebugInfoAndOk((My.Resources.strDownloadedandInstalled & "pso2updater.exe"))
             Application.DoEvents()
             WriteDebugInfo(My.Resources.strDownloading & "pso2.exe...")
-            procs = Process.GetProcessesByName("pso2")
-
-            For Each proc As Process In procs
+            For Each proc As Process In Process.GetProcessesByName("pso2")
                 If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
             Next
 
@@ -3226,9 +3206,7 @@ StartPrePatch:
             RegKey.SetValue(Of String)(RegKey.Pso2PatchlistMd5, Helper.GetMd5("patchlist.txt"))
             WriteDebugInfo(My.Resources.strGameUpdatedVanilla)
             DeleteFile("resume.txt")
-            Dim lines2 = File.ReadAllLines("version.ver")
-            Dim remoteVersion2 As String = lines2(0)
-            RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, remoteVersion2)
+            RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
             UnlockGui()
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) Then
@@ -3266,18 +3244,16 @@ StartPrePatch:
 
     Private Sub ButtonItem7_Click(sender As Object, e As EventArgs) Handles ButtonItem7.Click
         Const processName As String = "chrome"
-        _processes = Process.GetProcessesByName("chrome")
+        Dim processes = Process.GetProcessesByName("chrome")
         Dim currentProcess As Process = Process.GetCurrentProcess()
 
         ' TODO: What is going on with this?
         Const x As Integer = 0
 
-        If _processes.Length > x Then
+        If processes.Length > x Then
             Dim closeItYesNo As MsgBoxResult = MsgBox("You need to have all Chrome windows closed before launching in this mode. Would you like to close all open Chrome windows now?", vbYesNo)
             If closeItYesNo = vbYes Then
-                Dim procs As Process() = Process.GetProcessesByName(processName)
-
-                For Each proc As Process In procs
+                For Each proc As Process In Process.GetProcessesByName(processName)
                     If proc.Id <> currentProcess.Id Then proc.Kill()
                 Next
             Else
@@ -3296,7 +3272,7 @@ StartPrePatch:
         End If
         If clearYesNo = vbYes Then
             WriteDebugInfo("Deleting Symbol Art Cache...")
-            Dim documents As String = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
+            Dim documents As String = (_myDocuments & "\")
             Dim saCacheFolder As String = (documents & "SEGA\PHANTASYSTARONLINE2\symbolarts\cache")
             For Each foundFile As String In My.Computer.FileSystem.GetFiles(saCacheFolder, FileIO.SearchOption.SearchAllSubDirectories, "*.*")
                 My.Computer.FileSystem.DeleteFile(foundFile, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
