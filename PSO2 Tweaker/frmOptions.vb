@@ -191,8 +191,9 @@ Public Class FrmOptions
     End Sub
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
-        Dim downloadClient As New WebClient
-        downloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
+        Using downloadClient As New WebClient
+            downloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
+        End Using
 
         Dim processStartInfo = New ProcessStartInfo()
         processStartInfo.FileName = (Application.StartupPath & "\unrar.exe").Replace("\\", "\")
@@ -201,11 +202,7 @@ Public Class FrmOptions
         processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
         processStartInfo.UseShellExecute = True
 
-        Dim extractorProcess = Process.Start(processStartInfo)
-
-        Do Until extractorProcess.WaitForExit(1000)
-        Loop
-
+        Process.Start(processStartInfo).WaitForExit()
         SetLocale()
     End Sub
 
