@@ -937,7 +937,7 @@ Public Class FrmMain
         Helper.PasteBinUploadFile(_startPath & "\logfile.txt")
     End Sub
 
-    Public Shared Function MergePatches() As Dictionary(Of String, String)
+    Private Shared Function MergePatches() As Dictionary(Of String, String)
         Dim patchlist As String() = File.ReadAllLines("patchlist.txt")
         Dim patchlistOld As String() = File.ReadAllLines("patchlist_old.txt")
 

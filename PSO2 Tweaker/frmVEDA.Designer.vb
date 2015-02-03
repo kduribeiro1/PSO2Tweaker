@@ -27,7 +27,6 @@ Partial Class FrmVeda
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnShorten = New System.Windows.Forms.Button()
-        Me.btnMerge = New System.Windows.Forms.Button()
         Me.btnListDir = New System.Windows.Forms.Button()
         Me.btnAnyDir = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -47,9 +46,9 @@ Partial Class FrmVeda
         '
         'btnMD5
         '
-        Me.btnMD5.Location = New System.Drawing.Point(25, 23)
+        Me.btnMD5.Location = New System.Drawing.Point(25, 22)
         Me.btnMD5.Name = "btnMD5"
-        Me.btnMD5.Size = New System.Drawing.Size(114, 48)
+        Me.btnMD5.Size = New System.Drawing.Size(114, 49)
         Me.btnMD5.TabIndex = 1
         Me.btnMD5.Text = "Get MD5 Hash"
         Me.btnMD5.UseVisualStyleBackColor = True
@@ -79,16 +78,6 @@ Partial Class FrmVeda
         Me.btnShorten.UseVisualStyleBackColor = True
         Me.btnShorten.Visible = False
         '
-        'btnMerge
-        '
-        Me.btnMerge.Location = New System.Drawing.Point(26, 132)
-        Me.btnMerge.Name = "btnMerge"
-        Me.btnMerge.Size = New System.Drawing.Size(113, 49)
-        Me.btnMerge.TabIndex = 4
-        Me.btnMerge.Text = "Merge Patch Lists"
-        Me.btnMerge.UseVisualStyleBackColor = True
-        Me.btnMerge.Visible = False
-        '
         'btnListDir
         '
         Me.btnListDir.Location = New System.Drawing.Point(145, 22)
@@ -103,7 +92,7 @@ Partial Class FrmVeda
         '
         Me.btnAnyDir.Location = New System.Drawing.Point(145, 77)
         Me.btnAnyDir.Name = "btnAnyDir"
-        Me.btnAnyDir.Size = New System.Drawing.Size(113, 49)
+        Me.btnAnyDir.Size = New System.Drawing.Size(113, 50)
         Me.btnAnyDir.TabIndex = 6
         Me.btnAnyDir.Text = "List files in ANY dir"
         Me.btnAnyDir.UseVisualStyleBackColor = True
@@ -129,15 +118,15 @@ Partial Class FrmVeda
         '
         'btnDLWUA
         '
-        Me.btnDLWUA.Location = New System.Drawing.Point(277, 134)
+        Me.btnDLWUA.Location = New System.Drawing.Point(25, 133)
         Me.btnDLWUA.Name = "btnDLWUA"
-        Me.btnDLWUA.Size = New System.Drawing.Size(102, 46)
+        Me.btnDLWUA.Size = New System.Drawing.Size(113, 48)
         Me.btnDLWUA.TabIndex = 9
         Me.btnDLWUA.Text = "DLWUA"
         Me.btnDLWUA.UseVisualStyleBackColor = True
         Me.btnDLWUA.Visible = False
         '
-        'frmVEDA
+        'FrmVeda
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -147,13 +136,12 @@ Partial Class FrmVeda
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.btnAnyDir)
         Me.Controls.Add(Me.btnListDir)
-        Me.Controls.Add(Me.btnMerge)
         Me.Controls.Add(Me.btnShorten)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnMD5)
         Me.Controls.Add(Me.rtbStatus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "frmVEDA"
+        Me.Name = "FrmVeda"
         Me.Text = "[VEDA Control System]"
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -164,7 +152,6 @@ Partial Class FrmVeda
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents btnShorten As System.Windows.Forms.Button
-    Friend WithEvents btnMerge As System.Windows.Forms.Button
     Friend WithEvents btnListDir As System.Windows.Forms.Button
     Friend WithEvents btnAnyDir As System.Windows.Forms.Button
     Friend WithEvents Button1 As System.Windows.Forms.Button
