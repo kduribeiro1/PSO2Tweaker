@@ -997,7 +997,7 @@ Public Class FrmMain
     End Function
 
     ' TODO: See about moving this to helper function
-    Private Function CheckIfRunning(processName As String) As Boolean
+    Private Shared Function CheckIfRunning(processName As String) As Boolean
         Dim processes = Process.GetProcessesByName(processName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
 

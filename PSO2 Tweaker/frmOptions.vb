@@ -73,7 +73,7 @@ Public Class FrmOptions
         End Try
     End Sub
 
-    Private Sub UpdateVersion(key As String, str As String)
+    Private Shared Sub UpdateVersion(key As String, str As String)
         Dim value As String = str.Replace("Latest version: ", "").Replace("Last installed: ", "")
         RegKey.SetValue(Of String)(key, value)
         If value <> "" Then MsgBox("Selected value changed to: " & value)
@@ -98,7 +98,7 @@ Public Class FrmOptions
         End If
     End Sub
 
-    Private Function GetBackupMode(key As String) As String
+    Private Shared Function GetBackupMode(key As String) As String
         Dim value As String = RegKey.GetValue(Of String)(key)
         Select Case value
             Case "Ask"
