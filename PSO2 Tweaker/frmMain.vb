@@ -31,8 +31,6 @@ Public Class FrmMain
     Dim _mileyCyrus As Integer
     Dim _override As Boolean = False
     Dim _restartplz As Boolean
-    Dim _someoftheprepatches As Dictionary(Of String, String)
-    Dim _someofthethings As Dictionary(Of String, String)
     Dim _systemUnlock As Integer
     Dim _transOverride As Boolean = False
     Dim _useItemTranslation As Boolean = False
@@ -939,11 +937,11 @@ Public Class FrmMain
         Helper.PasteBinUploadFile(_startPath & "\logfile.txt")
     End Sub
 
-    Public Sub MergePatches()
+    Public Shared Function MergePatches() As Dictionary(Of String, String)
         Dim patchlist As String() = File.ReadAllLines("patchlist.txt")
         Dim patchlistOld As String() = File.ReadAllLines("patchlist_old.txt")
 
-        Dim files = New Dictionary(Of String, String)
+        Dim result = New Dictionary(Of String, String)
 
         For index As Integer = 0 To (patchlist.Length - 1)
             Dim currentLine = patchlist(index)
@@ -954,8 +952,8 @@ Public Class FrmMain
 
             Dim key = filename(0).Replace("data/win32/", "")
 
-            If Not files.ContainsKey(key) Then
-                files.Add(key, currentLine)
+            If Not result.ContainsKey(key) Then
+                result.Add(key, currentLine)
             End If
         Next
 
@@ -968,16 +966,16 @@ Public Class FrmMain
 
             Dim key = filename(0).Replace("data/win32/", "")
 
-            If Not files.ContainsKey(key) Then
-                files.Add(key, currentLine)
+            If Not result.ContainsKey(key) Then
+                result.Add(key, currentLine)
             End If
         Next
 
-        _someofthethings = files
-    End Sub
+        Return result
+    End Function
 
-    Private Sub MergePrePatches()
-        Dim patches As New Dictionary(Of String, String)
+    Private Shared Function MergePrePatches() As Dictionary(Of String, String)
+        Dim result As New Dictionary(Of String, String)
 
         For i As Integer = 0 To 5
             Dim patchlist = File.ReadAllLines("patchlist" & i & ".txt")
@@ -989,16 +987,16 @@ Public Class FrmMain
                 Dim fileName = Path.GetFileNameWithoutExtension(splitLine(0).Replace("data/win32/", ""))
                 Dim hash = splitLine(2)
 
-                If (Not String.IsNullOrEmpty(fileName)) AndAlso (Not patches.ContainsKey(hash)) Then
-                    patches.Add(hash, fileName)
+                If (Not String.IsNullOrEmpty(fileName)) AndAlso (Not result.ContainsKey(hash)) Then
+                    result.Add(hash, fileName)
                 End If
             Next
         Next
 
-        _someoftheprepatches = patches
-    End Sub
+        Return result
+    End Function
 
-    ' TODO: See about moving to helper function
+    ' TODO: See about moving this to helper function
     Private Function CheckIfRunning(processName As String) As Boolean
         Dim processes = Process.GetProcessesByName(processName)
         Dim currentProcess As Process = Process.GetCurrentProcess()
@@ -1249,22 +1247,22 @@ StartPrePatch:
                         Dlwua("http://download.pso2.jp/patch_prod/patches_precede/patchlist4.txt", "patchlist4.txt")
                         Dlwua("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt")
                         WriteDebugInfoSameLine(My.Resources.strDone)
-                        MergePrePatches()
+                        Dim mergedPrePatches = MergePrePatches()
                         If Not Directory.Exists(_pso2RootDir & "\_precede\data\win32") Then Directory.CreateDirectory(_pso2RootDir & "\_precede\data\win32") 'create directory
 
                         WriteDebugInfo("Checking for already existing precede files...")
                         numberofChecks = 0
                         missingfiles.Clear()
 
-                        _someoftheprepatches.Remove("GameGuard.des")
-                        _someoftheprepatches.Remove("PSO2JP.ini")
-                        _someoftheprepatches.Remove("script/user_default.pso2")
-                        _someoftheprepatches.Remove("script/user_intel.pso2")
-                        _someoftheprepatches.Remove("")
+                        mergedPrePatches.Remove("GameGuard.des")
+                        mergedPrePatches.Remove("PSO2JP.ini")
+                        mergedPrePatches.Remove("script/user_default.pso2")
+                        mergedPrePatches.Remove("script/user_intel.pso2")
+                        mergedPrePatches.Remove("")
 
-                        For Each sBuffer In _someoftheprepatches
+                        For Each sBuffer In mergedPrePatches
                             If _cancelledFull Then
-                                _someoftheprepatches = Nothing
+                                mergedPrePatches = Nothing
                                 Exit Sub
                             End If
 
@@ -1283,7 +1281,7 @@ StartPrePatch:
                             Application.DoEvents()
                         Next
 
-                        _someoftheprepatches = Nothing
+                        mergedPrePatches = Nothing
 
                         Dim totaldownload As Long = missingfiles.Count
                         Dim downloaded As Long = 0
@@ -1302,8 +1300,6 @@ StartPrePatch:
                             _cancelled = False
                             Dlwua(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadstring & ".pat"), downloadstring)
                             Dim info7 As New FileInfo(downloadstring)
-                            'Dim length2 As Long
-                            'If File.Exists(downloadstring) Then length2 = info7.Length
                             If info7.Length = 0 Then
                                 Log("File appears to be empty, trying to download from secondary SEGA server")
                                 Dlwua(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadstring & ".pat"), downloadstring)
@@ -2139,21 +2135,21 @@ StartPrePatch:
         If result = MsgBoxResult.No Then
             _comingFromOldFiles = False
             If _cancelledFull Then Exit Sub
-            MergePatches()
+            Dim mergedPatches = MergePatches()
             WriteDebugInfo(My.Resources.strCheckingforAllFiles)
 
-            _someofthethings.Remove("GameGuard.des")
-            _someofthethings.Remove("PSO2JP.ini")
-            _someofthethings.Remove("script/user_default.pso2")
-            _someofthethings.Remove("script/user_intel.pso2")
-            _someofthethings.Remove("")
+            mergedPatches.Remove("GameGuard.des")
+            mergedPatches.Remove("PSO2JP.ini")
+            mergedPatches.Remove("script/user_default.pso2")
+            mergedPatches.Remove("script/user_intel.pso2")
+            mergedPatches.Remove("")
 
-            If _someofthethings.ContainsKey("pso2.exe") Then
-                _someofthethings.Remove("pso2.exe")
+            If mergedPatches.ContainsKey("pso2.exe") Then
+                mergedPatches.Remove("pso2.exe")
             End If
 
             Dim dataPath = _pso2RootDir & "\data\win32\"
-            Dim length = _someofthethings.Count
+            Dim length = mergedPatches.Count
             Dim oldmax = PBMainBar.Maximum
             PBMainBar.Maximum = length
             _cancelled = False
@@ -2162,13 +2158,13 @@ StartPrePatch:
 
             Dim fileNames = fileLengths.Keys
 
-            For Each kvp In _someofthethings
+            For Each kvp In mergedPatches
 
                 If _cancelled Then
                     PBMainBar.Text = ""
                     PBMainBar.Value = 0
                     PBMainBar.Maximum = oldmax
-                    _someofthethings = Nothing
+                    mergedPatches = Nothing
                     _cancelled = False
                     Exit Sub
                 End If
@@ -2209,7 +2205,7 @@ StartPrePatch:
             PBMainBar.Text = ""
             PBMainBar.Value = 0
             PBMainBar.Maximum = oldmax
-            _someofthethings = Nothing
+            mergedPatches = Nothing
 
             Dim totaldownload2 As Long = missingfiles2.Count
             Dim downloaded2 As Long = 0
@@ -2229,10 +2225,7 @@ StartPrePatch:
 
                 Application.DoEvents()
                 Dlwua(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadstring & ".pat"), downloadstring)
-                Dim info7 As New FileInfo(downloadstring)
-                'Dim length2 As Long
-                'If File.Exists(downloadstring) Then length2 = info7.Length
-                If info7.Length = 0 Then
+                If New FileInfo(downloadstring).Length = 0 Then
                     Log("File appears to be empty, trying to download from secondary SEGA server")
                     Dlwua(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadstring & ".pat"), downloadstring)
                 End If
@@ -2868,7 +2861,6 @@ StartPrePatch:
             'cacls.exe "C:\PHANTASYSTARONLINE2\pso2_bin\pso2predownload.exe" /e /g "AIDA":F
             MsgBox(My.Resources.strFixPermissionIssuesText)
             Dim directoryString As String = (_pso2RootDir & "\")
-            'MsgBox("cacls.exe" & (DirectoryString & "pso2.exe") & " /e /g """ & SystemInformation.UserName & """:F")
             WriteDebugInfo(My.Resources.strFixingPermissionsFor & "pso2.exe...")
             Application.DoEvents()
             Process.Start("cacls.exe", (directoryString & "pso2.exe") & " /e /g """ & SystemInformation.UserName & """:F")
@@ -3315,12 +3307,10 @@ SelectInstallFolder:
                 TopMost = False
                 Application.DoEvents()
                 WriteDebugInfo("Downloading DirectX setup...")
-                'Dim client As New MyWebClient With {.timeout = 10000}
                 Try
                     Dlwua("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
                     WriteDebugInfoSameLine("Done!")
                     WriteDebugInfo("Checking/Installing DirectX...")
-                    'client.DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
                     Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "dxwebsetup.exe", .Verb = "runas", .Arguments = "/Q", .UseShellExecute = True}
                     Process.Start(processStartInfo).WaitForExit()
                     WriteDebugInfoSameLine("Done!")
@@ -3665,7 +3655,7 @@ SelectInstallFolder:
         WriteDebugInfoSameLine(My.Resources.strDone)
         Application.DoEvents()
         UnlockGui()
-        MergePatches()
+        Dim mergedPatches = MergePatches()
 
         'Rewrite this to support the new format
 
@@ -3674,8 +3664,8 @@ SelectInstallFolder:
         Dim missingfiles As New List(Of String)
         Dim oldarray = File.ReadAllLines("old_patchlist.txt")
 
-        For i As Integer = 0 To _someofthethings.Count
-            segaLine = _someofthethings.Values(i)
+        For i As Integer = 0 To mergedPatches.Count
+            segaLine = mergedPatches.Values(i)
             If String.IsNullOrEmpty(segaLine) Then Continue For
 
             segaFilename = segaLine.Remove(segaLine.IndexOf(".pat", StringComparison.Ordinal)).Replace("data/win32/", "")
@@ -3712,7 +3702,7 @@ SelectInstallFolder:
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
             If Directory.Exists(backupdir) Then
                 Dim counter = My.Computer.FileSystem.GetFiles(backupdir)
-                If Convert.ToInt64(counter.Count) > 0 Then
+                If counter.Count > 0 Then
                     processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & _pso2WinDir & """")
                 Else
                     Log("[TRANSAM] Creating backup directory")
@@ -3918,7 +3908,6 @@ SelectInstallFolder:
 
             For Each dra As FileInfo In diar1
                 If _cancelledFull Then Exit Sub
-
                 If backupyesno = MsgBoxResult.Yes Then
                     If File.Exists((_pso2WinDir & "\" & dra.ToString())) Then
                         File.Move((_pso2WinDir & "\" & dra.ToString()), (backupstr & "\" & dra.ToString()))
@@ -3953,7 +3942,7 @@ SelectInstallFolder:
 
     Private Sub UninstallPatch(patchListUrl As String, patchListFile As String, backupDir As String, consoleMsg As String, patchVersionKey As String)
         Try
-            If Not Directory.Exists(_pso2WinDir) OrElse _pso2RootDir = "lblDirectory" Then
+            If Not _pso2RootDir = "lblDirectory" OrElse Directory.Exists(_pso2WinDir) Then
                 MsgBox(My.Resources.strPleaseSelectwin32Dir)
                 SelectPso2Directory()
                 Exit Sub
