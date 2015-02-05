@@ -24,7 +24,7 @@ Public Class FrmVeda
         Log((addThisText & " [WARNING!]"))
     End Sub
 
-    Private Sub rtbStatus_LinkClicked(sender As Object, e As LinkClickedEventArgs) Handles rtbStatus.LinkClicked
+    Private Shared Sub rtbStatus_LinkClicked(sender As Object, e As LinkClickedEventArgs) Handles rtbStatus.LinkClicked
         Process.Start(e.LinkText)
     End Sub
 

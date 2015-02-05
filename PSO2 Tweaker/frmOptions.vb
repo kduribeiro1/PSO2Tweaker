@@ -112,7 +112,7 @@ Public Class FrmOptions
         End Select
     End Function
 
-    Private Sub ButtonX1_Click(sender As Object, e As EventArgs) Handles ButtonX1.Click
+    Private Shared Sub ButtonX1_Click(sender As Object, e As EventArgs) Handles ButtonX1.Click
         Process.Start("http://arks-layer.com/credits.php")
     End Sub
 
@@ -166,7 +166,7 @@ Public Class FrmOptions
         End If
     End Sub
 
-    Private Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
+    Private Shared Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
         Dim yesNo As MsgBoxResult = MsgBox("This will tell the Tweaker you have the latest version of PSO2 installed - Be aware that this cannot be undone, and should only be used if you update the game outside of the Tweaker. Do you want to continue?", vbYesNo)
 
         If yesNo = vbYes Then

@@ -2,7 +2,7 @@
 
 Public Class FrmDiagnostic
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Shared Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim totalString As String = ""
 
         totalString &= "OS: " & My.Computer.Info.OSFullName & vbCrLf
@@ -14,7 +14,7 @@ Public Class FrmDiagnostic
         MsgBox("Copied!")
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Shared Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim totalString As String = ""
         Dim currentLine As String
 
@@ -31,16 +31,16 @@ Public Class FrmDiagnostic
         MsgBox("Copied!")
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir) & "\data\win32\")
+    Private Shared Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.Pso2Dir) & "\data\win32\")
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
         Dim fileSize As Long = filesInfo.Sum(Function(fileInfo) fileInfo.Length)
 
         Dim totalString As String = ""
-        totalString &= "PSO2 Directory: " & RegKey.GetValue(Of String)(RegKey.PSO2Dir) & vbCrLf
-        totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.PSO2RemoteVersion) & vbCrLf
+        totalString &= "PSO2 Directory: " & RegKey.GetValue(Of String)(RegKey.Pso2Dir) & vbCrLf
+        totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) & vbCrLf
         totalString &= "Item Translation: " & RegKey.GetValue(Of String)(RegKey.UseItemTranslation) & vbCrLf
-        totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.ENPatchVersion) & vbCrLf
+        totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.EnPatchVersion) & vbCrLf
         totalString &= "Large Files version installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) & vbCrLf
         totalString &= "Story Patch version installed: " & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) & vbCrLf
         totalString &= "Size of PSO2 data/win32 folder: ~" & fileSize.ToString().Remove(2, 9) & "GB"
@@ -48,8 +48,8 @@ Public Class FrmDiagnostic
         MsgBox("Copied!")
     End Sub
 
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir))
+    Private Shared Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.Pso2Dir))
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
         Dim fileSize As Long
         Dim filename As String
