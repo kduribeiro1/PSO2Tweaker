@@ -11,7 +11,20 @@ Public Class Helper
     Private Shared ReadOnly Generator As Random = New Random()
 
     Public Shared ReadOnly DefaltCultureInfo As CultureInfo = New CultureInfo("en")
-    
+
+    Public Shared Iterator Function GetLines(path As String) As IEnumerable(Of String)
+        Using reader = File.OpenText(path)
+            Dim currentLine As String
+            Do
+                currentLine = reader.ReadLine()
+                If (currentLine Is Nothing) Then Exit Do
+                Yield currentLine
+            Loop
+
+            reader.Close()
+        End Using
+    End Function
+
     Public Shared Function GetFileSize(ByVal myFilePath As String) As Long
         Dim myFile As New FileInfo(myFilePath)
         Return myFile.Length

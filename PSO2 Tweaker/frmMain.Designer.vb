@@ -109,7 +109,7 @@ Partial Class FrmMain
         Me.btnDonateToENPatchHost = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
-        Me.ButtonItem5 = New DevComponents.DotNetBar.ButtonItem()
+        Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDownloadPrepatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnCheckForStoryUpdates = New DevComponents.DotNetBar.ButtonItem()
         Me.chkAlwaysOnTop = New DevComponents.DotNetBar.CheckBoxItem()
@@ -402,7 +402,7 @@ Partial Class FrmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'btnSelectPSODir
         '
@@ -708,13 +708,13 @@ Partial Class FrmMain
         resources.ApplyResources(Me.btnNewShit, "btnNewShit")
         Me.btnNewShit.Visible = False
         '
-        'ButtonItem5
+        'BtnUpdatePso2
         '
-        Me.ButtonItem5.BeginGroup = True
-        Me.ButtonItem5.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.ButtonItem5.Name = "ButtonItem5"
-        Me.ButtonItem5.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.ButtonItem5, "ButtonItem5")
+        Me.BtnUpdatePso2.BeginGroup = True
+        Me.BtnUpdatePso2.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.BtnUpdatePso2.Name = "BtnUpdatePso2"
+        Me.BtnUpdatePso2.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.BtnUpdatePso2, "BtnUpdatePso2")
         '
         'btnDownloadPrepatch
         '
@@ -811,7 +811,7 @@ Partial Class FrmMain
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
         '
-        'frmMain
+        'FrmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -844,7 +844,7 @@ Partial Class FrmMain
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.KeyPreview = True
         Me.MaximizeBox = False
-        Me.Name = "frmMain"
+        Me.Name = "FrmMain"
         Me.cmsProgressBar.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -940,7 +940,7 @@ Partial Class FrmMain
     Friend WithEvents btnDonateToENPatchHost As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToTweaker As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnNewShit As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents ButtonItem5 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents BtnUpdatePso2 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDownloadPrepatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnCheckForStoryUpdates As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents chkAlwaysOnTop As DevComponents.DotNetBar.CheckBoxItem
