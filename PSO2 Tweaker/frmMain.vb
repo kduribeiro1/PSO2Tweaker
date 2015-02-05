@@ -13,7 +13,8 @@ Imports System.Xml
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
-' TODO: Remove all RaiseClick calls, also see about _override.
+' TODO: Remove all RaiseClick calls.
+' TODO: RestoreEnBackup, RestoreLargeFilesBackup and RestoreStoryBackup are all the same (mostly) this should be delt with.
 
 Public Class FrmMain
     ReadOnly _pso2OptionsFrm As FrmPso2Options
@@ -30,7 +31,6 @@ Public Class FrmMain
     Dim _freedomUrl As String = "http://162.243.211.123/freedom/"
     Dim _itemDownloadingDone As Boolean
     Dim _mileyCyrus As Integer
-    Dim _override As Boolean = False
     Dim _restartplz As Boolean
     Dim _systemUnlock As Integer
     Dim _transOverride As Boolean = False
@@ -1871,23 +1871,17 @@ StartPrePatch:
 
         If Directory.Exists((_pso2WinDir & "\backup\English Patch\")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
-            _override = True
-            btnRestoreENBackup.RaiseClick()
-            _override = False
+            RestoreEnBackup()
         End If
 
         If Directory.Exists((_pso2WinDir & "\backup\Large Files\")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
-            _override = True
-            btnRestoreLargeFilesBackup.RaiseClick()
-            _override = False
+            RestoreLargeFilesBackup()
         End If
 
         If Directory.Exists((_pso2WinDir & "\backup\Story Patch\")) Then
             WriteDebugInfo(My.Resources.strStoryBackupFound)
-            _override = True
-            btnRestoreStoryBackup.RaiseClick()
-            _override = False
+            RestoreStoryBackup()
         End If
 
         ' Why is the UI being disabled here, is there something I'm missing? -Matthew
@@ -2226,33 +2220,8 @@ StartPrePatch:
     Private Sub btnRestoreENBackup_Click(sender As Object, e As EventArgs) Handles btnRestoreENBackup.Click
         Try
             If IsPso2WinDirMissing() Then Exit Sub
-            Dim backupyesno As MsgBoxResult
-            If Not _override Then
-                backupyesno = MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo)
-            End If
-            If _override Then backupyesno = MsgBoxResult.Yes
-            If backupyesno = MsgBoxResult.Yes Then
-                Const backupfolder As String = "backup\English Patch\"
-                If Not Directory.Exists((_pso2WinDir & "\" & backupfolder)) Then
-                    WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (_pso2WinDir & "\" & backupfolder))
-                    Exit Sub
-                End If
-                Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
-                WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
-                Application.DoEvents()
-                'list the names of all files in the specified directory
-                For Each dra As FileInfo In di.GetFiles()
-                    If File.Exists(_pso2WinDir & "\" & dra.ToString()) Then
-                        DeleteFile(_pso2WinDir & "\" & dra.ToString())
-                    End If
-                    File.Move(((_pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
-                Next
-                My.Computer.FileSystem.DeleteDirectory((_pso2WinDir & "\" & backupfolder), DeleteDirectoryOption.DeleteAllContents)
-                External.FlashWindow(Handle, True)
-                WriteDebugInfo(My.Resources.strBackupRestored)
-                UnlockGui()
-            Else
-                Exit Sub
+            If MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo) = MsgBoxResult.Yes Then
+                RestoreEnBackup()
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -2261,41 +2230,60 @@ StartPrePatch:
         End Try
     End Sub
 
-    Private Sub ButtonItem4_Click(sender As Object, e As EventArgs) Handles btnRestoreLargeFilesBackup.Click
+    Private Sub RestoreEnBackup()
+        Const backupfolder As String = "backup\English Patch\"
+        If Not Directory.Exists((_pso2WinDir & "\" & backupfolder)) Then
+            WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (_pso2WinDir & "\" & backupfolder))
+            Exit Sub
+        End If
+        Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
+        WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
+        Application.DoEvents()
+        'list the names of all files in the specified directory
+        For Each dra As FileInfo In di.GetFiles()
+            If File.Exists(_pso2WinDir & "\" & dra.ToString()) Then
+                DeleteFile(_pso2WinDir & "\" & dra.ToString())
+            End If
+            File.Move(((_pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
+        Next
+        My.Computer.FileSystem.DeleteDirectory((_pso2WinDir & "\" & backupfolder), DeleteDirectoryOption.DeleteAllContents)
+        External.FlashWindow(Handle, True)
+        WriteDebugInfo(My.Resources.strBackupRestored)
+        UnlockGui()
+    End Sub
+
+    Private Sub btnRestoreLargeFilesBackup_Click(sender As Object, e As EventArgs) Handles btnRestoreLargeFilesBackup.Click
         Try
             If IsPso2WinDirMissing() Then Exit Sub
-            Dim backupyesno As MsgBoxResult
-            If Not _override Then
-                backupyesno = MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo)
-            End If
-            If _override Then backupyesno = MsgBoxResult.Yes
-            If backupyesno = MsgBoxResult.Yes Then
-                Const backupfolder As String = "backup\Large Files\"
-                If Not Directory.Exists((_pso2WinDir & "\" & backupfolder)) Then
-                    WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (_pso2WinDir & "\" & backupfolder))
-                    Exit Sub
-                End If
-                Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
-                WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
-                Application.DoEvents()
-                'list the names of all files in the specified directory
-                For Each dra As FileInfo In di.GetFiles()
-                    If File.Exists(_pso2WinDir & "\" & dra.ToString()) Then
-                        DeleteFile(_pso2WinDir & "\" & dra.ToString())
-                    End If
-                    File.Move(((_pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
-                Next
-                My.Computer.FileSystem.DeleteDirectory((_pso2WinDir & "\" & backupfolder), DeleteDirectoryOption.DeleteAllContents)
-                WriteDebugInfo(My.Resources.strBackupRestored)
-                UnlockGui()
-            Else
-                Exit Sub
+            If MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo) = MsgBoxResult.Yes Then
+                RestoreLargeFilesBackup()
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
+    End Sub
+
+    Private Sub RestoreLargeFilesBackup()
+        Const backupfolder As String = "backup\Large Files\"
+        If Not Directory.Exists((_pso2WinDir & "\" & backupfolder)) Then
+            WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (_pso2WinDir & "\" & backupfolder))
+            Exit Sub
+        End If
+        Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
+        WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
+        Application.DoEvents()
+        'list the names of all files in the specified directory
+        For Each dra As FileInfo In di.GetFiles()
+            If File.Exists(_pso2WinDir & "\" & dra.ToString()) Then
+                DeleteFile(_pso2WinDir & "\" & dra.ToString())
+            End If
+            File.Move(((_pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
+        Next
+        My.Computer.FileSystem.DeleteDirectory((_pso2WinDir & "\" & backupfolder), DeleteDirectoryOption.DeleteAllContents)
+        WriteDebugInfo(My.Resources.strBackupRestored)
+        UnlockGui()
     End Sub
 
     Private Sub btnRestoreJPNames_Click(sender As Object, e As EventArgs) Handles btnRestoreJPNames.Click
@@ -2693,38 +2681,35 @@ StartPrePatch:
     Private Sub btnRestoreStoryBackup_Click(sender As Object, e As EventArgs) Handles btnRestoreStoryBackup.Click
         Try
             If IsPso2WinDirMissing() Then Exit Sub
-            Dim backupyesno As MsgBoxResult
-            If Not _override Then
-                backupyesno = MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo)
-            End If
-            If _override Then backupyesno = MsgBoxResult.Yes
-            If backupyesno = MsgBoxResult.Yes Then
-                Const backupfolder As String = "backup\Story Patch\"
-                If Not Directory.Exists((_pso2WinDir & "\" & backupfolder)) Then
-                    WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (_pso2WinDir & "\" & backupfolder))
-                    Exit Sub
-                End If
-                Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
-                WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
-                Application.DoEvents()
-                'list the names of all files in the specified directory
-                For Each dra As FileInfo In di.GetFiles()
-                    If File.Exists(_pso2WinDir & "\" & dra.ToString()) Then
-                        DeleteFile(_pso2WinDir & "\" & dra.ToString())
-                    End If
-                    File.Move(((_pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
-                Next
-                My.Computer.FileSystem.DeleteDirectory((_pso2WinDir & "\" & backupfolder), DeleteDirectoryOption.DeleteAllContents)
-                WriteDebugInfo(My.Resources.strBackupRestored)
-                UnlockGui()
-            Else
-                Exit Sub
+            If MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo) = MsgBoxResult.Yes Then
+                RestoreStoryBackup()
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
             Exit Sub
         End Try
+    End Sub
+
+    Private Sub RestoreStoryBackup()
+        Const backupfolder As String = "backup\Story Patch\"
+        If Not Directory.Exists((_pso2WinDir & "\" & backupfolder)) Then
+            WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (_pso2WinDir & "\" & backupfolder))
+            Exit Sub
+        End If
+        Dim di As New DirectoryInfo((_pso2WinDir & "\" & backupfolder))
+        WriteDebugInfoAndOk((My.Resources.strRestoringBackupTo & _pso2WinDir))
+        Application.DoEvents()
+        'list the names of all files in the specified directory
+        For Each dra As FileInfo In di.GetFiles()
+            If File.Exists(_pso2WinDir & "\" & dra.ToString()) Then
+                DeleteFile(_pso2WinDir & "\" & dra.ToString())
+            End If
+            File.Move(((_pso2WinDir & "\" & backupfolder) & "\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
+        Next
+        My.Computer.FileSystem.DeleteDirectory((_pso2WinDir & "\" & backupfolder), DeleteDirectoryOption.DeleteAllContents)
+        WriteDebugInfo(My.Resources.strBackupRestored)
+        UnlockGui()
     End Sub
 
     Private Sub btnFixPermissions_Click(sender As Object, e As EventArgs) Handles btnFixPermissions.Click
@@ -3452,16 +3437,12 @@ SelectInstallFolder:
         'if file "currentpatchlist.txt" is not found then build list like SEGA's.
         If Directory.Exists((_pso2WinDir & "\backup\English Patch\")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
-            _override = True
-            btnRestoreENBackup.RaiseClick()
-            _override = False
+            RestoreEnBackup()
         End If
 
         If Directory.Exists((_pso2WinDir & "\backup\Large Files\")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
-            _override = True
-            btnRestoreLargeFilesBackup.RaiseClick()
-            _override = False
+            RestoreLargeFilesBackup()
         End If
 
         Dim totalfiles = Directory.GetFiles(_pso2RootDir & "\data\win32\")
