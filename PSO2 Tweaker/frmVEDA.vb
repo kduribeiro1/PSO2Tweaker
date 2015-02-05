@@ -108,12 +108,13 @@ Public Class FrmVeda
         ' make a reference to a directory
         WriteDebugInfo("Listing contents...")
         Dim pso2Launchpath As String = FrmMain.lblDirectory.Text.Replace("\data\win32", "")
-        File.Delete("PSO2 Folder Contents.txt")
 
         'list the names of all files in the specified directory
-        For Each dra As FileInfo In New DirectoryInfo(pso2Launchpath).GetFiles()
-            File.AppendAllText("PSO2 Folder Contents.txt", (dra.ToString() & vbCrLf))
-        Next
+        Using writer = New StreamWriter("PSO2 Folder Contents.txt", False)
+            For Each dra As FileInfo In New DirectoryInfo(pso2Launchpath).GetFiles()
+                writer.WriteLine(dra.ToString())
+            Next
+        End Using
 
         Helper.PasteBinUploadFile("PSO2 Folder Contents.txt")
     End Sub
@@ -132,12 +133,13 @@ Public Class FrmVeda
 
         If myFolderBrowser.ShowDialog() = DialogResult.OK Then
             Dim directoryString As String = myFolderBrowser.SelectedPath
-            File.Delete("Folder Contents.txt")
 
             'list the names of all files in the specified directory
-            For Each dra As FileInfo In New DirectoryInfo(directoryString).GetFiles()
-                File.AppendAllText("Folder Contents.txt", (dra.ToString() & vbCrLf))
-            Next
+            Using writer = New StreamWriter("Folder Contents.txt", False)
+                For Each dra As FileInfo In New DirectoryInfo(directoryString).GetFiles()
+                    writer.WriteLine(dra.ToString())
+                Next
+            End Using
 
             Helper.PasteBinUploadFile("Folder Contents.txt")
         End If
@@ -160,9 +162,11 @@ Public Class FrmVeda
             If File.Exists("Story MD5HashList.txt") Then File.Delete("Story MD5HashList.txt")
 
             'list the names of all files in the specified directory
-            For Each dra As FileInfo In New DirectoryInfo(directoryString).GetFiles()
-                File.AppendAllText(directoryString & " \Story MD5HashList.txt", (dra.ToString() & "," & Helper.GetMd5(directoryString & " \" & dra.ToString()) & vbCrLf))
-            Next
+            Using writer = New StreamWriter(directoryString & " \Story MD5HashList.txt", False)
+                For Each dra As FileInfo In New DirectoryInfo(directoryString).GetFiles()
+                    writer.WriteLine((dra.ToString() & "," & Helper.GetMd5(directoryString & " \" & dra.ToString())))
+                Next
+            End Using
             WriteDebugInfo("Done.")
             Process.Start("explorer.exe " & directoryString)
         End If
