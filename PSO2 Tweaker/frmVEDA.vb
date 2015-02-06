@@ -173,6 +173,6 @@ Public Class FrmVeda
     End Sub
 
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click
-        FrmMain.Dlwua(txtAqua.Text, "testfile")
+        FrmMain.DownloadFile(txtAqua.Text, "testfile")
     End Sub
 End Class
