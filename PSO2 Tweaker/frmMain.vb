@@ -2789,7 +2789,7 @@ StartPrePatch:
         ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
         ' Furthermore, we could also parse it from within the function.
         Dim url As String = _client.DownloadString(_freedomUrl & "patches/enpatch.txt")
-        DownloadPatch(url, "EN Patch", "ENPatch.rar", RegKey.EnPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR)
+        DownloadPatch(url, "English Patch", "ENPatch.rar", RegKey.EnPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR)
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -3759,7 +3759,7 @@ SelectInstallFolder:
         Dim result As String = _pso2WinDir & "\backup\" & patchName
 
         If trailingSlash Then
-            result = result & "\"
+            result &= "\"
         End If
 
         Return result
