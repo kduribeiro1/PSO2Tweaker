@@ -1346,7 +1346,7 @@ StartPrePatch:
             End If
 
             If updateNeeded Then
-                BtnUpdatePso2.RaiseClick()
+                UpdatePso2(False)
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -3125,7 +3125,7 @@ SelectInstallFolder:
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
 
                 'Check for PSO2 Updates~
-                BtnUpdatePso2.RaiseClick()
+                UpdatePso2(False)
 
                 MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
                 Refresh()
