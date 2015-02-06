@@ -13,7 +13,6 @@ Imports System.Xml
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
-' TODO: Remove all RaiseClick calls.
 
 Public Class FrmMain
     ReadOnly _pso2OptionsFrm As FrmPso2Options
@@ -212,7 +211,7 @@ Public Class FrmMain
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2Dir)) Then
                 Dim alreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
                 If alreadyInstalled = vbNo Then
-                    btnInstallPSO2.RaiseClick()
+                    InstallPso2()
                 End If
             End If
 
@@ -615,7 +614,7 @@ Public Class FrmMain
             If File.Exists("resume.txt") Then
                 Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you like to resume patching?", vbYesNo)
                 If yesNoResume = MsgBoxResult.Yes Then
-                    btnResumePatching.RaiseClick()
+                    ResumePatching()
                 Else
                     DeleteFile("resume.txt")
                 End If
@@ -1056,7 +1055,7 @@ Public Class FrmMain
                     If strDownloadMe <> RegKey.GetValue(Of String)(RegKey.LatestStoryBase) Then
                         Dim mbVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it using the new story patch method?", MsgBoxStyle.YesNo)
                         If mbVisitLink = vbYes Then
-                            btnStoryPatchNew.RaiseClick()
+                            InstallStoryPatchNew()
                             Return
                         End If
                         If mbVisitLink = vbNo Then Return
@@ -1150,7 +1149,7 @@ Public Class FrmMain
                 Dim updateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewENPatch, vbYesNo)
                 If updateStoryYesNo = vbNo Then updateNeeded = False
                 If updateNeeded Then
-                    btnENPatch.RaiseClick()
+                    DownloadEnglishPatch()
                     Return
                 End If
             End If
@@ -1176,7 +1175,7 @@ Public Class FrmMain
                 Dim updateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewLargeFiles, vbYesNo)
                 If updateStoryYesNo = vbNo Then updateNeeded = False
                 If updateNeeded Then
-                    btnLargeFiles.RaiseClick()
+                    DownloadLargeFiles()
                     Return
                 End If
             End If
@@ -1649,6 +1648,11 @@ StartPrePatch:
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
+        DownloadLargeFiles()
+    End Sub
+
+    Private Sub DownloadLargeFiles()
+
         ' The Using statement will dispose "net" as soon as we're done with it.
         ' This parses the sidebar page for compatibility
         ' First it downloads the page and splits it by line
@@ -1678,6 +1682,11 @@ StartPrePatch:
     End Sub
 
     Private Sub btnStory_Click(sender As Object, e As EventArgs) Handles btnStory.Click
+        InstallStoryPatchARchive()
+    End Sub
+
+    Private Sub InstallStoryPatchARchive()
+
         _cancelledFull = False
         Dim storyLocation As String
         Dim backupyesno As MsgBoxResult
@@ -2779,6 +2788,11 @@ StartPrePatch:
     End Sub
 
     Private Sub btnENPatch_Click(sender As Object, e As EventArgs) Handles btnENPatch.Click
+        DownloadEnglishPatch()
+    End Sub
+
+    Private Sub DownloadEnglishPatch()
+
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
         ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
@@ -2863,6 +2877,11 @@ StartPrePatch:
     End Sub
 
     Private Sub btnResumePatching_Click(sender As Object, e As EventArgs) Handles btnResumePatching.Click
+        ResumePatching()
+    End Sub
+
+    Private Sub ResumePatching()
+
         If Not File.Exists("resume.txt") Then
             WriteDebugInfo(My.Resources.strCannotFindResume)
             Return
@@ -2975,17 +2994,17 @@ StartPrePatch:
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.EnPatchAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingENPatch)
-                btnENPatch.RaiseClick()
+                DownloadEnglishPatch()
             End If
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingLF)
-                btnLargeFiles.RaiseClick()
+                DownloadLargeFiles()
             End If
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
                 WriteDebugInfo(My.Resources.strAutoInstallingStoryPatch)
-                btnStory.RaiseClick()
+                InstallStoryPatchARchive()
             End If
 
             WriteDebugInfoAndOk(My.Resources.strallDone)
@@ -3031,6 +3050,10 @@ StartPrePatch:
     End Sub
 
     Private Sub btnInstallPSO2_Click(sender As Object, e As EventArgs) Handles btnInstallPSO2.Click
+        InstallPso2()
+    End Sub
+
+    Private Sub InstallPso2()
         Dim installFolder As String = ""
         'Const installYesNo As MsgBoxResult = vbYes
         'If installYesNo = vbNo Then
@@ -3436,6 +3459,11 @@ SelectInstallFolder:
 #End If
 
     Private Sub btnStoryPatchNew_Click(sender As Object, e As EventArgs) Handles btnStoryPatchNew.Click
+        InstallStoryPatchNew()
+    End Sub
+
+    Private Sub InstallStoryPatchNew()
+
         'Don't forget to make GUI changes!
         Try
             If IsPso2WinDirMissing() Then Return
