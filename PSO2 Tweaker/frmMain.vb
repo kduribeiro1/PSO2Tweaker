@@ -1737,7 +1737,7 @@ StartPrePatch:
             WriteDebugInfoAndOk((My.Resources.strExtractingTo & _pso2WinDir))
             Application.DoEvents()
             'list the names of all files in the specified directory
-            Dim backupdir As String = BuildBackupPath("Story Patch", True)
+            Dim backupdir As String = BuildBackupPath("Story Patch")
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupdir) Then
                     My.Computer.FileSystem.DeleteDirectory(backupdir, DeleteDirectoryOption.DeleteAllContents)
@@ -1868,17 +1868,17 @@ StartPrePatch:
         Dim testfilesize As String()
         lblStatus.Text = ""
 
-        If Directory.Exists(BuildBackupPath("English Patch", True)) Then
+        If Directory.Exists(BuildBackupPath("English Patch")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             RestoreBackup("English Patch")
         End If
 
-        If Directory.Exists(BuildBackupPath("Large Files", True)) Then
+        If Directory.Exists(BuildBackupPath("Large Files")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             RestoreBackup("Large Files")
         End If
 
-        If Directory.Exists(BuildBackupPath("Story Patch", True)) Then
+        If Directory.Exists(BuildBackupPath("Story Patch")) Then
             WriteDebugInfo(My.Resources.strStoryBackupFound)
             RestoreBackup("Story Patch")
         End If
@@ -3370,12 +3370,12 @@ SelectInstallFolder:
         'download all missingfiles
 
         'if file "currentpatchlist.txt" is not found then build list like SEGA's.
-        If Directory.Exists(BuildBackupPath("English Patch", True)) Then
+        If Directory.Exists(BuildBackupPath("English Patch")) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
             RestoreBackup("English Patch")
         End If
 
-        If Directory.Exists(BuildBackupPath("Large Files", True)) Then
+        If Directory.Exists(BuildBackupPath("Large Files")) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
             RestoreBackup("Large Files")
         End If
@@ -3449,7 +3449,7 @@ SelectInstallFolder:
             ' Spit out the value plucked from the code
             txtHTML.Text = Regex.Match(_client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
 
-            Dim backupdir As String = BuildBackupPath("Story Patch", True)
+            Dim backupdir As String = BuildBackupPath("Story Patch")
             Dim strStoryPatchLatestBase As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "").Replace("/", "-")
             WriteDebugInfoAndOk("Downloading story patch info... ")
             Dlwua(_freedomUrl & "pso2.stripped.db", "pso2.stripped.db")
@@ -3635,7 +3635,7 @@ SelectInstallFolder:
             Application.DoEvents()
             If _cancelledFull Then Exit Sub
 
-            Dim backupPath As String = BuildBackupPath(patchName, False)
+            Dim backupPath As String = BuildBackupPath(patchName)
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupPath) Then
                     My.Computer.FileSystem.DeleteDirectory(backupPath, DeleteDirectoryOption.DeleteAllContents)
@@ -3712,7 +3712,7 @@ SelectInstallFolder:
                 File.Move(missingfiles(index), (_pso2WinDir & "\" & missingfiles(index)))
             Next
 
-            Dim backupPath As String = BuildBackupPath(patchName, True)
+            Dim backupPath As String = BuildBackupPath(patchName)
             If My.Computer.FileSystem.DirectoryExists(backupPath) Then
                 My.Computer.FileSystem.DeleteDirectory(backupPath, DeleteDirectoryOption.DeleteAllContents)
             End If
@@ -3729,7 +3729,7 @@ SelectInstallFolder:
     End Sub
 
     Private Sub RestoreBackup(patchName As String)
-        Dim backupPath As String = BuildBackupPath(patchName, True)
+        Dim backupPath As String = BuildBackupPath(patchName)
 
         If Not Directory.Exists(backupPath) Then
             WriteDebugInfoAndFailed(My.Resources.strCantFindBackupDirectory & (backupPath))
@@ -3754,14 +3754,7 @@ SelectInstallFolder:
         UnlockGui()
     End Sub
 
-    ' TODO: Determine whether the trailing slash is ever actually required.
-    Private Function BuildBackupPath(patchName As String, trailingSlash As Boolean) As String
-        Dim result As String = _pso2WinDir & "\backup\" & patchName
-
-        If trailingSlash Then
-            result &= "\"
-        End If
-
-        Return result
+    Private Function BuildBackupPath(ByVal patchName As String) As String
+        Return _pso2WinDir & "\backup\" & patchName & "\"
     End Function
 End Class
