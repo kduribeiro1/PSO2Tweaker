@@ -155,7 +155,7 @@ Public Class FrmPso2Options
                             TextBoxX1.AppendText("}")
                             File.Delete(_usersettingsfile)
                             File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
-                            Exit Sub
+                            Return
                         End If
                         TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
@@ -187,7 +187,7 @@ Public Class FrmPso2Options
 
                     If contains = False Then
                         FrmMain.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
-                        Exit Sub
+                        Return
                     End If
 
                     Dim strLine As String = textLines(i).Replace(vbTab, "")
@@ -199,7 +199,7 @@ Public Class FrmPso2Options
                             TextBoxX1.AppendText("}")
                             File.Delete(_usersettingsfile)
                             File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
-                            Exit Sub
+                            Return
                         End If
                         TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
@@ -231,7 +231,7 @@ Public Class FrmPso2Options
 
                     If contains = False Then
                         FrmMain.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
-                        Exit Sub
+                        Return
                     End If
 
                     Dim strLine As String = textLines(i).Replace(vbTab, "")
@@ -244,7 +244,7 @@ Public Class FrmPso2Options
                             TextBoxX1.AppendText("}")
                             File.Delete(_usersettingsfile)
                             File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
-                            Exit Sub
+                            Return
                         End If
                         TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
@@ -277,7 +277,7 @@ Public Class FrmPso2Options
 
                     If contains = False Then
                         frmMain.WriteDebugInfo("Couldn't find Height3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
-                        Exit Sub
+                        Return
                     End If
 
                     Dim strLine As String = textLines(i).Replace(vbTab, "")
@@ -289,7 +289,7 @@ Public Class FrmPso2Options
                             TextBoxX1.AppendText("}")
                             File.Delete(_usersettingsfile)
                             File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
-                            Exit Sub
+                            Return
                         End If
                         TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
@@ -321,7 +321,7 @@ Public Class FrmPso2Options
 
                     If contains = False Then
                         frmMain.WriteDebugInfo("Couldn't find Width3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
-                        Exit Sub
+                        Return
                     End If
 
                     Dim strLine As String = textLines(i).Replace(vbTab, "")
@@ -334,7 +334,7 @@ Public Class FrmPso2Options
                             TextBoxX1.AppendText("}")
                             File.Delete(_usersettingsfile)
                             File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
-                            Exit Sub
+                            Return
                         End If
                         TextBoxX1.AppendText(textLines(j) & vbCrLf)
                     Next j
@@ -381,7 +381,7 @@ Public Class FrmPso2Options
 
         If Not ComboBoxEx5.Items.Contains(ComboBoxEx5.Text) Then
             MsgBox("Please select a supported resolution!")
-            Exit Sub
+            Return
         End If
 
         frmMain.Log("Saving Resolution...")
