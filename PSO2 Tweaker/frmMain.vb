@@ -3496,9 +3496,8 @@ SelectInstallFolder:
             Log("[TRANSAM] Starting shitstorm")
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
             Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
-            Dim process As Process = process.Start(processStartInfo)
             Log("[TRANSAM] Program started")
-            process.WaitForExit()
+            process.Start(processStartInfo).WaitForExit()
             DeleteFile("pso2.stripped.db")
             DeleteFile("pso2-transam.exe")
             External.FlashWindow(Handle, True)
@@ -3638,9 +3637,8 @@ SelectInstallFolder:
             If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & rarLocation & """" & " TEMPPATCHAIDAFOOL")
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
-            Dim process As Process = process.Start(processStartInfo)
             WriteDebugInfo(My.Resources.strWaitingforPatch)
-            process.WaitForExit()
+            process.Start(processStartInfo).WaitForExit()
 
             If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
