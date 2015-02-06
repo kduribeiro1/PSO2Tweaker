@@ -1110,7 +1110,6 @@ SkipItemProxyDownload:
                 RegKey.SetValue(Of String)(RegKey.NewVersionTemp, sBuffer)
                 RegKey.SetValue(Of String)(RegKey.NewStoryVersion, sBuffer)
                 Dim strNewDate As String = sBuffer
-                MsgBox(strNewDate)
                 If sBuffer <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
                     UpdateNeeded = True
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
@@ -1398,6 +1397,11 @@ StartPrePatch:
                     If ApplyPrePatch = "Yes" Then
                         Dim ApplyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
                         If ApplyPrePatchYesNo = vbYes Then
+                            WriteDebugInfo("Restoring backup of vanilla JP files...")
+                            Override = True
+                            btnRestoreENBackup.RaiseClick()
+                            btnRestoreLargeFilesBackup.RaiseClick()
+                            btnRestoreStoryBackup.RaiseClick()
                             WriteDebugInfo("Installing prepatch, please wait...")
                             Application.DoEvents()
                             Dim di As New DirectoryInfo(pso2RootDir & "\_precede\data\win32\")
