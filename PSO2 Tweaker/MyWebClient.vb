@@ -5,7 +5,7 @@ Public Class MyWebClient
 
     Private _timeout As Integer
 
-    Public Property timeout As Integer
+    Public Property Timeout As Integer
         Get
             timeout = _timeout
         End Get
@@ -15,13 +15,13 @@ Public Class MyWebClient
         End Set
     End Property
 
-    Public Sub MyWebClient()
-        Me.timeout = 60000
+    Public Sub New()
+        timeout = 60000
     End Sub
 
     Protected Overrides Function GetWebRequest(ByVal address As Uri) As WebRequest
         Dim result = MyBase.GetWebRequest(address)
-        result.Timeout = Me._timeout
+        result.Timeout = _timeout
         Return result
     End Function
 

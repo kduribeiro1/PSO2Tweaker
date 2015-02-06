@@ -4,46 +4,44 @@ Imports System.Net
 Imports System.Diagnostics
 Imports DevComponents.DotNetBar
 
-Public Class frmOptions
-    Private Declare Auto Function ShellExecute Lib "shell32.dll" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As UInteger) As IntPtr
-
+Public Class FrmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            Me.SuspendLayout()
+            SuspendLayout()
             If (RegKey.GetValue(Of Integer)(RegKey.Color)) <> 0 Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
             If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)) <> 0 Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
 
-            Dim BackupMode = GetBackupMode(RegKey.Backup)
+            Dim backupMode = GetBackupMode(RegKey.Backup)
 
-            If Not String.IsNullOrEmpty(BackupMode) Then
-                cmbBackupPreference.Text = BackupMode
+            If Not String.IsNullOrEmpty(backupMode) Then
+                cmbBackupPreference.Text = backupMode
             End If
 
-            BackupMode = GetBackupMode(RegKey.PreDownloadedRAR)
+            backupMode = GetBackupMode(RegKey.PreDownloadedRar)
 
-            If Not String.IsNullOrEmpty(BackupMode) Then
-                cmbPredownload.Text = BackupMode
+            If Not String.IsNullOrEmpty(backupMode) Then
+                cmbPredownload.Text = backupMode
             End If
 
             ' Checks if the DPI greater or equal to 120, and sets accordingly.
             ' Otherwise, we'll assume is 96 or lower.
-            Using g As Graphics = Me.CreateGraphics
+            Using g As Graphics = CreateGraphics()
                 If g.DpiX >= 120 Then
-                    Me.Size = New Size(543, 476)
+                    Size = New Size(543, 476)
                 Else
-                    Me.Size = New Size(400, 373)
+                    Size = New Size(400, 373)
                 End If
             End Using
 
             ' Here we pull the locale setting from registry and apply it to the form.
             ' Reads locale from registry and converts from LangCode (e.g "en") to Language (e.g "English")
             Try
-                Dim Locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
+                Dim locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
 
-                cmbLanguage.Text = Locale.ToString()
-                Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(CType(Locale, LangCode).ToString())
+                cmbLanguage.Text = locale.ToString()
+                Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(CType(locale, LangCode).ToString())
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             Catch ex As Exception
                 cmbLanguage.Text = "English"
@@ -71,11 +69,11 @@ Public Class frmOptions
             frmMain.Log(ex.Message)
             frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
-            Me.ResumeLayout(False)
+            ResumeLayout(False)
         End Try
     End Sub
 
-    Private Sub UpdateVersion(key As String, str As String)
+    Private Shared Sub UpdateVersion(key As String, str As String)
         Dim value As String = str.Replace("Latest version: ", "").Replace("Last installed: ", "")
         RegKey.SetValue(Of String)(key, value)
         If value <> "" Then MsgBox("Selected value changed to: " & value)
@@ -83,26 +81,26 @@ Public Class frmOptions
 
     Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         SetLocale()
-        Me.CMBStyle.SelectedIndex = -1
+        CMBStyle.SelectedIndex = -1
     End Sub
 
     Private Sub SetLocale()
-        Dim SelectedLocale As String = [Enum].GetName(GetType(LangCode), cmbLanguage.SelectedIndex)
+        Dim selectedLocale As String = [Enum].GetName(GetType(LangCode), cmbLanguage.SelectedIndex)
 
-        If String.IsNullOrEmpty(SelectedLocale) Then
+        If String.IsNullOrEmpty(selectedLocale) Then
             Thread.CurrentThread.CurrentUICulture = Helper.DefaltCultureInfo
             Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             RegKey.SetValue(Of String)(RegKey.Locale, "en")
         Else
-            Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo(SelectedLocale)
+            Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(selectedLocale)
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
-            RegKey.SetValue(Of String)(RegKey.Locale, SelectedLocale)
+            RegKey.SetValue(Of String)(RegKey.Locale, selectedLocale)
         End If
     End Sub
 
-    Private Function GetBackupMode(ByRef Key As String) As String
-        Dim Value As String = RegKey.GetValue(Of String)(Key)
-        Select Case Value
+    Private Shared Function GetBackupMode(key As String) As String
+        Dim value As String = RegKey.GetValue(Of String)(key)
+        Select Case value
             Case "Ask"
                 Return "Ask every time"
             Case "Always"
@@ -114,7 +112,7 @@ Public Class frmOptions
         End Select
     End Function
 
-    Private Sub ButtonX1_Click(sender As Object, e As EventArgs) Handles ButtonX1.Click
+    Private Shared Sub ButtonX1_Click(sender As Object, e As EventArgs) Handles ButtonX1.Click
         Process.Start("http://arks-layer.com/credits.php")
     End Sub
 
@@ -134,7 +132,6 @@ Public Class frmOptions
         frmMain.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxBGColor, (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
-
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
         RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, CheckBoxX5.Checked)
@@ -169,14 +166,14 @@ Public Class frmOptions
         End If
     End Sub
 
-    Private Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
-        Dim YesNo As MsgBoxResult = MsgBox("This will tell the Tweaker you have the latest version of PSO2 installed - Be aware that this cannot be undone, and should only be used if you update the game outside of the Tweaker. Do you want to continue?", vbYesNo)
+    Private Shared Sub btnPSO2Override_Click(sender As Object, e As EventArgs) Handles btnPSO2Override.Click
+        Dim yesNo As MsgBoxResult = MsgBox("This will tell the Tweaker you have the latest version of PSO2 installed - Be aware that this cannot be undone, and should only be used if you update the game outside of the Tweaker. Do you want to continue?", vbYesNo)
 
-        If YesNo = vbYes Then
+        If yesNo = vbYes Then
             Dim lines3 = File.ReadAllLines("version.ver")
-            Dim RemoteVersion3 As String = lines3(0)
-            RegKey.SetValue(Of String)(RegKey.PSO2RemoteVersion, RemoteVersion3)
-            MsgBox("PSO2 Installed version set to: " & RemoteVersion3)
+            Dim remoteVersion3 As String = lines3(0)
+            RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, remoteVersion3)
+            MsgBox("PSO2 Installed version set to: " & remoteVersion3)
         End If
     End Sub
 
@@ -194,8 +191,9 @@ Public Class frmOptions
     End Sub
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
-        Dim DownloadClient As New WebClient
-        DownloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
+        Using downloadClient As New WebClient
+            downloadClient.DownloadFile(New Uri("http://162.243.211.123/freedom/LanguagePack.rar"), "LanguagePack.rar")
+        End Using
 
         Dim processStartInfo = New ProcessStartInfo()
         processStartInfo.FileName = (Application.StartupPath & "\unrar.exe").Replace("\\", "\")
@@ -204,11 +202,7 @@ Public Class frmOptions
         processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
         processStartInfo.UseShellExecute = True
 
-        Dim extractorProcess = Process.Start(processStartInfo)
-
-        Do Until extractorProcess.WaitForExit(1000)
-        Loop
-
+        Process.Start(processStartInfo).WaitForExit()
         SetLocale()
     End Sub
 
@@ -219,7 +213,7 @@ Public Class frmOptions
         frmPSO2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
         frmPSO2Options.TabItem3.TextColor = ColorPickerButton2.SelectedColor
         frmPSO2Options.TabItem7.TextColor = ColorPickerButton2.SelectedColor
-        Me.ForeColor = ColorPickerButton2.SelectedColor
+        ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor

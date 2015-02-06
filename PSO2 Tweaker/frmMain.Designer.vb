@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMain
+Partial Class FrmMain
     Inherits DevComponents.DotNetBar.Office2007Form
 
     'Form overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMain))
         Me.txtHTML = New System.Windows.Forms.TextBox()
         Me.rtbDebug = New System.Windows.Forms.RichTextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -109,7 +109,7 @@ Partial Class frmMain
         Me.btnDonateToENPatchHost = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
-        Me.ButtonItem5 = New DevComponents.DotNetBar.ButtonItem()
+        Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDownloadPrepatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnCheckForStoryUpdates = New DevComponents.DotNetBar.ButtonItem()
         Me.chkAlwaysOnTop = New DevComponents.DotNetBar.CheckBoxItem()
@@ -402,7 +402,7 @@ Partial Class frmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.ButtonItem5, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'btnSelectPSODir
         '
@@ -708,13 +708,13 @@ Partial Class frmMain
         resources.ApplyResources(Me.btnNewShit, "btnNewShit")
         Me.btnNewShit.Visible = False
         '
-        'ButtonItem5
+        'BtnUpdatePso2
         '
-        Me.ButtonItem5.BeginGroup = True
-        Me.ButtonItem5.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.ButtonItem5.Name = "ButtonItem5"
-        Me.ButtonItem5.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.ButtonItem5, "ButtonItem5")
+        Me.BtnUpdatePso2.BeginGroup = True
+        Me.BtnUpdatePso2.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.BtnUpdatePso2.Name = "BtnUpdatePso2"
+        Me.BtnUpdatePso2.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.BtnUpdatePso2, "BtnUpdatePso2")
         '
         'btnDownloadPrepatch
         '
@@ -808,10 +808,10 @@ Partial Class frmMain
         Me.DLS.Encoding = CType(resources.GetObject("DLS.Encoding"), System.Text.Encoding)
         Me.DLS.Headers = CType(resources.GetObject("DLS.Headers"), System.Net.WebHeaderCollection)
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
-        Me.DLS.timeout = 10000
+        Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
         '
-        'frmMain
+        'FrmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -844,7 +844,7 @@ Partial Class frmMain
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.KeyPreview = True
         Me.MaximizeBox = False
-        Me.Name = "frmMain"
+        Me.Name = "FrmMain"
         Me.cmsProgressBar.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -940,7 +940,7 @@ Partial Class frmMain
     Friend WithEvents btnDonateToENPatchHost As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToTweaker As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnNewShit As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents ButtonItem5 As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents BtnUpdatePso2 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDownloadPrepatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnCheckForStoryUpdates As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents chkAlwaysOnTop As DevComponents.DotNetBar.CheckBoxItem

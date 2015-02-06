@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.Serialization
 
 <DataContract>
-Public Class PSO2ProxyInfo
+Public Class Pso2ProxyInfo
     <DataMember(Name:="host")>
     Public Host As String
 

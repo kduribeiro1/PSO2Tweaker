@@ -131,7 +131,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
@@ -146,45 +145,47 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="Enums\Languages.vb" />
-    <Compile Include="MD5Provider.vb" />
+    <Compile Include="External.vb" />
+    <Compile Include="Languages.vb" />
+    <Compile Include="Md5Provider.vb" />
+    <Compile Include="My\ApplicationEvents.vb" />
+    <Compile Include="My\Settings.vb" />
     <Compile Include="RegKey.vb" />
-    <Compile Include="frmDiagnostic.Designer.vb">
-      <DependentUpon>frmDiagnostic.vb</DependentUpon>
+    <Compile Include="FrmDiagnostic.Designer.vb">
+      <DependentUpon>FrmDiagnostic.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmDiagnostic.vb">
+    <Compile Include="FrmDiagnostic.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmItemConfig.Designer.vb">
-      <DependentUpon>frmItemConfig.vb</DependentUpon>
+    <Compile Include="FrmItemConfig.Designer.vb">
+      <DependentUpon>FrmItemConfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmItemConfig.vb">
+    <Compile Include="FrmItemConfig.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.vb">
+    <Compile Include="FrmMain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Designer.vb">
-      <DependentUpon>frmMain.vb</DependentUpon>
+    <Compile Include="FrmMain.Designer.vb">
+      <DependentUpon>FrmMain.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmPSO2Options.Designer.vb">
-      <DependentUpon>frmPSO2Options.vb</DependentUpon>
+    <Compile Include="FrmPso2Options.Designer.vb">
+      <DependentUpon>FrmPso2Options.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmPSO2Options.vb">
+    <Compile Include="FrmPso2Options.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmVEDA.Designer.vb">
-      <DependentUpon>frmVEDA.vb</DependentUpon>
+    <Compile Include="FrmVeda.Designer.vb">
+      <DependentUpon>FrmVeda.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmVEDA.vb">
+    <Compile Include="FrmVeda.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmOptions.Designer.vb">
-      <DependentUpon>frmOptions.vb</DependentUpon>
+    <Compile Include="FrmOptions.Designer.vb">
+      <DependentUpon>FrmOptions.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmOptions.vb">
+    <Compile Include="FrmOptions.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Helper.vb" />
@@ -246,25 +247,24 @@
     <Compile Include="MyWebClient.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PSO2ProxyInfo.vb" />
-    <Compile Include="Settings.vb" />
+    <Compile Include="Pso2ProxyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmDiagnostic.resx">
-      <DependentUpon>frmDiagnostic.vb</DependentUpon>
+    <EmbeddedResource Include="FrmDiagnostic.resx">
+      <DependentUpon>FrmDiagnostic.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmMain.resx">
-      <DependentUpon>frmMain.vb</DependentUpon>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmPSO2Options.resx">
-      <DependentUpon>frmPSO2Options.vb</DependentUpon>
+    <EmbeddedResource Include="FrmPso2Options.resx">
+      <DependentUpon>FrmPso2Options.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmVEDA.resx">
-      <DependentUpon>frmVEDA.vb</DependentUpon>
+    <EmbeddedResource Include="FrmVeda.resx">
+      <DependentUpon>FrmVeda.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmOptions.resx">
-      <DependentUpon>frmOptions.vb</DependentUpon>
+    <EmbeddedResource Include="FrmOptions.resx">
+      <DependentUpon>FrmOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\GlobalStrings.pl.resx">

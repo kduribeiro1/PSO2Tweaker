@@ -1,50 +1,46 @@
 ﻿Imports System.IO
 
-Public Class frmDiagnostic
+Public Class FrmDiagnostic
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim TotalString As String = ""
+    Private Shared Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim totalString As String = ""
 
-        TotalString &= "OS: " & My.Computer.Info.OSFullName & vbCrLf
-        TotalString &= "64 Bit OS?: " & Environment.Is64BitOperatingSystem.ToString() & vbCrLf
-        TotalString &= "Tweaker is located at: " & Environment.CurrentDirectory & vbCrLf
-        TotalString &= ".NET Version: " & Environment.Version.ToString() & vbCrLf
-        TotalString &= "System has been on for: " & Mid((Environment.TickCount / 3600000).ToString(), 1, 5) & " hours"
-        Clipboard.SetText(TotalString)
+        totalString &= "OS: " & My.Computer.Info.OSFullName & vbCrLf
+        totalString &= "64 Bit OS?: " & Environment.Is64BitOperatingSystem.ToString() & vbCrLf
+        totalString &= "Tweaker is located at: " & Environment.CurrentDirectory & vbCrLf
+        totalString &= ".NET Version: " & Environment.Version.ToString() & vbCrLf
+        totalString &= "System has been on for: " & Mid((Environment.TickCount / 3600000).ToString(), 1, 5) & " hours"
+        Clipboard.SetText(totalString)
         MsgBox("Copied!")
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim TotalString As String = ""
-        Dim CurrentLine As String
+    Private Shared Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim totalString As String = ""
+        Dim currentLine As String
 
         Using xRead As New StreamReader("C:\WINDOWS\system32\drivers\etc\hosts")
             Do Until xRead.EndOfStream
-                CurrentLine = xRead.ReadLine()
+                currentLine = xRead.ReadLine()
                 '[AIDA] Changed it, only took a few days! :D.... :(
-                If CurrentLine <> "" Then TotalString &= CurrentLine & vbCrLf
+                If currentLine <> "" Then totalString &= currentLine & vbCrLf
             Loop
         End Using
 
-        If TotalString = "" Then TotalString = "No modified host entries detected!"
-        Clipboard.SetText(TotalString)
+        If totalString = "" Then totalString = "No modified host entries detected!"
+        Clipboard.SetText(totalString)
         MsgBox("Copied!")
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir) & "\data\win32\")
+    Private Shared Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.Pso2Dir) & "\data\win32\")
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
-        Dim fileSize As Long = 0
-
-        For Each fileInfo As FileInfo In filesInfo
-            fileSize += fileInfo.Length
-        Next
+        Dim fileSize As Long = filesInfo.Sum(Function(fileInfo) fileInfo.Length)
 
         Dim totalString As String = ""
-        totalString &= "PSO2 Directory: " & RegKey.GetValue(Of String)(RegKey.PSO2Dir) & vbCrLf
-        totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.PSO2RemoteVersion) & vbCrLf
+        totalString &= "PSO2 Directory: " & RegKey.GetValue(Of String)(RegKey.Pso2Dir) & vbCrLf
+        totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) & vbCrLf
         totalString &= "Item Translation: " & RegKey.GetValue(Of String)(RegKey.UseItemTranslation) & vbCrLf
-        totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.ENPatchVersion) & vbCrLf
+        totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.EnPatchVersion) & vbCrLf
         totalString &= "Large Files version installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) & vbCrLf
         totalString &= "Story Patch version installed: " & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) & vbCrLf
         totalString &= "Size of PSO2 data/win32 folder: ~" & fileSize.ToString().Remove(2, 9) & "GB"
@@ -52,23 +48,23 @@ Public Class frmDiagnostic
         MsgBox("Copied!")
     End Sub
 
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.PSO2Dir))
+    Private Shared Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.Pso2Dir))
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
         Dim fileSize As Long
         Dim filename As String
-        Dim TotalString As String = "Listing of pso2_bin files: "
+        Dim totalString As String = "Listing of pso2_bin files: "
 
         For Each fileInfo As FileInfo In filesInfo
-            fileName = fileInfo.Name
+            filename = fileInfo.Name
             fileSize = fileInfo.Length
-            TotalString &= filename
-            If filename = "GameGuard.des" OrElse filename = "pso2.exe" OrElse filename = "publickey.blob" OrElse filename = "rsainject.dll" OrElse filename = "translation.bin" OrElse filename = "translator.dll" Then TotalString &= ": " & fileSize.ToString()
+            totalString &= filename
+            If filename = "GameGuard.des" OrElse filename = "pso2.exe" OrElse filename = "publickey.blob" OrElse filename = "rsainject.dll" OrElse filename = "translation.bin" OrElse filename = "translator.dll" Then totalString &= ": " & fileSize.ToString()
 
-            TotalString &= " | "
+            totalString &= " | "
         Next
 
-        Clipboard.SetText(TotalString)
+        Clipboard.SetText(totalString)
         MsgBox("Copied!")
     End Sub
 End Class

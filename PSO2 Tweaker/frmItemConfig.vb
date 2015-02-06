@@ -1,24 +1,24 @@
 ﻿Imports System.IO
 
-Public Class frmItemConfig
+Public Class FrmItemConfig
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        Dim pso2launchpath = frmMain.lblDirectory.Text.Replace("\data\win32", "")
-        File.Delete(pso2launchpath & "\translation.cfg")
+        Dim pso2Launchpath = frmMain.lblDirectory.Text.Replace("\data\win32", "")
+        File.Delete(pso2Launchpath & "\translation.cfg")
 
-        Dim SplitKey As String() = DirectCast(cmbToggleKey.SelectedItem, String).Split("("c)
+        Dim splitKey As String() = DirectCast(cmbToggleKey.SelectedItem, String).Split("("c)
         Dim data As String()
         Dim delay As Integer = Convert.ToInt32(NUDDelay.Value * 1000)
-        Dim NumberKey = SplitKey(1).Replace(")"c, "")
-        lblToggle.Text = "Toggle item patch ON/OFF: Control + " & SplitKey(0).Replace("   (", "")
+        Dim numberKey = splitKey(1).Replace(")"c, "")
+        lblToggle.Text = "Toggle item patch ON/OFF: Control + " & splitKey(0).Replace("   (", "")
 
         If chkLogging.Checked Then
-            data = {"Delay:" & delay, "TranslationPath:translation.bin", "TranslationCachePath:", "LogPath:itemlog.txt", "LogLines:0", "KeyToggle:17", "KeyToggleCancel:16", "KeyDisable:" & NumberKey, "KeyDisableTree:114", "KeyDisableToggle:113"}
+            data = {"Delay:" & delay, "TranslationPath:translation.bin", "TranslationCachePath:", "LogPath:itemlog.txt", "LogLines:0", "KeyToggle:17", "KeyToggleCancel:16", "KeyDisable:" & numberKey, "KeyDisableTree:114", "KeyDisableToggle:113"}
         Else
-            data = {"Delay:" & delay, "TranslationPath:translation.bin", "TranslationCachePath:", "LogPath:", "LogLines:500", "KeyToggle:17", "KeyToggleCancel:16", "KeyDisable:" & NumberKey, "KeyDisableTree:114", "KeyDisableToggle:113"}
+            data = {"Delay:" & delay, "TranslationPath:translation.bin", "TranslationCachePath:", "LogPath:", "LogLines:500", "KeyToggle:17", "KeyToggleCancel:16", "KeyDisable:" & numberKey, "KeyDisableTree:114", "KeyDisableToggle:113"}
         End If
 
-        File.WriteAllLines(pso2launchpath & "\translation.cfg", data)
-        Me.Hide()
+        File.WriteAllLines(pso2Launchpath & "\translation.cfg", data)
+        Hide()
     End Sub
 
     Private Sub chkLogging_CheckedChanged(sender As Object, e As EventArgs) Handles chkLogging.CheckedChanged
