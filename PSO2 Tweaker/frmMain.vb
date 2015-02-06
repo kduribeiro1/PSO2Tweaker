@@ -1770,25 +1770,20 @@ StartPrePatch:
                 File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
             Next
             My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", DeleteDirectoryOption.DeleteAllContents)
-            ' TODO: Less redundant pls - SF94
+
+            External.FlashWindow(Handle, True)
+            'Story Patch 3-12-2014.rar
+            Dim storyPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
+            RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, storyPatchFilename)
+            RegKey.SetValue(Of String)(RegKey.LatestStoryBase, storyPatchFilename)
+
             If backupyesno = MsgBoxResult.No Then
-                External.FlashWindow(Handle, True)
-                'Story Patch 3-12-2014.rar
-                Dim storyPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
-                RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, storyPatchFilename)
-                RegKey.SetValue(Of String)(RegKey.LatestStoryBase, storyPatchFilename)
                 WriteDebugInfo(My.Resources.strStoryPatchInstalled)
-                CheckForStoryUpdates()
-            End If
-            If backupyesno = MsgBoxResult.Yes Then
-                External.FlashWindow(Handle, True)
-                'Story Patch 3-12-2014.rar
-                Dim storyPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
-                RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, storyPatchFilename)
-                RegKey.SetValue(Of String)(RegKey.LatestStoryBase, storyPatchFilename)
+            ElseIf backupyesno = MsgBoxResult.Yes Then
                 WriteDebugInfo((My.Resources.strStoryPatchBackup & backupdir))
-                CheckForStoryUpdates()
             End If
+
+            CheckForStoryUpdates()
             Return
         End If
         If downloaded = MsgBoxResult.No Then
