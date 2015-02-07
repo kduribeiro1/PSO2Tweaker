@@ -396,9 +396,9 @@ Public Class FrmMain
             If RegKey.GetValue(Of Object)(RegKey.UseIcsHost) Is Nothing Then RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, False)
 
             If RegKey.GetValue(Of Boolean)(RegKey.UseIcsHost) Then
-                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts.ics"
+                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
             Else
-                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts"
+                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
             End If
 
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then

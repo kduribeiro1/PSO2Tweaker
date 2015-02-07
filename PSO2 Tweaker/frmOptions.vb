@@ -146,9 +146,9 @@ Public Class FrmOptions
         RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, chkUseIcsHost.Checked)
 
         If chkUseIcsHost.Checked Then
-            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts.ics"
+            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
         Else
-            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts"
+            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
         End If
     End Sub
 
