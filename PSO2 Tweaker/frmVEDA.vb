@@ -42,6 +42,15 @@ Public Class FrmVeda
         Threading.Thread.Sleep(Helper.GetRandom(30, 1000))
     End Sub
 
+    Protected Overrides Sub WndProc(ByRef m As Message)
+        If m.Msg = &H84 Then
+            m.Result = CType(2, IntPtr)
+            Return
+        End If
+
+        MyBase.WndProc(m)
+    End Sub
+
     Private Sub frmVEDA_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         rtbStatus.Height = 408
         rtbStatus.Top = 0
