@@ -122,8 +122,8 @@ Partial Class FrmPso2Options
         Me.TabControl1.ColorScheme.TabPanelBackground = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabPanelBackground2 = System.Drawing.Color.Transparent
         Me.TabControl1.ColorScheme.TabPanelBorder = System.Drawing.Color.Transparent
-        Me.TabControl1.Controls.Add(Me.TabControlPanel1)
         Me.TabControl1.Controls.Add(Me.TabControlPanel5)
+        Me.TabControl1.Controls.Add(Me.TabControlPanel1)
         Me.TabControl1.Controls.Add(Me.TabControlPanel4)
         Me.TabControl1.Controls.Add(Me.TabControlPanel2)
         Me.TabControl1.Controls.Add(Me.TabControlPanel3)
@@ -881,7 +881,7 @@ Partial Class FrmPso2Options
         Me.TabItem6.Name = "TabItem6"
         Me.TabItem6.Text = "TabItem6"
         '
-        'frmPSO2Options
+        'FrmPso2Options
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -897,7 +897,7 @@ Partial Class FrmPso2Options
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmPSO2Options"
+        Me.Name = "FrmPso2Options"
         Me.ShowIcon = False
         Me.Text = "PSO2 Settings"
         Me.TopLeftCornerSize = 0

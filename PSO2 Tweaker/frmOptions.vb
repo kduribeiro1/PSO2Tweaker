@@ -143,6 +143,8 @@ Public Class FrmOptions
     End Sub
 
     Private Sub chkUseIcsHost_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseIcsHost.CheckedChanged
+        If chkUseIcsHost.Checked = True Then MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
+
         RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, chkUseIcsHost.Checked)
 
         If chkUseIcsHost.Checked Then
@@ -228,6 +230,7 @@ Public Class FrmOptions
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
+        chkUseIcsHost.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
         FrmMain.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         FrmMain.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
