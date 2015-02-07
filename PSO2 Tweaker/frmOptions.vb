@@ -5,12 +5,14 @@ Imports System.Diagnostics
 Imports DevComponents.DotNetBar
 
 Public Class FrmOptions
+    Dim _isLoading As Boolean = True
+
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             SuspendLayout()
             If (RegKey.GetValue(Of Integer)(RegKey.Color)) <> 0 Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
             If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
-            If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBGColor))
+            If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)) <> 0 Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
 
             Dim backupMode = GetBackupMode(RegKey.Backup)
@@ -62,14 +64,15 @@ Public Class FrmOptions
 
             ComboItem33.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)
             ComboItem33.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewStoryVersion)
-            ComboItem35.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.ENPatchVersion)
-            ComboItem36.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewENVersion)
+            ComboItem35.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.EnPatchVersion)
+            ComboItem36.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewEnVersion)
             ComboItem40.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)
             ComboItem42.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewLargeFilesVersion)
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            FrmMain.Log(ex.Message)
+            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
+            _isLoading = False
             ResumeLayout(False)
         End Try
     End Sub
@@ -118,7 +121,7 @@ Public Class FrmOptions
     End Sub
 
     Private Sub cmbENOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbENOverride.SelectedIndexChanged
-        UpdateVersion(RegKey.ENPatchVersion, cmbENOverride.Text)
+        UpdateVersion(RegKey.EnPatchVersion, cmbENOverride.Text)
     End Sub
 
     Private Sub cmbLargeFilesOverride_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLargeFilesOverride.SelectedIndexChanged
@@ -130,8 +133,8 @@ Public Class FrmOptions
     End Sub
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
-        frmMain.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
-        RegKey.SetValue(Of Integer)(RegKey.TextBoxBGColor, (ColorPickerButton4.SelectedColor.ToArgb))
+        FrmMain.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
+        RegKey.SetValue(Of Integer)(RegKey.TextBoxBgColor, (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
@@ -145,11 +148,13 @@ Public Class FrmOptions
     Private Sub chkUseIcsHost_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseIcsHost.CheckedChanged
         RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, chkUseIcsHost.Checked)
 
-        If chkUseIcsHost.Checked Then
-            MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
-            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
-        Else
-            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+        If Not _isLoading Then
+            If chkUseIcsHost.Checked Then
+                MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
+                FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
+            Else
+                FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+            End If
         End If
     End Sub
 
