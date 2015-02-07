@@ -10,11 +10,16 @@ Imports System.Security.Principal
 Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Xml
+Imports System.Runtime.CompilerServices
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
 
 Public Class FrmMain
+    Const EnglishPatch = "English Patch"
+    Const StoryPatch = "Story Patch"
+    Const LargeFiles = "Large Files"
+
     ReadOnly _pso2OptionsFrm As FrmPso2Options
     ReadOnly _args As String() = Environment.GetCommandLineArgs()
     ReadOnly _hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
@@ -1304,9 +1309,9 @@ StartPrePatch:
                         Dim applyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
                         If applyPrePatchYesNo = vbYes Then
                             WriteDebugInfo("Restoring backup of vanilla JP files...")
-                            RestoreBackup("English Patch")
-                            RestoreBackup("Large Files")
-                            RestoreBackup("Story Patch")
+                            RestoreBackup(EnglishPatch)
+                            RestoreBackup(LargeFiles)
+                            RestoreBackup(StoryPatch)
                             WriteDebugInfo("Installing prepatch, please wait...")
                             Application.DoEvents()
                             Dim di As New DirectoryInfo(_pso2RootDir & "\_precede\data\win32\")
@@ -1674,7 +1679,7 @@ StartPrePatch:
         If doDownload Then
             ' Here we parse the text file before passing it to the DownloadPatch function.
             Dim url As String = _client.DownloadString(_freedomUrl & "patches/largefiles.txt")
-            DownloadPatch(url, "Large Files", "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse)
+            DownloadPatch(url, LargeFiles, "LargeFiles.rar", RegKey.LargeFilesVersion, My.Resources.strWouldYouLikeToBackupLargeFiles, My.Resources.strWouldYouLikeToUse)
         Else
             WriteDebugInfo("Download was cancelled due to incompatibility.")
         End If
@@ -1744,7 +1749,7 @@ StartPrePatch:
             WriteDebugInfoAndOk((My.Resources.strExtractingTo & _pso2WinDir))
             Application.DoEvents()
             'list the names of all files in the specified directory
-            Dim backupdir As String = BuildBackupPath("Story Patch")
+            Dim backupdir As String = BuildBackupPath(StoryPatch)
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupdir) Then
                     My.Computer.FileSystem.DeleteDirectory(backupdir, DeleteDirectoryOption.DeleteAllContents)
@@ -1870,19 +1875,19 @@ StartPrePatch:
         Dim testfilesize As String()
         lblStatus.Text = ""
 
-        If Directory.Exists(BuildBackupPath("English Patch")) Then
+        If Directory.Exists(BuildBackupPath(EnglishPatch)) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
-            RestoreBackup("English Patch")
+            RestoreBackup(EnglishPatch)
         End If
 
-        If Directory.Exists(BuildBackupPath("Large Files")) Then
+        If Directory.Exists(BuildBackupPath(LargeFiles)) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
-            RestoreBackup("Large Files")
+            RestoreBackup(LargeFiles)
         End If
 
-        If Directory.Exists(BuildBackupPath("Story Patch")) Then
+        If Directory.Exists(BuildBackupPath(StoryPatch)) Then
             WriteDebugInfo(My.Resources.strStoryBackupFound)
-            RestoreBackup("Story Patch")
+            RestoreBackup(StoryPatch)
         End If
 
         ' Why is the UI being disabled here, is there something I'm missing? -Matthew
@@ -2222,7 +2227,7 @@ StartPrePatch:
         Try
             If IsPso2WinDirMissing() Then Return
             If MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo) = MsgBoxResult.Yes Then
-                RestoreBackup("English Patch")
+                RestoreBackup(EnglishPatch)
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -2235,7 +2240,7 @@ StartPrePatch:
         Try
             If IsPso2WinDirMissing() Then Return
             If MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo) = MsgBoxResult.Yes Then
-                RestoreBackup("Large Files")
+                RestoreBackup(LargeFiles)
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -2640,7 +2645,7 @@ StartPrePatch:
         Try
             If IsPso2WinDirMissing() Then Return
             If MsgBox(My.Resources.strAreYouSureRestoreBackup, vbYesNo) = MsgBoxResult.Yes Then
-                RestoreBackup("Story Patch")
+                RestoreBackup(StoryPatch)
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -2796,7 +2801,7 @@ StartPrePatch:
         ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
         ' Furthermore, we could also parse it from within the function.
         Dim url As String = _client.DownloadString(_freedomUrl & "patches/enpatch.txt")
-        DownloadPatch(url, "English Patch", "ENPatch.rar", RegKey.EnPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR)
+        DownloadPatch(url, EnglishPatch, "ENPatch.rar", RegKey.EnPatchVersion, My.Resources.strBackupEN, My.Resources.strPleaseSelectPreDownloadENRAR)
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -2853,15 +2858,15 @@ StartPrePatch:
     End Sub
 
     Private Sub btnUninstallENPatch_Click(sender As Object, e As EventArgs) Handles btnUninstallENPatch.Click
-        UninstallPatch(_freedomUrl & "patches/enpatchfilelist.txt", "enpatchfilelist.txt", "English Patch", My.Resources.strENPatchUninstalled, RegKey.EnPatchVersion)
+        UninstallPatch(_freedomUrl & "patches/enpatchfilelist.txt", "enpatchfilelist.txt", EnglishPatch, My.Resources.strENPatchUninstalled, RegKey.EnPatchVersion)
     End Sub
 
     Private Sub btnUninstallLargeFiles_Click(sender As Object, e As EventArgs) Handles btnUninstallLargeFiles.Click
-        UninstallPatch(_freedomUrl & "patches/largefilelist.txt", "largefilelist.txt", "Large Files", My.Resources.strLFUninstalled, RegKey.LargeFilesVersion)
+        UninstallPatch(_freedomUrl & "patches/largefilelist.txt", "largefilelist.txt", LargeFiles, My.Resources.strLFUninstalled, RegKey.LargeFilesVersion)
     End Sub
 
     Private Sub btnUninstallStory_Click(sender As Object, e As EventArgs) Handles btnUninstallStory.Click
-        UninstallPatch(_freedomUrl & "patches/storyfilelist.txt", "storyfilelist.txt", "Story Patch", My.Resources.strStoryPatchUninstalled, RegKey.StoryPatchVersion)
+        UninstallPatch(_freedomUrl & "patches/storyfilelist.txt", "storyfilelist.txt", StoryPatch, My.Resources.strStoryPatchUninstalled, RegKey.StoryPatchVersion)
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
@@ -3386,14 +3391,14 @@ SelectInstallFolder:
         'download all missingfiles
 
         'if file "currentpatchlist.txt" is not found then build list like SEGA's.
-        If Directory.Exists(BuildBackupPath("English Patch")) Then
+        If Directory.Exists(BuildBackupPath(EnglishPatch)) Then
             WriteDebugInfo(My.Resources.strENBackupFound)
-            RestoreBackup("English Patch")
+            RestoreBackup(EnglishPatch)
         End If
 
-        If Directory.Exists(BuildBackupPath("Large Files")) Then
+        If Directory.Exists(BuildBackupPath(LargeFiles)) Then
             WriteDebugInfo(My.Resources.strLFBackupFound)
-            RestoreBackup("Large Files")
+            RestoreBackup(LargeFiles)
         End If
 
         Dim totalfiles = Directory.GetFiles(_pso2RootDir & "\data\win32\")
@@ -3469,7 +3474,7 @@ SelectInstallFolder:
             ' Spit out the value plucked from the code
             txtHTML.Text = Regex.Match(_client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
 
-            Dim backupdir As String = BuildBackupPath("Story Patch")
+            Dim backupdir As String = BuildBackupPath(StoryPatch)
             Dim strStoryPatchLatestBase As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "").Replace("/", "-")
             WriteDebugInfoAndOk("Downloading story patch info... ")
             DownloadFile(_freedomUrl & "pso2.stripped.db", "pso2.stripped.db")
@@ -3501,7 +3506,7 @@ SelectInstallFolder:
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
             Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             Log("[TRANSAM] Program started")
-            process.Start(processStartInfo).WaitForExit()
+            Process.Start(processStartInfo).WaitForExit()
             DeleteFile("pso2.stripped.db")
             DeleteFile("pso2-transam.exe")
             External.FlashWindow(Handle, True)
@@ -3642,7 +3647,7 @@ SelectInstallFolder:
             processStartInfo.WindowStyle = ProcessWindowStyle.Normal
             processStartInfo.UseShellExecute = True
             WriteDebugInfo(My.Resources.strWaitingforPatch)
-            process.Start(processStartInfo).WaitForExit()
+            Process.Start(processStartInfo).WaitForExit()
 
             If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
