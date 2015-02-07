@@ -80,6 +80,7 @@ Partial Class FrmOptions
         Me.ComboItem15 = New DevComponents.Editors.ComboItem()
         Me.ComboItem17 = New DevComponents.Editors.ComboItem()
         Me.CheckBoxX2 = New DevComponents.DotNetBar.Controls.CheckBoxX()
+        Me.chkUseIcsHost = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -484,10 +485,21 @@ Partial Class FrmOptions
         Me.CheckBoxX2.Name = "CheckBoxX2"
         Me.CheckBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'frmOptions
+        'chkUseIcsHost
+        '
+        '
+        '
+        '
+        Me.chkUseIcsHost.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.chkUseIcsHost, "chkUseIcsHost")
+        Me.chkUseIcsHost.Name = "chkUseIcsHost"
+        Me.chkUseIcsHost.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.chkUseIcsHost)
         Me.Controls.Add(Me.chkAutoRemoveCensor)
         Me.Controls.Add(Me.CheckBoxX1)
         Me.Controls.Add(Me.CheckBoxX2)
@@ -523,7 +535,7 @@ Partial Class FrmOptions
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmOptions"
+        Me.Name = "FrmOptions"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.ResumeLayout(False)
@@ -587,4 +599,5 @@ Partial Class FrmOptions
     Friend WithEvents ComboItem15 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem17 As DevComponents.Editors.ComboItem
     Friend WithEvents CheckBoxX2 As DevComponents.DotNetBar.Controls.CheckBoxX
+    Friend WithEvents chkUseIcsHost As DevComponents.DotNetBar.Controls.CheckBoxX
 End Class

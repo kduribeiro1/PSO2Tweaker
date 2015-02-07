@@ -1,4 +1,5 @@
 ﻿Imports Microsoft.Win32
+Imports System
 
 Public Class RegKey
     Public Const AlwaysOnTop = "AlwaysOnTop"
@@ -37,6 +38,7 @@ Public Class RegKey
     Public Const TextBoxBgColor = "TextBoxBGColor"
     Public Const TextBoxColor = "TextBoxColor"
     Public Const Uid = "UID"
+    Public Const UseIcsHost = "UseItemICSHost"
     Public Const UseItemTranslation = "UseItemTranslation"
     Public Const SteamMode = "SteamMode"
 
@@ -46,12 +48,12 @@ Public Class RegKey
     Public Shared Function GetValue(Of T)(key As String) As T
         Try
             Dim returnValue As Object = Nothing
-            If RegistryCache.TryGetValue(key, returnValue) Then Return DirectCast(returnValue, T)
+            If RegistryCache.TryGetValue(key, returnValue) Then Return DirectCast(Convert.ChangeType(returnValue, GetType(T)), T)
 
             returnValue = RegistrySubKey.GetValue(key, Nothing)
             If returnValue IsNot Nothing Then RegistryCache.Add(key, returnValue)
 
-            Return DirectCast(returnValue, T)
+            Return DirectCast(Convert.ChangeType(returnValue, GetType(T)), T)
         Catch
             Return Nothing
         End Try

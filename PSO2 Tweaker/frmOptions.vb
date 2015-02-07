@@ -55,6 +55,7 @@ Public Class FrmOptions
             CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
             CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SidebarEnabled))
             CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SteamMode))
+            chkUseIcsHost.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseIcsHost))
 
             chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
             CMBStyle.Text = RegKey.GetValue(Of String)(RegKey.Style)
@@ -141,8 +142,18 @@ Public Class FrmOptions
         RegKey.SetValue(Of Boolean)(RegKey.RemoveCensor, chkAutoRemoveCensor.Checked)
     End Sub
 
+    Private Sub chkUseIcsHost_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseIcsHost.CheckedChanged
+        RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, chkUseIcsHost.Checked)
+
+        If chkUseIcsHost.Checked Then
+            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts.ics"
+        Else
+            FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts"
+        End If
+    End Sub
+
     Private Sub ColorPickerButton3_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton3.SelectedColorChanged
-        frmMain.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
+        FrmMain.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxColor, (ColorPickerButton3.SelectedColor.ToArgb))
     End Sub
 
@@ -160,9 +171,9 @@ Public Class FrmOptions
 
     Private Sub cmbPredownload_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPredownload.SelectedIndexChanged
         If cmbPredownload.SelectedIndex = 0 Then
-            RegKey.SetValue(Of String)(RegKey.PreDownloadedRAR, "Ask")
+            RegKey.SetValue(Of String)(RegKey.PreDownloadedRar, "Ask")
         ElseIf cmbPredownload.SelectedIndex = 1 Then
-            RegKey.SetValue(Of String)(RegKey.PreDownloadedRAR, "Never")
+            RegKey.SetValue(Of String)(RegKey.PreDownloadedRar, "Never")
         End If
     End Sub
 
@@ -207,28 +218,28 @@ Public Class FrmOptions
     End Sub
 
     Private Sub ColorPickerButton2_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton2.SelectedColorChanged
-        frmMain.ForeColor = ColorPickerButton2.SelectedColor
-        frmPSO2Options.ForeColor = ColorPickerButton2.SelectedColor
-        frmPSO2Options.TabItem1.TextColor = ColorPickerButton2.SelectedColor
-        frmPSO2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
-        frmPSO2Options.TabItem3.TextColor = ColorPickerButton2.SelectedColor
-        frmPSO2Options.TabItem7.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.ForeColor = ColorPickerButton2.SelectedColor
+        FrmPso2Options.ForeColor = ColorPickerButton2.SelectedColor
+        FrmPso2Options.TabItem1.TextColor = ColorPickerButton2.SelectedColor
+        FrmPso2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
+        FrmPso2Options.TabItem3.TextColor = ColorPickerButton2.SelectedColor
+        FrmPso2Options.TabItem7.TextColor = ColorPickerButton2.SelectedColor
         ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
-        frmMain.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
+        FrmMain.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
 
         RegKey.SetValue(Of Integer)(RegKey.FontColor, (ColorPickerButton2.SelectedColor.ToArgb))
     End Sub
@@ -270,10 +281,5 @@ Public Class FrmOptions
                     RegKey.SetValue(Of String)(RegKey.Style, "Blue")
             End Select
         End If
-    End Sub
-
-    Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
-        'If CheckBoxX2.Checked = True AndAlso RegKey.GetValue(Of String)(RegKey.SteamMode) = "False" Then MsgBox("This will stop the Tweaker from closing after launching PSO2, so that steam says you're playing PSO2.")
-        RegKey.SetValue(Of String)(RegKey.SteamMode, CheckBoxX2.Checked.ToString)
     End Sub
 End Class

@@ -10,7 +10,6 @@ Imports System.Security.Principal
 Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Xml
-Imports System.Runtime.CompilerServices
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
@@ -22,7 +21,6 @@ Public Class FrmMain
 
     ReadOnly _pso2OptionsFrm As FrmPso2Options
     ReadOnly _args As String() = Environment.GetCommandLineArgs()
-    ReadOnly _hostsFilePath As String = Environment.SystemDirectory & "\drivers\etc\hosts"
     ReadOnly _optionsFrm As FrmOptions
     ReadOnly _startPath As String = Application.StartupPath
     ReadOnly _myDocuments As String = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -43,6 +41,8 @@ Public Class FrmMain
     Dim _pso2RootDir As String
     Dim _pso2WinDir As String
     Dim _totalsize2 As Long
+
+    Public _hostsFilePath As String
 
     Sub New()
         Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
@@ -393,6 +393,13 @@ Public Class FrmMain
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyEnabled)) Then RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamMode)) Then RegKey.SetValue(Of String)(RegKey.SteamMode, "False")
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SidebarEnabled)) Then RegKey.SetValue(Of String)(RegKey.SidebarEnabled, "True")
+            If RegKey.GetValue(Of Object)(RegKey.UseIcsHost) Is Nothing Then RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, False)
+
+            If RegKey.GetValue(Of Boolean)(RegKey.UseIcsHost) Then
+                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts.ics"
+            Else
+                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\hosts"
+            End If
 
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
                 btnAnnouncements.PerformClick()
@@ -2795,7 +2802,6 @@ StartPrePatch:
     End Sub
 
     Private Sub DownloadEnglishPatch()
-
         ' Here we parse the text file before passing it to the DownloadPatch function.
         ' The Using statement will dispose "net" as soon as we're done with it.
         ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
@@ -3279,6 +3285,7 @@ SelectInstallFolder:
 
             Dim builtFile As New List(Of String)
             Dim alreadyModified As Boolean = False
+            If Not File.Exists(_hostsFilePath) Then File.Create(_hostsFilePath).Dispose()
 
             For Each line In Helper.GetLines(_hostsFilePath)
                 Dim splitLine = line.Split(" "c)
@@ -3356,6 +3363,7 @@ SelectInstallFolder:
 
     Private Sub btnRevertPSO2ProxyToJP_Click(sender As Object, e As EventArgs) Handles btnRevertPSO2ProxyToJP.Click
         Dim builtFile = New List(Of String)
+        If Not File.Exists(_hostsFilePath) Then File.Create(_hostsFilePath).Dispose()
 
         For Each line In Helper.GetLines(_hostsFilePath)
             If Not line.Contains("pso2gs.net") Then builtFile.Add(line)
