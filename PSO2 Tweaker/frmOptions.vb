@@ -143,11 +143,10 @@ Public Class FrmOptions
     End Sub
 
     Private Sub chkUseIcsHost_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseIcsHost.CheckedChanged
-        If chkUseIcsHost.Checked = True Then MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
-
         RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, chkUseIcsHost.Checked)
 
         If chkUseIcsHost.Checked Then
+            MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
             FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
         Else
             FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"

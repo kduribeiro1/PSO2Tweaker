@@ -184,8 +184,4 @@ Public Class FrmVeda
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click
         FrmMain.DownloadFile(txtAqua.Text, "testfile")
     End Sub
-
-    Private Sub FrmVeda_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
 End Class
