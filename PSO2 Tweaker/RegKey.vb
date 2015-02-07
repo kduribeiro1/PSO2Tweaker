@@ -48,12 +48,12 @@ Public Class RegKey
     Public Shared Function GetValue(Of T)(key As String) As T
         Try
             Dim returnValue As Object = Nothing
-            If RegistryCache.TryGetValue(key, returnValue) Then Return DirectCast(returnValue, T)
+            If RegistryCache.TryGetValue(key, returnValue) Then Return DirectCast(Convert.ChangeType(returnValue, GetType(T)), T)
 
             returnValue = RegistrySubKey.GetValue(key, Nothing)
             If returnValue IsNot Nothing Then RegistryCache.Add(key, returnValue)
 
-            Return DirectCast(returnValue, T)
+            Return DirectCast(Convert.ChangeType(returnValue, GetType(T)), T)
         Catch
             Return Nothing
         End Try
