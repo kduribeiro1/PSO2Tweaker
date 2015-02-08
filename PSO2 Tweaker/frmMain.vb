@@ -1193,176 +1193,154 @@ Public Class FrmMain
         End Try
     End Sub
 
-    ' TODO: this function
     Private Sub CheckForPso2Updates(comingFromPrePatch As Boolean)
         Try
-            Dim updateNeeded As Boolean
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
             DownloadFile(_freedomUrl & "precede.txt", "precede.txt")
-            If comingFromPrePatch Then GoTo StartPrePatch
-
-            Dim firstTimechecking As Boolean = False
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2PrecedeVersion)) Then
-                Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
-                Dim precedeVersion2 As String() = precedefile2(0).Split(":"c)
-                RegKey.SetValue(Of String)(RegKey.Pso2PrecedeVersion, precedeVersion2(1))
-                firstTimechecking = True
-            End If
-
-            Dim precedefile = File.ReadAllLines("precede.txt")
-            Dim precedeSplit As String() = precedefile(0).Split(":"c)
-            Dim precedeYesNo As String = precedeSplit(0)
+            Dim precedeSplit As String() = File.ReadAllLines("precede.txt")(0).Split(":"c)
             Dim precedeversionstring As String = precedeSplit(1)
 
-            If precedeYesNo = "Yes" Then
-                If RegKey.GetValue(Of String)(RegKey.Pso2PrecedeVersion) <> precedeversionstring OrElse firstTimechecking Then
-                    Dim downloadPrepatch As MsgBoxResult = MsgBox("New pre-patch data is available to download - Would you like to download it? This is optional, and will let you download some of a large patch now, as opposed to having a larger download all at once when it is released.", MsgBoxStyle.YesNo)
-                    If downloadPrepatch = vbYes Then
-StartPrePatch:
-                        'Download prepatch
-                        _cancelledFull = False
-                        Dim truefilename As String
-                        Dim missingfiles As New List(Of String)
-                        lblStatus.Text = ""
-                        WriteDebugInfo("Downloading pre-patch filelist...")
-                        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt")
-                        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist1.txt", "patchlist1.txt")
-                        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist2.txt", "patchlist2.txt")
-                        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist3.txt", "patchlist3.txt")
-                        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist4.txt", "patchlist4.txt")
-                        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt")
-                        WriteDebugInfoSameLine(My.Resources.strDone)
-                        Dim mergedPrePatches = MergePrePatches()
-                        If Not Directory.Exists(_pso2RootDir & "\_precede\data\win32") Then Directory.CreateDirectory(_pso2RootDir & "\_precede\data\win32") 'create directory
+            If comingFromPrePatch Then
+                DownloadPrePatch(precedeversionstring)
+            Else
+                Dim firstTimechecking As Boolean = String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2PrecedeVersion))
+                If firstTimechecking Then RegKey.SetValue(Of String)(RegKey.Pso2PrecedeVersion, precedeversionstring)
 
-                        WriteDebugInfo("Checking for already existing precede files...")
-                        Dim numberofChecks As Integer = 0
-                        missingfiles.Clear()
-
-                        mergedPrePatches.Remove("GameGuard.des")
-                        mergedPrePatches.Remove("PSO2JP.ini")
-                        mergedPrePatches.Remove("script/user_default.pso2")
-                        mergedPrePatches.Remove("script/user_intel.pso2")
-                        mergedPrePatches.Remove("")
-
-                        For Each sBuffer In mergedPrePatches
-                            If _cancelledFull Then
-                                Return
-                            End If
-
-                            truefilename = sBuffer.Value
-
-                            If Not File.Exists(((_pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) Then
-                                If _vedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
-                                missingfiles.Add(truefilename)
-                            ElseIf Helper.GetMd5(((_pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) <> sBuffer.Key Then
-                                If _vedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
-                                missingfiles.Add(truefilename)
-                            End If
-
-                            numberofChecks += 1
-                            lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & numberofChecks & "")
-                            Application.DoEvents()
-                        Next
-
-                        Dim totaldownload As Long = missingfiles.Count
-                        Dim downloaded As Long = 0
-                        Dim totaldownloaded As Long = 0
-
-                        For Each downloadStr As String In missingfiles
-                            If _cancelledFull Then Return
-                            'Download the missing files:
-                            'WHAT THE FUCK IS GOING ON HERE?
-                            downloaded += 1
-                            totaldownloaded += _totalsize2
-
-                            lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
-
-                            Application.DoEvents()
-                            _cancelled = False
-                            DownloadFile(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadStr & ".pat"), downloadStr)
-                            Dim info7 As New FileInfo(downloadStr)
-                            If info7.Length = 0 Then
-                                Log("File appears to be empty, trying to download from secondary SEGA server")
-                                DownloadFile(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadStr & ".pat"), downloadStr)
-                            End If
-
-                            If _cancelled Then Return
-
-                            DeleteFile(((_pso2RootDir & "\_precede\data\win32") & "\" & downloadStr))
-                            File.Move(downloadStr, ((_pso2RootDir & "\_precede\data\win32") & "\" & downloadStr))
-                            If _vedaUnlocked Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadStr & ".")
-
-                            Application.DoEvents()
-                        Next
-
-                        If missingfiles.Count = 0 Then WriteDebugInfo("Your precede data is up to date!")
-                        If missingfiles.Count <> 0 Then WriteDebugInfo("Precede data downloaded/updated!")
-                        Dim precedefile2 As String() = File.ReadAllLines("precede.txt")
-                        Dim precedeVersion2 As String() = precedefile2(0).Split(":"c)
-                        RegKey.SetValue(Of String)(RegKey.Pso2PrecedeVersion, precedeVersion2(1))
-                    End If
+                If precedeSplit(0) = "Yes" AndAlso (RegKey.GetValue(Of String)(RegKey.Pso2PrecedeVersion) <> precedeversionstring OrElse firstTimechecking) Then
+                    Dim downloadPrepatchResult As MsgBoxResult = MsgBox("New pre-patch data is available to download - Would you like to download it? This is optional, and will let you download some of a large patch now, as opposed to having a larger download all at once when it is released.", MsgBoxStyle.YesNo)
+                    If downloadPrepatchResult = vbYes Then DownloadPrePatch(precedeversionstring)
                 End If
             End If
 
             'Check whether or not to apply pre-patch shit. Ugh.
-            If Directory.Exists(_pso2RootDir & "\_precede\") Then
+            If Directory.Exists(_pso2RootDir & "\_precede\") AndAlso Directory.Exists(_pso2RootDir & "\_precede\data\win32\") Then
                 DownloadFile(_freedomUrl & "precede_apply.txt", "precede_apply.txt")
-                Dim prepatchapply = File.ReadAllLines("precede_apply.txt")
-                Dim applyPrePatch As String = prepatchapply(0)
-
-                If Directory.Exists(_pso2RootDir & "\_precede\data\win32\") Then
-                    If applyPrePatch = "Yes" Then
-                        Dim applyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
-                        If applyPrePatchYesNo = vbYes Then
-                            WriteDebugInfo("Restoring backup of vanilla JP files...")
-                            RestoreBackup(EnglishPatch)
-                            RestoreBackup(LargeFiles)
-                            RestoreBackup(StoryPatch)
-                            WriteDebugInfo("Installing prepatch, please wait...")
-                            Application.DoEvents()
-                            Dim di As New DirectoryInfo(_pso2RootDir & "\_precede\data\win32\")
-
-                            'list the names of all files in the specified directory
-                            Dim count As Integer = 0
-                            Dim counter = My.Computer.FileSystem.GetFiles(_pso2RootDir & "\_precede\data\win32\")
-                            For Each dra As FileInfo In di.GetFiles()
-                                If counter.Count = 0 Then Exit For
-                                Dim downloadStr As String = dra.Name
-                                DeleteFile((_pso2WinDir & "\" & downloadStr))
-                                File.Move(_pso2RootDir & "\_precede\data\win32\" & downloadStr, (_pso2WinDir & "\" & downloadStr))
-                                count += 1
-                                lblStatus.Text = "Moved " & count & " files out of " & counter.Count
-                                Application.DoEvents()
-                            Next
-                            WriteDebugInfoSameLine("Done!")
-                            Helper.DeleteDirectory(_pso2RootDir & "\_precede")
-                        End If
-                    End If
+                If File.ReadAllLines("precede_apply.txt")(0) = "Yes" Then
+                    InstallPrePatch()
                 End If
             End If
 
-            If comingFromPrePatch Then Return
-            DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion)) Then
-                RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
-            End If
+            If Not comingFromPrePatch Then
+                DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
+                Dim version = File.ReadAllLines("version.ver")(0)
+                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion)) Then
+                    RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, version)
+                End If
 
-            If RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) <> File.ReadAllLines("version.ver")(0) Then
-                updateNeeded = True
-
-                Dim updateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewPSO2Update, vbYesNo)
-                If updateStoryYesNo = vbNo Then updateNeeded = False
-            End If
-
-            If updateNeeded Then
-                UpdatePso2(False)
+                If RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) <> version Then
+                    If MsgBox(My.Resources.strNewPSO2Update, vbYesNo) = vbYes Then UpdatePso2(False)
+                End If
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Return
         End Try
+    End Sub
+
+    Private Sub InstallPrePatch()
+        Dim applyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
+        If applyPrePatchYesNo = vbYes Then
+            WriteDebugInfo("Restoring backup of vanilla JP files...")
+            RestoreBackup(EnglishPatch)
+            RestoreBackup(LargeFiles)
+            RestoreBackup(StoryPatch)
+            WriteDebugInfo("Installing prepatch, please wait...")
+            Application.DoEvents()
+
+            'list the names of all files in the specified directory
+            Dim files = New DirectoryInfo(_pso2RootDir & "\_precede\data\win32\").GetFiles()
+            Dim counter = files.Length
+            Dim count As Integer = 0
+
+            For Each dra As FileInfo In files
+                Dim downloadStr As String = dra.Name
+                DeleteFile((_pso2WinDir & "\" & downloadStr))
+                File.Move(_pso2RootDir & "\_precede\data\win32\" & downloadStr, (_pso2WinDir & "\" & downloadStr))
+                count += 1
+                lblStatus.Text = "Moved " & count & " files out of " & counter
+                Application.DoEvents()
+            Next
+            WriteDebugInfoSameLine("Done!")
+            Helper.DeleteDirectory(_pso2RootDir & "\_precede")
+        End If
+    End Sub
+
+    Private Sub DownloadPrePatch(version As String)
+        _cancelledFull = False
+        lblStatus.Text = ""
+        WriteDebugInfo("Downloading pre-patch filelist...")
+        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist0.txt", "patchlist0.txt")
+        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist1.txt", "patchlist1.txt")
+        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist2.txt", "patchlist2.txt")
+        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist3.txt", "patchlist3.txt")
+        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist4.txt", "patchlist4.txt")
+        DownloadFile("http://download.pso2.jp/patch_prod/patches_precede/patchlist5.txt", "patchlist5.txt")
+        WriteDebugInfoSameLine(My.Resources.strDone)
+        If Not Directory.Exists(_pso2RootDir & "\_precede\data\win32") Then Directory.CreateDirectory(_pso2RootDir & "\_precede\data\win32")
+
+        Dim mergedPrePatches = MergePrePatches()
+        mergedPrePatches.Remove("GameGuard.des")
+        mergedPrePatches.Remove("PSO2JP.ini")
+        mergedPrePatches.Remove("script/user_default.pso2")
+        mergedPrePatches.Remove("script/user_intel.pso2")
+        mergedPrePatches.Remove("")
+
+        WriteDebugInfo("Checking for already existing precede files...")
+
+        Dim missingfiles As New List(Of String)
+        Dim truefilename As String
+        Dim numberofChecks As Integer = 0
+
+        For Each sBuffer In mergedPrePatches
+            If _cancelledFull Then Return
+
+            truefilename = sBuffer.Value
+
+            If Not File.Exists(((_pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) Then
+                If _vedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " is missing.")
+                missingfiles.Add(truefilename)
+            ElseIf Helper.GetMd5(((_pso2RootDir & "\_precede\data\win32") & "\" & truefilename)) <> sBuffer.Key Then
+                If _vedaUnlocked Then WriteDebugInfo("DEBUG: The file " & truefilename & " must be redownloaded.")
+                missingfiles.Add(truefilename)
+            End If
+
+            numberofChecks += 1
+            lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & numberofChecks & "")
+            Application.DoEvents()
+        Next
+
+        Dim totaldownload As Long = missingfiles.Count
+        Dim downloaded As Long = 0
+        Dim totaldownloaded As Long = 0
+
+        For Each downloadStr As String In missingfiles
+            If _cancelledFull Then Return
+            'Download the missing files:
+            'WHAT THE FUCK IS GOING ON HERE?
+            downloaded += 1
+            totaldownloaded += _totalsize2
+
+            lblStatus.Text = My.Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloaded) & ")"
+
+            Application.DoEvents()
+            _cancelled = False
+            DownloadFile(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadStr & ".pat"), downloadStr)
+            If New FileInfo(downloadStr).Length = 0 Then
+                Log("File appears to be empty, trying to download from secondary SEGA server")
+                DownloadFile(("http://download.pso2.jp/patch_prod/patches_precede/data/win32/" & downloadStr & ".pat"), downloadStr)
+            End If
+
+            If _cancelled Then Return
+
+            DeleteFile(((_pso2RootDir & "\_precede\data\win32") & "\" & downloadStr))
+            File.Move(downloadStr, ((_pso2RootDir & "\_precede\data\win32") & "\" & downloadStr))
+            If _vedaUnlocked Then WriteDebugInfo("DEBUG: Downloaded and installed " & downloadStr & ".")
+            Application.DoEvents()
+        Next
+
+        If missingfiles.Count = 0 Then WriteDebugInfo("Your precede data is up to date!")
+        If missingfiles.Count <> 0 Then WriteDebugInfo("Precede data downloaded/updated!")
+        RegKey.SetValue(Of String)(RegKey.Pso2PrecedeVersion, version)
     End Sub
 
     Private Sub btnApplyChanges_Click(sender As Object, e As EventArgs) Handles btnApplyChanges.Click
