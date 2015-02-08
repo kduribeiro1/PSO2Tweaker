@@ -463,7 +463,7 @@ Public Class FrmMain
             PBMainBar.Text = ""
             Log("Checking if the PSO2 Tweaker is running")
 
-            If CheckIfRunning("PSO2 Tweaker") Then
+            If Helper.CheckIfRunning("PSO2 Tweaker") Then
                 Application.ExitThread()
             End If
 
@@ -995,30 +995,6 @@ Public Class FrmMain
         Return result
     End Function
 
-    ' TODO: See about moving this to helper function
-    Private Shared Function CheckIfRunning(processName As String) As Boolean
-        Dim processes = Process.GetProcessesByName(processName)
-        Dim currentProcess As Process = Process.GetCurrentProcess()
-
-        Dim x As Integer = If(processName = "PSO2 Tweaker", 1, 0)
-
-        If processes.Length > x Then
-            Dim closeItYesNo As MsgBoxResult = MsgBox("It seems that " & processName.Replace(".exe", "") & " is already running. Would you like to close it?", vbYesNo)
-
-            If closeItYesNo = vbYes Then
-                Dim procs As Process() = Process.GetProcessesByName(processName)
-
-                For Each proc As Process In procs
-                    If proc.Id <> currentProcess.Id Then proc.Kill()
-                Next
-            End If
-
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         DLS.CancelAsync()
         _cancelled = True
@@ -1496,7 +1472,7 @@ Public Class FrmMain
     Private Sub btnLaunchPSO2_Click(sender As Object, e As EventArgs) Handles btnLaunchPSO2.Click
         'Fuck SEGA. Stupid jerks.
         Log("Check if PSO2 is running")
-        If CheckIfRunning("pso2") Then Return
+        If Helper.CheckIfRunning("pso2") Then Return
         Try
             If IsPso2WinDirMissing() Then Return
 
