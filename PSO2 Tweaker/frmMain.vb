@@ -2365,38 +2365,36 @@ Public Class FrmMain
         If _dpiSetting = 96 Then Width = 796
         If _dpiSetting = 120 Then Width = 1060
         btnAnnouncements.Text = "<"
+
+        Program.SidebarEnabled = True
+        RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, True)
     End Sub
 
     Private Sub ToggleSideBar()
         If _dpiSetting = 96 Then
             If Width = 420 Then
                 Width = 796
-                btnAnnouncements.Text = "<"
-                If Not RegKey.GetValue(Of Boolean)(RegKey.SidebarEnabled) Then
-                    Helper.WriteDebugInfo(Resources.strLoadingSidebarPage)
-                    ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
-                End If
-                Return
-            End If
-            If Width = 796 Then
+            ElseIf Width = 796 Then
                 Width = 420
-                btnAnnouncements.Text = ">"
             End If
-        End If
-        If _dpiSetting = 120 Then
+        ElseIf _dpiSetting = 120 Then
             If Width = 560 Then
                 Width = 1060
-                btnAnnouncements.Text = "<"
-                If Not RegKey.GetValue(Of Boolean)(RegKey.SidebarEnabled) Then
-                    Helper.WriteDebugInfo(Resources.strLoadingSidebarPage)
-                    ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
-                End If
-                Return
-            End If
-            If Width = 1060 Then
+            ElseIf Width = 1060 Then
                 Width = 560
-                btnAnnouncements.Text = ">"
             End If
+        End If
+
+        Program.SidebarEnabled = (Not Program.SidebarEnabled)
+        RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, Program.SidebarEnabled)
+
+        If Program.SidebarEnabled Then
+            ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
+            Helper.WriteDebugInfo(Resources.strLoadingSidebarPage)
+            rtbDebug.Refresh()
+            btnAnnouncements.Text = "<"
+        Else
+            btnAnnouncements.Text = ">"
         End If
     End Sub
 
