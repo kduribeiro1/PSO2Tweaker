@@ -42,7 +42,7 @@ Public Class FrmMain
     Dim _pso2WinDir As String
     Dim _totalsize2 As Long
 
-    Public _hostsFilePath As String
+    Public HostsFilePath As String
 
     Sub New()
         Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
@@ -396,9 +396,9 @@ Public Class FrmMain
             If RegKey.GetValue(Of Object)(RegKey.UseIcsHost) Is Nothing Then RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, False)
 
             If RegKey.GetValue(Of Boolean)(RegKey.UseIcsHost) Then
-                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
+                HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
             Else
-                _hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+                HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
             End If
 
             If RegKey.GetValue(Of String)(RegKey.SidebarEnabled) = "False" Then
@@ -683,10 +683,7 @@ Public Class FrmMain
                     Loop
                 End If
 
-                Dim hostname As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
-                Dim ip As IPAddress() = hostname.AddressList
-
-                If Not ip(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
+                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
                     WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
                     _itemDownloadingDone = False
                     ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
@@ -881,13 +878,6 @@ Public Class FrmMain
         PBMainBar.Text = ""
     End Sub
 
-    Public Function DownloadString(ByVal address As String) As String
-        DLS.Headers("user-agent") = "AQUA_HTTP"
-        DLS.Timeout = 10000
-
-        Return DLS.DownloadString(address)
-    End Function
-
     Public Sub DownloadFile(ByVal address As String, ByVal filename As String)
         DLS.Headers("user-agent") = "AQUA_HTTP"
         DLS.Timeout = 10000
@@ -1015,45 +1005,35 @@ Public Class FrmMain
         Try
             If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) = "Not Installed" Then Return
             DownloadFile(_freedomUrl & "patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
-            Dim sBuffer As String
-            Dim filename As String()
-            Dim truefilename As String
-            Dim missingfiles As New List(Of String)
-            Dim numberofChecks As Integer = 0
-            Dim updateNeeded As Boolean = False
 
             Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
-                sBuffer = oReader.ReadLine()
-                RegKey.SetValue(Of String)(RegKey.NewVersionTemp, sBuffer)
-                RegKey.SetValue(Of String)(RegKey.NewStoryVersion, sBuffer)
-                Dim strNewDate As String = sBuffer
-                If sBuffer <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
-                    updateNeeded = True
+                Dim strNewDate As String = oReader.ReadLine()
+                RegKey.SetValue(Of String)(RegKey.NewVersionTemp, strNewDate)
+                RegKey.SetValue(Of String)(RegKey.NewStoryVersion, strNewDate)
+                If strNewDate <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
                     'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
                     ' Create a match using regular exp<b></b>ressions
                     'http://arks-layer.com/Story%20Patch%208-8-2013.rar.torrent
                     ' Spit out the value plucked from the code
                     txtHTML.Text = Regex.Match(_client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
-                    Dim strDownloadMe As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
-                    If strDownloadMe <> RegKey.GetValue(Of String)(RegKey.LatestStoryBase) Then
+                    Dim strDownloadMe = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
+                    If RegKey.GetValue(Of String)(RegKey.LatestStoryBase) <> strDownloadMe Then
                         Dim mbVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it using the new story patch method?", MsgBoxStyle.YesNo)
-                        If mbVisitLink = vbYes Then
-                            InstallStoryPatchNew()
-                            Return
-                        End If
-                        If mbVisitLink = vbNo Then Return
+                        If mbVisitLink = vbYes Then InstallStoryPatchNew()
+                        Return
                     End If
 
                     Dim updateStoryYesNo As MsgBoxResult = MsgBox("A new story patch update is available as of " & strNewDate & " - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest story patch available from http://arks-layer.com (" & strDownloadMe & "), or used the new method to install the story patch.", vbYesNo)
-                    If updateStoryYesNo = vbNo Then
-                        Return
-                    End If
-                End If
-                If updateNeeded Then
+                    If updateStoryYesNo = vbNo Then Return
+
+                    Dim missingfiles As New List(Of String)
+                    Dim numberofChecks As Integer = 0
+                    Dim truefilename As String
+                    Dim filename As String()
                     WriteDebugInfo(My.Resources.strBeginningStoryModeUpdate)
+
                     While Not (oReader.EndOfStream)
-                        sBuffer = oReader.ReadLine()
-                        filename = sBuffer.Split(","c)
+                        filename = oReader.ReadLine().Split(","c)
                         truefilename = filename(0)
 
                         If Not File.Exists((_pso2WinDir & "\" & truefilename)) Then
@@ -1066,106 +1046,88 @@ Public Class FrmMain
                         lblStatus.Text = (My.Resources.strCurrentlyCheckingFile & numberofChecks & "")
                         Application.DoEvents()
                     End While
+
+                    WriteDebugInfo("Downloading/Installing updates using Patch Server #4 (New York)")
+                    Dim totaldownload As Long = missingfiles.Count
+                    Dim downloaded As Long = 0
+
+                    For Each downloadStr As String In missingfiles
+                        'Download the missing files:
+                        downloaded += 1
+                        lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
+                        Application.DoEvents()
+                        _cancelled = False
+                        DownloadFile((_freedomUrl & "patchfiles/" & downloadStr & ".7z"), downloadStr & ".7z")
+                        If _cancelled Then Return
+                        'Delete the existing file FIRST
+                        If Not File.Exists(downloadStr & ".7z") Then
+                            WriteDebugInfoAndFailed("File " & (downloadStr & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
+                        End If
+                        DeleteFile((_pso2WinDir & "\" & downloadStr))
+                        Dim processStartInfo As New ProcessStartInfo With
+                        {
+                            .FileName = (_startPath & "\7za.exe"),
+                            .Verb = "runas",
+                            .Arguments = ("e -y " & downloadStr & ".7z"),
+                            .WindowStyle = ProcessWindowStyle.Hidden,
+                            .UseShellExecute = True
+                        }
+                        Process.Start(processStartInfo).WaitForExit()
+                        If Not File.Exists(downloadStr) Then
+                            WriteDebugInfoAndFailed("File " & (downloadStr) & " does not exist! Perhaps it wasn't extracted properly?")
+                        End If
+                        File.Move(downloadStr, (_pso2WinDir & "\" & downloadStr))
+                        DeleteFile(downloadStr & ".7z")
+                        Application.DoEvents()
+                    Next
+                    WriteDebugInfoAndOk(My.Resources.strStoryPatchUpdated)
+                    RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, RegKey.GetValue(Of String)(RegKey.NewVersionTemp))
+                    RegKey.SetValue(Of String)(RegKey.NewVersionTemp, "")
+                Else
+                    WriteDebugInfoAndOk("You have the latest story patch updates!")
                 End If
             End Using
-            If updateNeeded Then
-                Dim totaldownload As Long = missingfiles.Count
-                Dim downloaded As Long = 0
-
-                WriteDebugInfo("Downloading/Installing updates using Patch Server #4 (New York)")
-
-                For Each downloadStr As String In missingfiles
-                    'Download the missing files:
-                    downloaded += 1
-                    lblStatus.Text = My.Resources.strUpdating & downloaded & "/" & totaldownload
-                    Application.DoEvents()
-                    _cancelled = False
-                    DownloadFile((_freedomUrl & "patchfiles/" & downloadStr & ".7z"), downloadStr & ".7z")
-                    If _cancelled Then Return
-                    'Delete the existing file FIRST
-                    If Not File.Exists(downloadStr & ".7z") Then
-                        WriteDebugInfoAndFailed("File " & (downloadStr & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
-                    End If
-                    DeleteFile((_pso2WinDir & "\" & downloadStr))
-                    Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-                    processStartInfo.FileName = (_startPath & "\7za.exe")
-                    processStartInfo.Verb = "runas"
-                    processStartInfo.Arguments = ("e -y " & downloadStr & ".7z")
-                    processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
-                    processStartInfo.UseShellExecute = True
-                    Process.Start(processStartInfo).WaitForExit()
-                    If Not File.Exists(downloadStr) Then
-                        WriteDebugInfoAndFailed("File " & (downloadStr) & " does not exist! Perhaps it wasn't extracted properly?")
-                    End If
-                    File.Move(downloadStr, (_pso2WinDir & "\" & downloadStr))
-                    DeleteFile(downloadStr & ".7z")
-                    Application.DoEvents()
-                Next
-                WriteDebugInfoAndOk(My.Resources.strStoryPatchUpdated)
-                RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, RegKey.GetValue(Of String)(RegKey.NewVersionTemp))
-                RegKey.SetValue(Of String)(RegKey.NewVersionTemp, "")
-                Return
-            End If
-            If Not updateNeeded Then
-                WriteDebugInfoAndOk("You have the latest story patch updates!")
-                Return
-            End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
     Private Sub CheckForEnPatchUpdates()
         Try
             If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) = "Not Installed" Then Return
-
             Application.DoEvents()
-            Dim strDownloadMe As String = _client.DownloadString(_freedomUrl & "patches/enpatch.txt")
-            Dim lastfilename As String() = strDownloadMe.Split("/"c)
+            Dim lastfilename As String() = _client.DownloadString(_freedomUrl & "patches/enpatch.txt").Split("/"c)
             Dim strVersion As String = lastfilename(lastfilename.Length - 1).Replace(".rar", "")
-
             RegKey.SetValue(Of String)(RegKey.NewEnVersion, strVersion)
-            If strVersion <> RegKey.GetValue(Of String)(RegKey.EnPatchVersion) Then
-                Dim updateNeeded As Boolean = True
-                Dim updateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewENPatch, vbYesNo)
-                If updateStoryYesNo = vbNo Then updateNeeded = False
-                If updateNeeded Then
+
+            If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) <> strVersion Then
+                If MsgBox(My.Resources.strNewENPatch, vbYesNo) = vbYes Then
                     DownloadEnglishPatch()
-                    Return
                 End If
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
     Private Sub CheckForLargeFilesUpdates()
         Try
-            If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) = "Not Installed" Then
-                Return
-            End If
+            If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) = "Not Installed" Then Return
             Application.DoEvents()
             Dim lastfilename As String() = _client.DownloadString(_freedomUrl & "patches/largefiles.txt").Split("/"c)
             Dim strVersion As String = lastfilename(lastfilename.Length - 1).Replace(".rar", "")
-
             RegKey.SetValue(Of String)(RegKey.NewLargeFilesVersion, strVersion)
-            If strVersion <> RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) Then
-                Dim updateNeeded As Boolean = True
-                Dim updateStoryYesNo As MsgBoxResult = MsgBox(My.Resources.strNewLargeFiles, vbYesNo)
-                If updateStoryYesNo = vbNo Then updateNeeded = False
-                If updateNeeded Then
+
+            If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) <> strVersion Then
+                If MsgBox(My.Resources.strNewLargeFiles, vbYesNo) = vbYes Then
                     DownloadLargeFiles()
-                    Return
                 End If
             End If
         Catch ex As Exception
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -1652,23 +1614,17 @@ Public Class FrmMain
 
     Private Sub InstallStoryPatchARchive()
         _cancelledFull = False
-        Dim storyLocation As String
         Dim backupyesno As MsgBoxResult
         If IsPso2WinDirMissing() Then Return
         Log("Selecting story patch...")
-        Dim downloaded As MsgBoxResult = MsgBox(My.Resources.strHaveyouDownloadedStoryYet, MsgBoxStyle.YesNo)
-        If downloaded = MsgBoxResult.Yes Then
+        If MsgBox(My.Resources.strHaveyouDownloadedStoryYet, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             OpenFileDialog1.Title = My.Resources.strPleaseSelectStoryRAR
             OpenFileDialog1.FileName = "PSO2 Story Patch RAR file"
             OpenFileDialog1.Filter = "RAR Archives|*.rar"
-            Dim result = OpenFileDialog1.ShowDialog()
-            If result = DialogResult.Cancel Then
-                Return
-            End If
-            storyLocation = OpenFileDialog1.FileName
-            If storyLocation = "PSO2 Story Patch RAR file" Then
-                Return
-            End If
+            If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Return
+
+            Dim storyLocation As String = OpenFileDialog1.FileName
+            If storyLocation = "PSO2 Story Patch RAR file" Then Return
 
             Log("Story mode RAR selected as: " & storyLocation)
 
@@ -1682,13 +1638,9 @@ Public Class FrmMain
             End Select
 
             Log("Extracting story patch...")
-            If Directory.Exists("TEMPSTORYAIDAFOOL") Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", DeleteDirectoryOption.DeleteAllContents)
-                Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
-            End If
-            If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
-            End If
+            If Directory.Exists("TEMPSTORYAIDAFOOL") Then Directory.Delete("TEMPSTORYAIDAFOOL", True)
+            Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
+
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
             processStartInfo.FileName = (_startPath & "\unrar.exe")
             processStartInfo.Verb = "runas"
@@ -1713,7 +1665,7 @@ Public Class FrmMain
             Dim backupdir As String = BuildBackupPath(StoryPatch)
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupdir) Then
-                    My.Computer.FileSystem.DeleteDirectory(backupdir, DeleteDirectoryOption.DeleteAllContents)
+                    Directory.Delete(backupdir, True)
                     Directory.CreateDirectory(backupdir)
                     WriteDebugInfo(My.Resources.strErasingPreviousBackup)
                 End If
@@ -1730,36 +1682,31 @@ Public Class FrmMain
             WriteDebugInfo(My.Resources.strInstallingPatch)
             For Each dra As FileInfo In diar1
                 If _cancelledFull Then Return
-                If backupyesno = MsgBoxResult.Yes Then
-                    If File.Exists((_pso2WinDir & "\" & dra.ToString())) Then
+                If File.Exists((_pso2WinDir & "\" & dra.ToString())) Then
+                    If backupyesno = MsgBoxResult.Yes Then
                         File.Move((_pso2WinDir & "\" & dra.ToString()), (backupdir & "\" & dra.ToString()))
-                    End If
-                End If
-                If backupyesno = MsgBoxResult.No Then
-                    If File.Exists((_pso2WinDir & "\" & dra.ToString())) Then
+                    Else
                         DeleteFile((_pso2WinDir & "\" & dra.ToString()))
                     End If
                 End If
                 File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
             Next
-            My.Computer.FileSystem.DeleteDirectory("TEMPSTORYAIDAFOOL", DeleteDirectoryOption.DeleteAllContents)
 
+            Directory.Delete("TEMPSTORYAIDAFOOL", True)
             External.FlashWindow(Handle, True)
             'Story Patch 3-12-2014.rar
             Dim storyPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
             RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, storyPatchFilename)
             RegKey.SetValue(Of String)(RegKey.LatestStoryBase, storyPatchFilename)
 
-            If backupyesno = MsgBoxResult.No Then
-                WriteDebugInfo(My.Resources.strStoryPatchInstalled)
-            ElseIf backupyesno = MsgBoxResult.Yes Then
+            If backupyesno = MsgBoxResult.Yes Then
                 WriteDebugInfo((My.Resources.strStoryPatchBackup & backupdir))
+            Else
+                WriteDebugInfo(My.Resources.strStoryPatchInstalled)
             End If
 
             CheckForStoryUpdates()
-            Return
-        End If
-        If downloaded = MsgBoxResult.No Then
+        Else
             WriteDebugInfo(My.Resources.strDownloadStoryPatch)
             Return
         End If
@@ -3239,9 +3186,9 @@ SelectInstallFolder:
 
             Dim builtFile As New List(Of String)
             Dim alreadyModified As Boolean = False
-            If Not File.Exists(_hostsFilePath) Then File.Create(_hostsFilePath).Dispose()
+            If Not File.Exists(HostsFilePath) Then File.Create(HostsFilePath).Dispose()
 
-            For Each line In Helper.GetLines(_hostsFilePath)
+            For Each line In Helper.GetLines(HostsFilePath)
                 Dim splitLine = line.Split(" "c)
 
                 If splitLine.Length > 1 Then
@@ -3298,7 +3245,7 @@ SelectInstallFolder:
                 WriteDebugInfo("Previous modifications not found, creating new entries...")
             End If
 
-            File.WriteAllLines(_hostsFilePath, builtFile.ToArray())
+            File.WriteAllLines(HostsFilePath, builtFile.ToArray())
             WriteDebugInfoSameLine(" Done!")
 
             WriteDebugInfo("Downloading and installing publickey.blob...")
@@ -3317,14 +3264,14 @@ SelectInstallFolder:
 
     Private Sub btnRevertPSO2ProxyToJP_Click(sender As Object, e As EventArgs) Handles btnRevertPSO2ProxyToJP.Click
         Dim builtFile = New List(Of String)
-        If Not File.Exists(_hostsFilePath) Then File.Create(_hostsFilePath).Dispose()
+        If Not File.Exists(HostsFilePath) Then File.Create(HostsFilePath).Dispose()
 
-        For Each line In Helper.GetLines(_hostsFilePath)
+        For Each line In Helper.GetLines(HostsFilePath)
             If Not line.Contains("pso2gs.net") Then builtFile.Add(line)
         Next
 
         WriteDebugInfo("Modifying HOSTS file...")
-        File.WriteAllLines(_hostsFilePath, builtFile.ToArray())
+        File.WriteAllLines(HostsFilePath, builtFile.ToArray())
         WriteDebugInfoSameLine(" Done!")
         DeleteFile(_pso2RootDir & "\publickey.blob")
         WriteDebugInfoAndOk("All normal JP connection settings restored!")
@@ -3592,24 +3539,14 @@ SelectInstallFolder:
 
             Application.DoEvents()
 
-            If Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", DeleteDirectoryOption.DeleteAllContents)
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
+            If Directory.Exists("TEMPPATCHAIDAFOOL") Then Directory.Delete("TEMPPATCHAIDAFOOL", True)
+            Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
+            Dim startInfo As New ProcessStartInfo() With {.FileName = (_startPath & "\unrar.exe"), .Verb = "runas", .WindowStyle = ProcessWindowStyle.Normal, .UseShellExecute = True}
+            If predownloadedyesno = MsgBoxResult.No Then startInfo.Arguments = ("e " & patchFile & " TEMPPATCHAIDAFOOL")
+            If predownloadedyesno = MsgBoxResult.Yes Then startInfo.Arguments = ("e " & """" & rarLocation & """" & " TEMPPATCHAIDAFOOL")
 
-            If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            End If
-
-            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            processStartInfo.FileName = (_startPath & "\unrar.exe")
-            processStartInfo.Verb = "runas"
-            If predownloadedyesno = MsgBoxResult.No Then processStartInfo.Arguments = ("e " & patchFile & " TEMPPATCHAIDAFOOL")
-            If predownloadedyesno = MsgBoxResult.Yes Then processStartInfo.Arguments = ("e " & """" & rarLocation & """" & " TEMPPATCHAIDAFOOL")
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
             WriteDebugInfo(My.Resources.strWaitingforPatch)
-            Process.Start(processStartInfo).WaitForExit()
+            Process.Start(startInfo).WaitForExit()
 
             If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
@@ -3623,7 +3560,7 @@ SelectInstallFolder:
             Dim backupPath As String = BuildBackupPath(patchName)
             If backupyesno = MsgBoxResult.Yes Then
                 If Directory.Exists(backupPath) Then
-                    My.Computer.FileSystem.DeleteDirectory(backupPath, DeleteDirectoryOption.DeleteAllContents)
+                    Directory.Delete(backupPath, True)
                     Directory.CreateDirectory(backupPath)
                     WriteDebugInfo(My.Resources.strErasingPreviousBackup)
                 End If
@@ -3656,7 +3593,7 @@ SelectInstallFolder:
                 File.Move(("TEMPPATCHAIDAFOOL\" & dra.ToString()), (_pso2WinDir & "\" & dra.ToString()))
             Next
 
-            My.Computer.FileSystem.DeleteDirectory("TEMPPATCHAIDAFOOL", DeleteDirectoryOption.DeleteAllContents)
+            Directory.Delete("TEMPPATCHAIDAFOOL", True)
             If backupyesno = MsgBoxResult.No Then
                 External.FlashWindow(Handle, True)
                 WriteDebugInfo("English patch " & My.Resources.strInstalledUpdated)
@@ -3698,8 +3635,9 @@ SelectInstallFolder:
             Next
 
             Dim backupPath As String = BuildBackupPath(patchName)
-            If My.Computer.FileSystem.DirectoryExists(backupPath) Then
-                My.Computer.FileSystem.DeleteDirectory(backupPath, DeleteDirectoryOption.DeleteAllContents)
+
+            If Directory.Exists(backupPath) Then
+                Directory.Delete(backupPath, True)
             End If
 
             External.FlashWindow(Handle, True)
@@ -3733,7 +3671,7 @@ SelectInstallFolder:
             File.Move(backupPath & "\" & dra.ToString(), _pso2WinDir & "\" & dra.ToString())
         Next
 
-        My.Computer.FileSystem.DeleteDirectory(backupPath, DeleteDirectoryOption.DeleteAllContents)
+        Directory.Delete(backupPath, True)
         External.FlashWindow(Handle, True)
         WriteDebugInfo(My.Resources.strBackupRestored)
         UnlockGui()

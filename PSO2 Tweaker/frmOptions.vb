@@ -151,9 +151,9 @@ Public Class FrmOptions
         If Not _isLoading Then
             If chkUseIcsHost.Checked Then
                 MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
-                FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
+                FrmMain.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
             Else
-                FrmMain._hostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+                FrmMain.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
             End If
         End If
     End Sub
