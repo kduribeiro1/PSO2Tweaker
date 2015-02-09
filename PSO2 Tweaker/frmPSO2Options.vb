@@ -9,8 +9,8 @@ Public Class FrmPso2Options
     Private Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not File.Exists(_usersettingsfile) Then
-                File.WriteAllText(_usersettingsfile, frmMain.txtPSO2DefaultINI.Text)
-                frmMain.WriteDebugInfo("Generating new PSO2 Settings file... Done!")
+                File.WriteAllText(_usersettingsfile, My.Program.MainForm.txtPSO2DefaultINI.Text)
+                My.Program.MainForm.WriteDebugInfo("Generating new PSO2 Settings file... Done!")
             End If
 
             SuspendLayout()
@@ -104,8 +104,8 @@ Public Class FrmPso2Options
                 End If
             End If
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
             ResumeLayout(False)
         End Try
@@ -129,8 +129,8 @@ Public Class FrmPso2Options
                 End If
             Next
         Catch ex As Exception
-            FrmMain.Log(ex.Message)
-            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
         Return ""
     End Function
@@ -162,8 +162,8 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            FrmMain.Log(ex.Message)
-            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -186,7 +186,7 @@ Public Class FrmPso2Options
                     Next x
 
                     If contains = False Then
-                        FrmMain.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        My.Program.MainForm.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
 
@@ -206,8 +206,8 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            FrmMain.Log(ex.Message)
-            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -230,7 +230,7 @@ Public Class FrmPso2Options
                     Next x
 
                     If contains = False Then
-                        FrmMain.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        My.Program.MainForm.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
 
@@ -252,8 +252,8 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            FrmMain.Log(ex.Message)
-            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -276,7 +276,7 @@ Public Class FrmPso2Options
                     Next x
 
                     If contains = False Then
-                        frmMain.WriteDebugInfo("Couldn't find Height3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        My.Program.MainForm.WriteDebugInfo("Couldn't find Height3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
 
@@ -296,8 +296,8 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -320,7 +320,7 @@ Public Class FrmPso2Options
                     Next x
 
                     If contains = False Then
-                        frmMain.WriteDebugInfo("Couldn't find Width3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
+                        My.Program.MainForm.WriteDebugInfo("Couldn't find Width3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
 
@@ -342,39 +342,39 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            frmMain.Log(ex.Message)
-            frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         End Try
     End Sub
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
         'Try
-        frmMain.Log("Saving Draw Level...")
+        Helper.Log("Saving Draw Level...")
         SaveINISetting("DrawLevel", Slider1.Value.ToString())
-        frmMain.Log("Saving Texture Resolution...")
+        Helper.Log("Saving Texture Resolution...")
         SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex.ToString())
-        frmMain.Log("Saving Interface Size...")
+        Helper.Log("Saving Interface Size...")
         SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex.ToString())
-        frmMain.Log("Saving Shader Quality...")
+        Helper.Log("Saving Shader Quality...")
         If ComboBoxEx2.SelectedIndex = 0 Then SaveINISetting("ShaderQuality", "true")
         If ComboBoxEx2.SelectedIndex = 1 Then SaveINISetting("ShaderQuality", "false")
-        frmMain.Log("Saving Movie Play...")
+        Helper.Log("Saving Movie Play...")
         If ComboBoxEx3.SelectedIndex = 0 Then SaveINISetting("MoviePlay", "true")
         If ComboBoxEx3.SelectedIndex = 1 Then SaveINISetting("MoviePlay", "false")
 
         If ComboBoxEx4.SelectedIndex = 0 Then
-            frmMain.Log("Saving Window Mode (Windowed)...")
+            Helper.Log("Saving Window Mode (Windowed)...")
             SaveINISetting("FullScreen", "false")
             SaveINISetting("VirtualFullScreen", "false")
         End If
 
         If ComboBoxEx4.SelectedIndex = 1 Then
-            frmMain.Log("Saving Window Mode (Fullscreen)...")
+            Helper.Log("Saving Window Mode (Fullscreen)...")
             SaveINISetting("FullScreen", "true")
             SaveINISetting("VirtualFullScreen", "false")
         End If
 
         If ComboBoxEx4.SelectedIndex = 2 Then
-            frmMain.Log("Saving Window Mode (Virtual Fullscreen)...")
+            Helper.Log("Saving Window Mode (Virtual Fullscreen)...")
             SaveINISetting("FullScreen", "false")
             SaveINISetting("VirtualFullScreen", "true")
         End If
@@ -384,7 +384,7 @@ Public Class FrmPso2Options
             Return
         End If
 
-        frmMain.Log("Saving Resolution...")
+        Helper.Log("Saving Resolution...")
         'If ComboBoxEx5.SelectedText <> "x" Then
         Dim strResolution As String = ComboBoxEx5.SelectedItem.ToString()
 
@@ -397,17 +397,17 @@ Public Class FrmPso2Options
 
         Dim fps As String = ComboBoxEx6.SelectedItem.ToString().Replace(" FPS", "").Replace("Unlimited", "0")
 
-        FrmMain.Log("Saving FPS...")
+        Helper.Log("Saving FPS...")
         SaveINISetting("FrameKeep", fps)
 
-        frmMain.Log("Saving Volume...")
+        Helper.Log("Saving Volume...")
         SaveINISetting("Bgm", SBGM.Value.ToString())
         SaveINISetting("Voice", SVOICE.Value.ToString())
         SaveINISetting("Movie", SIGM.Value.ToString())
         SaveINISetting("Se", SSE.Value.ToString())
 
         If CheckBoxX1.Checked Then
-            frmMain.Log("Disabling Interface...")
+            Helper.Log("Disabling Interface...")
             If ReadINISetting("X") <> "99999" Then
                 If ReadINISetting("Y") <> "99999" Then
                     RegKey.SetValue(Of String)(RegKey.OldX, ReadINISetting("X"))
@@ -419,7 +419,7 @@ Public Class FrmPso2Options
         End If
 
         If Not CheckBoxX1.Checked Then
-            frmMain.Log("Enabling Interface...")
+            Helper.Log("Enabling Interface...")
             If ReadINISetting("X") = "99999" Then
                 If ReadINISetting("Y") = "99999" Then
                     SaveINISetting("X", RegKey.GetValue(Of String)(RegKey.OldX))
@@ -430,8 +430,8 @@ Public Class FrmPso2Options
 
         MsgBox("Settings saved!")
         'Catch ex As Exception
-        'frmMain.Log(ex.Message)
-        'frmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+        'My.Program.MainForm.Log(ex.Message)
+        'My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         'End Try
     End Sub
 

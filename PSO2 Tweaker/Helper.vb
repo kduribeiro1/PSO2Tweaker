@@ -147,4 +147,8 @@ Public Class Helper
 
         Return String.Format("{0:n2} {1}", value / pow, SizeSuffixes(index - 1))
     End Function
+
+    Public Shared Sub Log(output As String)
+        File.AppendAllText((My.Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
+    End Sub
 End Class

@@ -1,5 +1,6 @@
-﻿Namespace My
+﻿Imports Microsoft.VisualBasic.ApplicationServices
 
+Namespace My
     ' The following events are available for MyApplication:
     ' 
     ' Startup: Raised when the application starts, before the startup form is created.
@@ -8,11 +9,15 @@
     ' StartupNextInstance: Raised when launching a single-instance application and the application is already active. 
     ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
     Partial Friend Class MyApplication
-        Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
+        Private Shared Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
-                frmMain.Log("Exception: " & e.ToString & "/ Message: " & e.Exception.Source)
-                frmMain.PasteBinUpload()
+                Helper.Log("Exception: " & e.ToString & "/ Message: " & e.Exception.Source)
+                Program.MainForm.PasteBinUpload()
             End If
+        End Sub
+
+        Private Shared Sub MyApplication_Startup(ByVal sender As Object, ByVal e As StartupEventArgs) Handles Me.Startup
+            Program.Main()
         End Sub
     End Class
 End Namespace

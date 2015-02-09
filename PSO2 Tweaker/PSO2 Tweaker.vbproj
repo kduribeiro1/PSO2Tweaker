@@ -149,6 +149,7 @@
     <Compile Include="Languages.vb" />
     <Compile Include="Md5Provider.vb" />
     <Compile Include="My\ApplicationEvents.vb" />
+    <Compile Include="My\Program.vb" />
     <Compile Include="My\Settings.vb" />
     <Compile Include="RegKey.vb" />
     <Compile Include="FrmDiagnostic.Designer.vb">

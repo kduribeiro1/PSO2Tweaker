@@ -69,8 +69,8 @@ Public Class FrmOptions
             ComboItem40.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)
             ComboItem42.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewLargeFilesVersion)
         Catch ex As Exception
-            FrmMain.Log(ex.Message)
-            FrmMain.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
+            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
             _isLoading = False
             ResumeLayout(False)
@@ -133,7 +133,7 @@ Public Class FrmOptions
     End Sub
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
-        FrmMain.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
+        My.Program.MainForm.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxBgColor, (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
 
@@ -151,15 +151,15 @@ Public Class FrmOptions
         If Not _isLoading Then
             If chkUseIcsHost.Checked Then
                 MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
-                FrmMain.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
+                My.Program.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
             Else
-                FrmMain.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+                My.Program.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
             End If
         End If
     End Sub
 
     Private Sub ColorPickerButton3_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton3.SelectedColorChanged
-        FrmMain.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
+        My.Program.MainForm.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxColor, (ColorPickerButton3.SelectedColor.ToArgb))
     End Sub
 
@@ -213,7 +213,7 @@ Public Class FrmOptions
         End Using
 
         Dim processStartInfo = New ProcessStartInfo()
-        processStartInfo.FileName = (Application.StartupPath & "\unrar.exe").Replace("\\", "\")
+        processStartInfo.FileName = (My.Program.StartPath & "\unrar.exe").Replace("\\", "\")
         processStartInfo.Verb = "runas"
         processStartInfo.Arguments = "x -inul -o+ LanguagePack.rar"
         processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
@@ -224,7 +224,7 @@ Public Class FrmOptions
     End Sub
 
     Private Sub ColorPickerButton2_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton2.SelectedColorChanged
-        FrmMain.ForeColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.ForeColor = ColorPickerButton2.SelectedColor
         FrmPso2Options.ForeColor = ColorPickerButton2.SelectedColor
         FrmPso2Options.TabItem1.TextColor = ColorPickerButton2.SelectedColor
         FrmPso2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
@@ -236,17 +236,17 @@ Public Class FrmOptions
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         chkUseIcsHost.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
-        FrmMain.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
+        My.Program.MainForm.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
 
         RegKey.SetValue(Of Integer)(RegKey.FontColor, (ColorPickerButton2.SelectedColor.ToArgb))
     End Sub

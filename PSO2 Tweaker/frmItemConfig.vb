@@ -2,7 +2,7 @@
 
 Public Class FrmItemConfig
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        Dim pso2Launchpath = frmMain.lblDirectory.Text.Replace("\data\win32", "")
+        Dim pso2Launchpath = My.Program.Pso2RootDir
         File.Delete(pso2Launchpath & "\translation.cfg")
 
         Dim splitKey As String() = DirectCast(cmbToggleKey.SelectedItem, String).Split("("c)
@@ -21,8 +21,8 @@ Public Class FrmItemConfig
         Hide()
     End Sub
 
-    Private Sub chkLogging_CheckedChanged(sender As Object, e As EventArgs) Handles chkLogging.CheckedChanged
-        File.Delete(frmMain.lblDirectory.Text.Replace("\data\win32", "") & "\itemlog.txt")
+    Private Shared Sub chkLogging_CheckedChanged(sender As Object, e As EventArgs) Handles chkLogging.CheckedChanged
+        File.Delete(My.Program.MainForm.lblDirectory.Text.Replace("\data\win32", "") & "\itemlog.txt")
         MsgBox("Please only turn this feature on if you are specifically asked to. If AIDA didn't tell you to turn it on, don't.")
     End Sub
 
