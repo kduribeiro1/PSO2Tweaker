@@ -16,16 +16,9 @@ Public Class FrmDiagnostic
 
     Private Shared Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim totalString As String = ""
-        Dim currentLine As String
-
-        Using xRead As New StreamReader("C:\WINDOWS\system32\drivers\etc\hosts")
-            Do Until xRead.EndOfStream
-                currentLine = xRead.ReadLine()
-                '[AIDA] Changed it, only took a few days! :D.... :(
-                If currentLine <> "" Then totalString &= currentLine & vbCrLf
-            Loop
-        End Using
-
+        For Each line As String In Helper.GetLines(Environment.SystemDirectory & "\drivers\etc\hosts")
+            If line <> "" Then totalString &= line & vbCrLf
+        Next
         If totalString = "" Then totalString = "No modified host entries detected!"
         Clipboard.SetText(totalString)
         MsgBox("Copied!")

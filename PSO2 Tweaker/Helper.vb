@@ -1,7 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Net
-Imports System.Net.Mime
 Imports System.Runtime.InteropServices
 Imports PSO2_Tweaker.My
 
@@ -28,7 +27,7 @@ Public Class Helper
     End Function
 
     Public Shared Sub Log(output As String)
-        File.AppendAllText((My.Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
@@ -36,7 +35,7 @@ Public Class Helper
             Program.MainForm.WriteDebugInfo(addThisText)
         Catch
         End Try
-        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfoSameLine(ByVal addThisText As String)
@@ -44,11 +43,11 @@ Public Class Helper
             Program.MainForm.WriteDebugInfoSameLine(addThisText)
         Catch
         End Try
-        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfoAndOk(ByVal addThisText As String)
-        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [OK!]") & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [OK!]" & vbCrLf)
         Try
             Program.MainForm.WriteDebugInfoAndOk(addThisText)
         Catch
@@ -60,7 +59,7 @@ Public Class Helper
             Program.MainForm.WriteDebugInfoAndWarning(addThisText)
         Catch
         End Try
-        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [WARNING!]") & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [WARNING!]" & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfoAndFailed(ByVal addThisText As String)
@@ -68,7 +67,7 @@ Public Class Helper
             Program.MainForm.WriteDebugInfoAndFailed(addThisText)
         Catch
         End Try
-        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [FAILED!]") & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [FAILED!]" & vbCrLf)
         If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
             Dim upload As MsgBoxResult = MsgBox(Resources.strSomethingWentWrongUpload, vbYesNo)
             If upload = MsgBoxResult.Yes Then
@@ -83,14 +82,10 @@ Public Class Helper
 
     Public Shared Sub DeleteFile(path As String)
         Try
-            File.Delete(path)
+            If File.Exists(path) Then File.Delete(path)
         Catch ex As Exception
-            ' Aida put whatever you see fit here plz
             Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Try
-                WriteDebugInfo(My.Resources.strERROR & ex.Message)
-            Catch
-            End Try
+            WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -113,8 +108,7 @@ Public Class Helper
     End Function
 
     Public Shared Function GetFileSize(ByVal myFilePath As String) As Long
-        Dim myFile As New FileInfo(myFilePath)
-        Return myFile.Length
+        Return New FileInfo(myFilePath).Length
     End Function
 
     Public Shared Sub DeleteDirectory(path As String)
@@ -144,7 +138,7 @@ Public Class Helper
             client.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
             Dim data As String = "?api_paste_private=1&api_option=paste&api_paste_name=Error Log report&api_paste_format=text&api_paste_expire_date=N&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f&api_paste_code=" & File.ReadAllText(fileToUpload)
             Dim responce = client.UploadString("http://pastebin.com/api/api_post.php", "POST", data)
-            MsgBox(My.Resources.strPleasecopytheURL)
+            MsgBox(Resources.strPleasecopytheURL)
             Process.Start(responce)
         End Using
     End Sub

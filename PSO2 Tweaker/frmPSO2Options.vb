@@ -185,7 +185,7 @@ Public Class FrmPso2Options
                         End If
                     Next x
 
-                    If contains = False Then
+                    If Not contains Then
                         Helper.WriteDebugInfo("Couldn't find Height in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
@@ -229,7 +229,7 @@ Public Class FrmPso2Options
                         End If
                     Next x
 
-                    If contains = False Then
+                    If Not contains Then
                         Helper.WriteDebugInfo("Couldn't find Width in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
@@ -275,7 +275,7 @@ Public Class FrmPso2Options
                         End If
                     Next x
 
-                    If contains = False Then
+                    If Not contains Then
                         Helper.WriteDebugInfo("Couldn't find Height3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
@@ -319,7 +319,7 @@ Public Class FrmPso2Options
                         End If
                     Next x
 
-                    If contains = False Then
+                    If Not contains Then
                         Helper.WriteDebugInfo("Couldn't find Width3D in user settings. This is OKAY. If you notice your resolution not changing, try resetting your PSO2 Settings to default. If everything works, feel free to ignore this error.")
                         Return
                     End If
