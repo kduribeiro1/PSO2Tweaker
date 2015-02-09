@@ -70,7 +70,7 @@ Public Class FrmOptions
             ComboItem42.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewLargeFilesVersion)
         Catch ex As Exception
             Helper.Log(ex.Message)
-            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
             _isLoading = False
             ResumeLayout(False)

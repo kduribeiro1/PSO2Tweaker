@@ -12,7 +12,7 @@ Namespace My
         Private Shared Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
                 Helper.Log("Exception: " & e.ToString & "/ Message: " & e.Exception.Source)
-                Program.MainForm.PasteBinUpload()
+                Helper.PasteBinUpload()
             End If
         End Sub
 

@@ -32,12 +32,12 @@ Public Class FrmDiagnostic
     End Sub
 
     Private Shared Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.Pso2Dir) & "\data\win32\")
+        Dim drInfo As New DirectoryInfo(My.Program.Pso2WinDir)
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
         Dim fileSize As Long = filesInfo.Sum(Function(fileInfo) fileInfo.Length)
 
         Dim totalString As String = ""
-        totalString &= "PSO2 Directory: " & RegKey.GetValue(Of String)(RegKey.Pso2Dir) & vbCrLf
+        totalString &= "PSO2 Directory: " & My.Program.Pso2RootDir & vbCrLf
         totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) & vbCrLf
         totalString &= "Item Translation: " & RegKey.GetValue(Of String)(RegKey.UseItemTranslation) & vbCrLf
         totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.EnPatchVersion) & vbCrLf
@@ -49,7 +49,7 @@ Public Class FrmDiagnostic
     End Sub
 
     Private Shared Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim drInfo As New DirectoryInfo(RegKey.GetValue(Of String)(RegKey.Pso2Dir))
+        Dim drInfo As New DirectoryInfo(My.Program.Pso2RootDir)
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
         Dim fileSize As Long
         Dim filename As String

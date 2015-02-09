@@ -1,22 +1,271 @@
 ﻿Imports System.Globalization
+Imports System.IO
+Imports System.Security.Principal
 Imports System.Threading
+Imports DevComponents.DotNetBar
 
 Namespace My
     Public Class Program
         Public Shared ReadOnly Args As String() = Environment.GetCommandLineArgs()
         Public Shared ReadOnly StartPath As String = Windows.Forms.Application.StartupPath
+        Public Shared ReadOnly Client As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
 
         Public Shared MainForm As FrmMain
+        Public Shared FreedomUrl As String = "http://162.243.211.123/freedom/"
         Public Shared HostsFilePath As String
         Public Shared Pso2RootDir As String
         Public Shared Pso2WinDir As String
+        Public Shared TransOverride As Boolean = False
+        Public Shared UseItemTranslation As Boolean = False
+        Public Shared WayuIsAFailure As Boolean = False
+        Public Shared Nodiag As Boolean = False
+        Public Shared IsPso2Installed As Boolean = True
+        Public Shared SidebarEnabled As Boolean = True
+        Public Shared IsMainFormTopMost As Boolean = False
 
         Public Shared Sub Main()
+            Helper.Log("Checking if the PSO2 Tweaker is running")
+
+            If Helper.CheckIfRunning("PSO2 Tweaker") Then Environment.Exit(0)
+
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2Dir)) Then
+                Dim alreadyInstalled As MsgBoxResult = MsgBox("This appears to be the first time you've used the PSO2 Tweaker! Have you installed PSO2 already? If you select no, the PSO2 Tweaker will install it for you.", MsgBoxStyle.YesNo)
+                If alreadyInstalled = vbNo Then
+                    IsPso2Installed = False
+                    Return
+                End If
+            End If
+
             Dim locale = RegKey.GetValue(Of String)(RegKey.Locale)
 
             If Not String.IsNullOrEmpty(locale) Then
                 Thread.CurrentThread.CurrentUICulture = New CultureInfo(locale)
                 Thread.CurrentThread.CurrentCulture = New CultureInfo(locale)
+            End If
+
+            Helper.Log("Program started! - Logging enabled!")
+            Helper.Log("Attempting to auto-load pso2_bin directory from settings")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2Dir)) Then
+                MsgBox(Resources.strPleaseSelectwin32Dir)
+                Helper.SelectPso2Directory()
+            Else
+                Pso2RootDir = RegKey.GetValue(Of String)(RegKey.Pso2Dir)
+                Helper.Log("Loaded pso2_bin directory from settings")
+            End If
+
+            ' This sets up pso2RootDir and pso2WinDir - don't remove it
+            If Pso2RootDir.Contains("\pso2_bin\data\win32") Then
+                If File.Exists(Pso2RootDir.Replace("\data\win32", "") & "\pso2.exe") Then
+                    Helper.Log("win32 folder selected instead of pso2_bin folder - Fixing!")
+                    Pso2RootDir = Pso2RootDir.Replace("\data\win32", "")
+                    RegKey.SetValue(Of String)(RegKey.Pso2Dir, Pso2RootDir)
+                    Helper.Log(Pso2RootDir & " " & Resources.strSetAsYourPSO2)
+                End If
+            End If
+
+            If Pso2RootDir = "lblDirectory" OrElse Not Directory.Exists(Pso2RootDir) Then
+                MsgBox(Resources.strPleaseSelectwin32Dir)
+                Helper.SelectPso2Directory()
+            End If
+
+            Pso2WinDir = (Pso2RootDir & "\data\win32")
+
+            If Not Directory.Exists(Pso2WinDir) Then
+                Directory.CreateDirectory(Pso2WinDir)
+                'WriteDebugInfo("Creating win32 directory... Done!")
+            End If
+
+            Helper.Log("Starting shitstorm...")
+            FreedomUrl = Client.DownloadString("http://arks-layer.com/freedom.txt")
+            If Not FreedomUrl.Contains("freedom") Then
+                Helper.Log("Reverting to default freedom...")
+                FreedomUrl = "http://162.243.211.123/freedom/"
+            End If
+
+            Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+
+            For i As Integer = 1 To (Args.Length - 1)
+                Select Case Args(i)
+                    Case "-nodllcheck"
+                        TransOverride = True
+
+                    Case "-fuck_you_misaki_stop_trying_to_decompile_my_shit"
+                        Helper.Log("Fuck you, Misaki")
+                        MsgBox("Why are you trying to decompile my program? Get outta here!")
+
+                    Case "-item"
+                        Helper.Log("Detected command argument -item")
+                        UseItemTranslation = True
+
+                    Case "-wayu"
+                        Helper.Log("Detected command argument -wayu")
+                        WayuIsAFailure = True
+
+                    Case "-nodiag"
+                        Helper.Log("Detected command argument -nodiag")
+                        Helper.Log("Bypassing OS detection to fix compatibility!")
+                        Nodiag = True
+
+                    Case "-bypass"
+                        Helper.Log("Detected command argument -bypass")
+                        Helper.Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
+                        MsgBox("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")
+                        If Pso2RootDir = "lblDirectory" OrElse Not Directory.Exists(Pso2RootDir) Then
+                            MsgBox(Resources.strPleaseSelectwin32Dir)
+                            Helper.SelectPso2Directory()
+                            Continue For
+                        End If
+                        File.WriteAllBytes(Pso2RootDir & "\ddraw.dll", Resources.ddraw)
+                        Helper.Log("Setting environment variable")
+                        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
+                        Helper.Log("Launching PSO2")
+                        External.ShellExecute(IntPtr.Zero, "open", (Pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+                        Do While File.Exists(Pso2RootDir & "\ddraw.dll")
+                            For Each proc As Process In Process.GetProcessesByName("pso2")
+                                If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
+                                    If Not TransOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+                                End If
+                            Next
+                            Thread.Sleep(1000)
+                        Loop
+
+                    Case "-pso2"
+                        Helper.Log("Detected command argument -pso2")
+
+                        'Fuck SEGA. Fuck them hard.
+                        If Not Directory.Exists(Pso2RootDir) OrElse Pso2RootDir = "lblDirectory" Then
+                            MsgBox(Resources.strPleaseSelectwin32Dir)
+                            Helper.SelectPso2Directory()
+                            Return
+                        End If
+
+                        If UseItemTranslation Then
+                            'Download the latest translator.dll and translation.bin
+                            Dim dlLink1 As String = FreedomUrl & "translator.dll"
+                            Dim dlLink2 As String = FreedomUrl & "translation.bin"
+                            Helper.Log(Resources.strDownloadingItemTranslationFiles)
+                            ' Try up to 4 times to download the translator DLL.
+                            For tries As Integer = 1 To 4
+                                Try
+                                    Client.DownloadFile(dlLink1, (Pso2RootDir & "\translator.dll"))
+                                    Exit For
+                                Catch ex As Exception
+                                    If tries = 4 Then
+                                        Helper.Log("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+                                        Exit For
+                                    End If
+                                End Try
+                            Next
+
+                            ' Try up to 4 times to download the translation strings.
+                            For tries As Integer = 1 To 4
+                                Try
+                                    Client.DownloadFile(dlLink2, (Pso2RootDir & "\translation.bin"))
+                                    Exit For
+                                Catch ex As Exception
+                                    If tries = 4 Then
+                                        Helper.Log("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+                                        Exit Try
+                                    End If
+                                End Try
+                            Next
+
+                            File.WriteAllBytes(Pso2RootDir & "\ddraw.dll", Resources.ddraw)
+                        End If
+
+                        Helper.Log("Setting environment variable")
+                        Environment.SetEnvironmentVariable("-pso2", "+0x01e3f1e9")
+
+                        Helper.Log("Launching PSO2")
+                        External.ShellExecute(IntPtr.Zero, "open", (Pso2RootDir & "\pso2.exe"), "+0x33aca2b9 -pso2", "", 0)
+
+                        Helper.DeleteFile("LanguagePack.rar")
+                        If UseItemTranslation Then
+                            Do While File.Exists(Pso2RootDir & "\ddraw.dll")
+                                For Each proc As Process In Process.GetProcessesByName("pso2")
+                                    If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
+                                        If Not TransOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+                                    End If
+                                Next
+                                Thread.Sleep(1000)
+                            Loop
+                        End If
+                End Select
+            Next
+
+            If File.Exists(Pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+
+            Helper.Log("Loading settings...")
+
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PatchServer)) Then RegKey.SetValue(Of String)(RegKey.PatchServer, "Patch Server #1")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenFuckSegaMessage)) Then RegKey.SetValue(Of Boolean)(RegKey.SeenFuckSegaMessage, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Backup)) Then RegKey.SetValue(Of String)(RegKey.Backup, "Always")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PreDownloadedRar)) Then RegKey.SetValue(Of String)(RegKey.PreDownloadedRar, "Never")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then RegKey.SetValue(Of Boolean)(RegKey.Pastebin, True)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.CloseAfterLaunch)) Then RegKey.SetValue(Of Boolean)(RegKey.CloseAfterLaunch, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnPatchAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.EnPatchAfterInstall, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.LargeFilesAfterInstall, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then RegKey.SetValue(Of Boolean)(RegKey.StoryPatchAfterInstall, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LatestStoryBase)) Then RegKey.SetValue(Of String)(RegKey.LatestStoryBase, "Unknown")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyEnabled)) Then RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SteamMode)) Then RegKey.SetValue(Of String)(RegKey.SteamMode, "False")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SidebarEnabled)) Then RegKey.SetValue(Of String)(RegKey.SidebarEnabled, "True")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Uid)) Then RegKey.SetValue(Of String)(RegKey.Uid, "False")
+            If RegKey.GetValue(Of Object)(RegKey.UseIcsHost) Is Nothing Then RegKey.SetValue(Of Boolean)(RegKey.UseIcsHost, False)
+
+            SidebarEnabled = RegKey.GetValue(Of Boolean)(RegKey.SidebarEnabled)
+
+            If RegKey.GetValue(Of Boolean)(RegKey.UseIcsHost) Then
+                HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
+            Else
+                HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+            End If
+
+            If RegKey.GetValue(Of String)(RegKey.Uid) = "False" Then
+                RegKey.SetValue(Of String)(RegKey.Uid, Client.DownloadString("http://arks-layer.com/docs/client.php"))
+            End If
+
+            Helper.Log("Load more settings...")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage)) Then RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "No")
+
+            If StartPath = Helper.GetDownloadsPath() Then
+                If RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage) = "No" Then
+                    MsgBox("Please be aware - Due to various Windows 7/8 issues, this program might not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
+                    RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "Yes")
+                End If
+            End If
+
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)) Then RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
+            IsMainFormTopMost = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop))
+
+            If File.Exists(StartPath & "\logfile.txt") AndAlso Helper.GetFileSize(StartPath & "\logfile.txt") > 30720 Then
+                File.WriteAllText(StartPath & "\logfile.txt", "")
+            End If
+
+            Application.DoEvents()
+
+            If Nodiag Then
+                Helper.Log("Diagnostic info skipped due to -nodiag flag!")
+            Else
+                Helper.Log(vbCrLf)
+                Helper.Log("----------------------------------------")
+                Helper.Log(Resources.strProgramOpeningRunningDiagnostics)
+                Helper.Log(Resources.strCurrentOSFullName & Computer.Info.OSFullName)
+                Helper.Log(Resources.strCurrentOSVersion & Computer.Info.OSVersion)
+                Helper.Log(Resources.strIsTheCurrentOS64bit & Environment.Is64BitOperatingSystem)
+                Helper.Log(Resources.strRunDirectory & StartPath)
+                Helper.Log(Resources.strSelectedPSO2win32directory & Pso2RootDir)
+                Helper.Log(Resources.strIsUnrarAvailable & File.Exists(StartPath & "\UnRar.exe"))
+                Dim identity = WindowsIdentity.GetCurrent()
+                Dim principal = New WindowsPrincipal(identity)
+                Dim isElevated As Boolean = principal.IsInRole(WindowsBuiltInRole.Administrator)
+                Helper.Log("Run as Administrator: " & isElevated)
+                Helper.Log("Is 7zip available: " & File.Exists(StartPath & "\7za.exe"))
+                Helper.Log("Is 7zip available: " & File.Exists("7za.exe"))
+                Helper.Log("----------------------------------------")
             End If
         End Sub
     End Class

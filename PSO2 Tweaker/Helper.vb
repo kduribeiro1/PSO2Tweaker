@@ -1,7 +1,9 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Net
+Imports System.Net.Mime
 Imports System.Runtime.InteropServices
+Imports PSO2_Tweaker.My
 
 Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
@@ -24,6 +26,73 @@ Public Class Helper
             reader.Close()
         End Using
     End Function
+
+    Public Shared Sub Log(output As String)
+        File.AppendAllText((My.Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfo(addThisText)
+        Catch
+        End Try
+        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfoSameLine(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfoSameLine(addThisText)
+        Catch
+        End Try
+        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfoAndOk(ByVal addThisText As String)
+        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [OK!]") & vbCrLf)
+        Try
+            Program.MainForm.WriteDebugInfoAndOk(addThisText)
+        Catch
+        End Try
+    End Sub
+
+    Public Shared Sub WriteDebugInfoAndWarning(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfoAndWarning(addThisText)
+        Catch
+        End Try
+        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [WARNING!]") & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfoAndFailed(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfoAndFailed(addThisText)
+        Catch
+        End Try
+        File.AppendAllText((Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & " " & (addThisText & " [FAILED!]") & vbCrLf)
+        If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
+            Dim upload As MsgBoxResult = MsgBox(Resources.strSomethingWentWrongUpload, vbYesNo)
+            If upload = MsgBoxResult.Yes Then
+                PasteBinUpload()
+            End If
+        End If
+    End Sub
+
+    Public Shared Sub PasteBinUpload()
+        PasteBinUploadFile(Program.StartPath & "\logfile.txt")
+    End Sub
+
+    Public Shared Sub DeleteFile(path As String)
+        Try
+            File.Delete(path)
+        Catch ex As Exception
+            ' Aida put whatever you see fit here plz
+            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Try
+                WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Catch
+            End Try
+        End Try
+    End Sub
 
     Public Shared Function CheckIfRunning(processName As String) As Boolean
         Dim currentProcessId = Process.GetCurrentProcess().Id
@@ -148,7 +217,38 @@ Public Class Helper
         Return String.Format("{0:n2} {1}", value / pow, SizeSuffixes(index - 1))
     End Function
 
-    Public Shared Sub Log(output As String)
-        File.AppendAllText((My.Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
+    Public Shared Sub SelectPso2Directory()
+        Try
+            Log("Selecting PSO2 Directory...")
+            Dim myFolderBrowser As New FolderBrowserDialog
+            ' Description that displays above the dialog box control. 
+            If Not String.IsNullOrEmpty(Program.Pso2RootDir) Then myFolderBrowser.SelectedPath = Program.Pso2RootDir
+            myFolderBrowser.Description = Resources.strSelectPSO2win32folder2
+            ' Sets the root folder where the browsing starts from 
+            myFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+            Dim dlgResult As DialogResult = myFolderBrowser.ShowDialog()
+            If dlgResult = DialogResult.Cancel Then
+                WriteDebugInfo("pso2_bin folder selection cancelled!")
+                Return
+            End If
+
+            If myFolderBrowser.SelectedPath.Contains("\pso2_bin") Then
+                If File.Exists(myFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") Then
+                    WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
+                    Program.Pso2RootDir = myFolderBrowser.SelectedPath.Replace("\data\win32", "")
+                    RegKey.SetValue(Of String)(RegKey.Pso2Dir, Program.Pso2RootDir)
+                    WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
+                    Return
+                End If
+            End If
+
+            RegKey.SetValue(Of String)(RegKey.Pso2Dir, myFolderBrowser.SelectedPath)
+            Program.Pso2RootDir = myFolderBrowser.SelectedPath
+            WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
+
+        Catch ex As Exception
+            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            WriteDebugInfo(Resources.strERROR & ex.Message)
+        End Try
     End Sub
 End Class
