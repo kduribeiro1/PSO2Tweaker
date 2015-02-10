@@ -191,6 +191,7 @@ Namespace My
                                         Thread.Sleep(1000)
                                     Loop
                                 End If
+                                Environment.Exit(0)
                         End Select
                     Catch ex As Exception
                         Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
