@@ -285,8 +285,8 @@ Public Class FrmOptions
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case Else
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
-                    RegKey.SetValue(Of String)(RegKey.Style, "Blue")
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
+                    RegKey.SetValue(Of String)(RegKey.Style, "Black")
             End Select
         End If
     End Sub

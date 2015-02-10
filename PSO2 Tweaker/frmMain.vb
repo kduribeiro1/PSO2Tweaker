@@ -111,7 +111,7 @@ Public Class FrmMain
                     StyleManager.Style = eStyle.Windows7Blue
 
                 Case Else
-                    StyleManager.Style = eStyle.Office2007Blue
+                    StyleManager.Style = eStyle.Office2007Black
             End Select
 
             Dim regValue As Integer
