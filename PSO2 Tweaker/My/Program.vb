@@ -82,7 +82,7 @@ Namespace My
                     FreedomUrl = "http://162.243.211.123/freedom/"
                 End If
 
-                Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+                Dim launchPso2 As Boolean = False
 
                 For i As Integer = 1 To (Args.Length - 1)
                     Try
@@ -131,6 +131,7 @@ Namespace My
                                 Loop
 
                             Case "-pso2"
+                                launchPso2 = True
                                 Helper.Log("Detected command argument -pso2")
 
                                 'Fuck SEGA. Fuck them hard.
@@ -191,8 +192,11 @@ Namespace My
                                         Thread.Sleep(1000)
                                     Loop
                                 End If
-                                Environment.Exit(0)
                         End Select
+
+                        If launchPso2 Then Environment.Exit(0)
+                        If Not TransOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+
                     Catch ex As Exception
                         Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
                         Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
