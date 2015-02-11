@@ -14,7 +14,6 @@ Namespace My
         Public Shared HostsFilePath As String
         Public Shared Pso2RootDir As String
         Public Shared Pso2WinDir As String
-        Public Shared TransOverride As Boolean = False
         Public Shared UseItemTranslation As Boolean = False
         Public Shared WayuIsAFailure As Boolean = False
         Public Shared Nodiag As Boolean = False
@@ -23,6 +22,8 @@ Namespace My
         Public Shared IsMainFormTopMost As Boolean = False
 
         Public Shared Sub Main()
+            Dim transOverride As Boolean = False
+
             Try
                 Helper.Log("Checking if the PSO2 Tweaker is running")
 
@@ -88,7 +89,7 @@ Namespace My
                     Try
                         Select Case Args(i)
                             Case "-nodllcheck"
-                                TransOverride = True
+                                transOverride = True
 
                             Case "-fuck_you_misaki_stop_trying_to_decompile_my_shit"
                                 Helper.Log("Fuck you, Misaki")
@@ -124,7 +125,7 @@ Namespace My
                                 Do While File.Exists(Pso2RootDir & "\ddraw.dll")
                                     For Each proc As Process In Process.GetProcessesByName("pso2")
                                         If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
-                                            If Not TransOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+                                            If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
                                         End If
                                     Next
                                     Thread.Sleep(1000)
@@ -186,7 +187,7 @@ Namespace My
                                     Do While File.Exists(Pso2RootDir & "\ddraw.dll")
                                         For Each proc As Process In Process.GetProcessesByName("pso2")
                                             If proc.MainWindowTitle = "Phantasy Star Online 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then
-                                                If Not TransOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+                                                If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
                                             End If
                                         Next
                                         Thread.Sleep(1000)
@@ -194,8 +195,8 @@ Namespace My
                                 End If
                         End Select
 
+                        If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
                         If launchPso2 Then Environment.Exit(0)
-                        If Not TransOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
 
                     Catch ex As Exception
                         Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -203,7 +204,7 @@ Namespace My
                     End Try
                 Next
 
-                If File.Exists(Pso2RootDir & "\ddraw.dll") AndAlso (Not TransOverride) Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
+                If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
             Catch ex As Exception
                 Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)

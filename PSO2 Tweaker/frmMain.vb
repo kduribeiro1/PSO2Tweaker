@@ -245,10 +245,10 @@ Public Class FrmMain
                 ToggleSideBar()
             End If
 
-            If Not Program.IsPso2Installed Then
+            While Not Program.IsPso2Installed
                 InstallPso2()
                 Program.Main()
-            End If
+            End While
 
             lblDirectory.Text = Program.Pso2RootDir
             PBMainBar.Text = ""
@@ -2619,92 +2619,97 @@ Public Class FrmMain
         'End If
         'If installYesNo = vbYes Then
         MsgBox("This will install Phantasy Star Online EPISODE 2! Please select a folder to install into." & vbCrLf & "A folder called PHANTASYSTARONLINE2 will be created inside the folder you choose." & vbCrLf & "(For example, if you choose the C drive, it will install to C:\PHANTASYSTARONLINE2\)" & vbCrLf & "It is HIGHLY RECOMMENDED that you do NOT install into the Program Files folder, but a normal folder like C:\PHANTASYSTARONLINE\")
-SelectInstallFolder:
-        Dim myFolderBrowser As New FolderBrowserDialog With {.RootFolder = Environment.SpecialFolder.MyComputer, .Description = "Please select a folder (or drive) to install PSO2 into"}
-        Dim dlgResult As DialogResult = myFolderBrowser.ShowDialog()
+        Dim installPso2 As Boolean = True
+        While installPso2
+            Dim myFolderBrowser As New FolderBrowserDialog With {.RootFolder = Environment.SpecialFolder.MyComputer, .Description = "Please select a folder (or drive) to install PSO2 into"}
+            Dim dlgResult As DialogResult = myFolderBrowser.ShowDialog()
 
-        If dlgResult = DialogResult.OK Then
-            installFolder = myFolderBrowser.SelectedPath
-        End If
-        If dlgResult = DialogResult.Cancel Then
-            Helper.WriteDebugInfo("Installation cancelled by user!")
-            Return
-        End If
-        Dim correctYesNo As MsgBoxResult = MsgBox("You wish to install PSO2 into " & (installFolder & "\PHANTASYSTARONLINE2\. Is this correct?").Replace("\\", "\"), vbYesNoCancel)
-        If correctYesNo = vbCancel Then
-            Helper.WriteDebugInfo("Installation cancelled by user!")
-            Return
-        End If
-        If correctYesNo = vbNo Then
-            GoTo SelectInstallFolder
-        End If
-        If correctYesNo = vbYes Then
-            For Each drive In DriveInfo.GetDrives()
-                If (drive.DriveType = DriveType.Fixed) AndAlso (installFolder(0) = drive.Name(0)) Then
-                    If drive.TotalSize < 26992893636 Then
-                        MsgBox("There is not enough space on the selected disk to install PSO2. Please select a different drive. (Requires 16GB of free space)")
-                        GoTo SelectInstallFolder
-                    End If
-                    If drive.AvailableFreeSpace < 26992893636 Then
-                        MsgBox("There is not enough free space on the selected disk to install PSO2. Please free up some space or select a different drive. (Requires 16GB of free space)")
-                        GoTo SelectInstallFolder
-                    End If
-                End If
-            Next
-
-            Dim finalYesNo As MsgBoxResult = MsgBox("The program will now install the necessary files, create the folders, and set up the game. Afterwards, the program will automatically begin patching. Click ""OK"" to start.", MsgBoxStyle.OkCancel)
-            If finalYesNo = vbCancel Then
-                Helper.WriteDebugInfo("Installation cancelled by user!")
-            Else
-                Office2007StartButton1.Enabled = False
-                'set the pso2Dir to the install patch
-                Program.Pso2RootDir = (installFolder & "\PHANTASYSTARONLINE2\pso2_bin").Replace("\\", "\")
-                lblDirectory.Text = Program.Pso2RootDir
-                Show()
-                Focus()
-                Application.DoEvents()
-                Helper.WriteDebugInfo("Downloading DirectX setup...")
-                Try
-                    DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
-                    Helper.WriteDebugInfoSameLine("Done!")
-                    Helper.WriteDebugInfo("Checking/Installing DirectX...")
-                    Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "dxwebsetup.exe", .Verb = "runas", .Arguments = "/Q", .UseShellExecute = True}
-                    Process.Start(processStartInfo).WaitForExit()
-                    Helper.WriteDebugInfoSameLine("Done!")
-                Catch ex As Exception
-                    Helper.WriteDebugInfo("DirectX installation failed! Please install it later if neccessary!")
-                End Try
-
-                If File.Exists("dxwebsetup.exe") Then File.Delete("dxwebsetup.exe")
-                'Make a data folder, and a win32 folder under that
-                Directory.CreateDirectory(Program.Pso2RootDir & "\data\win32\")
-                'Download required pso2 stuff
-                Helper.WriteDebugInfo("Downloading PSO2 required files...")
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", Program.Pso2RootDir & "\pso2launcher.exe")
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", Program.Pso2RootDir & "\pso2updater.exe")
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", Program.Pso2RootDir & "\pso2.exe")
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", Program.Pso2RootDir & "\PSO2JP.ini")
-                Helper.WriteDebugInfoSameLine("Done!")
-                'Download Gameguard.des
-                Helper.WriteDebugInfo("Downloading Latest Gameguard file...")
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", Program.Pso2RootDir & "\GameGuard.des")
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
-                Application.DoEvents()
-
-                RegKey.SetValue(Of String)(RegKey.Pso2Dir, Program.Pso2RootDir)
-                Helper.WriteDebugInfo(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
-                Program.Pso2WinDir = (Program.Pso2RootDir & "\data\win32")
-                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
-                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
-                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
-
-                'Check for PSO2 Updates~
-                UpdatePso2(False)
-
-                MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
-                Refresh()
+            If dlgResult = DialogResult.OK Then
+                installFolder = myFolderBrowser.SelectedPath
             End If
-        End If
+            If dlgResult = DialogResult.Cancel Then
+                Helper.WriteDebugInfo("Installation cancelled by user!")
+                Return
+            End If
+            Dim correctYesNo As MsgBoxResult = MsgBox("You wish to install PSO2 into " & (installFolder & "\PHANTASYSTARONLINE2\. Is this correct?").Replace("\\", "\"), vbYesNoCancel)
+            If correctYesNo = vbCancel Then
+                Helper.WriteDebugInfo("Installation cancelled by user!")
+                Return
+            End If
+            If correctYesNo = vbNo Then
+                Continue While
+            End If
+            If correctYesNo = vbYes Then
+                For Each drive In DriveInfo.GetDrives()
+                    If (drive.DriveType = DriveType.Fixed) AndAlso (installFolder(0) = drive.Name(0)) Then
+                        If drive.TotalSize < 26992893636 Then
+                            MsgBox("There is not enough space on the selected disk to install PSO2. Please select a different drive. (Requires 16GB of free space)")
+                            Continue While
+                        End If
+                        If drive.AvailableFreeSpace < 26992893636 Then
+                            MsgBox("There is not enough free space on the selected disk to install PSO2. Please free up some space or select a different drive. (Requires 16GB of free space)")
+                            Continue While
+                        End If
+                    End If
+                Next
+
+                Dim finalYesNo As MsgBoxResult = MsgBox("The program will now install the necessary files, create the folders, and set up the game. Afterwards, the program will automatically begin patching. Click ""OK"" to start.", MsgBoxStyle.OkCancel)
+                If finalYesNo = vbCancel Then
+                    Helper.WriteDebugInfo("Installation cancelled by user!")
+                Else
+                    Office2007StartButton1.Enabled = False
+                    'set the pso2Dir to the install patch
+                    Program.Pso2RootDir = (installFolder & "\PHANTASYSTARONLINE2\pso2_bin").Replace("\\", "\")
+                    lblDirectory.Text = Program.Pso2RootDir
+                    Show()
+                    Focus()
+                    Application.DoEvents()
+                    Helper.WriteDebugInfo("Downloading DirectX setup...")
+                    Try
+                        DownloadFile("http://arks-layer.com/docs/dxwebsetup.exe", "dxwebsetup.exe")
+                        Helper.WriteDebugInfoSameLine("Done!")
+                        Helper.WriteDebugInfo("Checking/Installing DirectX...")
+                        Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "dxwebsetup.exe", .Verb = "runas", .Arguments = "/Q", .UseShellExecute = True}
+                        Process.Start(processStartInfo).WaitForExit()
+                        Helper.WriteDebugInfoSameLine("Done!")
+                    Catch ex As Exception
+                        Helper.WriteDebugInfo("DirectX installation failed! Please install it later if neccessary!")
+                    End Try
+
+                    If File.Exists("dxwebsetup.exe") Then File.Delete("dxwebsetup.exe")
+                    'Make a data folder, and a win32 folder under that
+                    Directory.CreateDirectory(Program.Pso2RootDir & "\data\win32\")
+                    'Download required pso2 stuff
+                    Helper.WriteDebugInfo("Downloading PSO2 required files...")
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", Program.Pso2RootDir & "\pso2launcher.exe")
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", Program.Pso2RootDir & "\pso2updater.exe")
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", Program.Pso2RootDir & "\pso2.exe")
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", Program.Pso2RootDir & "\PSO2JP.ini")
+                    Helper.WriteDebugInfoSameLine("Done!")
+                    'Download Gameguard.des
+                    Helper.WriteDebugInfo("Downloading Latest Gameguard file...")
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", Program.Pso2RootDir & "\GameGuard.des")
+                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    Application.DoEvents()
+
+                    RegKey.SetValue(Of String)(RegKey.Pso2Dir, Program.Pso2RootDir)
+                    Helper.WriteDebugInfo(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
+                    Program.Pso2WinDir = (Program.Pso2RootDir & "\data\win32")
+                    If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StoryPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
+                    If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
+                    If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
+
+                    'Check for PSO2 Updates~
+                    UpdatePso2(False)
+
+                    MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
+                    Refresh()
+                End If
+            End If
+
+            installPso2 = False
+            Program.IsPso2Installed = True
+        End While
         'End If
     End Sub
 
