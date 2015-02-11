@@ -226,18 +226,16 @@ Public Class Helper
                 Return
             End If
 
-            If myFolderBrowser.SelectedPath.Contains("\pso2_bin") Then
+            If myFolderBrowser.SelectedPath.EndsWith("\pso2_bin\data\win32") Then
                 If File.Exists(myFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") Then
                     WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
-                    Program.Pso2RootDir = myFolderBrowser.SelectedPath.Replace("\data\win32", "")
-                    RegKey.SetValue(Of String)(RegKey.Pso2Dir, Program.Pso2RootDir)
-                    WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
-                    Return
+                    myFolderBrowser.SelectedPath = myFolderBrowser.SelectedPath.Replace("\data\win32", "")
                 End If
             End If
 
             RegKey.SetValue(Of String)(RegKey.Pso2Dir, myFolderBrowser.SelectedPath)
             Program.Pso2RootDir = myFolderBrowser.SelectedPath
+            If Program.MainForm IsNot Nothing Then Program.MainForm.lblDirectory.Text = myFolderBrowser.SelectedPath
             WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
