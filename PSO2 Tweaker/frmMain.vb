@@ -3296,7 +3296,6 @@ Public Class FrmMain
         Dim backupPath As String = BuildBackupPath(patchName)
 
         If Not Directory.Exists(backupPath) Then
-            Helper.WriteDebugInfoAndFailed(Resources.strCantFindBackupDirectory & (backupPath))
             Return
         End If
 
