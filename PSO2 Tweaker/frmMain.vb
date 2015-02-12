@@ -1163,10 +1163,11 @@ Public Class FrmMain
     Private Sub InstallPrePatch()
         Dim applyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
         If applyPrePatchYesNo = vbYes Then
-            WriteDebugInfo("Restoring backup of vanilla JP files...")
-            RestoreBackup(EnglishPatch)
-            RestoreBackup(LargeFiles)
-            RestoreBackup(StoryPatch)
+            'WriteDebugInfo("Restoring backup of vanilla JP files...")
+            '[AIDA] Apply the precede   
+            If Directory.Exists(BuildBackupPath(EnglishPatch)) Then RestoreBackup(EnglishPatch)
+            If Directory.Exists(BuildBackupPath(LargeFiles)) Then RestoreBackup(LargeFiles)
+            If Directory.Exists(BuildBackupPath(StoryPatch)) Then RestoreBackup(StoryPatch)
             WriteDebugInfo("Installing prepatch, please wait...")
             Application.DoEvents()
 
@@ -3645,9 +3646,8 @@ SelectInstallFolder:
         End If
 
         Dim di As New DirectoryInfo(backupPath)
-        WriteDebugInfoAndOk(Resources.strRestoringBackupTo & Program.Pso2WinDir)
+        WriteDebugInfoAndOk("Restoring " & patchName & " backup...")
         Application.DoEvents()
-
         'list the names of all files in the specified directory
         For Each dra As FileInfo In di.GetFiles()
             If File.Exists(Program.Pso2WinDir & "\" & dra.ToString()) Then
@@ -3658,7 +3658,10 @@ SelectInstallFolder:
 
         Directory.Delete(backupPath, True)
         External.FlashWindow(Handle, True)
-        WriteDebugInfo(Resources.strBackupRestored)
+        If patchName = "English Patch" Then If Not String.IsNullOrEmpty(RegKey.EnPatchVersion) Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
+        If patchName = "Large Files" Then If Not String.IsNullOrEmpty(RegKey.LargeFilesVersion) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
+        If patchName = "Story Patch" Then If Not String.IsNullOrEmpty(RegKey.StoryPatchVersion) Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
+        'WriteDebugInfoSameLine(" Done!")
         UnlockGui()
     End Sub
 
