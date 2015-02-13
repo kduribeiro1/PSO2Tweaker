@@ -355,10 +355,9 @@ Partial Class FrmMain
         Me.RibbonControl1.BackgroundStyle.Class = ""
         Me.RibbonControl1.CaptionVisible = True
         resources.ApplyResources(Me.RibbonControl1, "RibbonControl1")
-        Me.RibbonControl1.Items.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1})
         Me.RibbonControl1.KeyTipsFont = New System.Drawing.Font("Tahoma", 7.0!)
         Me.RibbonControl1.Name = "RibbonControl1"
-        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.lblORBLabel})
+        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1, Me.lblORBLabel})
         Me.RibbonControl1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.RibbonControl1.TabGroupHeight = 14
         '
@@ -439,6 +438,7 @@ Partial Class FrmMain
         '
         Me.btnStory.Name = "btnStory"
         resources.ApplyResources(Me.btnStory, "btnStory")
+        Me.btnStory.Visible = False
         '
         'btnRussianPatch
         '

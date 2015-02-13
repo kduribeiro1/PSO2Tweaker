@@ -40,9 +40,6 @@ Public Class FrmMain
             InitializeComponent()
 
             Program.MainForm = Me
-#If DEBUG Then
-            btnNewShit.Visible = True
-#End If
             'Yo, fuck this shit. Shit is mad whack, yo.
             SuspendLayout()
             Text = ("PSO2 Tweaker ver " & Application.Info.Version.ToString())
