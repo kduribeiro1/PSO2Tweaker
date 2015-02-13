@@ -10,6 +10,7 @@ Public Class FrmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             SuspendLayout()
+            CheckBoxX5.Visible = False
             If (RegKey.GetValue(Of Integer)(RegKey.Color)) <> 0 Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
             If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor))
@@ -70,7 +71,7 @@ Public Class FrmOptions
             ComboItem42.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewLargeFilesVersion)
         Catch ex As Exception
             Helper.Log(ex.Message)
-            My.Program.MainForm.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
         Finally
             _isLoading = False
             ResumeLayout(False)
@@ -284,8 +285,8 @@ Public Class FrmOptions
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case Else
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
-                    RegKey.SetValue(Of String)(RegKey.Style, "Blue")
+                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
+                    RegKey.SetValue(Of String)(RegKey.Style, "Black")
             End Select
         End If
     End Sub

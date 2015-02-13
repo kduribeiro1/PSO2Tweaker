@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Net
 Imports System.Runtime.InteropServices
+Imports PSO2_Tweaker.My
 
 Public Class Helper
     Private Shared ReadOnly SizeSuffixes As String() = {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}
@@ -25,6 +26,69 @@ Public Class Helper
         End Using
     End Function
 
+    Public Shared Sub Log(output As String)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfo(addThisText)
+        Catch
+        End Try
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfoSameLine(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfoSameLine(addThisText)
+        Catch
+        End Try
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfoAndOk(ByVal addThisText As String)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [OK!]" & vbCrLf)
+        Try
+            Program.MainForm.WriteDebugInfoAndOk(addThisText)
+        Catch
+        End Try
+    End Sub
+
+    Public Shared Sub WriteDebugInfoAndWarning(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfoAndWarning(addThisText)
+        Catch
+        End Try
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [WARNING!]" & vbCrLf)
+    End Sub
+
+    Public Shared Sub WriteDebugInfoAndFailed(ByVal addThisText As String)
+        Try
+            Program.MainForm.WriteDebugInfoAndFailed(addThisText)
+        Catch
+        End Try
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [FAILED!]" & vbCrLf)
+        If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
+            Dim upload As MsgBoxResult = MsgBox(Resources.strSomethingWentWrongUpload, vbYesNo)
+            If upload = MsgBoxResult.Yes Then
+                PasteBinUpload()
+            End If
+        End If
+    End Sub
+
+    Public Shared Sub PasteBinUpload()
+        PasteBinUploadFile(Program.StartPath & "\logfile.txt")
+    End Sub
+
+    Public Shared Sub DeleteFile(path As String)
+        Try
+            If File.Exists(path) Then File.Delete(path)
+        Catch ex As Exception
+            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            WriteDebugInfo(Resources.strERROR & ex.Message)
+        End Try
+    End Sub
+
     Public Shared Function CheckIfRunning(processName As String) As Boolean
         Dim currentProcessId = Process.GetCurrentProcess().Id
 
@@ -44,8 +108,7 @@ Public Class Helper
     End Function
 
     Public Shared Function GetFileSize(ByVal myFilePath As String) As Long
-        Dim myFile As New FileInfo(myFilePath)
-        Return myFile.Length
+        Return New FileInfo(myFilePath).Length
     End Function
 
     Public Shared Sub DeleteDirectory(path As String)
@@ -75,7 +138,7 @@ Public Class Helper
             client.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
             Dim data As String = "?api_paste_private=1&api_option=paste&api_paste_name=Error Log report&api_paste_format=text&api_paste_expire_date=N&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f&api_paste_code=" & File.ReadAllText(fileToUpload)
             Dim responce = client.UploadString("http://pastebin.com/api/api_post.php", "POST", data)
-            MsgBox(My.Resources.strPleasecopytheURL)
+            MsgBox(Resources.strPleasecopytheURL)
             Process.Start(responce)
         End Using
     End Sub
@@ -148,7 +211,36 @@ Public Class Helper
         Return String.Format("{0:n2} {1}", value / pow, SizeSuffixes(index - 1))
     End Function
 
-    Public Shared Sub Log(output As String)
-        File.AppendAllText((My.Program.StartPath & "\logfile.txt"), DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
+    Public Shared Sub SelectPso2Directory()
+        Try
+            Log("Selecting PSO2 Directory...")
+            Dim myFolderBrowser As New FolderBrowserDialog
+            ' Description that displays above the dialog box control. 
+            If Not String.IsNullOrEmpty(Program.Pso2RootDir) Then myFolderBrowser.SelectedPath = Program.Pso2RootDir
+            myFolderBrowser.Description = Resources.strSelectPSO2win32folder2
+            ' Sets the root folder where the browsing starts from 
+            myFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+            Dim dlgResult As DialogResult = myFolderBrowser.ShowDialog()
+            If dlgResult = DialogResult.Cancel Then
+                WriteDebugInfo("pso2_bin folder selection cancelled!")
+                Return
+            End If
+
+            If myFolderBrowser.SelectedPath.EndsWith("\pso2_bin\data\win32") Then
+                If File.Exists(myFolderBrowser.SelectedPath.Replace("\data\win32", "") & "\pso2.exe") Then
+                    WriteDebugInfo("win32 folder selected instead of pso2_bin folder - Fixing!")
+                    myFolderBrowser.SelectedPath = myFolderBrowser.SelectedPath.Replace("\data\win32", "")
+                End If
+            End If
+
+            RegKey.SetValue(Of String)(RegKey.Pso2Dir, myFolderBrowser.SelectedPath)
+            Program.Pso2RootDir = myFolderBrowser.SelectedPath
+            If Program.MainForm IsNot Nothing Then Program.MainForm.lblDirectory.Text = myFolderBrowser.SelectedPath
+            WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
+
+        Catch ex As Exception
+            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            WriteDebugInfo(Resources.strERROR & ex.Message)
+        End Try
     End Sub
 End Class
