@@ -1925,7 +1925,7 @@ Public Class FrmMain
             If _cancelledFull Then Return
             filename2 = Regex.Split(line, ".pat")
             truefilename2 = filename2(0).Replace("data/win32/", "")
-            If truefilename <> "GameGuard.des" AndAlso truefilename <> "edition.txt" AndAlso truefilename <> "gameversion.ver" AndAlso truefilename <> "pso2.exe" AndAlso truefilename <> "PSO2JP.ini" AndAlso truefilename <> "script/user_default.pso2" AndAlso truefilename <> "script/user_intel.pso2" Then
+            If truefilename2 <> "GameGuard.des" AndAlso truefilename2 <> "edition.txt" AndAlso truefilename2 <> "gameversion.ver" AndAlso truefilename2 <> "pso2.exe" AndAlso truefilename2 <> "PSO2JP.ini" AndAlso truefilename2 <> "script/user_default.pso2" AndAlso truefilename2 <> "script/user_intel.pso2" Then
                 Dim length2 As Long
                 If File.Exists(Program.Pso2WinDir & "\" & truefilename2) Then length2 = New FileInfo(Program.Pso2WinDir & "\" & truefilename2).Length
                 If Not File.Exists((Program.Pso2WinDir & "\" & truefilename2)) Then

@@ -10,7 +10,7 @@ Namespace My
         Public Shared ReadOnly Client As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
 
         Public Shared MainForm As FrmMain
-        Public Shared FreedomUrl As String = "http://162.243.211.123/freedom/"
+        Public Shared FreedomUrl As String
         Public Shared HostsFilePath As String
         Public Shared Pso2RootDir As String
         Public Shared Pso2WinDir As String
@@ -81,7 +81,7 @@ Namespace My
 
                 If Not FreedomUrl.Contains("freedom") Then
                     Helper.Log("Reverting to default freedom...")
-                    FreedomUrl = "http://162.243.211.123/freedom/"
+                    FreedomUrl = "http://aida.moe/freedom/"
                 End If
 
                 Dim launchPso2 As Boolean = False
