@@ -78,6 +78,7 @@ Namespace My
 
                 Helper.Log("Starting shitstorm...")
                 FreedomUrl = Client.DownloadString("http://arks-layer.com/freedom.txt")
+
                 If Not FreedomUrl.Contains("freedom") Then
                     Helper.Log("Reverting to default freedom...")
                     FreedomUrl = "http://162.243.211.123/freedom/"
