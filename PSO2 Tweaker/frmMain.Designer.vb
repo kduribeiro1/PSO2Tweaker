@@ -415,7 +415,7 @@ Partial Class FrmMain
         '
         Me.ButtonInstall.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
         Me.ButtonInstall.Name = "ButtonInstall"
-        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnStoryPatchNew, Me.btnStory, Me.btnRussianPatch, Me.btnInstallSpanishPatch, Me.btnJPETrials, Me.btnJPEnemyNames})
+        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnStoryPatchNew, Me.btnStory, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnInstallSpanishPatch})
         Me.ButtonInstall.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.ButtonInstall, "ButtonInstall")
         '

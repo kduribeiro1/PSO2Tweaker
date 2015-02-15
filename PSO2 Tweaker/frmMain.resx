@@ -682,7 +682,7 @@
     <value>Install additional english files to enhance the core patch</value>
   </data>
   <data name="btnStoryPatchNew.Text" xml:space="preserve">
-    <value>English Story Patch (New method)</value>
+    <value>English Story Patch</value>
   </data>
   <data name="btnStoryPatchNew.Tooltip" xml:space="preserve">
     <value>Install the story patch, so you can understand the, uh, story!</value>
@@ -692,18 +692,6 @@
   </data>
   <data name="btnStory.Tooltip" xml:space="preserve">
     <value>Install the story patch, so you can understand the, uh, story!</value>
-  </data>
-  <data name="btnRussianPatch.Text" xml:space="preserve">
-    <value>Russian Patch</value>
-  </data>
-  <data name="btnRussianPatch.Tooltip" xml:space="preserve">
-    <value>Install the core Russian patch</value>
-  </data>
-  <data name="btnInstallSpanishPatch.Text" xml:space="preserve">
-    <value>Spanish Patch</value>
-  </data>
-  <data name="btnInstallSpanishPatch.Tooltip" xml:space="preserve">
-    <value>Install the core Spanish patch</value>
   </data>
   <data name="btnJPETrials.Text" xml:space="preserve">
     <value>Revert E-Codes to JP</value>
@@ -716,6 +704,18 @@
   </data>
   <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
     <value>Patch enemy names to be in Japanese</value>
+  </data>
+  <data name="btnRussianPatch.Text" xml:space="preserve">
+    <value>Russian Patch</value>
+  </data>
+  <data name="btnRussianPatch.Tooltip" xml:space="preserve">
+    <value>Install the core Russian patch</value>
+  </data>
+  <data name="btnInstallSpanishPatch.Text" xml:space="preserve">
+    <value>Spanish Patch</value>
+  </data>
+  <data name="btnInstallSpanishPatch.Tooltip" xml:space="preserve">
+    <value>Install the core Spanish patch</value>
   </data>
   <data name="ButtonInstall.Text" xml:space="preserve">
     <value>Install/Update Patches</value>
@@ -7896,7 +7896,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.2.8, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.3.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
