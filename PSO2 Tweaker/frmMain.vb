@@ -1126,7 +1126,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -1193,22 +1192,13 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
-    Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
-        Dim mouseArgs = DirectCast(e, MouseEventArgs)
-
-        If mouseArgs.Button = MouseButtons.Right Then
-            If DLS.IsBusy Then
-                CancelDownloadToolStripMenuItem.Visible = True
-                cmsProgressBar.Show(CType(sender, Control), mouseArgs.Location)
-            End If
-            If Not DLS.IsBusy Then
-                CancelDownloadToolStripMenuItem.Visible = False
-                cmsProgressBar.Show(CType(sender, Control), mouseArgs.Location)
-            End If
+    Private Sub PBMainBar_MouseClick(sender As Object, e As MouseEventArgs) Handles PBMainBar.MouseClick
+        If e.Button = MouseButtons.Right Then
+            CancelDownloadToolStripMenuItem.Visible = DLS.IsBusy
+            cmsProgressBar.Show(DirectCast(sender, Control), e.Location)
         End If
     End Sub
 
@@ -1785,7 +1775,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -1798,7 +1787,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -2182,7 +2170,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -2195,7 +2182,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -2901,7 +2887,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message.ToString)
             If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
-            Return
         End Try
     End Sub
 
@@ -3069,7 +3054,6 @@ Public Class FrmMain
             CheckForStoryUpdates()
         Catch ex As Exception
             MsgBox("ERROR - " & ex.Message.ToString)
-            Return
         End Try
     End Sub
 
@@ -3285,16 +3269,12 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
     Private Sub RestoreBackup(patchName As String)
         Dim backupPath As String = BuildBackupPath(patchName)
-
-        If Not Directory.Exists(backupPath) Then
-            Return
-        End If
+        If Directory.Exists(backupPath) Then Return
 
         Dim di As New DirectoryInfo(backupPath)
         Helper.WriteDebugInfoAndOk("Restoring " & patchName & " backup...")

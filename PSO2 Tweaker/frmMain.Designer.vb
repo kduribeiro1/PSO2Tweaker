@@ -59,10 +59,10 @@ Partial Class FrmMain
         Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStoryPatchNew = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStory = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreBackups = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreENBackup = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreLargeFilesBackup = New DevComponents.DotNetBar.ButtonItem()
@@ -440,6 +440,16 @@ Partial Class FrmMain
         resources.ApplyResources(Me.btnStory, "btnStory")
         Me.btnStory.Visible = False
         '
+        'btnJPETrials
+        '
+        Me.btnJPETrials.Name = "btnJPETrials"
+        resources.ApplyResources(Me.btnJPETrials, "btnJPETrials")
+        '
+        'btnJPEnemyNames
+        '
+        Me.btnJPEnemyNames.Name = "btnJPEnemyNames"
+        resources.ApplyResources(Me.btnJPEnemyNames, "btnJPEnemyNames")
+        '
         'btnRussianPatch
         '
         Me.btnRussianPatch.Name = "btnRussianPatch"
@@ -450,16 +460,6 @@ Partial Class FrmMain
         Me.btnInstallSpanishPatch.Name = "btnInstallSpanishPatch"
         resources.ApplyResources(Me.btnInstallSpanishPatch, "btnInstallSpanishPatch")
         Me.btnInstallSpanishPatch.Visible = False
-        '
-        'btnJPETrials
-        '
-        Me.btnJPETrials.Name = "btnJPETrials"
-        resources.ApplyResources(Me.btnJPETrials, "btnJPETrials")
-        '
-        'btnJPEnemyNames
-        '
-        Me.btnJPEnemyNames.Name = "btnJPEnemyNames"
-        resources.ApplyResources(Me.btnJPEnemyNames, "btnJPEnemyNames")
         '
         'btnRestoreBackups
         '
