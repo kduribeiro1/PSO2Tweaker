@@ -486,11 +486,8 @@ Public Class FrmMain
     End Function
 
     Private Sub DownloadItemTranslationFiles(state As Object)
-        Dim dlLink1 As String = Program.FreedomUrl & "translator.dll"
-        Dim dlLink2 As String = Program.FreedomUrl & "translation.bin"
-
         Try
-            Program.Client.DownloadFile(dlLink1, (Program.Pso2RootDir & "\translator.dll"))
+            Program.Client.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -498,7 +495,7 @@ Public Class FrmMain
         RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
 
         Try
-            Program.Client.DownloadFile(dlLink2, (Program.Pso2RootDir & "\translation.bin"))
+            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -1126,7 +1123,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -1193,22 +1189,13 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
-    Private Sub PB1_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
-        Dim mouseArgs = DirectCast(e, MouseEventArgs)
-
-        If mouseArgs.Button = MouseButtons.Right Then
-            If DLS.IsBusy Then
-                CancelDownloadToolStripMenuItem.Visible = True
-                cmsProgressBar.Show(CType(sender, Control), mouseArgs.Location)
-            End If
-            If Not DLS.IsBusy Then
-                CancelDownloadToolStripMenuItem.Visible = False
-                cmsProgressBar.Show(CType(sender, Control), mouseArgs.Location)
-            End If
+    Private Sub PBMainBar_MouseClick(sender As Object, e As MouseEventArgs) Handles PBMainBar.MouseClick
+        If e.Button = MouseButtons.Right Then
+            CancelDownloadToolStripMenuItem.Visible = DLS.IsBusy
+            cmsProgressBar.Show(DirectCast(sender, Control), e.Location)
         End If
     End Sub
 
@@ -1270,126 +1257,20 @@ Public Class FrmMain
         End If
     End Sub
 
-    Private Sub btnStory_Click(sender As Object, e As EventArgs) Handles btnStory.Click
-        InstallStoryPatchARchive()
-    End Sub
-
-    Private Sub InstallStoryPatchARchive()
-        _cancelledFull = False
-        Dim backupyesno As MsgBoxResult
-        If IsPso2WinDirMissing() Then Return
-        Helper.Log("Selecting story patch...")
-        If MsgBox(Resources.strHaveyouDownloadedStoryYet, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-            OpenFileDialog1.Title = Resources.strPleaseSelectStoryRAR
-            OpenFileDialog1.FileName = "PSO2 Story Patch RAR file"
-            OpenFileDialog1.Filter = "RAR Archives|*.rar"
-            If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Return
-
-            Dim storyLocation As String = OpenFileDialog1.FileName
-            If storyLocation = "PSO2 Story Patch RAR file" Then Return
-
-            Helper.Log("Story mode RAR selected as: " & storyLocation)
-
-            Select Case RegKey.GetValue(Of String)(RegKey.Backup)
-                Case "Ask"
-                    backupyesno = MsgBox(Resources.strWouldYouLikeBackupStory, vbYesNo)
-                Case "Always"
-                    backupyesno = MsgBoxResult.Yes
-                Case "Never"
-                    backupyesno = MsgBoxResult.No
-            End Select
-
-            Helper.Log("Extracting story patch...")
-            Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
-            Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
-
-            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            processStartInfo.FileName = (Program.StartPath & "\unrar.exe")
-            processStartInfo.Verb = "runas"
-            processStartInfo.Arguments = ("e " & """" & storyLocation & """" & " TEMPSTORYAIDAFOOL")
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
-            Dim process As Process = process.Start(processStartInfo)
-            Helper.WriteDebugInfo(Resources.strWaitingforPatch)
-            Do Until process.WaitForExit(1000)
-                If _cancelledFull Then Return
-            Loop
-            If _cancelledFull Then Return
-            If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
-                Helper.WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New DirectoryInfo("TEMPSTORYAIDAFOOL")
-            Dim diar1 As FileInfo() = di.GetFiles()
-            Helper.WriteDebugInfoAndOk((Resources.strExtractingTo & Program.Pso2WinDir))
-            Application.DoEvents()
-            'list the names of all files in the specified directory
-            Dim backupdir As String = BuildBackupPath(StoryPatch)
-            If backupyesno = MsgBoxResult.Yes Then
-                If Directory.Exists(backupdir) Then
-                    Directory.Delete(backupdir, True)
-                    Directory.CreateDirectory(backupdir)
-                    Helper.WriteDebugInfo(Resources.strErasingPreviousBackup)
-                End If
-                If Not Directory.Exists(backupdir) Then
-                    Directory.CreateDirectory(backupdir)
-                    Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                End If
-            End If
-            Helper.Log("Extracted " & diar1.Length & " files from the patch")
-            If diar1.Length = 0 Then
-                Helper.WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
-                Return
-            End If
-            Helper.WriteDebugInfo(Resources.strInstallingPatch)
-            For Each dra As FileInfo In diar1
-                If _cancelledFull Then Return
-                If File.Exists((Program.Pso2WinDir & "\" & dra.ToString())) Then
-                    If backupyesno = MsgBoxResult.Yes Then
-                        File.Move((Program.Pso2WinDir & "\" & dra.ToString()), (backupdir & "\" & dra.ToString()))
-                    Else
-                        Helper.DeleteFile((Program.Pso2WinDir & "\" & dra.ToString()))
-                    End If
-                End If
-                File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (Program.Pso2WinDir & "\" & dra.ToString()))
-            Next
-
-            Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
-            External.FlashWindow(Handle, True)
-            'Story Patch 3-12-2014.rar
-            Dim storyPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
-            RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, storyPatchFilename)
-            RegKey.SetValue(Of String)(RegKey.LatestStoryBase, storyPatchFilename)
-
-            If backupyesno = MsgBoxResult.Yes Then
-                Helper.WriteDebugInfo((Resources.strStoryPatchBackup & backupdir))
-            Else
-                Helper.WriteDebugInfo(Resources.strStoryPatchInstalled)
-            End If
-
-            CheckForStoryUpdates()
-        Else
-            Helper.WriteDebugInfo(Resources.strDownloadStoryPatch)
-        End If
-    End Sub
-
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
         If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
             File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
         End If
         If chkItemTranslation.Checked Then
             Helper.WriteDebugInfoAndOk(Resources.strDownloadingLatestItemTranslationFiles)
-            'Download translator.dll and translation.bin
-            Dim dlLink1 As String = Program.FreedomUrl & "translator.dll"
-            Dim dlLink2 As String = Program.FreedomUrl & "translation.bin"
 
+            'Download translator.dll and translation.bin
             For index As Integer = 1 To 5
                 Try
-                    Program.Client.DownloadFile(dlLink1, (Program.Pso2RootDir & "\translator.dll"))
+                    Program.Client.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
                 Catch ex As Exception
                     If index = 5 Then
                         Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
-                        Exit Try
                     End If
                 End Try
             Next
@@ -1398,11 +1279,10 @@ Public Class FrmMain
 
             For index As Integer = 1 To 5
                 Try
-                    Program.Client.DownloadFile(dlLink2, (Program.Pso2RootDir & "\translation.bin"))
+                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
                 Catch ex As Exception
                     If index = 5 Then
                         Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
-                        Exit Try
                     End If
                 End Try
             Next
@@ -1415,9 +1295,7 @@ Public Class FrmMain
             Next
             File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
             Helper.WriteDebugInfoSameLine(Resources.strDone)
-        End If
-
-        If Not chkItemTranslation.Checked Then
+        Else
             Helper.WriteDebugInfoAndOk(Resources.strDeletingItemCache)
             Helper.WriteDebugInfoSameLine(Resources.strDone)
             Dim builtFile As New List(Of String)
@@ -1434,9 +1312,7 @@ Public Class FrmMain
 
     Private Sub UpdatePso2(comingFromOldFiles As Boolean)
         _cancelledFull = False
-
         If IsPso2WinDirMissing() Then Return
-
         Dim missingfiles As New List(Of String)
         Dim missingfiles2 As New List(Of String)
         Dim numberofChecks As Integer = 0
@@ -1635,7 +1511,6 @@ Public Class FrmMain
         _cancelled = False
 
         Dim fileLengths = New DirectoryInfo(dataPath).EnumerateFiles().ToDictionary(Function(fileinfo) fileinfo.Name, Function(fileinfo) fileinfo.Length)
-
         Dim fileNames = fileLengths.Keys
 
         For Each kvp In mergedPatches
@@ -1721,10 +1596,8 @@ Public Class FrmMain
                 linesList.Remove(downloadStr)
 
                 File.WriteAllLines("resume.txt", linesList.ToArray())
-                Application.DoEvents()
-            Else
-                Application.DoEvents()
             End If
+            Application.DoEvents()
         Next
 
         If missingfiles.Count = 0 Then Helper.WriteDebugInfo(Resources.strYouAppearToBeUpToDate)
@@ -1785,7 +1658,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -1798,7 +1670,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -1954,8 +1825,6 @@ Public Class FrmMain
 
         Dim result1 As DialogResult = MessageBox.Show(Resources.strWouldYouLikeToDownloadInstallMissing, "Download/Install?", MessageBoxButtons.YesNo)
 
-        If result1 = DialogResult.No Then Return
-
         If result1 = DialogResult.Yes Then
             Helper.Log(Resources.strDownloading & Resources.strMissingFilesPart1)
             Dim totaldownload As Long = missingfiles.Count
@@ -2027,8 +1896,8 @@ Public Class FrmMain
                     File.WriteAllLines("resume.txt", linesList.ToArray())
                 End If
             Next
+            Helper.WriteDebugInfoAndOk(Resources.strallDone)
         End If
-        Helper.WriteDebugInfoAndOk(Resources.strallDone)
     End Sub
 
     Private Sub ButtonItem10_Click(sender As Object, e As EventArgs) Handles ButtonItem10.Click
@@ -2182,7 +2051,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -2195,7 +2063,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
@@ -2237,11 +2104,8 @@ Public Class FrmMain
     End Sub
 
     Private Sub ButtonItem17_Click(sender As Object, e As EventArgs) Handles ButtonItem17.Click
-        Dim whatthefuck As MsgBoxResult = MsgBox(Resources.strAreYouSureResetPSO2Settings, MsgBoxStyle.YesNo)
-        If whatthefuck = MsgBoxResult.Yes Then
-            Dim documents As String = (_myDocuments & "\")
-            Dim usersettingsfile As String = (documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-            File.WriteAllText(usersettingsfile, txtPSO2DefaultINI.Text)
+        If MsgBox(Resources.strAreYouSureResetPSO2Settings, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            File.WriteAllText((_myDocuments & "\" & "SEGA\PHANTASYSTARONLINE2\user.pso2"), txtPSO2DefaultINI.Text)
             Helper.WriteDebugInfoAndOk(Resources.strPSO2SettingsReset)
         End If
     End Sub
@@ -2559,17 +2423,14 @@ Public Class FrmMain
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
                 Helper.WriteDebugInfo(Resources.strAutoInstallingStoryPatch)
-                InstallStoryPatchARchive()
+                InstallStoryPatchNew()
             End If
 
             Helper.WriteDebugInfoAndOk(Resources.strallDone)
-            Return
-
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             If ex.Message <> "Arithmetic operation resulted in an overflow." Then
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-                Return
             End If
         End Try
     End Sub
@@ -2901,7 +2762,6 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message.ToString)
             If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
-            Return
         End Try
     End Sub
 
@@ -3069,7 +2929,6 @@ Public Class FrmMain
             CheckForStoryUpdates()
         Catch ex As Exception
             MsgBox("ERROR - " & ex.Message.ToString)
-            Return
         End Try
     End Sub
 
@@ -3285,16 +3144,12 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            Return
         End Try
     End Sub
 
     Private Sub RestoreBackup(patchName As String)
         Dim backupPath As String = BuildBackupPath(patchName)
-
-        If Not Directory.Exists(backupPath) Then
-            Return
-        End If
+        If Directory.Exists(backupPath) Then Return
 
         Dim di As New DirectoryInfo(backupPath)
         Helper.WriteDebugInfoAndOk("Restoring " & patchName & " backup...")

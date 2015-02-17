@@ -161,6 +161,7 @@ Namespace My
                                         End Try
                                     Next
 
+                                    ' TODO: WTF is gonig on with this for loop
                                     ' Try up to 4 times to download the translation strings.
                                     For tries As Integer = 1 To 4
                                         Try

@@ -687,12 +687,6 @@
   <data name="btnStoryPatchNew.Tooltip" xml:space="preserve">
     <value>Install the story patch, so you can understand the, uh, story!</value>
   </data>
-  <data name="btnStory.Text" xml:space="preserve">
-    <value>English Story Patch (Old Method)</value>
-  </data>
-  <data name="btnStory.Tooltip" xml:space="preserve">
-    <value>Install the story patch, so you can understand the, uh, story!</value>
-  </data>
   <data name="btnJPETrials.Text" xml:space="preserve">
     <value>Revert E-Codes to JP</value>
   </data>
@@ -7520,10 +7514,16 @@
   <data name="&gt;&gt;btnStoryPatchNew.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;btnStory.Name" xml:space="preserve">
-    <value>btnStory</value>
+  <data name="&gt;&gt;btnJPETrials.Name" xml:space="preserve">
+    <value>btnJPETrials</value>
   </data>
-  <data name="&gt;&gt;btnStory.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnJPETrials.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;btnJPEnemyNames.Name" xml:space="preserve">
+    <value>btnJPEnemyNames</value>
+  </data>
+  <data name="&gt;&gt;btnJPEnemyNames.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnRussianPatch.Name" xml:space="preserve">
@@ -7536,18 +7536,6 @@
     <value>btnInstallSpanishPatch</value>
   </data>
   <data name="&gt;&gt;btnInstallSpanishPatch.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;btnJPETrials.Name" xml:space="preserve">
-    <value>btnJPETrials</value>
-  </data>
-  <data name="&gt;&gt;btnJPETrials.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;btnJPEnemyNames.Name" xml:space="preserve">
-    <value>btnJPEnemyNames</value>
-  </data>
-  <data name="&gt;&gt;btnJPEnemyNames.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnRestoreBackups.Name" xml:space="preserve">
@@ -7896,7 +7884,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.3.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.3.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
