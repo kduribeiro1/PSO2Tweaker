@@ -1260,109 +1260,6 @@ Public Class FrmMain
         End If
     End Sub
 
-    Private Sub btnStory_Click(sender As Object, e As EventArgs) Handles btnStory.Click
-        InstallStoryPatchARchive()
-    End Sub
-
-    Private Sub InstallStoryPatchARchive()
-        _cancelledFull = False
-        Dim backupyesno As MsgBoxResult
-        If IsPso2WinDirMissing() Then Return
-        Helper.Log("Selecting story patch...")
-        If MsgBox(Resources.strHaveyouDownloadedStoryYet, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-            OpenFileDialog1.Title = Resources.strPleaseSelectStoryRAR
-            OpenFileDialog1.FileName = "PSO2 Story Patch RAR file"
-            OpenFileDialog1.Filter = "RAR Archives|*.rar"
-            If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Return
-
-            Dim storyLocation As String = OpenFileDialog1.FileName
-            If storyLocation = "PSO2 Story Patch RAR file" Then Return
-
-            Helper.Log("Story mode RAR selected as: " & storyLocation)
-
-            Select Case RegKey.GetValue(Of String)(RegKey.Backup)
-                Case "Ask"
-                    backupyesno = MsgBox(Resources.strWouldYouLikeBackupStory, vbYesNo)
-                Case "Always"
-                    backupyesno = MsgBoxResult.Yes
-                Case "Never"
-                    backupyesno = MsgBoxResult.No
-            End Select
-
-            Helper.Log("Extracting story patch...")
-            Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
-            Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
-
-            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo()
-            processStartInfo.FileName = (Program.StartPath & "\unrar.exe")
-            processStartInfo.Verb = "runas"
-            processStartInfo.Arguments = ("e " & """" & storyLocation & """" & " TEMPSTORYAIDAFOOL")
-            processStartInfo.WindowStyle = ProcessWindowStyle.Normal
-            processStartInfo.UseShellExecute = True
-            Dim process As Process = process.Start(processStartInfo)
-            Helper.WriteDebugInfo(Resources.strWaitingforPatch)
-            Do Until process.WaitForExit(1000)
-                If _cancelledFull Then Return
-            Loop
-            If _cancelledFull Then Return
-            If Not Directory.Exists("TEMPSTORYAIDAFOOL") Then
-                Directory.CreateDirectory("TEMPSTORYAIDAFOOL")
-                Helper.WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
-            End If
-            Dim di As New DirectoryInfo("TEMPSTORYAIDAFOOL")
-            Dim diar1 As FileInfo() = di.GetFiles()
-            Helper.WriteDebugInfoAndOk((Resources.strExtractingTo & Program.Pso2WinDir))
-            Application.DoEvents()
-            'list the names of all files in the specified directory
-            Dim backupdir As String = BuildBackupPath(StoryPatch)
-            If backupyesno = MsgBoxResult.Yes Then
-                If Directory.Exists(backupdir) Then
-                    Directory.Delete(backupdir, True)
-                    Directory.CreateDirectory(backupdir)
-                    Helper.WriteDebugInfo(Resources.strErasingPreviousBackup)
-                End If
-                If Not Directory.Exists(backupdir) Then
-                    Directory.CreateDirectory(backupdir)
-                    Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                End If
-            End If
-            Helper.Log("Extracted " & diar1.Length & " files from the patch")
-            If diar1.Length = 0 Then
-                Helper.WriteDebugInfo("Patch failed to extract correctly! Installation failed!")
-                Return
-            End If
-            Helper.WriteDebugInfo(Resources.strInstallingPatch)
-            For Each dra As FileInfo In diar1
-                If _cancelledFull Then Return
-                If File.Exists((Program.Pso2WinDir & "\" & dra.ToString())) Then
-                    If backupyesno = MsgBoxResult.Yes Then
-                        File.Move((Program.Pso2WinDir & "\" & dra.ToString()), (backupdir & "\" & dra.ToString()))
-                    Else
-                        Helper.DeleteFile((Program.Pso2WinDir & "\" & dra.ToString()))
-                    End If
-                End If
-                File.Move(("TEMPSTORYAIDAFOOL\" & dra.ToString()), (Program.Pso2WinDir & "\" & dra.ToString()))
-            Next
-
-            Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
-            External.FlashWindow(Handle, True)
-            'Story Patch 3-12-2014.rar
-            Dim storyPatchFilename As String = OpenFileDialog1.SafeFileName.Replace("Story Patch ", "").Replace(".rar", "").Replace("-", "/")
-            RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, storyPatchFilename)
-            RegKey.SetValue(Of String)(RegKey.LatestStoryBase, storyPatchFilename)
-
-            If backupyesno = MsgBoxResult.Yes Then
-                Helper.WriteDebugInfo((Resources.strStoryPatchBackup & backupdir))
-            Else
-                Helper.WriteDebugInfo(Resources.strStoryPatchInstalled)
-            End If
-
-            CheckForStoryUpdates()
-        Else
-            Helper.WriteDebugInfo(Resources.strDownloadStoryPatch)
-        End If
-    End Sub
-
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
         If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
             File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
@@ -2545,17 +2442,15 @@ Public Class FrmMain
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
                 Helper.WriteDebugInfo(Resources.strAutoInstallingStoryPatch)
-                InstallStoryPatchARchive()
+                ' TODO: Should this be the new story patch now?
+                'InstallStoryPatchARchive()
             End If
 
             Helper.WriteDebugInfoAndOk(Resources.strallDone)
-            Return
-
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             If ex.Message <> "Arithmetic operation resulted in an overflow." Then
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-                Return
             End If
         End Try
     End Sub

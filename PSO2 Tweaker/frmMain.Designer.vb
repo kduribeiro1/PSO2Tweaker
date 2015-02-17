@@ -58,7 +58,6 @@ Partial Class FrmMain
         Me.btnENPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStoryPatchNew = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnStory = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
@@ -415,7 +414,7 @@ Partial Class FrmMain
         '
         Me.ButtonInstall.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
         Me.ButtonInstall.Name = "ButtonInstall"
-        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnStoryPatchNew, Me.btnStory, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnInstallSpanishPatch})
+        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnStoryPatchNew, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnInstallSpanishPatch})
         Me.ButtonInstall.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.ButtonInstall, "ButtonInstall")
         '
@@ -433,12 +432,6 @@ Partial Class FrmMain
         '
         Me.btnStoryPatchNew.Name = "btnStoryPatchNew"
         resources.ApplyResources(Me.btnStoryPatchNew, "btnStoryPatchNew")
-        '
-        'btnStory
-        '
-        Me.btnStory.Name = "btnStory"
-        resources.ApplyResources(Me.btnStory, "btnStory")
-        Me.btnStory.Visible = False
         '
         'btnJPETrials
         '
@@ -892,7 +885,6 @@ Partial Class FrmMain
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnENPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnLargeFiles As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnStory As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRussianPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnInstallSpanishPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRestoreBackups As DevComponents.DotNetBar.ButtonItem

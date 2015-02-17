@@ -3,7 +3,6 @@ Imports System.IO
 Imports System.Net
 Imports System.Diagnostics
 Imports DevComponents.DotNetBar
-Imports PSO2_Tweaker.My
 
 Public Class FrmOptions
     Dim _isLoading As Boolean = True
@@ -211,7 +210,7 @@ Public Class FrmOptions
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
         Using downloadClient As New WebClient
-            downloadClient.DownloadFile(New Uri(Program.FreedomUrl & "LanguagePack.rar"), "LanguagePack.rar")
+            downloadClient.DownloadFile(New Uri(My.Program.FreedomUrl & "LanguagePack.rar"), "LanguagePack.rar")
         End Using
 
         Dim processStartInfo = New ProcessStartInfo()
