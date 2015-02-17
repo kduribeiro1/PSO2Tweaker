@@ -2442,8 +2442,7 @@ Public Class FrmMain
 
             If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.StoryPatchAfterInstall)) Then
                 Helper.WriteDebugInfo(Resources.strAutoInstallingStoryPatch)
-                ' TODO: Should this be the new story patch now?
-                'InstallStoryPatchARchive()
+                InstallStoryPatchNew()
             End If
 
             Helper.WriteDebugInfoAndOk(Resources.strallDone)
