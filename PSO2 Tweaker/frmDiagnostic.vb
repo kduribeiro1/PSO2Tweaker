@@ -1,11 +1,12 @@
 ﻿Imports System.IO
+Imports PSO2_Tweaker.My
 
 Public Class FrmDiagnostic
 
     Private Shared Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim totalString As String = ""
 
-        totalString &= "OS: " & My.Computer.Info.OSFullName & vbCrLf
+        totalString &= "OS: " & Computer.Info.OSFullName & vbCrLf
         totalString &= "64 Bit OS?: " & Environment.Is64BitOperatingSystem.ToString() & vbCrLf
         totalString &= "Tweaker is located at: " & Environment.CurrentDirectory & vbCrLf
         totalString &= ".NET Version: " & Environment.Version.ToString() & vbCrLf
@@ -25,12 +26,12 @@ Public Class FrmDiagnostic
     End Sub
 
     Private Shared Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim drInfo As New DirectoryInfo(My.Program.Pso2WinDir)
+        Dim drInfo As New DirectoryInfo(Program.Pso2WinDir)
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.AllDirectories)
         Dim fileSize As Long = filesInfo.Sum(Function(fileInfo) fileInfo.Length)
 
         Dim totalString As String = ""
-        totalString &= "PSO2 Directory: " & My.Program.Pso2RootDir & vbCrLf
+        totalString &= "PSO2 Directory: " & Program.Pso2RootDir & vbCrLf
         totalString &= "Current game version: " & RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) & vbCrLf
         totalString &= "Item Translation: " & RegKey.GetValue(Of String)(RegKey.UseItemTranslation) & vbCrLf
         totalString &= "EN Patch version installed: " & RegKey.GetValue(Of String)(RegKey.EnPatchVersion) & vbCrLf
@@ -42,7 +43,7 @@ Public Class FrmDiagnostic
     End Sub
 
     Private Shared Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim drInfo As New DirectoryInfo(My.Program.Pso2RootDir)
+        Dim drInfo As New DirectoryInfo(Program.Pso2RootDir)
         Dim filesInfo As FileInfo() = drInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
         Dim fileSize As Long
         Dim filename As String

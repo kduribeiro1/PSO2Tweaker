@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
+Imports PSO2_Tweaker.My
 
 Public Class FrmPso2Options
     ReadOnly _documents As String = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\")
@@ -9,7 +10,7 @@ Public Class FrmPso2Options
     Private Sub frmPSO2Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             If Not File.Exists(_usersettingsfile) Then
-                File.WriteAllText(_usersettingsfile, My.Program.MainForm.txtPSO2DefaultINI.Text)
+                File.WriteAllText(_usersettingsfile, Program.MainForm.txtPSO2DefaultINI.Text)
                 Helper.WriteDebugInfo("Generating new PSO2 Settings file... Done!")
             End If
 
@@ -51,10 +52,10 @@ Public Class FrmPso2Options
             TabControlPanel5.StyleMouseDown.BackColor1.Color = tmpBackColor
             TabControlPanel5.StyleMouseDown.BackColor2.Color = tmpBackColor
 
-            Dim devM As External.DEVMODE
+            Dim devM As External.Devmode
             devM.dmDeviceName = New String(Chr(0), 32)
             devM.dmFormName = New String(Chr(0), 32)
-            devM.dmSize = CShort(Marshal.SizeOf(GetType(External.DEVMODE)))
+            devM.dmSize = CShort(Marshal.SizeOf(GetType(External.Devmode)))
 
             Dim modeIndex As Integer = 0
             ' 0 = The first mode
@@ -105,7 +106,7 @@ Public Class FrmPso2Options
             End If
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             ResumeLayout(False)
         End Try
@@ -130,7 +131,7 @@ Public Class FrmPso2Options
             Next
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
         Return ""
     End Function
@@ -163,7 +164,7 @@ Public Class FrmPso2Options
             Next i
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -207,7 +208,7 @@ Public Class FrmPso2Options
             Next i
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -253,7 +254,7 @@ Public Class FrmPso2Options
             Next i
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -297,7 +298,7 @@ Public Class FrmPso2Options
             Next i
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
 
@@ -343,7 +344,7 @@ Public Class FrmPso2Options
             Next i
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click

@@ -486,11 +486,8 @@ Public Class FrmMain
     End Function
 
     Private Sub DownloadItemTranslationFiles(state As Object)
-        Dim dlLink1 As String = Program.FreedomUrl & "translator.dll"
-        Dim dlLink2 As String = Program.FreedomUrl & "translation.bin"
-
         Try
-            Program.Client.DownloadFile(dlLink1, (Program.Pso2RootDir & "\translator.dll"))
+            Program.Client.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -498,7 +495,7 @@ Public Class FrmMain
         RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
 
         Try
-            Program.Client.DownloadFile(dlLink2, (Program.Pso2RootDir & "\translation.bin"))
+            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -1266,17 +1263,14 @@ Public Class FrmMain
         End If
         If chkItemTranslation.Checked Then
             Helper.WriteDebugInfoAndOk(Resources.strDownloadingLatestItemTranslationFiles)
-            'Download translator.dll and translation.bin
-            Dim dlLink1 As String = Program.FreedomUrl & "translator.dll"
-            Dim dlLink2 As String = Program.FreedomUrl & "translation.bin"
 
+            'Download translator.dll and translation.bin
             For index As Integer = 1 To 5
                 Try
-                    Program.Client.DownloadFile(dlLink1, (Program.Pso2RootDir & "\translator.dll"))
+                    Program.Client.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
                 Catch ex As Exception
                     If index = 5 Then
                         Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
-                        Exit Try
                     End If
                 End Try
             Next
@@ -1285,11 +1279,10 @@ Public Class FrmMain
 
             For index As Integer = 1 To 5
                 Try
-                    Program.Client.DownloadFile(dlLink2, (Program.Pso2RootDir & "\translation.bin"))
+                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
                 Catch ex As Exception
                     If index = 5 Then
                         Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
-                        Exit Try
                     End If
                 End Try
             Next
@@ -1302,9 +1295,7 @@ Public Class FrmMain
             Next
             File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
             Helper.WriteDebugInfoSameLine(Resources.strDone)
-        End If
-
-        If Not chkItemTranslation.Checked Then
+        Else
             Helper.WriteDebugInfoAndOk(Resources.strDeletingItemCache)
             Helper.WriteDebugInfoSameLine(Resources.strDone)
             Dim builtFile As New List(Of String)
@@ -1321,9 +1312,7 @@ Public Class FrmMain
 
     Private Sub UpdatePso2(comingFromOldFiles As Boolean)
         _cancelledFull = False
-
         If IsPso2WinDirMissing() Then Return
-
         Dim missingfiles As New List(Of String)
         Dim missingfiles2 As New List(Of String)
         Dim numberofChecks As Integer = 0
@@ -1522,7 +1511,6 @@ Public Class FrmMain
         _cancelled = False
 
         Dim fileLengths = New DirectoryInfo(dataPath).EnumerateFiles().ToDictionary(Function(fileinfo) fileinfo.Name, Function(fileinfo) fileinfo.Length)
-
         Dim fileNames = fileLengths.Keys
 
         For Each kvp In mergedPatches
@@ -1608,10 +1596,8 @@ Public Class FrmMain
                 linesList.Remove(downloadStr)
 
                 File.WriteAllLines("resume.txt", linesList.ToArray())
-                Application.DoEvents()
-            Else
-                Application.DoEvents()
             End If
+            Application.DoEvents()
         Next
 
         If missingfiles.Count = 0 Then Helper.WriteDebugInfo(Resources.strYouAppearToBeUpToDate)
@@ -1839,8 +1825,6 @@ Public Class FrmMain
 
         Dim result1 As DialogResult = MessageBox.Show(Resources.strWouldYouLikeToDownloadInstallMissing, "Download/Install?", MessageBoxButtons.YesNo)
 
-        If result1 = DialogResult.No Then Return
-
         If result1 = DialogResult.Yes Then
             Helper.Log(Resources.strDownloading & Resources.strMissingFilesPart1)
             Dim totaldownload As Long = missingfiles.Count
@@ -1912,8 +1896,8 @@ Public Class FrmMain
                     File.WriteAllLines("resume.txt", linesList.ToArray())
                 End If
             Next
+            Helper.WriteDebugInfoAndOk(Resources.strallDone)
         End If
-        Helper.WriteDebugInfoAndOk(Resources.strallDone)
     End Sub
 
     Private Sub ButtonItem10_Click(sender As Object, e As EventArgs) Handles ButtonItem10.Click
@@ -2120,11 +2104,8 @@ Public Class FrmMain
     End Sub
 
     Private Sub ButtonItem17_Click(sender As Object, e As EventArgs) Handles ButtonItem17.Click
-        Dim whatthefuck As MsgBoxResult = MsgBox(Resources.strAreYouSureResetPSO2Settings, MsgBoxStyle.YesNo)
-        If whatthefuck = MsgBoxResult.Yes Then
-            Dim documents As String = (_myDocuments & "\")
-            Dim usersettingsfile As String = (documents & "SEGA\PHANTASYSTARONLINE2\user.pso2")
-            File.WriteAllText(usersettingsfile, txtPSO2DefaultINI.Text)
+        If MsgBox(Resources.strAreYouSureResetPSO2Settings, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            File.WriteAllText((_myDocuments & "\" & "SEGA\PHANTASYSTARONLINE2\user.pso2"), txtPSO2DefaultINI.Text)
             Helper.WriteDebugInfoAndOk(Resources.strPSO2SettingsReset)
         End If
     End Sub

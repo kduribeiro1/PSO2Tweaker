@@ -2,7 +2,9 @@
 Imports System.IO
 Imports System.Net
 Imports System.Diagnostics
+Imports System.Globalization
 Imports DevComponents.DotNetBar
+Imports PSO2_Tweaker.My
 
 Public Class FrmOptions
     Dim _isLoading As Boolean = True
@@ -44,7 +46,7 @@ Public Class FrmOptions
                 Dim locale As Language = DirectCast([Enum].Parse(GetType(LangCode), RegKey.GetValue(Of String)(RegKey.Locale)), Language)
 
                 cmbLanguage.Text = locale.ToString()
-                Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(CType(locale, LangCode).ToString())
+                Thread.CurrentThread.CurrentUICulture = New CultureInfo(CType(locale, LangCode).ToString())
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             Catch ex As Exception
                 cmbLanguage.Text = "English"
@@ -52,8 +54,8 @@ Public Class FrmOptions
                 Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             End Try
 
-            LabelX1.Text = My.Resources.strChooseATheme
-            LabelX2.Text = My.Resources.strChooseALanguage
+            LabelX1.Text = Resources.strChooseATheme
+            LabelX2.Text = Resources.strChooseALanguage
 
             CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
             CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SidebarEnabled))
@@ -71,7 +73,7 @@ Public Class FrmOptions
             ComboItem42.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewLargeFilesVersion)
         Catch ex As Exception
             Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(My.Resources.strERROR & ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             _isLoading = False
             ResumeLayout(False)
@@ -97,7 +99,7 @@ Public Class FrmOptions
             Thread.CurrentThread.CurrentCulture = Helper.DefaltCultureInfo
             RegKey.SetValue(Of String)(RegKey.Locale, "en")
         Else
-            Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo(selectedLocale)
+            Thread.CurrentThread.CurrentUICulture = New CultureInfo(selectedLocale)
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture
             RegKey.SetValue(Of String)(RegKey.Locale, selectedLocale)
         End If
@@ -134,7 +136,7 @@ Public Class FrmOptions
     End Sub
 
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
-        My.Program.MainForm.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
+        Program.MainForm.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxBgColor, (ColorPickerButton4.SelectedColor.ToArgb))
     End Sub
 
@@ -152,15 +154,15 @@ Public Class FrmOptions
         If Not _isLoading Then
             If chkUseIcsHost.Checked Then
                 MsgBox("Please only check this value if you know that it's supposed to be checked, or someone trying to help you in the PSO2Proxy channel has told you to. Otherwise, you could break things, and then you'd be no better than ACF!")
-                My.Program.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
+                Program.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS.ics"
             Else
-                My.Program.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
+                Program.HostsFilePath = Environment.SystemDirectory & "\drivers\etc\HOSTS"
             End If
         End If
     End Sub
 
     Private Sub ColorPickerButton3_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton3.SelectedColorChanged
-        My.Program.MainForm.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
+        Program.MainForm.rtbDebug.ForeColor = ColorPickerButton3.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxColor, (ColorPickerButton3.SelectedColor.ToArgb))
     End Sub
 
@@ -210,11 +212,11 @@ Public Class FrmOptions
 
     Private Sub cmbLanguage_SelectedValueChanged(sender As Object, e As EventArgs) Handles cmbLanguage.SelectedValueChanged
         Using downloadClient As New WebClient
-            downloadClient.DownloadFile(New Uri(My.Program.FreedomUrl & "LanguagePack.rar"), "LanguagePack.rar")
+            downloadClient.DownloadFile(New Uri(Program.FreedomUrl & "LanguagePack.rar"), "LanguagePack.rar")
         End Using
 
         Dim processStartInfo = New ProcessStartInfo()
-        processStartInfo.FileName = (My.Program.StartPath & "\unrar.exe").Replace("\\", "\")
+        processStartInfo.FileName = (Program.StartPath & "\unrar.exe").Replace("\\", "\")
         processStartInfo.Verb = "runas"
         processStartInfo.Arguments = "x -inul -o+ LanguagePack.rar"
         processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
@@ -225,7 +227,7 @@ Public Class FrmOptions
     End Sub
 
     Private Sub ColorPickerButton2_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton2.SelectedColorChanged
-        My.Program.MainForm.ForeColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.ForeColor = ColorPickerButton2.SelectedColor
         FrmPso2Options.ForeColor = ColorPickerButton2.SelectedColor
         FrmPso2Options.TabItem1.TextColor = ColorPickerButton2.SelectedColor
         FrmPso2Options.TabItem2.TextColor = ColorPickerButton2.SelectedColor
@@ -237,17 +239,17 @@ Public Class FrmOptions
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         chkUseIcsHost.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
-        My.Program.MainForm.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
 
         RegKey.SetValue(Of Integer)(RegKey.FontColor, (ColorPickerButton2.SelectedColor.ToArgb))
     End Sub
@@ -261,31 +263,31 @@ Public Class FrmOptions
 
             Select Case CMBStyle.Text
                 Case "Blue"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Blue
+                    StyleManager.Style = eStyle.Office2007Blue
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Silver"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Silver
+                    StyleManager.Style = eStyle.Office2007Silver
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Black"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
+                    StyleManager.Style = eStyle.Office2007Black
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Vista Glass"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007VistaGlass
+                    StyleManager.Style = eStyle.Office2007VistaGlass
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "2010 Silver"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2010Silver
+                    StyleManager.Style = eStyle.Office2010Silver
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case "Windows 7 Blue"
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Windows7Blue
+                    StyleManager.Style = eStyle.Windows7Blue
                     RegKey.SetValue(Of String)(RegKey.Style, CMBStyle.Text)
 
                 Case Else
-                    StyleManager.Style = DevComponents.DotNetBar.eStyle.Office2007Black
+                    StyleManager.Style = eStyle.Office2007Black
                     RegKey.SetValue(Of String)(RegKey.Style, "Black")
             End Select
         End If
