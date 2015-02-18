@@ -99,6 +99,10 @@ Public Class Helper
                 For Each proc As Process In Process.GetProcessesByName(processName)
                     If proc.Id <> currentProcessId Then proc.Kill()
                 Next
+                If processName = "PSO2 Tweaker" Then
+                    Process.Start("PSO2 Tweaker.exe")
+                End If
+
             End If
         Else
             Return False

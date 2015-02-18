@@ -3149,7 +3149,7 @@ Public Class FrmMain
 
     Private Sub RestoreBackup(patchName As String)
         Dim backupPath As String = BuildBackupPath(patchName)
-        If Directory.Exists(backupPath) Then Return
+        If Directory.Exists(backupPath) = False Then Return
 
         Dim di As New DirectoryInfo(backupPath)
         Helper.WriteDebugInfoAndOk("Restoring " & patchName & " backup...")
