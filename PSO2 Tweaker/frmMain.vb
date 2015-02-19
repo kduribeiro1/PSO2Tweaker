@@ -2890,6 +2890,7 @@ Public Class FrmMain
             Dim strStoryPatchLatestBase As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "").Replace("/", "-")
             Helper.WriteDebugInfoAndOk("Downloading story patch info... ")
             DownloadFile(Program.FreedomUrl & "pso2.stripped.db", "pso2.stripped.db")
+            Dim DBMD5 As String = Helper.GetMd5("pso2.stripped.db")
             Helper.WriteDebugInfoAndOk("Downloading Trans-Am tool... ")
             DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe")
 
@@ -2918,6 +2919,10 @@ Public Class FrmMain
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
             Helper.Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             Helper.Log("[TRANSAM] Program started")
+            If Helper.GetMd5("pso2.stripped.db") <> DBMD5 Then
+                MsgBox("ERROR: Files have been modified since download. Aborting...")
+                Exit Sub
+            End If
             Process.Start(processStartInfo).WaitForExit()
             Helper.DeleteFile("pso2.stripped.db")
             Helper.DeleteFile("pso2-transam.exe")
