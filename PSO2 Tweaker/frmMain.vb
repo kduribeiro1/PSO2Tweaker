@@ -699,89 +699,91 @@ Public Class FrmMain
     Private Sub CheckForStoryUpdates()
         Try
             If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) = "Not Installed" Then Return
-            DownloadFile(Program.FreedomUrl & "patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
+            'We're going to comment this out for the moment, but DO NOT REMOVE IT as it may be used again in the future... [AIDA]
+            'DownloadFile(Program.FreedomUrl & "patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
 
-            Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
-                Dim strNewDate As String = oReader.ReadLine()
-                RegKey.SetValue(Of String)(RegKey.NewVersionTemp, strNewDate)
-                RegKey.SetValue(Of String)(RegKey.NewStoryVersion, strNewDate)
-                If strNewDate <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
-                    'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
-                    ' Create a match using regular exp<b></b>ressions
-                    'http://arks-layer.com/Story%20Patch%208-8-2013.rar.torrent
-                    ' Spit out the value plucked from the code
-                    txtHTML.Text = Regex.Match(Program.Client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
-                    Dim strDownloadMe = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
-                    If RegKey.GetValue(Of String)(RegKey.LatestStoryBase) <> strDownloadMe Then
-                        Dim mbVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it using the new story patch method?", MsgBoxStyle.YesNo)
-                        If mbVisitLink = vbYes Then InstallStoryPatchNew()
-                        Return
-                    End If
+            'Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
+            'Dim strNewDate As String = oReader.ReadLine()
+            'RegKey.SetValue(Of String)(RegKey.NewVersionTemp, strNewDate)
+            'RegKey.SetValue(Of String)(RegKey.NewStoryVersion, strNewDate)
+            'If strNewDate <> RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) Then
+            'A new story patch update is available - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest RAR file available from http://arks-layer.com, which seems to be: 
+            ' Create a match using regular exp<b></b>ressions
+            'http://arks-layer.com/Story%20Patch%208-8-2013.rar.torrent
+            ' Spit out the value plucked from the code
+            txtHTML.Text = Regex.Match(Program.Client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
+            Dim strDownloadMe = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
+            If RegKey.GetValue(Of String)(RegKey.LatestStoryBase) <> strDownloadMe Then
+                Dim StoryChangeLog As String = Program.Client.DownloadString("http://arks-layer.com/storyupdates.txt")
+                Dim mbVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it? Here's a list of changes: " & vbCrLf & StoryChangeLog, MsgBoxStyle.YesNo)
+                If mbVisitLink = vbYes Then InstallStoryPatchNew()
+                Return
+            End If
 
-                    Dim updateStoryYesNo As MsgBoxResult = MsgBox("A new story patch update is available as of " & strNewDate & " - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest story patch available from http://arks-layer.com (" & strDownloadMe & "), or used the new method to install the story patch.", vbYesNo)
-                    If updateStoryYesNo = vbNo Then Return
+            'Dim updateStoryYesNo As MsgBoxResult = MsgBox("A new story patch update is available as of " & strNewDate & " - Would you like to download and install it? PLEASE NOTE: This update assumes you've already downloaded and installed the latest story patch available from http://arks-layer.com (" & strDownloadMe & "), or used the new method to install the story patch.", vbYesNo)
+            'If updateStoryYesNo = vbNo Then Return
 
-                    Dim missingfiles As New List(Of String)
-                    Dim numberofChecks As Integer = 0
-                    Dim truefilename As String
-                    Dim filename As String()
-                    Helper.WriteDebugInfo(Resources.strBeginningStoryModeUpdate)
+            'Dim missingfiles As New List(Of String)
+            'Dim numberofChecks As Integer = 0
+            'Dim truefilename As String
+            'Dim filename As String()
+            'Helper.WriteDebugInfo(Resources.strBeginningStoryModeUpdate)
 
-                    While Not (oReader.EndOfStream)
-                        filename = oReader.ReadLine().Split(","c)
-                        truefilename = filename(0)
+            'While Not (oReader.EndOfStream)
+            ' filename = oReader.ReadLine().Split(","c)
+            ' truefilename = filename(0)
+            '
+            '            If Not File.Exists((Program.Pso2WinDir & "\" & truefilename)) Then
+            ' missingfiles.Add(truefilename)
+            ' ElseIf Helper.GetMd5((Program.Pso2WinDir & "\" & truefilename)) <> filename(1) Then
+            ' missingfiles.Add(truefilename)
+            ' End If
+            '
+            '            numberofChecks += 1
+            '            lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
+            '            Application.DoEvents()
+            '            End While
 
-                        If Not File.Exists((Program.Pso2WinDir & "\" & truefilename)) Then
-                            missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMd5((Program.Pso2WinDir & "\" & truefilename)) <> filename(1) Then
-                            missingfiles.Add(truefilename)
-                        End If
-
-                        numberofChecks += 1
-                        lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
-                        Application.DoEvents()
-                    End While
-
-                    Helper.WriteDebugInfo("Downloading/Installing updates using Patch Server #4 (New York)")
-                    Dim totaldownload As Long = missingfiles.Count
-                    Dim downloaded As Long = 0
-
-                    For Each downloadStr As String In missingfiles
-                        'Download the missing files:
-                        downloaded += 1
-                        lblStatus.Text = Resources.strUpdating & downloaded & "/" & totaldownload
-                        Application.DoEvents()
-                        _cancelled = False
-                        DownloadFile((Program.FreedomUrl & "patchfiles/" & downloadStr & ".7z"), downloadStr & ".7z")
-                        If _cancelled Then Return
-                        'Delete the existing file FIRST
-                        If Not File.Exists(downloadStr & ".7z") Then
-                            Helper.WriteDebugInfoAndFailed("File " & (downloadStr & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
-                        End If
-                        Helper.DeleteFile((Program.Pso2WinDir & "\" & downloadStr))
-                        Dim processStartInfo As New ProcessStartInfo With
-                        {
-                            .FileName = (Program.StartPath & "\7za.exe"),
-                            .Verb = "runas",
-                            .Arguments = ("e -y " & downloadStr & ".7z"),
-                            .WindowStyle = ProcessWindowStyle.Hidden,
-                            .UseShellExecute = True
-                        }
-                        Process.Start(processStartInfo).WaitForExit()
-                        If Not File.Exists(downloadStr) Then
-                            Helper.WriteDebugInfoAndFailed("File " & (downloadStr) & " does not exist! Perhaps it wasn't extracted properly?")
-                        End If
-                        File.Move(downloadStr, (Program.Pso2WinDir & "\" & downloadStr))
-                        Helper.DeleteFile(downloadStr & ".7z")
-                        Application.DoEvents()
-                    Next
-                    Helper.WriteDebugInfoAndOk(Resources.strStoryPatchUpdated)
-                    RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, RegKey.GetValue(Of String)(RegKey.NewVersionTemp))
-                    RegKey.SetValue(Of String)(RegKey.NewVersionTemp, "")
-                Else
-                    Helper.WriteDebugInfoAndOk("You have the latest story patch updates!")
-                End If
-            End Using
+            'Helper.WriteDebugInfo("Downloading/Installing updates using Patch Server #4 (New York)")
+            'Dim totaldownload As Long = missingfiles.Count
+            'Dim downloaded As Long = 0
+            '
+            '            For Each downloadStr As String In missingfiles
+            ' 'Download the missing files:
+            ' downloaded += 1
+            ' lblStatus.Text = Resources.strUpdating & downloaded & "/" & totaldownload
+            ' Application.DoEvents()
+            ' _cancelled = False
+            ' DownloadFile((Program.FreedomUrl & "patchfiles/" & downloadStr & ".7z"), downloadStr & ".7z")
+            ' If _cancelled Then Return
+            ' 'Delete the existing file FIRST
+            ' If Not File.Exists(downloadStr & ".7z") Then
+            ' Helper.WriteDebugInfoAndFailed("File " & (downloadStr & ".7z") & " does not exist! Perhaps it wasn't downloaded properly?")
+            ' End If
+            ' Helper.DeleteFile((Program.Pso2WinDir & "\" & downloadStr))
+            ' Dim processStartInfo As New ProcessStartInfo With
+            ' {
+            '     .FileName = (Program.StartPath & "\7za.exe"),
+            '     .Verb = "runas",
+            '     .Arguments = ("e -y " & downloadStr & ".7z"),
+            '     .WindowStyle = ProcessWindowStyle.Hidden,
+            ' .UseShellExecute = True
+            ' }
+            ' Process.Start(processStartInfo).WaitForExit()
+            ' If Not File.Exists(downloadStr) Then
+            ' Helper.WriteDebugInfoAndFailed("File " & (downloadStr) & " does not exist! Perhaps it wasn't extracted properly?")
+            ' End If
+            ' File.Move(downloadStr, (Program.Pso2WinDir & "\" & downloadStr))
+            ' Helper.DeleteFile(downloadStr & ".7z")
+            ' Application.DoEvents()
+            ' Next
+            ' Helper.WriteDebugInfoAndOk(Resources.strStoryPatchUpdated)
+            ' RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, RegKey.GetValue(Of String)(RegKey.NewVersionTemp))
+            ' RegKey.SetValue(Of String)(RegKey.NewVersionTemp, "")
+            ' Else
+            ' Helper.WriteDebugInfoAndOk("You have the latest story patch updates!")
+            ' End If
+            ' End Using
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
