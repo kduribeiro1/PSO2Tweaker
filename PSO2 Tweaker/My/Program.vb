@@ -76,12 +76,14 @@ Namespace My
                     'WriteDebugInfo("Creating win32 directory... Done!")
                 End If
 
-                Helper.Log("Starting shitstorm...")
-                FreedomUrl = Client.DownloadString("http://arks-layer.com/freedom.txt")
+                Helper.Log("Pursuing freedom...")
+                Dim TestURL As String = Client.DownloadString("http://arks-layer.com/freedom.txt")
 
-                If Not FreedomUrl.Contains("freedom") Then
+                If Not TestURL.Contains("freedom") Then
                     Helper.Log("Reverting to default freedom...")
                     FreedomUrl = "http://108.61.203.33/freedom/"
+                Else
+                    FreedomUrl = TestURL
                 End If
 
                 Dim launchPso2 As Boolean = False
