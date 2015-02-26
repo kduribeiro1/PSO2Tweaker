@@ -2768,6 +2768,7 @@ Public Class FrmMain
     End Sub
 
     Private Shared Sub btnRevertPSO2ProxyToJP_Click(sender As Object, e As EventArgs) Handles btnRevertPSO2ProxyToJP.Click
+        '[Revert]
         Dim builtFile = New List(Of String)
         If Not File.Exists(Program.HostsFilePath) Then File.Create(Program.HostsFilePath).Dispose()
 
@@ -2891,7 +2892,16 @@ Public Class FrmMain
             Dim backupdir As String = BuildBackupPath(StoryPatch)
             Dim strStoryPatchLatestBase As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "").Replace("/", "-")
             Helper.WriteDebugInfoAndOk("Downloading story patch info... ")
-            DownloadFile(Program.FreedomUrl & "pso2.stripped.db", "pso2.stripped.db")
+            DownloadFile(Program.FreedomUrl & "pso2.stripped.db.7z", "pso2.stripped.db.7z")
+            Dim processStartInfo2 As New ProcessStartInfo With
+            {
+                .FileName = (Program.StartPath & "\7za.exe"),
+                .Verb = "runas",
+                .Arguments = ("e -y pso2.stripped.db.7z"),
+                .WindowStyle = ProcessWindowStyle.Hidden,
+            .UseShellExecute = True
+            }
+            Process.Start(processStartInfo2).WaitForExit()
             Dim DBMD5 As String = Helper.GetMd5("pso2.stripped.db")
             Helper.WriteDebugInfoAndOk("Downloading Trans-Am tool... ")
             DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe")

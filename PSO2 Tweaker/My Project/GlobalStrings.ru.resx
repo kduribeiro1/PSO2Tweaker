@@ -547,7 +547,8 @@
     <value>Ссылки</value>
   </data>
   <data name="strYour7zipiscorrupt" xml:space="preserve">
-    <value>7za.exe был поврежден, исправление ошибки...</value>
+    <value>
+    .exe был поврежден, исправление ошибки...</value>
   </data>
   <data name="strYourTranslationBINiscorrupt" xml:space="preserve">
     <value>translation.bin был поврежден, исправление ошибки...</value>
