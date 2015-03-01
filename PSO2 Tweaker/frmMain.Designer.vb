@@ -797,8 +797,8 @@ Partial Class FrmMain
         '
         'tmrWaitingforPSO2
         '
-        Me.tmrWaitingforPSO2.Interval = 30000
-        Me.tmrWaitingforPSO2.Tag = "180000"
+        Me.tmrWaitingforPSO2.Interval = 180000
+        Me.tmrWaitingforPSO2.Tag = ""
         '
         'DLS
         '
