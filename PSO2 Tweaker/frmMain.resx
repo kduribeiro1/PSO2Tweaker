@@ -657,6 +657,12 @@
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
+  <data name="RibbonControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="RibbonControl1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 2</value>
+  </data>
   <data name="btnSelectPSODir.Text" xml:space="preserve">
     <value>Select pso2_bin folder...</value>
   </data>
@@ -969,12 +975,6 @@
   <data name="Office2007StartButton1.Text" xml:space="preserve">
     <value>&amp;File</value>
   </data>
-  <data name="RibbonControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="RibbonControl1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 2</value>
-  </data>
   <data name="lblORBLabel.Text" xml:space="preserve">
     <value>Click the ORB to access the menu</value>
   </data>
@@ -1201,6 +1201,9 @@
   <data name="&gt;&gt;txtPSO2DefaultINI.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <metadata name="tmrWaitingforPSO2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>485, 17</value>
+  </metadata>
   <metadata name="DLS.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -7880,11 +7883,17 @@
   <data name="&gt;&gt;lblORBLabel.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.LabelItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
+  <data name="&gt;&gt;tmrWaitingforPSO2.Name" xml:space="preserve">
+    <value>tmrWaitingforPSO2</value>
+  </data>
+  <data name="&gt;&gt;tmrWaitingforPSO2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;DLS.Name" xml:space="preserve">
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.3.5, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.3.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>

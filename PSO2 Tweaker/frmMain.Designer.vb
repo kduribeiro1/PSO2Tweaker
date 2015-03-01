@@ -122,6 +122,7 @@ Partial Class FrmMain
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
+        Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
         Me.DLS = New PSO2_Tweaker.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -354,10 +355,9 @@ Partial Class FrmMain
         Me.RibbonControl1.BackgroundStyle.Class = ""
         Me.RibbonControl1.CaptionVisible = True
         resources.ApplyResources(Me.RibbonControl1, "RibbonControl1")
-        Me.RibbonControl1.Items.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1})
         Me.RibbonControl1.KeyTipsFont = New System.Drawing.Font("Tahoma", 7.0!)
         Me.RibbonControl1.Name = "RibbonControl1"
-        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.lblORBLabel})
+        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1, Me.lblORBLabel})
         Me.RibbonControl1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.RibbonControl1.TabGroupHeight = 14
         '
@@ -795,6 +795,11 @@ Partial Class FrmMain
         Me.txtPSO2DefaultINI.Name = "txtPSO2DefaultINI"
         Me.txtPSO2DefaultINI.ReadOnly = True
         '
+        'tmrWaitingforPSO2
+        '
+        Me.tmrWaitingforPSO2.Interval = 30000
+        Me.tmrWaitingforPSO2.Tag = "180000"
+        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -944,5 +949,6 @@ Partial Class FrmMain
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
+    Friend WithEvents tmrWaitingforPSO2 As System.Windows.Forms.Timer
 
 End Class

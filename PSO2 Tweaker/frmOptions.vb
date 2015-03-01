@@ -292,4 +292,8 @@ Public Class FrmOptions
             End Select
         End If
     End Sub
+
+    Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
+
+    End Sub
 End Class

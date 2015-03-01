@@ -31,6 +31,7 @@ Public Class Helper
     End Sub
 
     Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
+        If FrmMain.SkipDialogs = True Then Exit Sub
         Try
             Program.MainForm.WriteDebugInfo(addThisText)
         Catch
@@ -39,6 +40,7 @@ Public Class Helper
     End Sub
 
     Public Shared Sub WriteDebugInfoSameLine(ByVal addThisText As String)
+        If FrmMain.SkipDialogs = True Then Exit Sub
         Try
             Program.MainForm.WriteDebugInfoSameLine(addThisText)
         Catch
@@ -47,6 +49,7 @@ Public Class Helper
     End Sub
 
     Public Shared Sub WriteDebugInfoAndOk(ByVal addThisText As String)
+        If FrmMain.SkipDialogs = True Then Exit Sub
         File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [OK!]" & vbCrLf)
         Try
             Program.MainForm.WriteDebugInfoAndOk(addThisText)
@@ -55,6 +58,7 @@ Public Class Helper
     End Sub
 
     Public Shared Sub WriteDebugInfoAndWarning(ByVal addThisText As String)
+        If FrmMain.SkipDialogs = True Then Exit Sub
         Try
             Program.MainForm.WriteDebugInfoAndWarning(addThisText)
         Catch
@@ -63,6 +67,7 @@ Public Class Helper
     End Sub
 
     Public Shared Sub WriteDebugInfoAndFailed(ByVal addThisText As String)
+        If FrmMain.SkipDialogs = True Then Exit Sub
         Try
             Program.MainForm.WriteDebugInfoAndFailed(addThisText)
         Catch

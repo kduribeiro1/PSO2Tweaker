@@ -30,6 +30,7 @@ Public Class FrmMain
     Dim _restartplz As Boolean
     Dim _systemUnlock As Integer
     Dim _vedaUnlocked As Boolean = False
+    Public SkipDialogs As Boolean = False
     Dim _totalsize2 As Long
 
     Sub New()
@@ -495,7 +496,17 @@ Public Class FrmMain
         RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
 
         Try
-            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
+            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin.7z", "translation.bin.7z")
+            Dim processStartInfo2 As New ProcessStartInfo With
+            {
+                .FileName = (Program.StartPath & "\7za.exe"),
+                .Verb = "runas",
+                .Arguments = ("e -y translation.bin.7z"),
+                .WindowStyle = ProcessWindowStyle.Hidden,
+            .UseShellExecute = True
+            }
+            Process.Start(processStartInfo2).WaitForExit()
+            File.Copy("translation.bin", Program.Pso2RootDir & "\translation.bin", True)
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -603,7 +614,7 @@ Public Class FrmMain
                 Exit While
             End If
 
-            If Not Visible Then
+            If Not Visible And SkipDialogs = False Then
                 DLS.CancelAsync()
                 _cancelled = True
                 _cancelledFull = True
@@ -1142,8 +1153,8 @@ Public Class FrmMain
 
             DLS.CancelAsync()
             _cancelled = True
-            PBMainBar.Value = 0
-            PBMainBar.Text = ""
+            If SkipDialogs = False Then PBMainBar.Value = 0
+            If SkipDialogs = False Then PBMainBar.Text = ""
             Helper.WriteDebugInfo(Resources.strLaunchingPSO2)
 
             If chkItemTranslation.Checked AndAlso (Helper.GetMd5(Program.Pso2RootDir & "\translator.dll") <> RegKey.GetValue(Of String)(RegKey.Dllmd5)) Then
@@ -1172,12 +1183,18 @@ Public Class FrmMain
             Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
 
+            SkipDialogs = False
+            tmrWaitingforPSO2.Enabled = True
+
             Do While hWnd = IntPtr.Zero
                 hWnd = External.FindWindow("Phantasy Star Online 2", Nothing)
                 Thread.Sleep(10)
+                Application.DoEvents()
+                If SkipDialogs = True Then Exit Do
             Loop
 
             Helper.DeleteFile(Program.Pso2RootDir & "\ddraw.dll")
+            tmrWaitingforPSO2.Enabled = False
             If RegKey.GetValue(Of String)(RegKey.SteamMode) = "True" Then
                 File.Copy(Program.Pso2RootDir & "\pso2.exe", Program.Pso2RootDir & "\pso2.exe_backup", True)
                 Do While Helper.IsFileInUse(Program.Pso2RootDir & "\pso2.exe")
@@ -1281,7 +1298,17 @@ Public Class FrmMain
 
             For index As Integer = 1 To 5
                 Try
-                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
+                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin.7z", "translation.bin.7z")
+                    Dim processStartInfo2 As New ProcessStartInfo With
+                    {
+                        .FileName = (Program.StartPath & "\7za.exe"),
+                        .Verb = "runas",
+                        .Arguments = ("e -y translation.bin.7z"),
+                        .WindowStyle = ProcessWindowStyle.Hidden,
+                    .UseShellExecute = True
+                    }
+                    Process.Start(processStartInfo2).WaitForExit()
+                    File.Copy("translation.bin", Program.Pso2RootDir & "\translation.bin", True)
                 Catch ex As Exception
                     If index = 5 Then
                         Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
@@ -1930,7 +1957,7 @@ Public Class FrmMain
     Private Sub btnGameguard_Click(sender As Object, e As EventArgs) Handles btnGameguard.Click
         Try
             Dim systempath As String
-            MsgBox(Resources.strPleaseBeAwareGG)
+            If SkipDialogs = False Then MsgBox(Resources.strPleaseBeAwareGG)
 
             If Directory.Exists(Program.Pso2RootDir & "\Gameguard\") Then
                 Helper.WriteDebugInfo("Removing Gameguard Directory...")
@@ -1979,11 +2006,11 @@ Public Class FrmMain
                 End If
             End If
             Helper.WriteDebugInfo("Downloading Latest Gameguard file...")
-            DownloadFile("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", "GameGuard.des")
+            DownloadFile("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", Program.Pso2RootDir & "\GameGuard.des")
             Helper.WriteDebugInfo("Downloading Latest Gameguard config...")
             DownloadFile("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", Program.Pso2RootDir & "\PSO2JP.ini")
             Helper.WriteDebugInfoSameLine(Resources.strDone)
-            File.Move("GameGuard.des", Program.Pso2RootDir & "\GameGuard.des")
+            'File.Move("GameGuard.des", Program.Pso2RootDir & "\GameGuard.des")
 
             Dim foundKey As RegistryKey = Computer.Registry.LocalMachine.OpenSubKey("SYSTEM\CurrentControlSet\Services\npggsvc", True)
 
@@ -1996,9 +2023,11 @@ Public Class FrmMain
                 Helper.WriteDebugInfoSameLine(Resources.strDone)
             End If
             Helper.WriteDebugInfoAndOk(Resources.strGGReset)
+            If SkipDialogs = True Then btnLaunchPSO2.PerformClick()
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            If ex.Message.Contains("Access to the path 'GameMon") Then MsgBox("It looks like Gameguard believes it's open, whether or not it actually is. You'll need to restart your computer to fix this problem. Sorry!")
         End Try
     End Sub
 
@@ -3198,4 +3227,18 @@ Public Class FrmMain
     Private Shared Function BuildBackupPath(ByVal patchName As String) As String
         Return Program.Pso2WinDir & "\backup\" & patchName & "\"
     End Function
+
+    Private Sub tmrWaitingforPSO2_Tick(sender As Object, e As EventArgs) Handles tmrWaitingforPSO2.Tick
+        tmrWaitingforPSO2.Enabled = False
+
+        Dim YesNo As MsgBoxResult = MsgBox("PSO2 doesn't appear to have opened yet. This can be caused by Gameguard Issues. Would you like the Tweaker to try to solve the issues and relaunch the game?", vbYesNo)
+        If YesNo = MsgBoxResult.No Then
+            tmrWaitingforPSO2.Enabled = False
+            Exit Sub
+        End If
+        If YesNo = MsgBoxResult.Yes Then
+            SkipDialogs = True
+            btnGameguard.RaiseClick()
+        End If
+    End Sub
 End Class

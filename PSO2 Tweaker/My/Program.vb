@@ -167,7 +167,17 @@ Namespace My
                                     ' Try up to 4 times to download the translation strings.
                                     For tries As Integer = 1 To 4
                                         Try
-                                            Client.DownloadFile(dlLink2, (Pso2RootDir & "\translation.bin"))
+                                            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin.7z", "translation.bin.7z")
+                                            Dim processStartInfo2 As New ProcessStartInfo With
+                                            {
+                                                .FileName = (Program.StartPath & "\7za.exe"),
+                                                .Verb = "runas",
+                                                .Arguments = ("e -y translation.bin.7z"),
+                                                .WindowStyle = ProcessWindowStyle.Hidden,
+                                            .UseShellExecute = True
+                                            }
+                                            Process.Start(processStartInfo2).WaitForExit()
+                                            File.Copy("translation.bin", Program.Pso2RootDir & "\translation.bin", True)
                                             Exit For
                                         Catch ex As Exception
                                             If tries = 4 Then
