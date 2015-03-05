@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports PSO2_Tweaker.My
+Imports System.Net
 
 Public Class FrmDiagnostic
 
@@ -60,5 +61,70 @@ Public Class FrmDiagnostic
 
         Clipboard.SetText(totalString)
         MsgBox("Copied!")
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Dim start_info As New ProcessStartInfo("cmd.exe", "/c ipconfig /flushdns")
+        start_info.UseShellExecute = False
+        start_info.CreateNoWindow = True
+        start_info.RedirectStandardOutput = True
+        start_info.RedirectStandardError = True
+
+        ' Make the process and set its start information.
+        Dim proc As New Process()
+        proc.StartInfo = start_info
+
+        ' Start the process.
+        proc.Start()
+
+        ' Attach to stdout and stderr.
+        Dim std_out As IO.StreamReader = proc.StandardOutput()
+
+        ' Display the results.
+        txtOutput.Text = std_out.ReadToEnd()
+
+        ' Clean up.
+        std_out.Close()
+
+        proc.Close()
+
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Dim start_info As New ProcessStartInfo("cmd.exe", "/c ping -n 5 gs016.pso2gs.net")
+        start_info.UseShellExecute = False
+        start_info.CreateNoWindow = True
+        start_info.RedirectStandardOutput = True
+        start_info.RedirectStandardError = True
+
+        ' Make the process and set its start information.
+        Dim proc As New Process()
+        proc.StartInfo = start_info
+
+        ' Start the process.
+        proc.Start()
+
+        ' Attach to stdout and stderr.
+        Dim std_out As IO.StreamReader = proc.StandardOutput()
+
+        ' Display the results.
+        txtOutput.Text = std_out.ReadToEnd()
+
+        ' Clean up.
+        std_out.Close()
+
+        proc.Close()
+    End Sub
+
+    Private Sub FrmDiagnostic_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim host As IPHostEntry = Dns.GetHostEntry("gs016.pso2gs.net")
+
+        Dim ip As IPAddress() = host.AddressList
+
+        Dim index As Integer
+        For index = 0 To ip.Length - 1
+            Console.WriteLine(ip(index))
+        Next index
+        lblPSO2Test.Text = "gs016.pso2gs.net (Ship 2) resolves to: " & ip(0).ToString
     End Sub
 End Class
