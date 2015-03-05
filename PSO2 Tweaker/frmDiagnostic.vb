@@ -12,18 +12,55 @@ Public Class FrmDiagnostic
         totalString &= "Tweaker is located at: " & Environment.CurrentDirectory & vbCrLf
         totalString &= ".NET Version: " & Environment.Version.ToString() & vbCrLf
         totalString &= "System has been on for: " & Mid((Environment.TickCount / 3600000).ToString(), 1, 5) & " hours"
-        Clipboard.SetText(totalString)
-        MsgBox("Copied!")
+        Helper.PasteBinText(totalString)
+
     End Sub
 
     Private Shared Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim totalString As String = ""
-        For Each line As String In Helper.GetLines(Environment.SystemDirectory & "\drivers\etc\hosts")
+        For Each line As String In Helper.GetLines(Program.HostsFilePath)
             If line <> "" Then totalString &= line & vbCrLf
         Next
         If totalString = "" Then totalString = "No modified host entries detected!"
-        Clipboard.SetText(totalString)
-        MsgBox("Copied!")
+
+        FrmMain.DownloadFile("http://download.sysinternals.com/files/Handle.zip", "Handle.zip")
+
+        Dim processStartInfo2 As New ProcessStartInfo With
+        {
+            .FileName = (Program.StartPath & "\7za.exe"),
+            .Verb = "runas",
+            .Arguments = ("e -y Handle.zip"),
+            .WindowStyle = ProcessWindowStyle.Hidden,
+            .UseShellExecute = True
+        }
+
+        Process.Start(processStartInfo2).WaitForExit()
+
+        Dim start_info As New ProcessStartInfo("cmd.exe", "/c handle %windir%\system32\drivers\etc\hosts")
+        start_info.UseShellExecute = False
+        start_info.CreateNoWindow = False
+        start_info.RedirectStandardOutput = True
+        start_info.RedirectStandardError = True
+
+        ' Make the process and set its start information.
+        Dim proc As New Process()
+        proc.StartInfo = start_info
+
+        ' Start the process.
+        proc.Start()
+
+        ' Attach to stdout and stderr.
+        Dim std_out As IO.StreamReader = proc.StandardOutput()
+
+        ' Display the results.
+        Dim OutputText As String = totalString & vbNewLine & "Handle stuff:" & vbNewLine & std_out.ReadToEnd()
+
+        ' Clean up.
+        std_out.Close()
+
+        proc.Close()
+        Helper.PasteBinText(OutputText)
+
     End Sub
 
     Private Shared Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
@@ -39,8 +76,8 @@ Public Class FrmDiagnostic
         totalString &= "Large Files version installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) & vbCrLf
         totalString &= "Story Patch version installed: " & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) & vbCrLf
         totalString &= "Size of PSO2 data/win32 folder: ~" & fileSize.ToString().Remove(2, 9) & "GB"
-        Clipboard.SetText(totalString)
-        MsgBox("Copied!")
+        Helper.PasteBinText(totalString)
+
     End Sub
 
     Private Shared Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
@@ -59,8 +96,8 @@ Public Class FrmDiagnostic
             totalString &= " | "
         Next
 
-        Clipboard.SetText(totalString)
-        MsgBox("Copied!")
+        Helper.PasteBinText(totalString)
+
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
@@ -81,7 +118,7 @@ Public Class FrmDiagnostic
         Dim std_out As IO.StreamReader = proc.StandardOutput()
 
         ' Display the results.
-        txtOutput.Text = std_out.ReadToEnd()
+        Helper.PasteBinText(std_out.ReadToEnd())
 
         ' Clean up.
         std_out.Close()
@@ -108,7 +145,7 @@ Public Class FrmDiagnostic
         Dim std_out As IO.StreamReader = proc.StandardOutput()
 
         ' Display the results.
-        txtOutput.Text = std_out.ReadToEnd()
+        Helper.PasteBinText(std_out.ReadToEnd())
 
         ' Clean up.
         std_out.Close()
@@ -126,5 +163,69 @@ Public Class FrmDiagnostic
             Console.WriteLine(ip(index))
         Next index
         lblPSO2Test.Text = "gs016.pso2gs.net (Ship 2) resolves to: " & ip(0).ToString
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Dim start_info As New ProcessStartInfo("cmd.exe", "/c netsh winsock show catalog")
+        start_info.UseShellExecute = False
+        start_info.CreateNoWindow = True
+        start_info.RedirectStandardOutput = True
+        start_info.RedirectStandardError = True
+
+        ' Make the process and set its start information.
+        Dim proc As New Process()
+        proc.StartInfo = start_info
+
+        ' Start the process.
+        proc.Start()
+
+        ' Attach to stdout and stderr.
+        Dim std_out As IO.StreamReader = proc.StandardOutput()
+
+        ' Display the results.
+        Helper.PasteBinText(std_out.ReadToEnd())
+
+        ' Clean up.
+        std_out.Close()
+
+        proc.Close()
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        FrmMain.DownloadFile("http://download.sysinternals.com/files/Autoruns.zip", "autoruns.zip")
+
+        Dim processStartInfo2 As New ProcessStartInfo With
+{
+    .FileName = (Program.StartPath & "\7za.exe"),
+    .Verb = "runas",
+    .Arguments = ("e -y autoruns.zip"),
+    .WindowStyle = ProcessWindowStyle.Hidden,
+.UseShellExecute = True
+}
+        Process.Start(processStartInfo2).WaitForExit()
+
+        Dim start_info As New ProcessStartInfo("cmd.exe", "/c autorunsc.exe -a -ct -s")
+        start_info.UseShellExecute = False
+        start_info.CreateNoWindow = False
+        start_info.RedirectStandardOutput = True
+        start_info.RedirectStandardError = True
+
+        ' Make the process and set its start information.
+        Dim proc As New Process()
+        proc.StartInfo = start_info
+
+        ' Start the process.
+        proc.Start()
+
+        ' Attach to stdout and stderr.
+        Dim std_out As IO.StreamReader = proc.StandardOutput()
+
+        ' Display the results.
+        Helper.PasteBinText(std_out.ReadToEnd())
+
+        ' Clean up.
+        std_out.Close()
+
+        proc.Close()
     End Sub
 End Class

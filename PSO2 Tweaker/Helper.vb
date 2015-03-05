@@ -152,6 +152,26 @@ Public Class Helper
         End Using
     End Sub
 
+    Public Shared Sub PasteBinText(TextToUpload As String)
+        ServicePointManager.Expect100Continue = False
+
+        Using client As New WebClient()
+            client.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
+            Dim output As String = ""
+            Dim random As New Random()
+
+            Dim val As Integer
+            For i As Integer = 0 To 16
+                val = random.[Next](1, 36)
+                output += ChrW(CInt(IIf(val <= 26, 64 + val, (val - 27) + 48)))
+            Next
+
+            Dim data As String = "?api_paste_private=1&api_option=paste&api_paste_name=" & output & "&api_paste_format=text&api_paste_expire_date=N&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f&api_paste_code=" & TextToUpload
+            Dim responce = client.UploadString("http://pastebin.com/api/api_post.php", "POST", data)
+            Process.Start(responce)
+        End Using
+    End Sub
+
     Public Shared Function CheckLink(ByVal url As String) As Boolean
         Try
             Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)

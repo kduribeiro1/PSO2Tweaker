@@ -2800,7 +2800,7 @@ Public Class FrmMain
 #If DEBUG Then
     Private Sub btnNewShit_Click(sender As Object, e As EventArgs) Handles btnNewShit.Click
         Helper.WriteDebugInfo("Starting TRANS-AM BURST system...")
-        'Still in development because stuff ;w;
+        'All done!
 
         'arcnmx: It first creates a new empty patchlist. It loops through each item in
         'p (the new one freshly downloaded).

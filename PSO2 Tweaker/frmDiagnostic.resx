@@ -118,6 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Label1.Text" xml:space="preserve">
-    <value>This menu is designed to make troubleshooting various PSO2 issues much simpler. Just click whichever button the person helping you asks you to, and then right click -&gt; paste into whatever you're talking to them with. (IRC, Skype, etc)</value>
+    <value>This menu is designed to make troubleshooting various PSO2 issues much simpler. Just click whichever button the person helping you asks you to, and then paste the URL of the pastebin window that pops up into whatever you're talking to them with. (IRC, Skype, etc)
+</value>
   </data>
 </root>
