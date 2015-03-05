@@ -123,6 +123,7 @@ Partial Class FrmMain
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
         Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
+        Me.txtFiles = New System.Windows.Forms.TextBox()
         Me.DLS = New PSO2_Tweaker.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -701,7 +702,6 @@ Partial Class FrmMain
         Me.btnNewShit.Name = "btnNewShit"
         Me.btnNewShit.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnNewShit, "btnNewShit")
-        Me.btnNewShit.Visible = False
         '
         'BtnUpdatePso2
         '
@@ -800,6 +800,11 @@ Partial Class FrmMain
         Me.tmrWaitingforPSO2.Interval = 180000
         Me.tmrWaitingforPSO2.Tag = ""
         '
+        'txtFiles
+        '
+        resources.ApplyResources(Me.txtFiles, "txtFiles")
+        Me.txtFiles.Name = "txtFiles"
+        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -815,6 +820,7 @@ Partial Class FrmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.txtFiles)
         Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
         Me.Controls.Add(Me.txtPSO2DefaultINI)
@@ -950,5 +956,6 @@ Partial Class FrmMain
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
     Friend WithEvents tmrWaitingforPSO2 As System.Windows.Forms.Timer
+    Friend WithEvents txtFiles As System.Windows.Forms.TextBox
 
 End Class

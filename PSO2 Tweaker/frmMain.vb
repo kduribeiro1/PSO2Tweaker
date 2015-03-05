@@ -496,17 +496,7 @@ Public Class FrmMain
         RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
 
         Try
-            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin.7z", "translation.bin.7z")
-            Dim processStartInfo2 As New ProcessStartInfo With
-            {
-                .FileName = (Program.StartPath & "\7za.exe"),
-                .Verb = "runas",
-                .Arguments = ("e -y translation.bin.7z"),
-                .WindowStyle = ProcessWindowStyle.Hidden,
-            .UseShellExecute = True
-            }
-            Process.Start(processStartInfo2).WaitForExit()
-            File.Copy("translation.bin", Program.Pso2RootDir & "\translation.bin", True)
+            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -874,7 +864,7 @@ Public Class FrmMain
                 End If
 
                 If RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) <> version Then
-                    If MsgBox(Resources.strNewPSO2Update, vbYesNo) = vbYes Then UpdatePso2(False)
+                    If MsgBox(Resources.strNewPSO2Update, vbYesNo) = vbYes Then btnNewShit.RaiseClick()
                 End If
             End If
         Catch ex As Exception
@@ -986,7 +976,11 @@ Public Class FrmMain
         Next
 
         If missingfiles.Count = 0 Then Helper.WriteDebugInfo("Your precede data is up to date!")
-        If missingfiles.Count <> 0 Then Helper.WriteDebugInfo("Precede data downloaded/updated!")
+        If missingfiles.Count <> 0 Then
+            Helper.WriteDebugInfo("Precede data downloaded/updated!")
+            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
+            Helper.WriteDebugInfo("You will need to generate a new win32 list via the new patch method. Sorry!")
+        End If
         RegKey.SetValue(Of String)(RegKey.Pso2PrecedeVersion, version)
     End Sub
 
@@ -1298,17 +1292,7 @@ Public Class FrmMain
 
             For index As Integer = 1 To 5
                 Try
-                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin.7z", "translation.bin.7z")
-                    Dim processStartInfo2 As New ProcessStartInfo With
-                    {
-                        .FileName = (Program.StartPath & "\7za.exe"),
-                        .Verb = "runas",
-                        .Arguments = ("e -y translation.bin.7z"),
-                        .WindowStyle = ProcessWindowStyle.Hidden,
-                    .UseShellExecute = True
-                    }
-                    Process.Start(processStartInfo2).WaitForExit()
-                    File.Copy("translation.bin", Program.Pso2RootDir & "\translation.bin", True)
+                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
                 Catch ex As Exception
                     If index = 5 Then
                         Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
@@ -2815,6 +2799,7 @@ Public Class FrmMain
 
 #If DEBUG Then
     Private Sub btnNewShit_Click(sender As Object, e As EventArgs) Handles btnNewShit.Click
+        Helper.WriteDebugInfo("Starting TRANS-AM BURST system...")
         'Still in development because stuff ;w;
 
         'arcnmx: It first creates a new empty patchlist. It loops through each item in
@@ -2835,31 +2820,50 @@ Public Class FrmMain
         'download all missingfiles
 
         'if file "currentpatchlist.txt" is not found then build list like SEGA's.
+
+        _cancelledFull = False
+        If IsPso2WinDirMissing() Then Return
+        lblStatus.Text = ""
+
         If Directory.Exists(BuildBackupPath(EnglishPatch)) Then
+            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfo(Resources.strENBackupFound)
             RestoreBackup(EnglishPatch)
         End If
 
         If Directory.Exists(BuildBackupPath(LargeFiles)) Then
+            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfo(Resources.strLFBackupFound)
             RestoreBackup(LargeFiles)
         End If
 
+        If Directory.Exists(BuildBackupPath(StoryPatch)) Then
+            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
+            Helper.WriteDebugInfo(Resources.strStoryBackupFound)
+            RestoreBackup(StoryPatch)
+        End If
+
         Dim totalfiles = Directory.GetFiles(Program.Pso2RootDir & "\data\win32\")
 
-        If Not File.Exists("old_patchlist.txt") Then
+        If File.Exists("win32list_DO_NOT_DELETE_ME.txt_temp") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt_temp")
+
+        If Not File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then
             Helper.WriteDebugInfo("Building file list... ")
+            Helper.WriteDebugInfo("This will only be done once, as long as you don't delete the 'win32list_DO_NOT_DELETE_ME.txt' file")
             Dim di As New DirectoryInfo(Program.Pso2RootDir & "\data\win32\")
 
-            Using writer As New StreamWriter("old_patchlist.txt", True)
+            Using writer As New StreamWriter("win32list_DO_NOT_DELETE_ME.txt_temp", True)
                 Dim count As Integer = 0
                 For Each dra In di.GetFiles()
+                    If _cancelledFull Then Return
                     writer.WriteLine("data/win32/" & dra.Name & ".pat" & vbTab & dra.Length & vbTab & Helper.GetMd5(Program.Pso2RootDir & "\data\win32\" & dra.Name))
                     count += 1
                     lblStatus.Text = "Building first time list of win32 files (" & count & "/" & totalfiles.Length & ")"
                     Application.DoEvents()
                 Next
             End Using
+
+            FileSystem.RenameFile("win32list_DO_NOT_DELETE_ME.txt_temp", "win32list_DO_NOT_DELETE_ME.txt")
 
             Helper.WriteDebugInfoSameLine("Done!")
         End If
@@ -2890,18 +2894,157 @@ Public Class FrmMain
         Dim segaLine As String
         Dim segaFilename As String
         Dim missingfiles As New List(Of String)
-        Dim oldarray = File.ReadAllLines("old_patchlist.txt")
+        Dim oldarray = File.ReadAllLines("win32list_DO_NOT_DELETE_ME.txt")
 
         For i As Integer = 0 To mergedPatches.Count
+
+            If _cancelledFull Then Return
             segaLine = mergedPatches.Values(i)
             If String.IsNullOrEmpty(segaLine) Then Continue For
 
             segaFilename = segaLine.Remove(segaLine.IndexOf(".pat", StringComparison.Ordinal)).Replace("data/win32/", "")
-            lblStatus.Text = "Checking file " & i & " / " & totalfiles.Length
+            lblStatus.Text = "Checking file " & i + 1 & " / " & mergedPatches.Count
             If missingfiles.Count > 0 Then lblStatus.Text &= " (missing files found: " & missingfiles.Count & ")"
             Application.DoEvents()
-            If Not oldarray.Contains(segaLine) Then missingfiles.Add(segaFilename)
+            If Not oldarray.Contains(segaLine) And segaLine.Contains("user_default.pso2") = False And segaLine.Contains("edition.txt") = False And segaLine.Contains("GameGuard.des") = False And segaLine.Contains("gameversion.ver") = False And segaLine.Contains("pso2.exe") = False And segaLine.Contains("PSO2JP.ini") = False And segaLine.Contains("script/user_intel.pso2") = False And segaLine.Contains("ffbff2ac5b7a7948961212cefd4d402c") = False Then
+                missingfiles.Add(segaFilename)
+            End If
         Next
+
+
+        'Helper.DeleteFile("resume.txt")
+        'File.AppendAllLines("resume.txt", missingfiles)
+        Dim totaldownload As Long = missingfiles.Count
+        Dim downloaded As Long = 0
+        Dim totaldownloadedthings As Long = 0
+
+        For Each downloadStr In missingfiles
+            If _cancelledFull Then Return
+            'Download the missing files:
+            'WHAT THE FUCK IS GOING ON HERE?
+            downloaded += 1
+            totaldownloadedthings += _totalsize2
+            lblStatus.Text = Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloadedthings) & ")"
+
+            Application.DoEvents()
+            _cancelled = False
+            DownloadFile(("http://download.pso2.jp/patch_prod/patches/data/win32/" & downloadStr & ".pat"), downloadStr)
+            If New FileInfo(downloadStr).Length = 0 Then
+                Helper.Log("File appears to be empty, trying to download from secondary SEGA server")
+                DownloadFile(("http://download.pso2.jp/patch_prod/patches_old/data/win32/" & downloadStr & ".pat"), downloadStr)
+            End If
+
+            If _cancelled Then Return
+            Helper.DeleteFile((Program.Pso2WinDir & "\" & downloadStr))
+            File.Move(downloadStr, (Program.Pso2WinDir & "\" & downloadStr))
+            If _vedaUnlocked Then Helper.WriteDebugInfo("DEBUG: Downloaded and installed " & downloadStr & ".")
+            'Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
+
+            'Remove the line to delete, e.g.
+            'linesList.Remove(downloadStr)
+
+            'File.WriteAllLines("resume.txt", linesList.ToArray())
+            Application.DoEvents()
+        Next
+        If missingfiles.Count = 0 Then Helper.WriteDebugInfo(Resources.strYouAppearToBeUpToDate)
+        Dim directoryStringthing As String = (Program.Pso2RootDir & "\")
+
+        Helper.WriteDebugInfo(Resources.strDownloading & "version file...")
+        Application.DoEvents()
+        _cancelled = False
+        Program.Client.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
+        If _cancelled Then Return
+        If File.Exists((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver")) Then Helper.DeleteFile((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+        File.Copy("version.ver", (_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
+        Helper.WriteDebugInfoAndOk((Resources.strDownloadedandInstalled & "version file"))
+
+        Helper.WriteDebugInfo(Resources.strDownloading & "pso2launcher.exe...")
+        Application.DoEvents()
+        For Each proc As Process In Process.GetProcessesByName("pso2launcher")
+            If proc.MainWindowTitle = "PHANTASY STAR ONLINE 2" AndAlso proc.MainModule.ToString() = "ProcessModule (pso2launcher.exe)" Then proc.Kill()
+        Next
+
+        DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2launcher.exe.pat", "pso2launcher.exe")
+        If _cancelled Then Return
+        If File.Exists((directoryStringthing & "pso2launcher.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((directoryStringthing & "pso2launcher.exe"))
+        File.Move("pso2launcher.exe", (directoryStringthing & "pso2launcher.exe"))
+        Helper.WriteDebugInfoAndOk((Resources.strDownloadedandInstalled & "pso2launcher.exe"))
+        Helper.WriteDebugInfo(Resources.strDownloading & "pso2updater.exe...")
+        Application.DoEvents()
+        For Each proc As Process In Process.GetProcessesByName("pso2updater")
+            If proc.MainModule.ToString() = "ProcessModule (pso2updater.exe)" Then proc.Kill()
+        Next
+
+        DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2updater.exe.pat", "pso2updater.exe")
+        If _cancelled Then Return
+        If File.Exists((directoryStringthing & "pso2updater.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((directoryStringthing & "pso2updater.exe"))
+        File.Move("pso2updater.exe", (directoryStringthing & "pso2updater.exe"))
+        Helper.WriteDebugInfoAndOk((Resources.strDownloadedandInstalled & "pso2updater.exe"))
+        Application.DoEvents()
+
+        Helper.WriteDebugInfo(Resources.strDownloading & "pso2.exe...")
+        For Each proc As Process In Process.GetProcessesByName("pso2")
+            If proc.MainModule.ToString() = "ProcessModule (pso2.exe)" Then proc.Kill()
+        Next
+
+        DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
+        If _cancelled Then Return
+
+        If File.Exists((directoryStringthing & "pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((directoryStringthing & "pso2.exe"))
+        File.Move("pso2.exe", (directoryStringthing & "pso2.exe"))
+        If _cancelledFull Then Return
+
+        Helper.WriteDebugInfoAndOk((Resources.strDownloadedandInstalled & "pso2.exe"))
+
+
+        If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Updated")
+        If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Updated")
+        If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Updated")
+
+        RegKey.SetValue(Of String)(RegKey.Pso2PatchlistMd5, Helper.GetMd5("patchlist.txt"))
+        Helper.WriteDebugInfo("Game updated to the latest version. Don't forget to re-install/update the patches, as some of the files might have been untranslated.")
+        'Helper.DeleteFile("resume.txt")
+        RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
+        UnlockGui()
+
+        If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor)) And File.Exists((Program.Pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c")) Then
+            If File.Exists((Program.Pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup")) Then Computer.FileSystem.DeleteFile((Program.Pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c.backup"), UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently)
+            Computer.FileSystem.RenameFile((Program.Pso2WinDir & "\" & "ffbff2ac5b7a7948961212cefd4d402c"), "ffbff2ac5b7a7948961212cefd4d402c.backup")
+            Helper.WriteDebugInfoAndOk(Resources.strRemoving & "Censor...")
+        End If
+
+        Helper.WriteDebugInfo("Updating win32 list...")
+
+        'Write new win32 here
+        'Take in the old file, search for a file that was downloaded.
+        'Replace that line with the new filesize or make a new entry if the file wasn't found in the old one.
+        'SHOULD be much faster than writing a new win32 file
+        If File.Exists("new_win32.txt") Then File.Delete("new_win32.txt")
+        If File.Exists("missingfiles.txt") Then File.Delete("missingfiles.txt")
+        Dim FILE_NAME As String = ""
+        Dim Found As Boolean = False
+        System.IO.File.WriteAllText("new_win32.txt", System.IO.File.ReadAllText("win32list_DO_NOT_DELETE_ME.txt"))
+        For i As Integer = 0 To missingfiles.Count - 1
+            Found = False
+            File.AppendAllText("missingfiles.txt", missingfiles(i) & vbNewLine)
+            For Each match As Match In Regex.Matches(System.IO.File.ReadAllText("new_win32.txt"), "data/win32/" & missingfiles(i).ToString & ".*")
+                'MsgBox(match.Value)
+                Dim info As New FileInfo(Program.Pso2RootDir & "\data\win32\" & missingfiles(i).ToString)
+                System.IO.File.WriteAllText("new_win32.txt", System.IO.File.ReadAllText("new_win32.txt").Replace(match.Value, "data/win32/" & missingfiles(i).ToString & ".pat" & vbTab & info.Length & vbTab & Helper.GetMd5(Program.Pso2RootDir & "\data\win32\" & missingfiles(i).ToString)))
+                Found = True
+            Next
+            If Found = False Then
+                Dim info As New FileInfo(Program.Pso2RootDir & "\data\win32\" & missingfiles(i).ToString)
+                System.IO.File.WriteAllText("new_win32.txt", System.IO.File.ReadAllText("new_win32.txt") & vbNewLine & "data/win32/" & missingfiles(i).ToString & ".pat" & vbTab & info.Length & vbTab & Helper.GetMd5(Program.Pso2RootDir & "\data\win32\" & missingfiles(i).ToString))
+            End If
+        Next
+
+        If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
+        FileSystem.RenameFile("new_win32.txt", "win32list_DO_NOT_DELETE_ME.txt")
+        Helper.WriteDebugInfoSameLine(" Done!")
+        Helper.WriteDebugInfoAndOk(Resources.strallDone)
+
+        'MsgBox(missingfiles.Count)
     End Sub
 #End If
 
@@ -2937,23 +3080,25 @@ Public Class FrmMain
 
             'execute pso2-transam stuff with -b flag for backup
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
-            If Directory.Exists(backupdir) Then
-                Dim counter = Computer.FileSystem.GetFiles(backupdir)
-                If counter.Count > 0 Then
-                    processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-                Else
-                    Helper.Log("[TRANSAM] Creating backup directory")
-                    Directory.CreateDirectory(backupdir)
-                    Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                    processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-                End If
-            End If
-            If Not Directory.Exists(backupdir) Then
-                Helper.Log("[TRANSAM] Creating backup directory")
-                Directory.CreateDirectory(backupdir)
-                Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-            End If
+            'If Directory.Exists(backupdir) Then
+            'Dim counter = Computer.FileSystem.GetFiles(backupdir)
+            'If counter.Count > 0 Then
+            processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+            'Else
+            'Helper.Log("[TRANSAM] Creating backup directory")
+            'Directory.CreateDirectory(backupdir)
+            'Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+            'processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+            'End If
+            'End If
+
+            'We don't need to make backups anymore
+            'If Not Directory.Exists(backupdir) Then
+            ' Helper.Log("[TRANSAM] Creating backup directory")
+            ' Directory.CreateDirectory(backupdir)
+            ' Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+            ' processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+            ' End If
 
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
@@ -3041,7 +3186,8 @@ Public Class FrmMain
             End Select
 
             ' Check the backup preference
-            patchPreference = RegKey.GetValue(Of String)(RegKey.Backup)
+            patchPreference = "Never"
+            'patchPreference = RegKey.GetValue(Of String)(RegKey.Backup)
             Select Case patchPreference
                 Case "Ask"
                     backupyesno = MsgBox(msgBackup, vbYesNo)
