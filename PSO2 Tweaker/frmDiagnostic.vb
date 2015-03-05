@@ -53,7 +53,7 @@ Public Class FrmDiagnostic
         Dim std_out As IO.StreamReader = proc.StandardOutput()
 
         ' Display the results.
-        Dim OutputText As String = totalString & vbNewLine & "Handle stuff:" & vbNewLine & std_out.ReadToEnd()
+        Dim OutputText As String = totalString & vbNewLine & "HOSTS Handle stuff:" & vbNewLine & std_out.ReadToEnd()
 
         ' Clean up.
         std_out.Close()
@@ -204,7 +204,7 @@ Public Class FrmDiagnostic
 }
         Process.Start(processStartInfo2).WaitForExit()
 
-        Dim start_info As New ProcessStartInfo("cmd.exe", "/c autorunsc.exe -a -ct -s")
+        Dim start_info As New ProcessStartInfo("cmd.exe", "/c autorunsc.exe -a * -c -s")
         start_info.UseShellExecute = False
         start_info.CreateNoWindow = False
         start_info.RedirectStandardOutput = True

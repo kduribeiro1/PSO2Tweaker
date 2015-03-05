@@ -294,6 +294,6 @@ Public Class FrmOptions
     End Sub
 
     Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
-
+        RegKey.SetValue(Of String)(RegKey.SteamMode, CheckBoxX2.Checked.ToString)
     End Sub
 End Class

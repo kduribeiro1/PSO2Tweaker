@@ -62,6 +62,7 @@ Partial Class FrmMain
         Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnLargeFilesTRANSAM = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreBackups = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreENBackup = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreLargeFilesBackup = New DevComponents.DotNetBar.ButtonItem()
@@ -416,7 +417,7 @@ Partial Class FrmMain
         '
         Me.ButtonInstall.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
         Me.ButtonInstall.Name = "ButtonInstall"
-        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnStoryPatchNew, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnInstallSpanishPatch})
+        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnInstallSpanishPatch})
         Me.ButtonInstall.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.ButtonInstall, "ButtonInstall")
         '
@@ -455,6 +456,12 @@ Partial Class FrmMain
         Me.btnInstallSpanishPatch.Name = "btnInstallSpanishPatch"
         resources.ApplyResources(Me.btnInstallSpanishPatch, "btnInstallSpanishPatch")
         Me.btnInstallSpanishPatch.Visible = False
+        '
+        'btnLargeFilesTRANSAM
+        '
+        Me.btnLargeFilesTRANSAM.Name = "btnLargeFilesTRANSAM"
+        resources.ApplyResources(Me.btnLargeFilesTRANSAM, "btnLargeFilesTRANSAM")
+        Me.btnLargeFilesTRANSAM.Visible = False
         '
         'btnRestoreBackups
         '
@@ -957,5 +964,6 @@ Partial Class FrmMain
     Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
     Friend WithEvents tmrWaitingforPSO2 As System.Windows.Forms.Timer
     Friend WithEvents txtFiles As System.Windows.Forms.TextBox
+    Friend WithEvents btnLargeFilesTRANSAM As DevComponents.DotNetBar.ButtonItem
 
 End Class

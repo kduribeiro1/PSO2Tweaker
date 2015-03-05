@@ -2776,7 +2776,10 @@ Public Class FrmMain
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
             Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message.ToString)
-            If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again.")
+            If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then
+                MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again." & vbNewLine & "When you click Okay, the Tweaker will also generate a pastebin of your HOSTS file and what is locking it. Look at the bottom of the pastebin where the 'HOSTS Handle stuff' is.")
+                FrmDiagnostic.Button2.PerformClick()
+            End If
         End Try
     End Sub
 
@@ -3386,5 +3389,10 @@ Public Class FrmMain
             SkipDialogs = True
             btnGameguard.RaiseClick()
         End If
+    End Sub
+
+    Private Sub btnLargeFilesTRANSAM_Click(sender As Object, e As EventArgs) Handles btnLargeFilesTRANSAM.Click
+        'Install Large Files with TRANSAM to cut down on net costs for Agrajag and friends.
+        'Need to speak with Agrajag and get some files before I can do this, though.
     End Sub
 End Class

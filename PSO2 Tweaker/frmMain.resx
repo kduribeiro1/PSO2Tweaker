@@ -681,6 +681,12 @@
   <data name="btnLargeFiles.Tooltip" xml:space="preserve">
     <value>Install additional english files to enhance the core patch</value>
   </data>
+  <data name="btnLargeFilesTRANSAM.Text" xml:space="preserve">
+    <value>English Large Files (New Method)</value>
+  </data>
+  <data name="btnLargeFilesTRANSAM.Tooltip" xml:space="preserve">
+    <value>Install additional english files to enhance the core patch</value>
+  </data>
   <data name="btnStoryPatchNew.Text" xml:space="preserve">
     <value>English Story Patch</value>
   </data>
@@ -7571,6 +7577,12 @@
   <data name="&gt;&gt;btnInstallSpanishPatch.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
+  <data name="&gt;&gt;btnLargeFilesTRANSAM.Name" xml:space="preserve">
+    <value>btnLargeFilesTRANSAM</value>
+  </data>
+  <data name="&gt;&gt;btnLargeFilesTRANSAM.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
   <data name="&gt;&gt;btnRestoreBackups.Name" xml:space="preserve">
     <value>btnRestoreBackups</value>
   </data>
@@ -7923,7 +7935,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.3.8, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.MyWebClient, PSO2 Tweaker, Version=3.0.4.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
