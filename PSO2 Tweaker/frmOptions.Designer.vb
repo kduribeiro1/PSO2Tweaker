@@ -81,6 +81,10 @@ Partial Class FrmOptions
         Me.ColorPickerButton2 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.ColorPickerButton3 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.ColorPickerButton4 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.btnChooseOrb = New DevComponents.DotNetBar.ButtonX()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CheckBoxX3 = New DevComponents.DotNetBar.Controls.CheckBoxX()
+        Me.CheckBoxX4 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -488,10 +492,49 @@ Partial Class FrmOptions
         Me.ColorPickerButton4.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
         Me.ColorPickerButton4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
+        'btnChooseOrb
+        '
+        Me.btnChooseOrb.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.btnChooseOrb.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        resources.ApplyResources(Me.btnChooseOrb, "btnChooseOrb")
+        Me.btnChooseOrb.Name = "btnChooseOrb"
+        Me.btnChooseOrb.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'CheckBoxX3
+        '
+        Me.CheckBoxX3.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.CheckBoxX3.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.CheckBoxX3, "CheckBoxX3")
+        Me.CheckBoxX3.Name = "CheckBoxX3"
+        Me.CheckBoxX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'CheckBoxX4
+        '
+        Me.CheckBoxX4.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.CheckBoxX4.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.CheckBoxX4, "CheckBoxX4")
+        Me.CheckBoxX4.Name = "CheckBoxX4"
+        Me.CheckBoxX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.CheckBoxX4)
+        Me.Controls.Add(Me.CheckBoxX3)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.btnChooseOrb)
         Me.Controls.Add(Me.ButtonX2)
         Me.Controls.Add(Me.chkUseIcsHost)
         Me.Controls.Add(Me.chkAutoRemoveCensor)
@@ -592,4 +635,8 @@ Partial Class FrmOptions
     Friend WithEvents chkUseIcsHost As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents ButtonX2 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents btnChooseOrb As DevComponents.DotNetBar.ButtonX
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents CheckBoxX3 As DevComponents.DotNetBar.Controls.CheckBoxX
+    Friend WithEvents CheckBoxX4 As DevComponents.DotNetBar.Controls.CheckBoxX
 End Class

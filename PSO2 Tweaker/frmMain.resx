@@ -254,6 +254,10 @@
   <data name="&gt;&gt;chkRemoveVita.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="PBMainBar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>None</value>
+  </data>
   <data name="PBMainBar.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 265</value>
   </data>
@@ -262,6 +266,9 @@
   </data>
   <data name="PBMainBar.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
+  </data>
+  <data name="PBMainBar.Text" xml:space="preserve">
+    <value>yuggggggggggggggggggggggggggggggggg</value>
   </data>
   <data name="&gt;&gt;PBMainBar.Name" xml:space="preserve">
     <value>PBMainBar</value>
@@ -363,7 +370,7 @@
     <value>True</value>
   </data>
   <data name="lblDirectoryLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 56</value>
+    <value>3, 44</value>
   </data>
   <data name="lblDirectoryLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 15</value>
@@ -387,10 +394,10 @@
     <value>3</value>
   </data>
   <data name="lblDirectory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 72</value>
+    <value>3, 55</value>
   </data>
   <data name="lblDirectory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 23</value>
+    <value>339, 17</value>
   </data>
   <data name="lblDirectory.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -629,7 +636,6 @@
   <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -956,9 +962,6 @@
   </data>
   <data name="Office2007StartButton1.Text" xml:space="preserve">
     <value>&amp;File</value>
-  </data>
-  <data name="lblORBLabel.Text" xml:space="preserve">
-    <value>Click the ORB to access the menu</value>
   </data>
   <data name="RibbonControl1.Size" type="System.Drawing.Size, System.Drawing">
     <value>796, 44</value>
@@ -7475,6 +7478,9 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
   </data>
@@ -7922,12 +7928,6 @@
   <data name="&gt;&gt;btnExit.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;lblORBLabel.Name" xml:space="preserve">
-    <value>lblORBLabel</value>
-  </data>
-  <data name="&gt;&gt;lblORBLabel.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.LabelItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
   <data name="&gt;&gt;tmrWaitingforPSO2.Name" xml:space="preserve">
     <value>tmrWaitingforPSO2</value>
   </data>
@@ -7938,7 +7938,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.4.3, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.4.4, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>

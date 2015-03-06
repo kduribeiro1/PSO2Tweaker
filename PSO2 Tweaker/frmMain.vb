@@ -66,7 +66,6 @@ Public Class FrmMain
             btnLaunchPSO2.Text = Resources.strLaunchPSO2
             btnFixPSO2EXEs.Text = Resources.strFixPSO2EXEs
             btnFixPermissions.Text = Resources.strFixPSO2Permissions
-            lblORBLabel.Text = Resources.strClickOrb
             rtbDebug.Text = Resources.strProgramStarted
             ButtonItem1.Text = "Redownload Original JP Files"
             ButtonItem2.Text = Resources.strTroubleshooting
@@ -141,6 +140,8 @@ Public Class FrmMain
                 ForeColor = color
                 _optionsFrm.ForeColor = color
                 _pso2OptionsFrm.ForeColor = color
+                _optionsFrm.CheckBoxX3.TextColor = color
+                _optionsFrm.CheckBoxX4.TextColor = color
                 _optionsFrm.CheckBoxX1.TextColor = color
                 _optionsFrm.chkAutoRemoveCensor.TextColor = color
                 chkRemoveCensor.TextColor = color
@@ -268,7 +269,39 @@ Public Class FrmMain
             If RegKey.GetValue(Of String)(RegKey.ImageLocation) <> "" Then
                 If File.Exists(RegKey.GetValue(Of String)(RegKey.ImageLocation)) Then Me.BackgroundImage = System.Drawing.Image.FromFile(RegKey.GetValue(Of String)(RegKey.ImageLocation))
             End If
+            If RegKey.GetValue(Of String)(RegKey.ORBLocation) <> "" Then
+                If File.Exists(RegKey.GetValue(Of String)(RegKey.ORBLocation)) Then Office2007StartButton1.Image = System.Drawing.Image.FromFile(RegKey.GetValue(Of String)(RegKey.ORBLocation))
+            End If
+
+            If RegKey.GetValue(Of String)(RegKey.ChecksVisible) <> "" Then
+                FrmOptions.CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRemoveCensor.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRestoreCensor.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRemovePC.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRestorePC.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRemoveVita.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRestoreVita.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRemoveNVidia.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRestoreNVidia.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRemoveSEGA.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                chkRestoreSEGA.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+                btnApplyChanges.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+            Else
+                RegKey.SetValue(Of String)(RegKey.ChecksVisible, "True")
+            End If
+
+
+            If RegKey.GetValue(Of String)(RegKey.PSO2DirVisible) <> "" Then
+                FrmOptions.CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
+                lblDirectory.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
+                lblDirectoryLabel.Visible = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
+            Else
+                RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, "True")
+            End If
+
+
             Show()
+            btnENPatch.RaiseClick()
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
         Catch ex As Exception
@@ -484,6 +517,8 @@ Public Class FrmMain
                     Helper.WriteDebugInfo(Resources.strDownloadingUpdate)
                     DownloadFile(Program.FreedomUrl & "PSO2%20Tweaker%20Updater.exe", "PSO2 Tweaker Updater.exe")
                     Process.Start(Environment.CurrentDirectory & "\PSO2 Tweaker Updater.exe")
+                    Threading.Thread.Sleep(30000)
+                    Helper.WriteDebugInfoAndFailed("Update seems to have failed... ")
                     Application.DoEvents()
                     Return
                 End If
@@ -3130,6 +3165,7 @@ Public Class FrmMain
                 MsgBox("ERROR: Files have been modified since download. Aborting...")
                 Exit Sub
             End If
+
             Process.Start(processStartInfo).WaitForExit()
             Helper.DeleteFile("pso2.stripped.db")
             Helper.DeleteFile("pso2-transam.exe")
@@ -3487,6 +3523,13 @@ Public Class FrmMain
     End Sub
 
     Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
+
+    End Sub
+
+    Private Sub PBMainBar_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
+    End Sub
+
+    Private Sub WarningBox1_OptionsClick(sender As Object, e As EventArgs)
 
     End Sub
 End Class

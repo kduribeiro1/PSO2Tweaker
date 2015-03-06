@@ -60,6 +60,9 @@ Public Class FrmOptions
             CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SteamMode))
             chkUseIcsHost.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseIcsHost))
 
+            CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
+            CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
+
             chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
             CMBStyle.Text = RegKey.GetValue(Of String)(RegKey.Style)
 
@@ -84,7 +87,7 @@ Public Class FrmOptions
         If value <> "" Then MsgBox("Selected value changed to: " & value)
     End Sub
 
-    Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+    Private Sub frmOptions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         SetLocale()
         CMBStyle.SelectedIndex = -1
     End Sub
@@ -232,6 +235,8 @@ Public Class FrmOptions
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         chkUseIcsHost.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
+        CheckBoxX3.TextColor = ColorPickerButton2.SelectedColor
+        CheckBoxX4.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
@@ -295,11 +300,68 @@ Public Class FrmOptions
         OpenFileDialog1.Title = "Select a picture"
         OpenFileDialog1.FileName = ""
         OpenFileDialog1.Filter = "All Files (*.*) |*.*"
-        If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Return
+        If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then
+            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ImageLocation)) Then
+                Dim RemoveYesNo As MsgBoxResult = MsgBox("Would you like to remove the current picture?", MsgBoxStyle.YesNo)
+                If RemoveYesNo = MsgBoxResult.Yes Then
+                    FrmMain.BackgroundImage = Nothing
+                    RegKey.SetValue(Of String)(RegKey.ImageLocation, "")
+                    Exit Sub
+                End If
+                If RemoveYesNo = MsgBoxResult.No Then Return
+            End If
 
+        End If
         FrmMain.BackgroundImage = System.Drawing.Image.FromFile(OpenFileDialog1.FileName)
 
         RegKey.SetValue(Of String)(RegKey.ImageLocation, OpenFileDialog1.FileName)
 
+    End Sub
+
+    Private Sub btnChooseOrb_Click(sender As Object, e As EventArgs) Handles btnChooseOrb.Click
+        OpenFileDialog1.Title = "Select a picture"
+        OpenFileDialog1.FileName = ""
+        OpenFileDialog1.Filter = "All Files (*.*) |*.*"
+        If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then
+            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ORBLocation)) Then
+                Dim RemoveYesNo As MsgBoxResult = MsgBox("Would you like to remove the current picture?", MsgBoxStyle.YesNo)
+                If RemoveYesNo = MsgBoxResult.Yes Then
+                    FrmMain.Office2007StartButton1.Image = Nothing
+                    RegKey.SetValue(Of String)(RegKey.ORBLocation, "")
+                    Exit Sub
+                End If
+                If RemoveYesNo = MsgBoxResult.No Then Return
+            End If
+        End If
+        Dim bmp As New Bitmap(OpenFileDialog1.FileName)
+        If bmp.Width > 50 Or bmp.Height > 50 Then
+            MsgBox("Picture must be 50 x 50 or less!")
+            Exit Sub
+        End If
+        FrmMain.Office2007StartButton1.Image = System.Drawing.Image.FromFile(OpenFileDialog1.FileName)
+
+        RegKey.SetValue(Of String)(RegKey.ORBLocation, OpenFileDialog1.FileName)
+    End Sub
+
+    Private Sub CheckBoxX3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX3.CheckedChanged
+        FrmMain.chkRemoveCensor.Visible = CheckBoxX3.Checked
+        FrmMain.chkRestoreCensor.Visible = CheckBoxX3.Checked
+        FrmMain.chkRemovePC.Visible = CheckBoxX3.Checked
+        FrmMain.chkRestorePC.Visible = CheckBoxX3.Checked
+        FrmMain.chkRemoveVita.Visible = CheckBoxX3.Checked
+        FrmMain.chkRestoreVita.Visible = CheckBoxX3.Checked
+        FrmMain.chkRemoveNVidia.Visible = CheckBoxX3.Checked
+        FrmMain.chkRestoreNVidia.Visible = CheckBoxX3.Checked
+        FrmMain.chkRemoveSEGA.Visible = CheckBoxX3.Checked
+        FrmMain.chkRestoreSEGA.Visible = CheckBoxX3.Checked
+        FrmMain.btnApplyChanges.Visible = CheckBoxX3.Checked
+        RegKey.SetValue(Of String)(RegKey.ChecksVisible, CheckBoxX3.Checked.ToString)
+        '254, 219 - Default location for launch PSO2
+    End Sub
+
+    Private Sub CheckBoxX4_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX4.CheckedChanged
+        FrmMain.lblDirectory.Visible = CheckBoxX4.Checked
+        FrmMain.lblDirectoryLabel.Visible = CheckBoxX4.Checked
+        RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, CheckBoxX4.Checked.ToString)
     End Sub
 End Class

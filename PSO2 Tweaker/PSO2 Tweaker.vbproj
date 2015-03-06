@@ -148,6 +148,11 @@
     <Compile Include="External.vb" />
     <Compile Include="Languages.vb" />
     <Compile Include="Md5Provider.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="MyWebClient.vb" />
     <Compile Include="My\ApplicationEvents.vb" />
     <Compile Include="My\Program.vb">
@@ -237,11 +242,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalStrings.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>

@@ -42,6 +42,10 @@ Public Class RegKey
     Public Const UseItemTranslation = "UseItemTranslation"
     Public Const SteamMode = "SteamMode"
     Public Const ImageLocation = "ImageLocation"
+    Public Const ORBLocation = "ORBLocation"
+    Public Const ChecksVisible = "ChecksVisible"
+    Public Const PSO2DirVisible = "PSO2DirVisible"
+    Public Const StatusLabelColor = "StatusLabelColor"
 
     Private Shared ReadOnly RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared ReadOnly RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)

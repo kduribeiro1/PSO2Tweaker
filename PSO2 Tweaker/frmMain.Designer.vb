@@ -120,7 +120,6 @@ Partial Class FrmMain
         Me.btnPSO2Options = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
         Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
-        Me.lblORBLabel = New DevComponents.DotNetBar.LabelItem()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
@@ -181,15 +180,33 @@ Partial Class FrmMain
         '
         'PBMainBar
         '
-        '
-        '
-        '
-        Me.PBMainBar.BackgroundStyle.Class = ""
-        Me.PBMainBar.ChunkColor2 = System.Drawing.Color.Red
+        Me.PBMainBar.BackColor = System.Drawing.Color.Transparent
         resources.ApplyResources(Me.PBMainBar, "PBMainBar")
+        '
+        '
+        '
+        Me.PBMainBar.BackgroundStyle.BackColor = System.Drawing.Color.FromArgb(CType(CType(127, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.PBMainBar.BackgroundStyle.BackColor2 = System.Drawing.Color.FromArgb(CType(CType(127, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.PBMainBar.BackgroundStyle.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid
+        Me.PBMainBar.BackgroundStyle.BorderBottomWidth = 1
+        Me.PBMainBar.BackgroundStyle.BorderColor = System.Drawing.Color.White
+        Me.PBMainBar.BackgroundStyle.BorderColorLightSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionBackground2
+        Me.PBMainBar.BackgroundStyle.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid
+        Me.PBMainBar.BackgroundStyle.BorderLeftWidth = 1
+        Me.PBMainBar.BackgroundStyle.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid
+        Me.PBMainBar.BackgroundStyle.BorderRightWidth = 1
+        Me.PBMainBar.BackgroundStyle.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid
+        Me.PBMainBar.BackgroundStyle.BorderTopWidth = 1
+        Me.PBMainBar.BackgroundStyle.Class = ""
+        Me.PBMainBar.BackgroundStyle.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionText
+        Me.PBMainBar.ChunkColor = System.Drawing.Color.Red
+        Me.PBMainBar.ChunkColor2 = System.Drawing.Color.Blue
+        Me.PBMainBar.ChunkGradientAngle = 200
         Me.PBMainBar.Name = "PBMainBar"
+        Me.PBMainBar.Style = DevComponents.DotNetBar.eDotNetBarStyle.Office2000
         Me.PBMainBar.TabStop = False
         Me.PBMainBar.TextVisible = True
+        Me.PBMainBar.Value = 100
         '
         'chkRemoveNVidia
         '
@@ -340,7 +357,7 @@ Partial Class FrmMain
         resources.ApplyResources(Me.RibbonControl1, "RibbonControl1")
         Me.RibbonControl1.KeyTipsFont = New System.Drawing.Font("Tahoma", 7.0!)
         Me.RibbonControl1.Name = "RibbonControl1"
-        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1, Me.lblORBLabel})
+        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1})
         Me.RibbonControl1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.RibbonControl1.TabGroupHeight = 14
         '
@@ -758,11 +775,6 @@ Partial Class FrmMain
         Me.btnExit.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnExit, "btnExit")
         '
-        'lblORBLabel
-        '
-        Me.lblORBLabel.Name = "lblORBLabel"
-        resources.ApplyResources(Me.lblORBLabel, "lblORBLabel")
-        '
         'btnAnnouncements
         '
         Me.btnAnnouncements.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
@@ -882,7 +894,6 @@ Partial Class FrmMain
     Friend WithEvents btnExit As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnPSO2Options As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnAnnouncements As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents lblORBLabel As DevComponents.DotNetBar.LabelItem
     Friend WithEvents WebBrowser4 As System.Windows.Forms.WebBrowser
     Friend WithEvents txtPSO2DefaultINI As System.Windows.Forms.TextBox
     Friend WithEvents tsmRestartDownload As System.Windows.Forms.ToolStripMenuItem
