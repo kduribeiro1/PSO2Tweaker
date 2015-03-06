@@ -364,12 +364,6 @@ Public Class FrmMain
             'Check for EN Story Patch
             Helper.WriteDebugInfo(Resources.strCheckingforUpdatestopatches)
 
-            'Check for Story Patches (Done! :D)
-            Application.DoEvents()
-            CheckForStoryUpdates()
-            Helper.WriteDebugInfo(Resources.strCurrentStoryPatchis & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion))
-            Application.DoEvents()
-
             'Check for English Patches (Done! :D)
             CheckForEnPatchUpdates()
             Helper.WriteDebugInfo(Resources.strCurrentENPatchis & RegKey.GetValue(Of String)(RegKey.EnPatchVersion))
@@ -380,7 +374,14 @@ Public Class FrmMain
             Helper.WriteDebugInfo(Resources.strCurrentLargeFilesis & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion))
             Application.DoEvents()
 
-            Helper.WriteDebugInfo(Resources.strIfAboveVersions)
+            'Check for Story Patches (Done! :D)
+            Application.DoEvents()
+            CheckForStoryUpdates()
+            Helper.WriteDebugInfo(Resources.strCurrentStoryPatchis & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion))
+            Application.DoEvents()
+
+
+            '            Helper.WriteDebugInfo(Resources.strIfAboveVersions)
 
             If Program.WayuIsAFailure Then
                 Helper.WriteDebugInfo("Skipping downloads for Wayu!")
@@ -813,14 +814,16 @@ Public Class FrmMain
     Private Sub CheckForLargeFilesUpdates()
         Try
             If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) = "Not Installed" Then Return
+
             Application.DoEvents()
-            Dim lastfilename As String() = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefiles.txt").Split("/"c)
-            Dim strVersion As String = lastfilename(lastfilename.Length - 1).Replace(".rar", "")
+
+            Dim strVersion As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt").Replace("-", "/")
+
             RegKey.SetValue(Of String)(RegKey.NewLargeFilesVersion, strVersion)
 
             If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) <> strVersion Then
-                If MsgBox(Resources.strNewLargeFiles, vbYesNo) = vbYes Then
-                    DownloadLargeFiles()
+                If MsgBox("An update for the Large Files is available. Would you like to install it via TRANSAM?", vbYesNo) = vbYes Then
+                    btnLargeFilesTRANSAM.RaiseClick()
                 End If
             End If
         Catch ex As Exception
@@ -3394,5 +3397,69 @@ Public Class FrmMain
     Private Sub btnLargeFilesTRANSAM_Click(sender As Object, e As EventArgs) Handles btnLargeFilesTRANSAM.Click
         'Install Large Files with TRANSAM to cut down on net costs for Agrajag and friends.
         'Need to speak with Agrajag and get some files before I can do this, though.
+        Try
+            If IsPso2WinDirMissing() Then Return
+
+            ' Create a match using regular exp<b></b>ressions
+            ' Spit out the value plucked from the code
+            Dim LFDate As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt")
+
+            Helper.WriteDebugInfoAndOk("Downloading Large Files info... ")
+            DownloadFile(Program.FreedomUrl & "patches/lf.stripped.db.7z", "lf.stripped.db.7z")
+            Dim processStartInfo2 As New ProcessStartInfo With
+            {
+                .FileName = (Program.StartPath & "\7za.exe"),
+                .Verb = "runas",
+                .Arguments = ("e -y lf.stripped.db.7z"),
+                .WindowStyle = ProcessWindowStyle.Hidden,
+            .UseShellExecute = True
+            }
+            Process.Start(processStartInfo2).WaitForExit()
+            Dim DBMD5 As String = Helper.GetMd5("lf.stripped.db")
+            Helper.WriteDebugInfoAndOk("Downloading Trans-Am tool... ")
+            DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe")
+
+            'execute pso2-transam stuff with -b flag for backup
+            Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
+            'If Directory.Exists(backupdir) Then
+            'Dim counter = Computer.FileSystem.GetFiles(backupdir)
+            'If counter.Count > 0 Then
+            processStartInfo.Arguments = ("-t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+            Clipboard.SetText(processStartInfo.Arguments)
+            'Else
+            'Helper.Log("[TRANSAM] Creating backup directory")
+            'Directory.CreateDirectory(backupdir)
+            'Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+            'processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+            'End If
+            'End If
+
+            'We don't need to make backups anymore
+            'If Not Directory.Exists(backupdir) Then
+            ' Helper.Log("[TRANSAM] Creating backup directory")
+            ' Directory.CreateDirectory(backupdir)
+            ' Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+            ' processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+            ' End If
+
+            processStartInfo.UseShellExecute = False
+            Helper.Log("[TRANSAM] Starting shitstorm")
+            processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
+            Helper.Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
+            Helper.Log("[TRANSAM] Program started")
+            If Helper.GetMd5("lf.stripped.db") <> DBMD5 Then
+                MsgBox("ERROR: Files have been modified since download. Aborting...")
+                Exit Sub
+            End If
+            Process.Start(processStartInfo).WaitForExit()
+            Helper.DeleteFile("lf.stripped.db")
+            Helper.DeleteFile("pso2-transam.exe")
+            External.FlashWindow(Handle, True)
+            'Story Patch 3-12-2014.rar
+            RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, LFDate.Replace("-", "/"))
+            Helper.WriteDebugInfo("Large Files Patch installed!")
+        Catch ex As Exception
+            MsgBox("ERROR - " & ex.Message.ToString)
+        End Try
     End Sub
 End Class

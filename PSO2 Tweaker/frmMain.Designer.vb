@@ -1,4 +1,6 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports PSO2_Tweaker.My
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class FrmMain
     Inherits DevComponents.DotNetBar.Office2007Form
 
@@ -57,12 +59,12 @@ Partial Class FrmMain
         Me.ButtonInstall = New DevComponents.DotNetBar.ButtonItem()
         Me.btnENPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnLargeFilesTRANSAM = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStoryPatchNew = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnLargeFilesTRANSAM = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreBackups = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreENBackup = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreLargeFilesBackup = New DevComponents.DotNetBar.ButtonItem()
@@ -125,7 +127,7 @@ Partial Class FrmMain
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
         Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
         Me.txtFiles = New System.Windows.Forms.TextBox()
-        Me.DLS = New PSO2_Tweaker.MyWebClient()
+        Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -430,6 +432,12 @@ Partial Class FrmMain
         '
         Me.btnLargeFiles.Name = "btnLargeFiles"
         resources.ApplyResources(Me.btnLargeFiles, "btnLargeFiles")
+        Me.btnLargeFiles.Visible = False
+        '
+        'btnLargeFilesTRANSAM
+        '
+        Me.btnLargeFilesTRANSAM.Name = "btnLargeFilesTRANSAM"
+        resources.ApplyResources(Me.btnLargeFilesTRANSAM, "btnLargeFilesTRANSAM")
         '
         'btnStoryPatchNew
         '
@@ -456,12 +464,6 @@ Partial Class FrmMain
         Me.btnInstallSpanishPatch.Name = "btnInstallSpanishPatch"
         resources.ApplyResources(Me.btnInstallSpanishPatch, "btnInstallSpanishPatch")
         Me.btnInstallSpanishPatch.Visible = False
-        '
-        'btnLargeFilesTRANSAM
-        '
-        Me.btnLargeFilesTRANSAM.Name = "btnLargeFilesTRANSAM"
-        resources.ApplyResources(Me.btnLargeFilesTRANSAM, "btnLargeFilesTRANSAM")
-        Me.btnLargeFilesTRANSAM.Visible = False
         '
         'btnRestoreBackups
         '
@@ -961,7 +963,7 @@ Partial Class FrmMain
     Friend WithEvents btnStoryPatchNew As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents DLS As PSO2_Tweaker.MyWebClient
+    Friend WithEvents DLS As MyWebClient
     Friend WithEvents tmrWaitingforPSO2 As System.Windows.Forms.Timer
     Friend WithEvents txtFiles As System.Windows.Forms.TextBox
     Friend WithEvents btnLargeFilesTRANSAM As DevComponents.DotNetBar.ButtonItem

@@ -148,8 +148,11 @@
     <Compile Include="External.vb" />
     <Compile Include="Languages.vb" />
     <Compile Include="Md5Provider.vb" />
+    <Compile Include="MyWebClient.vb" />
     <Compile Include="My\ApplicationEvents.vb" />
-    <Compile Include="My\Program.vb" />
+    <Compile Include="My\Program.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My\Settings.vb" />
     <Compile Include="RegKey.vb" />
     <Compile Include="FrmDiagnostic.Designer.vb">
@@ -244,9 +247,6 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="MyWebClient.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Pso2ProxyInfo.vb" />
   </ItemGroup>

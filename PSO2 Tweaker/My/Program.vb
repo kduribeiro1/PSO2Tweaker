@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Security.Principal
 Imports System.Threading
+Imports System.Net
 
 Namespace My
     Public Class Program
@@ -293,5 +294,31 @@ Namespace My
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             End Try
         End Sub
+    End Class
+    Public Class MyWebClient
+        Inherits WebClient
+
+        Private _timeout As Integer
+
+        Public Property Timeout As Integer
+            Get
+                Timeout = _timeout
+            End Get
+
+            Set(ByVal value As Integer)
+                _timeout = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Timeout = 60000
+        End Sub
+
+        Protected Overrides Function GetWebRequest(ByVal address As Uri) As WebRequest
+            Dim result = MyBase.GetWebRequest(address)
+            result.Timeout = _timeout
+            Return result
+        End Function
+
     End Class
 End Namespace
