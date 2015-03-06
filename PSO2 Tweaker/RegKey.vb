@@ -41,6 +41,7 @@ Public Class RegKey
     Public Const UseIcsHost = "UseItemICSHost"
     Public Const UseItemTranslation = "UseItemTranslation"
     Public Const SteamMode = "SteamMode"
+    Public Const ImageLocation = ""
 
     Private Shared ReadOnly RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared ReadOnly RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)

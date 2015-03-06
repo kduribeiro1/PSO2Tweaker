@@ -52,7 +52,6 @@ Partial Class FrmOptions
         Me.ComboItem38 = New DevComponents.Editors.ComboItem()
         Me.ComboItem39 = New DevComponents.Editors.ComboItem()
         Me.LabelX7 = New DevComponents.DotNetBar.LabelX()
-        Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.cmbStoryOverride = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem31 = New DevComponents.Editors.ComboItem()
         Me.ComboItem32 = New DevComponents.Editors.ComboItem()
@@ -73,7 +72,6 @@ Partial Class FrmOptions
         Me.ColorPickerButton3 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.LabelX12 = New DevComponents.DotNetBar.LabelX()
         Me.ColorPickerButton4 = New DevComponents.DotNetBar.ColorPickerButton()
-        Me.CheckBoxX5 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkAutoRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.LabelX14 = New DevComponents.DotNetBar.LabelX()
         Me.cmbPredownload = New DevComponents.DotNetBar.Controls.ComboBoxEx()
@@ -81,6 +79,9 @@ Partial Class FrmOptions
         Me.ComboItem17 = New DevComponents.Editors.ComboItem()
         Me.CheckBoxX2 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkUseIcsHost = New DevComponents.DotNetBar.Controls.CheckBoxX()
+        Me.ButtonX2 = New DevComponents.DotNetBar.ButtonX()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -272,14 +273,6 @@ Partial Class FrmOptions
         Me.LabelX7.BackgroundStyle.Class = ""
         Me.LabelX7.Name = "LabelX7"
         '
-        'ButtonX1
-        '
-        Me.ButtonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX1, "ButtonX1")
-        Me.ButtonX1.Name = "ButtonX1"
-        Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
         'cmbStoryOverride
         '
         Me.cmbStoryOverride.DisplayMember = "Text"
@@ -386,12 +379,12 @@ Partial Class FrmOptions
         '
         'LabelX11
         '
-        resources.ApplyResources(Me.LabelX11, "LabelX11")
         Me.LabelX11.BackColor = System.Drawing.Color.Transparent
         '
         '
         '
         Me.LabelX11.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.LabelX11, "LabelX11")
         Me.LabelX11.Name = "LabelX11"
         '
         'ColorPickerButton3
@@ -423,17 +416,6 @@ Partial Class FrmOptions
         Me.ColorPickerButton4.Name = "ColorPickerButton4"
         Me.ColorPickerButton4.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
         Me.ColorPickerButton4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'CheckBoxX5
-        '
-        Me.CheckBoxX5.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.CheckBoxX5.BackgroundStyle.Class = ""
-        resources.ApplyResources(Me.CheckBoxX5, "CheckBoxX5")
-        Me.CheckBoxX5.Name = "CheckBoxX5"
-        Me.CheckBoxX5.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkAutoRemoveCensor
         '
@@ -495,17 +477,37 @@ Partial Class FrmOptions
         Me.chkUseIcsHost.Name = "chkUseIcsHost"
         Me.chkUseIcsHost.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
+        'ButtonX2
+        '
+        Me.ButtonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ButtonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        resources.ApplyResources(Me.ButtonX2, "ButtonX2")
+        Me.ButtonX2.Name = "ButtonX2"
+        Me.ButtonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {resources.GetString("ComboBox1.Items"), resources.GetString("ComboBox1.Items1"), resources.GetString("ComboBox1.Items2"), resources.GetString("ComboBox1.Items3"), resources.GetString("ComboBox1.Items4")})
+        resources.ApplyResources(Me.ComboBox1, "ComboBox1")
+        Me.ComboBox1.Name = "ComboBox1"
+        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.ButtonX2)
         Me.Controls.Add(Me.chkUseIcsHost)
         Me.Controls.Add(Me.chkAutoRemoveCensor)
         Me.Controls.Add(Me.CheckBoxX1)
         Me.Controls.Add(Me.CheckBoxX2)
         Me.Controls.Add(Me.LabelX14)
         Me.Controls.Add(Me.cmbPredownload)
-        Me.Controls.Add(Me.CheckBoxX5)
         Me.Controls.Add(Me.LabelX11)
         Me.Controls.Add(Me.ColorPickerButton3)
         Me.Controls.Add(Me.LabelX12)
@@ -517,7 +519,6 @@ Partial Class FrmOptions
         Me.Controls.Add(Me.LabelX9)
         Me.Controls.Add(Me.cmbStoryOverride)
         Me.Controls.Add(Me.LabelX8)
-        Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.cmbBackupPreference)
         Me.Controls.Add(Me.LabelX7)
         Me.Controls.Add(Me.LabelX6)
@@ -570,7 +571,6 @@ Partial Class FrmOptions
     Friend WithEvents ComboItem38 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem39 As DevComponents.Editors.ComboItem
     Friend WithEvents LabelX7 As DevComponents.DotNetBar.LabelX
-    Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents cmbStoryOverride As DevComponents.DotNetBar.Controls.ComboBoxEx
     Friend WithEvents ComboItem31 As DevComponents.Editors.ComboItem
     Friend WithEvents ComboItem32 As DevComponents.Editors.ComboItem
@@ -591,7 +591,6 @@ Partial Class FrmOptions
     Friend WithEvents ColorPickerButton3 As DevComponents.DotNetBar.ColorPickerButton
     Friend WithEvents LabelX12 As DevComponents.DotNetBar.LabelX
     Friend WithEvents ColorPickerButton4 As DevComponents.DotNetBar.ColorPickerButton
-    Friend WithEvents CheckBoxX5 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkAutoRemoveCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents ComboItem14 As DevComponents.Editors.ComboItem
     Friend WithEvents LabelX14 As DevComponents.DotNetBar.LabelX
@@ -600,4 +599,7 @@ Partial Class FrmOptions
     Friend WithEvents ComboItem17 As DevComponents.Editors.ComboItem
     Friend WithEvents CheckBoxX2 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkUseIcsHost As DevComponents.DotNetBar.Controls.CheckBoxX
+    Friend WithEvents ButtonX2 As DevComponents.DotNetBar.ButtonX
+    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
 End Class

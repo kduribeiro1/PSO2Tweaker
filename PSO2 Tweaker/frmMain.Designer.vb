@@ -250,11 +250,14 @@ Partial Class FrmMain
         'lblStatus
         '
         Me.lblStatus.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.lblStatus.BackgroundStyle.Class = ""
         resources.ApplyResources(Me.lblStatus, "lblStatus")
+        '
+        '
+        '
+        Me.lblStatus.BackgroundStyle.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionInactiveBackground
+        Me.lblStatus.BackgroundStyle.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionInactiveBackground
+        Me.lblStatus.BackgroundStyle.BackgroundImageAlpha = CType(0, Byte)
+        Me.lblStatus.BackgroundStyle.Class = ""
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.TextAlignment = System.Drawing.StringAlignment.Center
         '
@@ -829,6 +832,7 @@ Partial Class FrmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.Controls.Add(Me.txtFiles)
         Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
@@ -836,7 +840,6 @@ Partial Class FrmMain
         Me.Controls.Add(Me.WebBrowser4)
         Me.Controls.Add(Me.btnAnnouncements)
         Me.Controls.Add(Me.btnLaunchPSO2)
-        Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.lblDirectory)
         Me.Controls.Add(Me.chkRestoreSEGA)
         Me.Controls.Add(Me.chkRestoreNVidia)
@@ -852,6 +855,7 @@ Partial Class FrmMain
         Me.Controls.Add(Me.rtbDebug)
         Me.Controls.Add(Me.txtHTML)
         Me.Controls.Add(Me.chkSwapOP)
+        Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.RibbonControl1)
         Me.DoubleBuffered = True
         Me.EnableGlass = False

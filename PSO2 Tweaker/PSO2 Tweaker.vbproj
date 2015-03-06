@@ -359,6 +359,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\134867 - artist krazy_chibi Gurren_Lagann Kamina tengen_toppa_gurren_lagann ttgl.jpg" />
     <None Include="ddraw.dll" />
     <Content Include="pso2 icon 512.ico" />
   </ItemGroup>

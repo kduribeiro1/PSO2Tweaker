@@ -12,7 +12,6 @@ Public Class FrmOptions
     Private Sub frmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             SuspendLayout()
-            CheckBoxX5.Visible = False
             If (RegKey.GetValue(Of Integer)(RegKey.Color)) <> 0 Then ColorPickerButton1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.Color))
             If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor))
@@ -58,7 +57,6 @@ Public Class FrmOptions
             LabelX2.Text = Resources.strChooseALanguage
 
             CheckBoxX1.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin))
-            CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SidebarEnabled))
             CheckBoxX2.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.SteamMode))
             chkUseIcsHost.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseIcsHost))
 
@@ -119,7 +117,7 @@ Public Class FrmOptions
         End Select
     End Function
 
-    Private Shared Sub ButtonX1_Click(sender As Object, e As EventArgs) Handles ButtonX1.Click
+    Private Shared Sub ButtonX1_Click(sender As Object, e As EventArgs)
         Process.Start("http://arks-layer.com/credits.php")
     End Sub
 
@@ -138,10 +136,6 @@ Public Class FrmOptions
     Private Sub ColorPickerButton4_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton4.SelectedColorChanged
         Program.MainForm.rtbDebug.BackColor = ColorPickerButton4.SelectedColor
         RegKey.SetValue(Of Integer)(RegKey.TextBoxBgColor, (ColorPickerButton4.SelectedColor.ToArgb))
-    End Sub
-
-    Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
-        RegKey.SetValue(Of Boolean)(RegKey.SidebarEnabled, CheckBoxX5.Checked)
     End Sub
 
     Private Sub chkAutoRemoveCensor_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoRemoveCensor.CheckedChanged
@@ -235,7 +229,6 @@ Public Class FrmOptions
         FrmPso2Options.TabItem7.TextColor = ColorPickerButton2.SelectedColor
         ForeColor = ColorPickerButton2.SelectedColor
         CheckBoxX1.TextColor = ColorPickerButton2.SelectedColor
-        CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         chkAutoRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         chkUseIcsHost.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
@@ -295,5 +288,25 @@ Public Class FrmOptions
 
     Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
         RegKey.SetValue(Of String)(RegKey.SteamMode, CheckBoxX2.Checked.ToString)
+    End Sub
+
+    Private Sub ButtonX2_Click(sender As Object, e As EventArgs) Handles ButtonX2.Click
+        OpenFileDialog1.Title = "Select a picture"
+        OpenFileDialog1.FileName = ""
+        OpenFileDialog1.Filter = "All Files (*.*) |*.*"
+        If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Return
+
+        FrmMain.BackgroundImage = System.Drawing.Image.FromFile(OpenFileDialog1.FileName)
+
+        RegKey.SetValue(Of String)(RegKey.ImageLocation, OpenFileDialog1.FileName)
+
+    End Sub
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        If ComboBox1.SelectedIndex = 0 Then FrmMain.BackgroundImageLayout = ImageLayout.None
+        If ComboBox1.SelectedIndex = 1 Then FrmMain.BackgroundImageLayout = ImageLayout.Center
+        If ComboBox1.SelectedIndex = 2 Then FrmMain.BackgroundImageLayout = ImageLayout.Stretch
+        If ComboBox1.SelectedIndex = 3 Then FrmMain.BackgroundImageLayout = ImageLayout.Tile
+        If ComboBox1.SelectedIndex = 4 Then FrmMain.BackgroundImageLayout = ImageLayout.Zoom
     End Sub
 End Class

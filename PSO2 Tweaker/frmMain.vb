@@ -112,6 +112,8 @@ Public Class FrmMain
                     StyleManager.Style = eStyle.Office2007Black
             End Select
 
+
+
             Dim regValue As Integer
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor)
@@ -253,6 +255,9 @@ Public Class FrmMain
             TopMost = Program.IsMainFormTopMost
             chkAlwaysOnTop.Checked = Program.IsMainFormTopMost
             _cancelledFull = False
+            If RegKey.GetValue(Of String)(RegKey.ImageLocation) <> "" Then
+                If File.Exists(RegKey.GetValue(Of String)(RegKey.ImageLocation)) Then Me.BackgroundImage = System.Drawing.Image.FromFile(OpenFileDialog1.FileName)
+            End If
             Show()
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
@@ -3461,5 +3466,9 @@ Public Class FrmMain
         Catch ex As Exception
             MsgBox("ERROR - " & ex.Message.ToString)
         End Try
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs)
+
     End Sub
 End Class
