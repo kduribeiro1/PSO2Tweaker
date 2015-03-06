@@ -41,12 +41,10 @@ Partial Class FrmOptions
         Me.ComboItem8 = New DevComponents.Editors.ComboItem()
         Me.ComboItem14 = New DevComponents.Editors.ComboItem()
         Me.LabelX2 = New DevComponents.DotNetBar.LabelX()
-        Me.ColorPickerButton1 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
         Me.CheckBoxX1 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
         Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
-        Me.ColorPickerButton2 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.cmbBackupPreference = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem37 = New DevComponents.Editors.ComboItem()
         Me.ComboItem38 = New DevComponents.Editors.ComboItem()
@@ -69,9 +67,7 @@ Partial Class FrmOptions
         Me.LabelX10 = New DevComponents.DotNetBar.LabelX()
         Me.btnPSO2Override = New DevComponents.DotNetBar.ButtonX()
         Me.LabelX11 = New DevComponents.DotNetBar.LabelX()
-        Me.ColorPickerButton3 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.LabelX12 = New DevComponents.DotNetBar.LabelX()
-        Me.ColorPickerButton4 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.chkAutoRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.LabelX14 = New DevComponents.DotNetBar.LabelX()
         Me.cmbPredownload = New DevComponents.DotNetBar.Controls.ComboBoxEx()
@@ -81,7 +77,10 @@ Partial Class FrmOptions
         Me.chkUseIcsHost = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.ButtonX2 = New DevComponents.DotNetBar.ButtonX()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.ColorPickerButton1 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.ColorPickerButton2 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.ColorPickerButton3 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.ColorPickerButton4 = New DevComponents.DotNetBar.ColorPickerButton()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -180,16 +179,6 @@ Partial Class FrmOptions
         Me.LabelX2.BackgroundStyle.Class = ""
         Me.LabelX2.Name = "LabelX2"
         '
-        'ColorPickerButton1
-        '
-        Me.ColorPickerButton1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ColorPickerButton1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.ColorPickerButton1.Image = CType(resources.GetObject("ColorPickerButton1.Image"), System.Drawing.Image)
-        resources.ApplyResources(Me.ColorPickerButton1, "ColorPickerButton1")
-        Me.ColorPickerButton1.Name = "ColorPickerButton1"
-        Me.ColorPickerButton1.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
-        Me.ColorPickerButton1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
         'LabelX4
         '
         resources.ApplyResources(Me.LabelX4, "LabelX4")
@@ -230,16 +219,6 @@ Partial Class FrmOptions
         '
         Me.LabelX6.BackgroundStyle.Class = ""
         Me.LabelX6.Name = "LabelX6"
-        '
-        'ColorPickerButton2
-        '
-        Me.ColorPickerButton2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ColorPickerButton2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.ColorPickerButton2.Image = CType(resources.GetObject("ColorPickerButton2.Image"), System.Drawing.Image)
-        resources.ApplyResources(Me.ColorPickerButton2, "ColorPickerButton2")
-        Me.ColorPickerButton2.Name = "ColorPickerButton2"
-        Me.ColorPickerButton2.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
-        Me.ColorPickerButton2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'cmbBackupPreference
         '
@@ -387,16 +366,6 @@ Partial Class FrmOptions
         resources.ApplyResources(Me.LabelX11, "LabelX11")
         Me.LabelX11.Name = "LabelX11"
         '
-        'ColorPickerButton3
-        '
-        Me.ColorPickerButton3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ColorPickerButton3.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.ColorPickerButton3.Image = CType(resources.GetObject("ColorPickerButton3.Image"), System.Drawing.Image)
-        resources.ApplyResources(Me.ColorPickerButton3, "ColorPickerButton3")
-        Me.ColorPickerButton3.Name = "ColorPickerButton3"
-        Me.ColorPickerButton3.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
-        Me.ColorPickerButton3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
         'LabelX12
         '
         resources.ApplyResources(Me.LabelX12, "LabelX12")
@@ -406,16 +375,6 @@ Partial Class FrmOptions
         '
         Me.LabelX12.BackgroundStyle.Class = ""
         Me.LabelX12.Name = "LabelX12"
-        '
-        'ColorPickerButton4
-        '
-        Me.ColorPickerButton4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ColorPickerButton4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.ColorPickerButton4.Image = CType(resources.GetObject("ColorPickerButton4.Image"), System.Drawing.Image)
-        resources.ApplyResources(Me.ColorPickerButton4, "ColorPickerButton4")
-        Me.ColorPickerButton4.Name = "ColorPickerButton4"
-        Me.ColorPickerButton4.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
-        Me.ColorPickerButton4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkAutoRemoveCensor
         '
@@ -489,18 +448,50 @@ Partial Class FrmOptions
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'ComboBox1
+        'ColorPickerButton1
         '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {resources.GetString("ComboBox1.Items"), resources.GetString("ComboBox1.Items1"), resources.GetString("ComboBox1.Items2"), resources.GetString("ComboBox1.Items3"), resources.GetString("ComboBox1.Items4")})
-        resources.ApplyResources(Me.ComboBox1, "ComboBox1")
-        Me.ComboBox1.Name = "ComboBox1"
+        Me.ColorPickerButton1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ColorPickerButton1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.ColorPickerButton1.Image = CType(resources.GetObject("ColorPickerButton1.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.ColorPickerButton1, "ColorPickerButton1")
+        Me.ColorPickerButton1.Name = "ColorPickerButton1"
+        Me.ColorPickerButton1.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.ColorPickerButton1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'ColorPickerButton2
+        '
+        Me.ColorPickerButton2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ColorPickerButton2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.ColorPickerButton2.Image = CType(resources.GetObject("ColorPickerButton2.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.ColorPickerButton2, "ColorPickerButton2")
+        Me.ColorPickerButton2.Name = "ColorPickerButton2"
+        Me.ColorPickerButton2.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.ColorPickerButton2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'ColorPickerButton3
+        '
+        Me.ColorPickerButton3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ColorPickerButton3.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.ColorPickerButton3.Image = CType(resources.GetObject("ColorPickerButton3.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.ColorPickerButton3, "ColorPickerButton3")
+        Me.ColorPickerButton3.Name = "ColorPickerButton3"
+        Me.ColorPickerButton3.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.ColorPickerButton3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'ColorPickerButton4
+        '
+        Me.ColorPickerButton4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ColorPickerButton4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.ColorPickerButton4.Image = CType(resources.GetObject("ColorPickerButton4.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.ColorPickerButton4, "ColorPickerButton4")
+        Me.ColorPickerButton4.Name = "ColorPickerButton4"
+        Me.ColorPickerButton4.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.ColorPickerButton4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.ButtonX2)
         Me.Controls.Add(Me.chkUseIcsHost)
         Me.Controls.Add(Me.chkAutoRemoveCensor)
@@ -601,5 +592,4 @@ Partial Class FrmOptions
     Friend WithEvents chkUseIcsHost As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents ButtonX2 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
 End Class

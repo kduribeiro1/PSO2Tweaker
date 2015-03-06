@@ -243,6 +243,7 @@ Public Class FrmOptions
         Program.MainForm.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRestoreVita.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkSwapOP.TextColor = ColorPickerButton2.SelectedColor
+        Program.MainForm.lblStatus.ForeColor = ColorPickerButton2.SelectedColor
 
         RegKey.SetValue(Of Integer)(RegKey.FontColor, (ColorPickerButton2.SelectedColor.ToArgb))
     End Sub
@@ -300,13 +301,5 @@ Public Class FrmOptions
 
         RegKey.SetValue(Of String)(RegKey.ImageLocation, OpenFileDialog1.FileName)
 
-    End Sub
-
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        If ComboBox1.SelectedIndex = 0 Then FrmMain.BackgroundImageLayout = ImageLayout.None
-        If ComboBox1.SelectedIndex = 1 Then FrmMain.BackgroundImageLayout = ImageLayout.Center
-        If ComboBox1.SelectedIndex = 2 Then FrmMain.BackgroundImageLayout = ImageLayout.Stretch
-        If ComboBox1.SelectedIndex = 3 Then FrmMain.BackgroundImageLayout = ImageLayout.Tile
-        If ComboBox1.SelectedIndex = 4 Then FrmMain.BackgroundImageLayout = ImageLayout.Zoom
     End Sub
 End Class

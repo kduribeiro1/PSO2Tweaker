@@ -149,6 +149,7 @@ Public Class FrmMain
                 chkRemoveSEGA.TextColor = color
                 chkRemoveVita.TextColor = color
                 chkRestoreCensor.TextColor = color
+                lblStatus.ForeColor = color
                 chkRestoreNVidia.TextColor = color
                 chkRestorePC.TextColor = color
                 chkRestoreSEGA.TextColor = color
@@ -230,7 +231,16 @@ Public Class FrmMain
             End If
         End If
     End Sub
-
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub Form1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        If Me.BackgroundImage IsNot Nothing Then
+            Dim FormWidth As Integer
+            If _dpiSetting = 96 Then FormWidth = 420
+            If _dpiSetting = 120 Then FormWidth = 560
+            e.Graphics.Clear(Me.BackColor)
+            e.Graphics.DrawImage(Me.BackgroundImage, 0, 44, FormWidth, Me.Height - 44)
+        End If
+    End Sub
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
@@ -256,7 +266,7 @@ Public Class FrmMain
             chkAlwaysOnTop.Checked = Program.IsMainFormTopMost
             _cancelledFull = False
             If RegKey.GetValue(Of String)(RegKey.ImageLocation) <> "" Then
-                If File.Exists(RegKey.GetValue(Of String)(RegKey.ImageLocation)) Then Me.BackgroundImage = System.Drawing.Image.FromFile(OpenFileDialog1.FileName)
+                If File.Exists(RegKey.GetValue(Of String)(RegKey.ImageLocation)) Then Me.BackgroundImage = System.Drawing.Image.FromFile(RegKey.GetValue(Of String)(RegKey.ImageLocation))
             End If
             Show()
 
@@ -3469,6 +3479,14 @@ Public Class FrmMain
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub chkRestoreCensor_CheckedChanged(sender As Object, e As EventArgs) Handles chkRestoreCensor.CheckedChanged
+
+    End Sub
+
+    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
 
     End Sub
 End Class

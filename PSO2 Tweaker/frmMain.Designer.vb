@@ -38,7 +38,6 @@ Partial Class FrmMain
         Me.chkSwapOP = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.lblDirectoryLabel = New DevComponents.DotNetBar.LabelX()
         Me.lblDirectory = New DevComponents.DotNetBar.LabelX()
-        Me.lblStatus = New DevComponents.DotNetBar.LabelX()
         Me.chkRestoreCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestorePC = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestoreVita = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -127,6 +126,7 @@ Partial Class FrmMain
         Me.txtPSO2DefaultINI = New System.Windows.Forms.TextBox()
         Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
         Me.txtFiles = New System.Windows.Forms.TextBox()
+        Me.lblStatus = New System.Windows.Forms.Label()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -158,7 +158,6 @@ Partial Class FrmMain
         '
         Me.chkRemoveCensor.BackgroundStyle.Class = ""
         Me.chkRemoveCensor.Name = "chkRemoveCensor"
-        Me.chkRemoveCensor.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRemovePC
         '
@@ -169,7 +168,6 @@ Partial Class FrmMain
         '
         Me.chkRemovePC.BackgroundStyle.Class = ""
         Me.chkRemovePC.Name = "chkRemovePC"
-        Me.chkRemovePC.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRemoveVita
         '
@@ -180,7 +178,6 @@ Partial Class FrmMain
         '
         Me.chkRemoveVita.BackgroundStyle.Class = ""
         Me.chkRemoveVita.Name = "chkRemoveVita"
-        Me.chkRemoveVita.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'PBMainBar
         '
@@ -203,7 +200,6 @@ Partial Class FrmMain
         '
         Me.chkRemoveNVidia.BackgroundStyle.Class = ""
         Me.chkRemoveNVidia.Name = "chkRemoveNVidia"
-        Me.chkRemoveNVidia.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRemoveSEGA
         '
@@ -214,7 +210,6 @@ Partial Class FrmMain
         '
         Me.chkRemoveSEGA.BackgroundStyle.Class = ""
         Me.chkRemoveSEGA.Name = "chkRemoveSEGA"
-        Me.chkRemoveSEGA.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkSwapOP
         '
@@ -225,7 +220,6 @@ Partial Class FrmMain
         '
         Me.chkSwapOP.BackgroundStyle.Class = ""
         Me.chkSwapOP.Name = "chkSwapOP"
-        Me.chkSwapOP.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'lblDirectoryLabel
         '
@@ -247,20 +241,6 @@ Partial Class FrmMain
         resources.ApplyResources(Me.lblDirectory, "lblDirectory")
         Me.lblDirectory.Name = "lblDirectory"
         '
-        'lblStatus
-        '
-        Me.lblStatus.BackColor = System.Drawing.Color.Transparent
-        resources.ApplyResources(Me.lblStatus, "lblStatus")
-        '
-        '
-        '
-        Me.lblStatus.BackgroundStyle.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionInactiveBackground
-        Me.lblStatus.BackgroundStyle.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionInactiveBackground
-        Me.lblStatus.BackgroundStyle.BackgroundImageAlpha = CType(0, Byte)
-        Me.lblStatus.BackgroundStyle.Class = ""
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.TextAlignment = System.Drawing.StringAlignment.Center
-        '
         'chkRestoreCensor
         '
         resources.ApplyResources(Me.chkRestoreCensor, "chkRestoreCensor")
@@ -270,7 +250,6 @@ Partial Class FrmMain
         '
         Me.chkRestoreCensor.BackgroundStyle.Class = ""
         Me.chkRestoreCensor.Name = "chkRestoreCensor"
-        Me.chkRestoreCensor.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRestorePC
         '
@@ -281,7 +260,6 @@ Partial Class FrmMain
         '
         Me.chkRestorePC.BackgroundStyle.Class = ""
         Me.chkRestorePC.Name = "chkRestorePC"
-        Me.chkRestorePC.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRestoreVita
         '
@@ -292,7 +270,6 @@ Partial Class FrmMain
         '
         Me.chkRestoreVita.BackgroundStyle.Class = ""
         Me.chkRestoreVita.Name = "chkRestoreVita"
-        Me.chkRestoreVita.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRestoreNVidia
         '
@@ -303,7 +280,6 @@ Partial Class FrmMain
         '
         Me.chkRestoreNVidia.BackgroundStyle.Class = ""
         Me.chkRestoreNVidia.Name = "chkRestoreNVidia"
-        Me.chkRestoreNVidia.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'chkRestoreSEGA
         '
@@ -314,7 +290,6 @@ Partial Class FrmMain
         '
         Me.chkRestoreSEGA.BackgroundStyle.Class = ""
         Me.chkRestoreSEGA.Name = "chkRestoreSEGA"
-        Me.chkRestoreSEGA.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
         'btnApplyChanges
         '
@@ -361,6 +336,7 @@ Partial Class FrmMain
         '
         Me.RibbonControl1.BackgroundStyle.Class = ""
         Me.RibbonControl1.CaptionVisible = True
+        Me.RibbonControl1.Cursor = System.Windows.Forms.Cursors.Default
         resources.ApplyResources(Me.RibbonControl1, "RibbonControl1")
         Me.RibbonControl1.KeyTipsFont = New System.Drawing.Font("Tahoma", 7.0!)
         Me.RibbonControl1.Name = "RibbonControl1"
@@ -817,6 +793,12 @@ Partial Class FrmMain
         resources.ApplyResources(Me.txtFiles, "txtFiles")
         Me.txtFiles.Name = "txtFiles"
         '
+        'lblStatus
+        '
+        Me.lblStatus.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.lblStatus, "lblStatus")
+        Me.lblStatus.Name = "lblStatus"
+        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -833,6 +815,7 @@ Partial Class FrmMain
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.txtFiles)
         Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
@@ -855,7 +838,6 @@ Partial Class FrmMain
         Me.Controls.Add(Me.rtbDebug)
         Me.Controls.Add(Me.txtHTML)
         Me.Controls.Add(Me.chkSwapOP)
-        Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.RibbonControl1)
         Me.DoubleBuffered = True
         Me.EnableGlass = False
@@ -881,7 +863,6 @@ Partial Class FrmMain
     Friend WithEvents chkSwapOP As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents lblDirectoryLabel As DevComponents.DotNetBar.LabelX
     Friend WithEvents lblDirectory As DevComponents.DotNetBar.LabelX
-    Friend WithEvents lblStatus As DevComponents.DotNetBar.LabelX
     Friend WithEvents chkRestoreCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestorePC As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestoreVita As DevComponents.DotNetBar.Controls.CheckBoxX
@@ -971,5 +952,6 @@ Partial Class FrmMain
     Friend WithEvents tmrWaitingforPSO2 As System.Windows.Forms.Timer
     Friend WithEvents txtFiles As System.Windows.Forms.TextBox
     Friend WithEvents btnLargeFilesTRANSAM As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents lblStatus As System.Windows.Forms.Label
 
 End Class
