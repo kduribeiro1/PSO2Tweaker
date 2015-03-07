@@ -2353,6 +2353,7 @@ Public Class FrmMain
         Else
             btnAnnouncements.Text = ">"
         End If
+
     End Sub
 
     Private Sub btnAnnouncements_Click(sender As Object, e As EventArgs) Handles btnAnnouncements.Click
