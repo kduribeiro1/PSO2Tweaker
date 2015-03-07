@@ -130,6 +130,7 @@ Partial Class FrmMain
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.lblProxyStats = New System.Windows.Forms.Label()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
+        Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -846,11 +847,18 @@ Partial Class FrmMain
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
         '
+        'WebBrowser1
+        '
+        resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
+        Me.WebBrowser1.Name = "WebBrowser1"
+        Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
+        '
         'FrmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.lblProxyStats)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.txtFiles)
@@ -993,5 +1001,6 @@ Partial Class FrmMain
     Friend WithEvents lblProxyStats As System.Windows.Forms.Label
     Friend WithEvents cmsTextBarOptions As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CopyAllTextToClipboardToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
 
 End Class

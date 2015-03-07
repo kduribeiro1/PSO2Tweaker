@@ -2360,13 +2360,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub WebBrowser4_Navigated(sender As Object, e As WebBrowserNavigatedEventArgs) Handles WebBrowser4.Navigated
-        If WebBrowser4.DocumentText.Contains("replaceme") = False Then Exit Sub
-        Application.DoEvents()
-        If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
-            WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
-            Exit Sub
-        End If
-        WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", """white""").Replace("replacemetext", """black""")
+        
     End Sub
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
@@ -3624,6 +3618,15 @@ Public Class FrmMain
     End Sub
 
     Private Sub WebBrowser4_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser4.DocumentCompleted
-
+        If WebBrowser4.DocumentText.Contains("replaceme") = False Then Exit Sub
+        If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
+            WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
+            Application.DoEvents()
+            WebBrowser1.Visible = False
+            Exit Sub
+        End If
+        WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", """white""").Replace("replacemetext", """black""")
+        Application.DoEvents()
+        WebBrowser1.Visible = False
     End Sub
 End Class
