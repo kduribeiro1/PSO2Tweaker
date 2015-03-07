@@ -93,6 +93,7 @@ Partial Class FrmOptions
         Me.Label2 = New System.Windows.Forms.Label()
         Me.CheckBoxX5 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -609,10 +610,16 @@ Partial Class FrmOptions
         Me.ButtonX1.Name = "ButtonX1"
         Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
+        'Label3
+        '
+        resources.ApplyResources(Me.Label3, "Label3")
+        Me.Label3.Name = "Label3"
+        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.CheckBoxX5)
         Me.Controls.Add(Me.Label2)
@@ -737,4 +744,5 @@ Partial Class FrmOptions
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents CheckBoxX5 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 End Class
