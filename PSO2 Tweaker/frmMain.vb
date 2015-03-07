@@ -2680,7 +2680,11 @@ Public Class FrmMain
     Private Sub LoadSidebar(state As Object)
         Try
             WebBrowser4.Navigate(Program.FreedomUrl & "tweaker2.html")
-            WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
+            If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
+                WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
+            Else
+                WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", """white""").Replace("replacemetext", """black""")
+            End If
         Catch ex As Exception
             Helper.WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
