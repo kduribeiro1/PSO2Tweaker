@@ -28,6 +28,8 @@ Partial Class FrmMain
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMain))
         Me.txtHTML = New System.Windows.Forms.TextBox()
         Me.rtbDebug = New System.Windows.Forms.RichTextBox()
+        Me.cmsTextBarOptions = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.CopyAllTextToClipboardToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.chkRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemovePC = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -126,7 +128,9 @@ Partial Class FrmMain
         Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
         Me.txtFiles = New System.Windows.Forms.TextBox()
         Me.lblStatus = New System.Windows.Forms.Label()
+        Me.lblProxyStats = New System.Windows.Forms.Label()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
+        Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -138,11 +142,23 @@ Partial Class FrmMain
         'rtbDebug
         '
         Me.rtbDebug.BackColor = System.Drawing.Color.White
+        Me.rtbDebug.ContextMenuStrip = Me.cmsTextBarOptions
         Me.rtbDebug.HideSelection = False
         resources.ApplyResources(Me.rtbDebug, "rtbDebug")
         Me.rtbDebug.Name = "rtbDebug"
         Me.rtbDebug.ReadOnly = True
         Me.rtbDebug.TabStop = False
+        '
+        'cmsTextBarOptions
+        '
+        Me.cmsTextBarOptions.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CopyAllTextToClipboardToolStripMenuItem})
+        Me.cmsTextBarOptions.Name = "cmsTextBarOptions"
+        resources.ApplyResources(Me.cmsTextBarOptions, "cmsTextBarOptions")
+        '
+        'CopyAllTextToClipboardToolStripMenuItem
+        '
+        Me.CopyAllTextToClipboardToolStripMenuItem.Name = "CopyAllTextToClipboardToolStripMenuItem"
+        resources.ApplyResources(Me.CopyAllTextToClipboardToolStripMenuItem, "CopyAllTextToClipboardToolStripMenuItem")
         '
         'OpenFileDialog1
         '
@@ -812,6 +828,13 @@ Partial Class FrmMain
         resources.ApplyResources(Me.lblStatus, "lblStatus")
         Me.lblStatus.Name = "lblStatus"
         '
+        'lblProxyStats
+        '
+        Me.lblProxyStats.BackColor = System.Drawing.Color.Transparent
+        Me.lblProxyStats.FlatStyle = System.Windows.Forms.FlatStyle.System
+        resources.ApplyResources(Me.lblProxyStats, "lblProxyStats")
+        Me.lblProxyStats.Name = "lblProxyStats"
+        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -828,12 +851,12 @@ Partial Class FrmMain
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Controls.Add(Me.lblProxyStats)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.txtFiles)
         Me.Controls.Add(Me.lblDirectoryLabel)
         Me.Controls.Add(Me.btnApplyChanges)
         Me.Controls.Add(Me.txtPSO2DefaultINI)
-        Me.Controls.Add(Me.WebBrowser4)
         Me.Controls.Add(Me.btnAnnouncements)
         Me.Controls.Add(Me.btnLaunchPSO2)
         Me.Controls.Add(Me.lblDirectory)
@@ -852,6 +875,7 @@ Partial Class FrmMain
         Me.Controls.Add(Me.txtHTML)
         Me.Controls.Add(Me.chkSwapOP)
         Me.Controls.Add(Me.RibbonControl1)
+        Me.Controls.Add(Me.WebBrowser4)
         Me.DoubleBuffered = True
         Me.EnableGlass = False
         Me.FlattenMDIBorder = False
@@ -859,6 +883,7 @@ Partial Class FrmMain
         Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.Name = "FrmMain"
+        Me.cmsTextBarOptions.ResumeLayout(False)
         Me.cmsProgressBar.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -965,5 +990,8 @@ Partial Class FrmMain
     Friend WithEvents txtFiles As System.Windows.Forms.TextBox
     Friend WithEvents btnLargeFilesTRANSAM As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents lblProxyStats As System.Windows.Forms.Label
+    Friend WithEvents cmsTextBarOptions As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents CopyAllTextToClipboardToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

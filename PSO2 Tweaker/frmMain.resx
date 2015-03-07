@@ -144,7 +144,25 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtHTML.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>23</value>
+  </data>
+  <metadata name="cmsTextBarOptions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>232, 17</value>
+  </metadata>
+  <data name="CopyAllTextToClipboardToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>206, 22</value>
+  </data>
+  <data name="CopyAllTextToClipboardToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy all text to clipboard</value>
+  </data>
+  <data name="cmsTextBarOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 26</value>
+  </data>
+  <data name="&gt;&gt;cmsTextBarOptions.Name" xml:space="preserve">
+    <value>cmsTextBarOptions</value>
+  </data>
+  <data name="&gt;&gt;cmsTextBarOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="rtbDebug.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 297</value>
@@ -168,7 +186,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;rtbDebug.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>22</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>90, 17</value>
@@ -198,7 +216,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveCensor.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="chkRemovePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -225,7 +243,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemovePC.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="chkRemoveVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -252,7 +270,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveVita.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="PBMainBar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
@@ -277,7 +295,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PBMainBar.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="chkRemoveNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -304,7 +322,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveNVidia.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="chkRemoveSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -331,7 +349,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveSEGA.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="chkSwapOP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -361,7 +379,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkSwapOP.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>24</value>
   </data>
   <data name="lblDirectoryLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -388,7 +406,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblDirectoryLabel.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="lblDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 55</value>
@@ -412,7 +430,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblDirectory.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="chkRestoreCensor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -439,7 +457,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreCensor.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="chkRestorePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -466,7 +484,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestorePC.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="chkRestoreVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -493,7 +511,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreVita.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="chkRestoreNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -520,7 +538,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreNVidia.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="chkRestoreSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -547,7 +565,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreSEGA.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="btnApplyChanges.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 219</value>
@@ -574,7 +592,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnApplyChanges.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="btnLaunchPSO2.Location" type="System.Drawing.Point, System.Drawing">
     <value>254, 219</value>
@@ -601,10 +619,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnLaunchPSO2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <metadata name="cmsProgressBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>347, 17</value>
+    <value>389, 17</value>
   </metadata>
   <data name="tsmRestartDownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
@@ -979,10 +997,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>25</value>
   </data>
   <data name="btnAnnouncements.Location" type="System.Drawing.Point, System.Drawing">
-    <value>406, 31</value>
+    <value>406, 30</value>
   </data>
   <data name="btnAnnouncements.Size" type="System.Drawing.Size, System.Drawing">
     <value>14, 471</value>
@@ -1006,7 +1024,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnAnnouncements.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="WebBrowser4.Location" type="System.Drawing.Point, System.Drawing">
     <value>420, 31</value>
@@ -1030,7 +1048,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;WebBrowser4.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>26</value>
   </data>
   <data name="txtPSO2DefaultINI.Location" type="System.Drawing.Point, System.Drawing">
     <value>201, 129</value>
@@ -1181,10 +1199,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtPSO2DefaultINI.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <metadata name="tmrWaitingforPSO2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>485, 17</value>
+    <value>527, 17</value>
   </metadata>
   <data name="txtFiles.Location" type="System.Drawing.Point, System.Drawing">
     <value>179, 183</value>
@@ -1214,7 +1232,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtFiles.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="lblStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1244,7 +1262,37 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblStatus.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
+  </data>
+  <data name="lblProxyStats.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9.75pt</value>
+  </data>
+  <data name="lblProxyStats.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblProxyStats.Location" type="System.Drawing.Point, System.Drawing">
+    <value>420, 30</value>
+  </data>
+  <data name="lblProxyStats.Size" type="System.Drawing.Size, System.Drawing">
+    <value>376, 18</value>
+  </data>
+  <data name="lblProxyStats.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="lblProxyStats.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblProxyStats.Name" xml:space="preserve">
+    <value>lblProxyStats</value>
+  </data>
+  <data name="&gt;&gt;lblProxyStats.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblProxyStats.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblProxyStats.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="DLS.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -1295,7 +1343,7 @@
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>107</value>
+    <value>63</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
@@ -7475,11 +7523,14 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
+  </data>
+  <data name="&gt;&gt;CopyAllTextToClipboardToolStripMenuItem.Name" xml:space="preserve">
+    <value>CopyAllTextToClipboardToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;CopyAllTextToClipboardToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;OpenFileDialog1.Name" xml:space="preserve">
     <value>OpenFileDialog1</value>

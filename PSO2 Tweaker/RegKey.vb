@@ -49,6 +49,10 @@ Public Class RegKey
     Public Const PBTextColor = "PBTextColor"
     Public Const PBFill1 = "PBFill1"
     Public Const PBFill2 = "PBFill2"
+    Public Const GetProxyStats = "GetProxyStats"
+    Public Const ProxyStatsURL = "ProxyStatsURL"
+    Public Const StatsLastChecked = "StatsLastChecked"
+    Public Const CachedStats = "CachedStats"
 
     Private Shared ReadOnly RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared ReadOnly RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)

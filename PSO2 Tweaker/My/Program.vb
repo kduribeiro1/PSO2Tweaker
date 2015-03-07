@@ -9,6 +9,8 @@ Namespace My
         Public Shared ReadOnly Args As String() = Environment.GetCommandLineArgs()
         Public Shared ReadOnly StartPath As String = Windows.Forms.Application.StartupPath
         Public Shared ReadOnly Client As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
+        Public Shared ReadOnly ItemPatchClient As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
+        Public Shared ReadOnly Client2 As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
 
         Public Shared MainForm As FrmMain
         Public Shared FreedomUrl As String = "http://108.61.203.33/freedom/"

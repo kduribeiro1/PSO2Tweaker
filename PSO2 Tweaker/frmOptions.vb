@@ -242,6 +242,7 @@ Public Class FrmOptions
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX3.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX4.TextColor = ColorPickerButton2.SelectedColor
+        CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
@@ -383,5 +384,17 @@ Public Class FrmOptions
     Private Sub cpbFill2_SelectedColorChanged(sender As Object, e As EventArgs) Handles cpbFill2.SelectedColorChanged
         RegKey.SetValue(Of Integer)(RegKey.PBFill2, cpbFill2.SelectedColor.ToArgb)
         FrmMain.PBMainBar.ChunkColor2 = cpbFill2.SelectedColor
+    End Sub
+
+    Private Sub ButtonX1_Click_1(sender As Object, e As EventArgs) Handles ButtonX1.Click
+        Dim PSO2ProxyStatsString As String = InputBox("Please paste the URL for your PSO2Proxy, including the 8080 port. So, for example, if your PSO2Proxy was hosted on 102.142.725.123, it would be ""http://102.142.725.123:8080"". To reset to the PSO2Proxy Public stats, type ""default"".")
+        If PSO2ProxyStatsString = "default" Then PSO2ProxyStatsString = "http://cloud02.cyberkitsune.net:8080/"
+        RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, PSO2ProxyStatsString)
+    End Sub
+
+    Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
+        FrmMain.lblProxyStats.Visible = CheckBoxX5.Checked
+        If CheckBoxX5.Checked = True Then FrmMain.GetProxyStats()
+        RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, CheckBoxX5.Checked)
     End Sub
 End Class

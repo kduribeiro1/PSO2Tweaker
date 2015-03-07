@@ -308,9 +308,19 @@ Public Class FrmMain
                 RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, "True")
             End If
 
+            If RegKey.GetValue(Of Boolean)(RegKey.GetProxyStats) = True Then
+                lblProxyStats.Visible = True
+                lblProxyStats.BackColor = rtbDebug.BackColor
+                lblProxyStats.ForeColor = rtbDebug.ForeColor
+                'Fix this for me LightningDragon, pls. <3
+                Dim t1 As New Threading.Thread(AddressOf GetProxyStats)
+                t1.IsBackground = True
+                t1.Start()
+            Else
+                lblProxyStats.Visible = False
+            End If
 
             Show()
-            btnENPatch.RaiseClick()
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
         Catch ex As Exception
@@ -548,7 +558,7 @@ Public Class FrmMain
 
     Private Sub DownloadItemTranslationFiles(state As Object)
         Try
-            Program.Client.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
+            Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -556,7 +566,7 @@ Public Class FrmMain
         RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
 
         Try
-            Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
+            Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
@@ -621,6 +631,12 @@ Public Class FrmMain
 
     Private Shared Sub rtbDebug_LinkClicked(sender As Object, e As LinkClickedEventArgs) Handles rtbDebug.LinkClicked
         Process.Start(e.LinkText)
+    End Sub
+
+    Private Sub rtbDebug_MouseClick(sender As Object, e As MouseEventArgs) Handles rtbDebug.MouseClick
+        If e.Button = MouseButtons.Right Then
+            cmsTextBarOptions.Show(DirectCast(sender, Control), e.Location)
+        End If
     End Sub
 
     Private Sub rtbDebug_TextChanged(sender As Object, e As EventArgs) Handles rtbDebug.TextChanged
@@ -1307,29 +1323,29 @@ Public Class FrmMain
         ' The Using statement will dispose "net" as soon as we're done with it.
         ' This parses the sidebar page for compatibility
         ' First it downloads the page and splits it by line
-        Dim compat As String() = Regex.Split(Program.Client.DownloadString(Program.FreedomUrl & "tweaker.html"), "\r\n|\r|\n")
-        Dim doDownload As Boolean = True
+        'Dim compat As String() = Regex.Split(Program.Client.DownloadString(Program.FreedomUrl & "tweaker2.html"), "\r\n|\r|\n")
+        'Dim doDownload As Boolean = True
 
         ' Then for each string in the split page, it does a regex match to grab the compatibility.
         ' This way we can avoid .replace.replace.replace.replace.replace and just get straight to the point;
         ' is it equal to "Compatible"
-        For Each str As String In compat
-            If Regex.IsMatch(str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>") Then
-                If Not Regex.Match(str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
-                    Dim reallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
+        'For Each str As String In compat
+        ' If Regex.IsMatch(Str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>") Then
+        ' If Not Regex.Match(Str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
+        ' Dim reallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
 
-                    doDownload = reallyInstall <> MsgBoxResult.No
-                End If
-            End If
-        Next
+        '        doDownload = reallyInstall <> MsgBoxResult.No
+        '        End If
+        '        End If
+        '       Next
 
-        If doDownload Then
-            ' Here we parse the text file before passing it to the DownloadPatch function.
-            Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefiles.txt")
-            DownloadPatch(url, LargeFiles, "LargeFiles.rar", RegKey.LargeFilesVersion, Resources.strWouldYouLikeToBackupLargeFiles, Resources.strWouldYouLikeToUse)
-        Else
-            Helper.WriteDebugInfo("Download was cancelled due to incompatibility.")
-        End If
+        'If doDownload Then
+        ' Here we parse the text file before passing it to the DownloadPatch function.
+        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefiles.txt")
+        DownloadPatch(url, LargeFiles, "LargeFiles.rar", RegKey.LargeFilesVersion, Resources.strWouldYouLikeToBackupLargeFiles, Resources.strWouldYouLikeToUse)
+        'Else
+        'Helper.WriteDebugInfo("Download was cancelled due to incompatibility.")
+        'End If
     End Sub
 
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
@@ -2343,7 +2359,7 @@ Public Class FrmMain
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Visible Then
-            If e.Url.ToString() <> Program.FreedomUrl & "tweaker.html" Then
+            If e.Url.ToString() <> Program.FreedomUrl & "tweaker2.html" Then
                 Process.Start(e.Url.ToString())
                 Helper.Log("Trying to load URL for sidebar: " & e.Url.ToString)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
@@ -2663,7 +2679,8 @@ Public Class FrmMain
 
     Private Sub LoadSidebar(state As Object)
         Try
-            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.html")
+            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker2.html")
+            WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
         Catch ex As Exception
             Helper.WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
@@ -3522,23 +3539,80 @@ Public Class FrmMain
             MsgBox("ERROR - " & ex.Message.ToString)
         End Try
     End Sub
+    Public Sub GetProxyStats()
+        If lblProxyStats.InvokeRequired Then
+            lblProxyStats.Invoke(New Action(AddressOf GetProxyStats))
+        Else
+            lblProxyStats.Text = Text
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs)
+        End If
 
+        'Make it so it'll only check it after a minute (to cut down on possible DDOS)
+        Dim Now As Integer = TimeOfDay.Minute
+
+        If Now = RegKey.GetValue(Of Integer)(RegKey.StatsLastChecked) Or Now = RegKey.GetValue(Of Integer)(RegKey.StatsLastChecked) + 1 Or Now = RegKey.GetValue(Of Integer)(RegKey.StatsLastChecked) - 1 Then
+            lblProxyStats.Text = RegKey.GetValue(Of String)(RegKey.CachedStats)
+            Exit Sub
+        End If
+
+        'http://cloud02.cyberkitsune.net:8080/
+        '{"uniquePlayers": 25180, "upSince": 1425656237, "peakPlayers": 783, "blocksCached": 768, "playerCount": 783}
+        Try
+            Dim jsonurl As String = RegKey.GetValue(Of String)(RegKey.ProxyStatsURL)
+            If String.IsNullOrEmpty(jsonurl) Or jsonurl.Contains("http") = False Then
+                lblProxyStats.Text = "Error retrieving PSO2Proxy stats. Check the URL in Options."
+                Return
+            End If
+
+            Program.Client2.DownloadFile(jsonurl, "ServerConfig.txt")
+
+            Dim proxystats As ProxyStats
+            Using stream As FileStream = File.Open("ServerConfig.txt", FileMode.Open)
+                Dim serializer As DataContractJsonSerializer = New DataContractJsonSerializer(GetType(ProxyStats))
+                proxystats = DirectCast(serializer.ReadObject(stream), ProxyStats)
+            End Using
+
+            Dim FullDate As String = FromUnix(proxystats.upSince).ToString
+
+            Dim ShortDate() As String = FullDate.Split(CChar(" "))
+
+
+
+            lblProxyStats.Text = "Proxy stats: " & proxystats.playerCount & " players online (Peak: " & proxystats.peakPlayers & " since " & ShortDate(0) & ")  "
+
+            Dim NowDone As Integer = TimeOfDay.Minute
+
+            RegKey.SetValue(Of Integer)(RegKey.StatsLastChecked, NowDone)
+
+            RegKey.SetValue(Of String)(RegKey.CachedStats, lblProxyStats.Text)
+
+            If File.Exists("ServerConfig.txt") Then File.Delete("ServerConfig.txt")
+
+        Catch ex As Exception
+            MsgBox("ERROR - " & ex.Message.ToString)
+        End Try
     End Sub
+    Public ReadOnly Property Epoch() As DateTime
+        Get
+            Return New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        End Get
+    End Property
 
-    Private Sub chkRestoreCensor_CheckedChanged(sender As Object, e As EventArgs) Handles chkRestoreCensor.CheckedChanged
-
-    End Sub
-
-    Private Sub RibbonControl1_Click(sender As Object, e As EventArgs) Handles RibbonControl1.Click
-
-    End Sub
+    Public Function FromUnix(ByVal seconds As Integer) As DateTime
+        Dim dt = Epoch.AddSeconds(seconds)
+        Return dt
+    End Function
 
     Private Sub PBMainBar_Click(sender As Object, e As EventArgs) Handles PBMainBar.Click
+
     End Sub
 
-    Private Sub WarningBox1_OptionsClick(sender As Object, e As EventArgs)
+    Private Sub CopyAllTextToClipboardToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyAllTextToClipboardToolStripMenuItem.Click
+        Clipboard.SetText(rtbDebug.Text)
+        Helper.WriteDebugInfo("All text copied to clipboard.")
+    End Sub
+
+    Private Sub WebBrowser4_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser4.DocumentCompleted
 
     End Sub
 End Class
