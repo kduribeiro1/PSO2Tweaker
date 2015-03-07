@@ -2024,74 +2024,74 @@ Public Class FrmMain
             If SkipDialogs = False Then MsgBox(Resources.strPleaseBeAwareGG)
 
             If Directory.Exists(Program.Pso2RootDir & "\Gameguard\") Then
-                Helper.WriteDebugInfo("Removing Gameguard Directory...")
-                Directory.Delete(Program.Pso2RootDir & "\Gameguard\", True)
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
+                If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Gameguard Directory...")
+                If SkipDialogs = False Then Directory.Delete(Program.Pso2RootDir & "\Gameguard\", True)
+                If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
             End If
             If File.Exists(Program.Pso2RootDir & "\GameGuard.des") Then
-                Helper.WriteDebugInfo("Removing Gameguard File...")
-                Helper.DeleteFile(Program.Pso2RootDir & "\GameGuard.des")
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
+                If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Gameguard File...")
+                If SkipDialogs = False Then Helper.DeleteFile(Program.Pso2RootDir & "\GameGuard.des")
+                If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
             End If
             If Environment.Is64BitOperatingSystem Then
                 systempath = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86)
                 If File.Exists(systempath & "\npptnt2.sys") Then
-                    Helper.WriteDebugInfo("Removing Hidden Gameguard Files (1 of 3)...")
-                    Helper.DeleteFile(systempath & "\npptnt2.sys")
-                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Hidden Gameguard Files (1 of 3)...")
+                    If SkipDialogs = False Then Helper.DeleteFile(systempath & "\npptnt2.sys")
+                    If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
                 End If
                 If File.Exists(systempath & "\nppt9x.vxd") Then
-                    Helper.WriteDebugInfo("Removing Hidden Gameguard Files (2 of 3)...")
-                    Helper.DeleteFile(systempath & "\nppt9x.vxd")
-                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Hidden Gameguard Files (2 of 3)...")
+                    If SkipDialogs = False Then Helper.DeleteFile(systempath & "\nppt9x.vxd")
+                    If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
                 End If
                 If File.Exists(systempath & "\GameMon.des") Then
-                    Helper.WriteDebugInfo("Removing Hidden Gameguard Files (3 of 3)...")
-                    Helper.DeleteFile(systempath & "\GameMon.des")
-                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Hidden Gameguard Files (3 of 3)...")
+                    If SkipDialogs = False Then Helper.DeleteFile(systempath & "\GameMon.des")
+                    If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
                 End If
             End If
             If Not Environment.Is64BitOperatingSystem Then
                 systempath = Environment.GetFolderPath(Environment.SpecialFolder.System)
                 If File.Exists(systempath & "\npptnt2.sys") Then
-                    Helper.WriteDebugInfo("Removing Hidden Gameguard Files (1 of 3)...")
-                    Helper.DeleteFile(systempath & "\npptnt2.sys")
-                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Hidden Gameguard Files (1 of 3)...")
+                    If SkipDialogs = False Then Helper.DeleteFile(systempath & "\npptnt2.sys")
+                    If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
                 End If
                 If File.Exists(systempath & "\nppt9x.vxd") Then
-                    Helper.WriteDebugInfo("Removing Hidden Gameguard Files (2 of 3)...")
-                    Helper.DeleteFile(systempath & "\nppt9x.vxd")
-                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Hidden Gameguard Files (2 of 3)...")
+                    If SkipDialogs = False Then Helper.DeleteFile(systempath & "\nppt9x.vxd")
+                    If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
                 End If
                 If File.Exists(systempath & "\GameMon.des") Then
-                    Helper.WriteDebugInfo("Removing Hidden Gameguard Files (3 of 3)...")
-                    Helper.DeleteFile(systempath & "\GameMon.des")
-                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    If SkipDialogs = False Then Helper.WriteDebugInfo("Removing Hidden Gameguard Files (3 of 3)...")
+                    If SkipDialogs = False Then Helper.DeleteFile(systempath & "\GameMon.des")
+                    If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
                 End If
             End If
-            Helper.WriteDebugInfo("Downloading Latest Gameguard file...")
+            If SkipDialogs = False Then Helper.WriteDebugInfo("Downloading Latest Gameguard file...")
             DownloadFile("http://download.pso2.jp/patch_prod/patches/GameGuard.des.pat", Program.Pso2RootDir & "\GameGuard.des")
-            Helper.WriteDebugInfo("Downloading Latest Gameguard config...")
+            If SkipDialogs = False Then Helper.WriteDebugInfo("Downloading Latest Gameguard config...")
             DownloadFile("http://download.pso2.jp/patch_prod/patches/PSO2JP.ini.pat", Program.Pso2RootDir & "\PSO2JP.ini")
-            Helper.WriteDebugInfoSameLine(Resources.strDone)
+            If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
             'File.Move("GameGuard.des", Program.Pso2RootDir & "\GameGuard.des")
 
             Dim foundKey As RegistryKey = Computer.Registry.LocalMachine.OpenSubKey("SYSTEM\CurrentControlSet\Services\npggsvc", True)
 
             If foundKey Is Nothing Then
-                Helper.WriteDebugInfo("No registry keys to delete. This is OK, they should be created the next time Gameguard launches.")
+                If SkipDialogs = False Then Helper.WriteDebugInfo("No registry keys to delete. This is OK, they should be created the next time Gameguard launches.")
             Else
-                Helper.WriteDebugInfo("Deleting Gameguard registry keys...")
+                If SkipDialogs = False Then Helper.WriteDebugInfo("Deleting Gameguard registry keys...")
                 foundKey = Computer.Registry.LocalMachine.OpenSubKey("SYSTEM\CurrentControlSet\Services", True)
                 foundKey.DeleteSubKeyTree("npggsvc")
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
+                If SkipDialogs = False Then Helper.WriteDebugInfoSameLine(Resources.strDone)
             End If
-            Helper.WriteDebugInfoAndOk(Resources.strGGReset)
+            If SkipDialogs = False Then Helper.WriteDebugInfoAndOk(Resources.strGGReset)
             If SkipDialogs = True Then btnLaunchPSO2.PerformClick()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
-            If ex.Message.Contains("Access to the path 'GameMon") Then MsgBox("It looks like Gameguard believes it's open, whether or not it actually is. You'll need to restart your computer to fix this problem. Sorry!")
+            If SkipDialogs = False Then Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            If SkipDialogs = False Then Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            If ex.Message.Contains("Access to the ") Then MsgBox("It looks like Gameguard believes it's open, whether or not it actually is. You'll need to restart your computer to fix this problem. Sorry!")
         End Try
     End Sub
 
@@ -2359,9 +2359,19 @@ Public Class FrmMain
         ToggleSideBar()
     End Sub
 
+    Private Sub WebBrowser4_Navigated(sender As Object, e As WebBrowserNavigatedEventArgs) Handles WebBrowser4.Navigated
+        If WebBrowser4.DocumentText.Contains("replaceme") = False Then Exit Sub
+        Application.DoEvents()
+        If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
+            WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
+            Exit Sub
+        End If
+        WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", """white""").Replace("replacemetext", """black""")
+    End Sub
+
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Visible Then
-            If e.Url.ToString() <> Program.FreedomUrl & "tweaker.html" Then
+            If e.Url.ToString() <> Program.FreedomUrl & "tweaker2.html" Then
                 Process.Start(e.Url.ToString())
                 Helper.Log("Trying to load URL for sidebar: " & e.Url.ToString)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
@@ -2681,12 +2691,7 @@ Public Class FrmMain
 
     Private Sub LoadSidebar(state As Object)
         Try
-            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.html")
-            'If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
-            ' WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
-            ' Else
-            ' WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", """white""").Replace("replacemetext", """black""")
-            ' End If
+            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker2.html")
         Catch ex As Exception
             Helper.WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
