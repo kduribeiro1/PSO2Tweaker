@@ -67,6 +67,7 @@ Public Class FrmOptions
 
             CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
             CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
+            CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.GetProxyStats))
 
             chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
             CMBStyle.Text = RegKey.GetValue(Of String)(RegKey.Style)
