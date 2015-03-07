@@ -308,7 +308,9 @@ Public Class FrmMain
                 RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, "True")
             End If
 
+            If RegKey.GetValue(Of Boolean)(RegKey.GetProxyStats) = Nothing Then RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, True)
             If RegKey.GetValue(Of Boolean)(RegKey.GetProxyStats) = True Then
+                If RegKey.GetValue(Of String)(RegKey.ProxyStatsURL) = "" Then RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, "http://cloud02.cyberkitsune.net:8080/")
                 lblProxyStats.Visible = True
                 lblProxyStats.BackColor = rtbDebug.BackColor
                 lblProxyStats.ForeColor = rtbDebug.ForeColor
@@ -2359,7 +2361,7 @@ Public Class FrmMain
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Visible Then
-            If e.Url.ToString() <> Program.FreedomUrl & "tweaker2.html" Then
+            If e.Url.ToString() <> Program.FreedomUrl & "tweaker.html" Then
                 Process.Start(e.Url.ToString())
                 Helper.Log("Trying to load URL for sidebar: " & e.Url.ToString)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
@@ -2679,12 +2681,12 @@ Public Class FrmMain
 
     Private Sub LoadSidebar(state As Object)
         Try
-            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker2.html")
-            If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
-                WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
-            Else
-                WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", """white""").Replace("replacemetext", """black""")
-            End If
+            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.html")
+            'If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
+            ' WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
+            ' Else
+            ' WebBrowser4.DocumentText = Program.Client2.DownloadString(Program.FreedomUrl & "tweaker2.html").Replace("replacemebg", """white""").Replace("replacemetext", """black""")
+            ' End If
         Catch ex As Exception
             Helper.WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
