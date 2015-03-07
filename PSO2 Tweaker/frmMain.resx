@@ -267,9 +267,6 @@
   <data name="PBMainBar.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
   </data>
-  <data name="PBMainBar.Text" xml:space="preserve">
-    <value>yuggggggggggggggggggggggggggggggggg</value>
-  </data>
   <data name="&gt;&gt;PBMainBar.Name" xml:space="preserve">
     <value>PBMainBar</value>
   </data>

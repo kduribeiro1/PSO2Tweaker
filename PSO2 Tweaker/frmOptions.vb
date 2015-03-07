@@ -16,6 +16,9 @@ Public Class FrmOptions
             If (RegKey.GetValue(Of Integer)(RegKey.FontColor)) <> 0 Then ColorPickerButton2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.FontColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor)) <> 0 Then ColorPickerButton4.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor))
             If (RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)) <> 0 Then ColorPickerButton3.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.TextBoxColor))
+            If (RegKey.GetValue(Of Integer)(RegKey.PBTextColor)) <> 0 Then ColorPickerButton5.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.PBTextColor))
+            If (RegKey.GetValue(Of Integer)(RegKey.PBFill1)) <> 0 Then cpbFill1.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.PBFill1))
+            If (RegKey.GetValue(Of Integer)(RegKey.PBFill2)) <> 0 Then cpbFill2.SelectedColor = Color.FromArgb(RegKey.GetValue(Of Integer)(RegKey.PBFill2))
 
             Dim backupMode = GetBackupMode(RegKey.Backup)
 
@@ -33,9 +36,11 @@ Public Class FrmOptions
             ' Otherwise, we'll assume is 96 or lower.
             Using g As Graphics = CreateGraphics()
                 If g.DpiX >= 120 Then
-                    Size = New Size(543, 476)
+                    Size = New Size(814, 476)
+                    'Size = New Size(543, 476)
                 Else
-                    Size = New Size(400, 373)
+                    'Size = New Size(400, 373)
+                    Size = New Size(600, 373)
                 End If
             End Using
 
@@ -363,5 +368,20 @@ Public Class FrmOptions
         FrmMain.lblDirectory.Visible = CheckBoxX4.Checked
         FrmMain.lblDirectoryLabel.Visible = CheckBoxX4.Checked
         RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, CheckBoxX4.Checked.ToString)
+    End Sub
+
+    Private Sub ColorPickerButton5_SelectedColorChanged(sender As Object, e As EventArgs) Handles ColorPickerButton5.SelectedColorChanged
+        RegKey.SetValue(Of Integer)(RegKey.PBTextColor, ColorPickerButton5.SelectedColor.ToArgb)
+        FrmMain.PBMainBar.BackgroundStyle.TextColor = ColorPickerButton5.SelectedColor
+    End Sub
+
+    Private Sub cpbFill1_SelectedColorChanged(sender As Object, e As EventArgs) Handles cpbFill1.SelectedColorChanged
+        RegKey.SetValue(Of Integer)(RegKey.PBFill1, cpbFill1.SelectedColor.ToArgb)
+        FrmMain.PBMainBar.ChunkColor = cpbFill1.SelectedColor
+    End Sub
+
+    Private Sub cpbFill2_SelectedColorChanged(sender As Object, e As EventArgs) Handles cpbFill2.SelectedColorChanged
+        RegKey.SetValue(Of Integer)(RegKey.PBFill2, cpbFill2.SelectedColor.ToArgb)
+        FrmMain.PBMainBar.ChunkColor2 = cpbFill2.SelectedColor
     End Sub
 End Class

@@ -198,9 +198,9 @@ Partial Class FrmMain
         Me.PBMainBar.BackgroundStyle.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid
         Me.PBMainBar.BackgroundStyle.BorderTopWidth = 1
         Me.PBMainBar.BackgroundStyle.Class = ""
-        Me.PBMainBar.BackgroundStyle.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarCaptionText
-        Me.PBMainBar.ChunkColor = System.Drawing.Color.Red
-        Me.PBMainBar.ChunkColor2 = System.Drawing.Color.Blue
+        Me.PBMainBar.BackgroundStyle.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center
+        Me.PBMainBar.BackgroundStyle.TextColor = System.Drawing.Color.Black
+        Me.PBMainBar.ChunkColor = System.Drawing.Color.Green
         Me.PBMainBar.ChunkGradientAngle = 200
         Me.PBMainBar.Name = "PBMainBar"
         Me.PBMainBar.Style = DevComponents.DotNetBar.eDotNetBarStyle.Office2000
@@ -725,6 +725,7 @@ Partial Class FrmMain
         '
         Me.btnCheckForStoryUpdates.Name = "btnCheckForStoryUpdates"
         resources.ApplyResources(Me.btnCheckForStoryUpdates, "btnCheckForStoryUpdates")
+        Me.btnCheckForStoryUpdates.Visible = False
         '
         'chkAlwaysOnTop
         '

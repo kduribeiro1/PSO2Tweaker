@@ -85,6 +85,12 @@ Partial Class FrmOptions
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CheckBoxX3 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.CheckBoxX4 = New DevComponents.DotNetBar.Controls.CheckBoxX()
+        Me.LabelX3 = New DevComponents.DotNetBar.LabelX()
+        Me.ColorPickerButton5 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.LabelX13 = New DevComponents.DotNetBar.LabelX()
+        Me.cpbFill1 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.cpbFill2 = New DevComponents.DotNetBar.ColorPickerButton()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -527,10 +533,71 @@ Partial Class FrmOptions
         Me.CheckBoxX4.Name = "CheckBoxX4"
         Me.CheckBoxX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
+        'LabelX3
+        '
+        Me.LabelX3.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX3.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.LabelX3, "LabelX3")
+        Me.LabelX3.Name = "LabelX3"
+        '
+        'ColorPickerButton5
+        '
+        Me.ColorPickerButton5.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ColorPickerButton5.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.ColorPickerButton5.Image = CType(resources.GetObject("ColorPickerButton5.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.ColorPickerButton5, "ColorPickerButton5")
+        Me.ColorPickerButton5.Name = "ColorPickerButton5"
+        Me.ColorPickerButton5.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.ColorPickerButton5.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'LabelX13
+        '
+        Me.LabelX13.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX13.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.LabelX13, "LabelX13")
+        Me.LabelX13.Name = "LabelX13"
+        '
+        'cpbFill1
+        '
+        Me.cpbFill1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.cpbFill1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.cpbFill1.Image = CType(resources.GetObject("cpbFill1.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.cpbFill1, "cpbFill1")
+        Me.cpbFill1.Name = "cpbFill1"
+        Me.cpbFill1.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.cpbFill1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'cpbFill2
+        '
+        Me.cpbFill2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.cpbFill2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.cpbFill2.Image = CType(resources.GetObject("cpbFill2.Image"), System.Drawing.Image)
+        resources.ApplyResources(Me.cpbFill2, "cpbFill2")
+        Me.cpbFill2.Name = "cpbFill2"
+        Me.cpbFill2.SelectedColorImageRectangle = New System.Drawing.Rectangle(2, 2, 12, 12)
+        Me.cpbFill2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'Label2
+        '
+        resources.ApplyResources(Me.Label2, "Label2")
+        Me.Label2.Name = "Label2"
+        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.cpbFill2)
+        Me.Controls.Add(Me.LabelX13)
+        Me.Controls.Add(Me.cpbFill1)
+        Me.Controls.Add(Me.LabelX3)
+        Me.Controls.Add(Me.ColorPickerButton5)
         Me.Controls.Add(Me.CheckBoxX4)
         Me.Controls.Add(Me.CheckBoxX3)
         Me.Controls.Add(Me.Label1)
@@ -639,4 +706,10 @@ Partial Class FrmOptions
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents CheckBoxX3 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents CheckBoxX4 As DevComponents.DotNetBar.Controls.CheckBoxX
+    Friend WithEvents LabelX3 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents ColorPickerButton5 As DevComponents.DotNetBar.ColorPickerButton
+    Friend WithEvents LabelX13 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents cpbFill1 As DevComponents.DotNetBar.ColorPickerButton
+    Friend WithEvents cpbFill2 As DevComponents.DotNetBar.ColorPickerButton
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class

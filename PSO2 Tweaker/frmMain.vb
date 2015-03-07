@@ -122,6 +122,15 @@ Public Class FrmMain
             regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)
             If regValue <> 0 Then rtbDebug.ForeColor = Color.FromArgb(Convert.ToInt32(regValue))
 
+            regValue = RegKey.GetValue(Of Integer)(RegKey.PBTextColor)
+            If regValue <> 0 Then PBMainBar.BackgroundStyle.TextColor = Color.FromArgb(Convert.ToInt32(regValue))
+
+            regValue = RegKey.GetValue(Of Integer)(RegKey.PBFill1)
+            If regValue <> 0 Then PBMainBar.ChunkColor = Color.FromArgb(Convert.ToInt32(regValue))
+
+            regValue = RegKey.GetValue(Of Integer)(RegKey.PBFill2)
+            If regValue <> 0 Then PBMainBar.ChunkColor2 = Color.FromArgb(Convert.ToInt32(regValue))
+
             regValue = RegKey.GetValue(Of Integer)(RegKey.Color)
             If regValue <> 0 Then StyleManager.ColorTint = Color.FromArgb(Convert.ToInt32(regValue))
 

@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX1.ZOrder" xml:space="preserve">
-    <value>32</value>
+    <value>38</value>
   </data>
   <data name="CMBStyle.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 80</value>
@@ -165,7 +165,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CMBStyle.ZOrder" xml:space="preserve">
-    <value>31</value>
+    <value>37</value>
   </data>
   <data name="ComboItem1.Text" xml:space="preserve">
     <value>Blue</value>
@@ -207,7 +207,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbLanguage.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>35</value>
   </data>
   <data name="ComboItem5.Text" xml:space="preserve">
     <value>English</value>
@@ -258,7 +258,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX2.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>36</value>
   </data>
   <data name="LabelX4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -285,10 +285,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX4.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>33</value>
   </data>
   <data name="CheckBoxX1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 2</value>
+    <value>403, -1</value>
   </data>
   <data name="CheckBoxX1.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 20</value>
@@ -309,7 +309,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>13</value>
   </data>
   <data name="LabelX5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -336,13 +336,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX5.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>32</value>
   </data>
   <data name="LabelX6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="LabelX6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 139</value>
+    <value>15, 136</value>
   </data>
   <data name="LabelX6.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 15</value>
@@ -363,10 +363,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX6.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>30</value>
   </data>
   <data name="cmbBackupPreference.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 139</value>
+    <value>407, 136</value>
   </data>
   <data name="cmbBackupPreference.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 21</value>
@@ -384,7 +384,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbBackupPreference.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>28</value>
   </data>
   <data name="ComboItem37.Text" xml:space="preserve">
     <value>Ask each time</value>
@@ -399,7 +399,7 @@
     <value>True</value>
   </data>
   <data name="LabelX7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 251</value>
+    <value>407, 248</value>
   </data>
   <data name="LabelX7.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 15</value>
@@ -420,10 +420,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX7.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>29</value>
   </data>
   <data name="cmbStoryOverride.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 270</value>
+    <value>407, 267</value>
   </data>
   <data name="cmbStoryOverride.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 21</value>
@@ -441,7 +441,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbStoryOverride.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>26</value>
   </data>
   <data name="ComboItem31.Text" xml:space="preserve">
     <value>Installed</value>
@@ -456,7 +456,7 @@
     <value>True</value>
   </data>
   <data name="LabelX8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 120</value>
+    <value>407, 117</value>
   </data>
   <data name="LabelX8.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 15</value>
@@ -477,10 +477,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX8.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>27</value>
   </data>
   <data name="cmbENOverride.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 182</value>
+    <value>407, 179</value>
   </data>
   <data name="cmbENOverride.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 21</value>
@@ -498,7 +498,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbENOverride.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>24</value>
   </data>
   <data name="ComboItem34.Text" xml:space="preserve">
     <value>Not Installed</value>
@@ -513,7 +513,7 @@
     <value>True</value>
   </data>
   <data name="LabelX9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 163</value>
+    <value>407, 160</value>
   </data>
   <data name="LabelX9.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 15</value>
@@ -534,10 +534,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX9.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>25</value>
   </data>
   <data name="cmbLargeFilesOverride.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 226</value>
+    <value>407, 223</value>
   </data>
   <data name="cmbLargeFilesOverride.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 21</value>
@@ -555,7 +555,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbLargeFilesOverride.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>22</value>
   </data>
   <data name="ComboItem41.Text" xml:space="preserve">
     <value>Not Installed</value>
@@ -570,7 +570,7 @@
     <value>True</value>
   </data>
   <data name="LabelX10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 207</value>
+    <value>407, 204</value>
   </data>
   <data name="LabelX10.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 15</value>
@@ -591,10 +591,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX10.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>23</value>
   </data>
   <data name="btnPSO2Override.Location" type="System.Drawing.Point, System.Drawing">
-    <value>259, 297</value>
+    <value>454, 294</value>
   </data>
   <data name="btnPSO2Override.Size" type="System.Drawing.Size, System.Drawing">
     <value>118, 33</value>
@@ -615,7 +615,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnPSO2Override.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>21</value>
   </data>
   <data name="LabelX11.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 189</value>
@@ -639,7 +639,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX11.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>17</value>
   </data>
   <data name="LabelX12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -666,10 +666,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX12.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>19</value>
   </data>
   <data name="chkAutoRemoveCensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 19</value>
+    <value>403, 16</value>
   </data>
   <data name="chkAutoRemoveCensor.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 20</value>
@@ -690,13 +690,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkAutoRemoveCensor.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>12</value>
   </data>
   <data name="LabelX14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="LabelX14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 77</value>
+    <value>407, 74</value>
   </data>
   <data name="LabelX14.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 15</value>
@@ -717,10 +717,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LabelX14.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>15</value>
   </data>
   <data name="cmbPredownload.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 96</value>
+    <value>407, 93</value>
   </data>
   <data name="cmbPredownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 21</value>
@@ -738,7 +738,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmbPredownload.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>16</value>
   </data>
   <data name="ComboItem15.Text" xml:space="preserve">
     <value>Ask each time</value>
@@ -747,7 +747,7 @@
     <value>Never ask</value>
   </data>
   <data name="CheckBoxX2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 52</value>
+    <value>403, 51</value>
   </data>
   <data name="CheckBoxX2.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 20</value>
@@ -768,10 +768,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>14</value>
   </data>
   <data name="chkUseIcsHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 35</value>
+    <value>403, 34</value>
   </data>
   <data name="chkUseIcsHost.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 20</value>
@@ -792,10 +792,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkUseIcsHost.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>11</value>
   </data>
   <data name="ButtonX2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 214</value>
+    <value>15, 300</value>
   </data>
   <data name="ButtonX2.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 33</value>
@@ -816,7 +816,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ButtonX2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>10</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -847,7 +847,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton1.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>34</value>
   </data>
   <data name="ColorPickerButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -875,7 +875,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton2.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>31</value>
   </data>
   <data name="ColorPickerButton3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -903,7 +903,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton3.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>18</value>
   </data>
   <data name="ColorPickerButton4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -931,10 +931,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ColorPickerButton4.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>20</value>
   </data>
   <data name="btnChooseOrb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>122, 214</value>
+    <value>122, 300</value>
   </data>
   <data name="btnChooseOrb.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 33</value>
@@ -955,10 +955,14 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnChooseOrb.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>9</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 252</value>
+    <value>199, 300</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>192, 34</value>
@@ -967,7 +971,8 @@
     <value>50</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>To remove a picture, click its button, then click cancel and hit Yes.</value>
+    <value>To remove a picture, click its button,
+click cancel and hit Yes.</value>
   </data>
   <data name="&gt;&gt;Label1.Name" xml:space="preserve">
     <value>Label1</value>
@@ -979,10 +984,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="CheckBoxX3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 280</value>
+    <value>12, 262</value>
   </data>
   <data name="CheckBoxX3.Size" type="System.Drawing.Size, System.Drawing">
     <value>181, 20</value>
@@ -1003,10 +1008,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX3.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="CheckBoxX4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 297</value>
+    <value>12, 279</value>
   </data>
   <data name="CheckBoxX4.Size" type="System.Drawing.Size, System.Drawing">
     <value>181, 20</value>
@@ -1027,6 +1032,165 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CheckBoxX4.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="LabelX3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 215</value>
+  </data>
+  <data name="LabelX3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 15</value>
+  </data>
+  <data name="LabelX3.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="LabelX3.Text" xml:space="preserve">
+    <value>Progress Bar text color:</value>
+  </data>
+  <data name="&gt;&gt;LabelX3.Name" xml:space="preserve">
+    <value>LabelX3</value>
+  </data>
+  <data name="&gt;&gt;LabelX3.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.LabelX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;LabelX3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;LabelX3.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="ColorPickerButton5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAqSURBVDhPY/j//z9FGEIAKXIwigEgmhQ8asCoASA8
+        HA0gB8MNIB//ZwAAsSyVh9SDH54AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="ColorPickerButton5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>134, 215</value>
+  </data>
+  <data name="ColorPickerButton5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 20</value>
+  </data>
+  <data name="ColorPickerButton5.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="&gt;&gt;ColorPickerButton5.Name" xml:space="preserve">
+    <value>ColorPickerButton5</value>
+  </data>
+  <data name="&gt;&gt;ColorPickerButton5.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ColorPickerButton, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;ColorPickerButton5.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ColorPickerButton5.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="LabelX13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 241</value>
+  </data>
+  <data name="LabelX13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 15</value>
+  </data>
+  <data name="LabelX13.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="LabelX13.Text" xml:space="preserve">
+    <value>Progress Bar fill color:</value>
+  </data>
+  <data name="&gt;&gt;LabelX13.Name" xml:space="preserve">
+    <value>LabelX13</value>
+  </data>
+  <data name="&gt;&gt;LabelX13.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.LabelX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;LabelX13.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;LabelX13.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="cpbFill1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAqSURBVDhPY/j//z9FGEIAKXIwigEgmhQ8asCoASA8
+        HA0gB8MNIB//ZwAAsSyVh9SDH54AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cpbFill1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>134, 241</value>
+  </data>
+  <data name="cpbFill1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 20</value>
+  </data>
+  <data name="cpbFill1.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="&gt;&gt;cpbFill1.Name" xml:space="preserve">
+    <value>cpbFill1</value>
+  </data>
+  <data name="&gt;&gt;cpbFill1.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ColorPickerButton, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;cpbFill1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cpbFill1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="cpbFill2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAqSURBVDhPY/j//z9FGEIAKXIwigEgmhQ8asCoASA8
+        HA0gB8MNIB//ZwAAsSyVh9SDH54AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cpbFill2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>172, 241</value>
+  </data>
+  <data name="cpbFill2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 20</value>
+  </data>
+  <data name="cpbFill2.TabIndex" type="System.Int32, mscorlib">
+    <value>57</value>
+  </data>
+  <data name="&gt;&gt;cpbFill2.Name" xml:space="preserve">
+    <value>cpbFill2</value>
+  </data>
+  <data name="&gt;&gt;cpbFill2.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ColorPickerButton, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;cpbFill2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cpbFill2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="Label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>205, 230</value>
+  </data>
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 39</value>
+  </data>
+  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+    <value>58</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>The progress bar will go from one color to the other. If you want a solid color, select the same color in both.</value>
+  </data>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
+  </data>
+  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -1036,9 +1200,11 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>384, 332</value>
+    <value>584, 334</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>Manual</value>
   </data>

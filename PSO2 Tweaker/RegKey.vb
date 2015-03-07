@@ -46,6 +46,9 @@ Public Class RegKey
     Public Const ChecksVisible = "ChecksVisible"
     Public Const PSO2DirVisible = "PSO2DirVisible"
     Public Const StatusLabelColor = "StatusLabelColor"
+    Public Const PBTextColor = "PBTextColor"
+    Public Const PBFill1 = "PBFill1"
+    Public Const PBFill2 = "PBFill2"
 
     Private Shared ReadOnly RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared ReadOnly RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
