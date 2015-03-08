@@ -68,6 +68,8 @@ Public Class FrmOptions
             CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
             CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
             CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.GetProxyStats))
+            CheckBoxX6.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseOldProgressBar))
+            CheckBoxX7.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB))
 
             chkAutoRemoveCensor.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.RemoveCensor))
             CMBStyle.Text = RegKey.GetValue(Of String)(RegKey.Style)
@@ -244,6 +246,8 @@ Public Class FrmOptions
         CheckBoxX3.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX4.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
+        CheckBoxX6.TextColor = ColorPickerButton2.SelectedColor
+        CheckBoxX7.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
@@ -316,8 +320,9 @@ Public Class FrmOptions
                     Exit Sub
                 End If
                 If RemoveYesNo = MsgBoxResult.No Then Return
+            Else
+                Return
             End If
-
         End If
         FrmMain.BackgroundImage = System.Drawing.Image.FromFile(OpenFileDialog1.FileName)
 
@@ -338,6 +343,8 @@ Public Class FrmOptions
                     Exit Sub
                 End If
                 If RemoveYesNo = MsgBoxResult.No Then Return
+            Else
+                Return
             End If
         End If
         Dim bmp As New Bitmap(OpenFileDialog1.FileName)
@@ -401,7 +408,29 @@ Public Class FrmOptions
             FrmMain.lblProxyStats.Visible = True
             FrmMain.lblProxyStats.BackColor = FrmMain.rtbDebug.BackColor
             FrmMain.lblProxyStats.ForeColor = FrmMain.rtbDebug.ForeColor
+            'Delete the next two lines to enable sidebar theming. - AIDA
+            FrmMain.lblProxyStats.BackColor = Color.White
+            FrmMain.lblProxyStats.ForeColor = Color.Black
+
             FrmMain.GetProxyStats(Nothing)
         End If
+    End Sub
+
+    Private Sub CheckBoxX6_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX6.CheckedChanged
+        RegKey.SetValue(Of Boolean)(RegKey.UseOldProgressBar, CheckBoxX6.Checked)
+        If CheckBoxX6.Checked = True Then
+            FrmMain.PBMainBar.Style = eDotNetBarStyle.Office2007
+            FrmMain.PBMainBar.ForeColor = Color.Black
+            FrmMain.PBMainBar.BackgroundStyle.TextColor = Color.Black
+            Exit Sub
+        End If
+        If CheckBoxX6.Checked = False Then FrmMain.PBMainBar.Style = eDotNetBarStyle.Office2000
+    End Sub
+
+    Private Sub CheckBoxX7_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX7.CheckedChanged
+        FrmMain.btnLaunchPSO2fromORB.Visible = CheckBoxX7.Checked
+        RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, CheckBoxX7.Checked)
+        If FrmMain.btnLaunchPSO2fromORB.Visible = True Then FrmMain.btnLaunchPSO2.Visible = False
+        If FrmMain.btnLaunchPSO2fromORB.Visible = False Then FrmMain.btnLaunchPSO2.Visible = True
     End Sub
 End Class

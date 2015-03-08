@@ -131,6 +131,7 @@ Partial Class FrmMain
         Me.lblProxyStats = New System.Windows.Forms.Label()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
+        Me.btnLaunchPSO2fromORB = New DevComponents.DotNetBar.ButtonItem()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -223,7 +224,6 @@ Partial Class FrmMain
         Me.PBMainBar.Style = DevComponents.DotNetBar.eDotNetBarStyle.Office2000
         Me.PBMainBar.TabStop = False
         Me.PBMainBar.TextVisible = True
-        Me.PBMainBar.Value = 100
         '
         'chkRemoveNVidia
         '
@@ -419,7 +419,7 @@ Partial Class FrmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnLaunchPSO2fromORB, Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'btnSelectPSODir
         '
@@ -853,6 +853,14 @@ Partial Class FrmMain
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
         '
+        'btnLaunchPSO2fromORB
+        '
+        Me.btnLaunchPSO2fromORB.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnLaunchPSO2fromORB.Name = "btnLaunchPSO2fromORB"
+        Me.btnLaunchPSO2fromORB.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnLaunchPSO2fromORB, "btnLaunchPSO2fromORB")
+        Me.btnLaunchPSO2fromORB.Visible = False
+        '
         'FrmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -1002,5 +1010,6 @@ Partial Class FrmMain
     Friend WithEvents cmsTextBarOptions As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CopyAllTextToClipboardToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
+    Friend WithEvents btnLaunchPSO2fromORB As DevComponents.DotNetBar.ButtonItem
 
 End Class

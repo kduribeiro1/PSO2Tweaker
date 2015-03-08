@@ -122,15 +122,22 @@ Public Class FrmMain
             regValue = RegKey.GetValue(Of Integer)(RegKey.TextBoxColor)
             If regValue <> 0 Then rtbDebug.ForeColor = Color.FromArgb(Convert.ToInt32(regValue))
 
-            regValue = RegKey.GetValue(Of Integer)(RegKey.PBTextColor)
-            If regValue <> 0 Then PBMainBar.BackgroundStyle.TextColor = Color.FromArgb(Convert.ToInt32(regValue))
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseOldProgressBar.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.UseOldProgressBar, False)
 
-            regValue = RegKey.GetValue(Of Integer)(RegKey.PBFill1)
-            If regValue <> 0 Then PBMainBar.ChunkColor = Color.FromArgb(Convert.ToInt32(regValue))
+            If RegKey.GetValue(Of Boolean)(RegKey.UseOldProgressBar) = True Then
+                PBMainBar.Style = eDotNetBarStyle.Office2007
+                PBMainBar.ForeColor = Color.Black
+            Else
+                PBMainBar.Style = eDotNetBarStyle.Office2000
+                regValue = RegKey.GetValue(Of Integer)(RegKey.PBTextColor)
+                If regValue <> 0 Then PBMainBar.BackgroundStyle.TextColor = Color.FromArgb(Convert.ToInt32(regValue))
 
-            regValue = RegKey.GetValue(Of Integer)(RegKey.PBFill2)
-            If regValue <> 0 Then PBMainBar.ChunkColor2 = Color.FromArgb(Convert.ToInt32(regValue))
+                regValue = RegKey.GetValue(Of Integer)(RegKey.PBFill1)
+                If regValue <> 0 Then PBMainBar.ChunkColor = Color.FromArgb(Convert.ToInt32(regValue))
 
+                regValue = RegKey.GetValue(Of Integer)(RegKey.PBFill2)
+                If regValue <> 0 Then PBMainBar.ChunkColor2 = Color.FromArgb(Convert.ToInt32(regValue))
+            End If
             regValue = RegKey.GetValue(Of Integer)(RegKey.Color)
             If regValue <> 0 Then StyleManager.ColorTint = Color.FromArgb(Convert.ToInt32(regValue))
 
@@ -319,6 +326,17 @@ Public Class FrmMain
             Else
                 lblProxyStats.Visible = False
             End If
+
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, False)
+            If RegKey.GetValue(Of Boolean)(RegKey.LaunchPSO2fromORB) = True Then
+                btnLaunchPSO2.Visible = False
+                btnLaunchPSO2fromORB.Visible = True
+            End If
+            
+            'Remove the next 3 lines to try sidebar theming. - AIDA
+            WebBrowser1.Visible = False
+            lblProxyStats.BackColor = Color.White
+            lblProxyStats.ForeColor = Color.Black
 
             Show()
 
@@ -2364,7 +2382,8 @@ Public Class FrmMain
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Visible Then
-            If e.Url.ToString() <> Program.FreedomUrl & "tweaker2.html" Then
+            'Change to Tweaker2 to test sidebar theming. - AIDA
+            If e.Url.ToString() <> Program.FreedomUrl & "tweaker.html" Then
                 Process.Start(e.Url.ToString())
                 Helper.Log("Trying to load URL for sidebar: " & e.Url.ToString)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
@@ -2684,7 +2703,8 @@ Public Class FrmMain
 
     Private Sub LoadSidebar(state As Object)
         Try
-            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker2.html")
+            'Change to Tweaker2 to test Sidebar theming.
+            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.html")
         Catch ex As Exception
             Helper.WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
         End Try
@@ -3618,15 +3638,23 @@ Public Class FrmMain
     End Sub
 
     Private Sub WebBrowser4_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser4.DocumentCompleted
-        If WebBrowser4.DocumentText.Contains("replaceme") = False Then Exit Sub
-        If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
-            WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
-            Application.DoEvents()
-            WebBrowser1.Visible = False
-            Exit Sub
-        End If
-        WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", """white""").Replace("replacemetext", """black""")
-        Application.DoEvents()
-        WebBrowser1.Visible = False
+        'Remove the next two lines after we find out how to theme the sidebar correctly. - AIDA
+        'WebBrowser1.Visible = False
+        'Exit Sub
+        'If WebBrowser4.DocumentText.Contains("replaceme") = False Then Exit Sub
+        'If RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor) <> 0 And RegKey.GetValue(Of Integer)(RegKey.TextBoxColor) <> 0 Then
+        ' WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxBgColor).ToString)).Remove(0, 2)).Replace("replacemetext", Hex((RegKey.GetValue(Of Integer)(RegKey.TextBoxColor).ToString)).Remove(0, 2))
+        ' Application.DoEvents()
+        ' WebBrowser1.Visible = False
+        ' Exit Sub
+        ' End If
+        ' WebBrowser4.DocumentText = WebBrowser4.DocumentText.Replace("replacemebg", """white""").Replace("replacemetext", """black""")
+        ' Application.DoEvents()
+        'WebBrowser1.Visible = False
+    End Sub
+
+
+    Private Sub btnLaunchPSO2fromORB_Click(sender As Object, e As EventArgs) Handles btnLaunchPSO2fromORB.Click
+        btnLaunchPSO2.PerformClick()
     End Sub
 End Class

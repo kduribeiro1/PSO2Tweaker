@@ -43,7 +43,6 @@ Partial Class FrmOptions
         Me.LabelX2 = New DevComponents.DotNetBar.LabelX()
         Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
         Me.CheckBoxX1 = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
         Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
         Me.cmbBackupPreference = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem37 = New DevComponents.Editors.ComboItem()
@@ -94,6 +93,8 @@ Partial Class FrmOptions
         Me.CheckBoxX5 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.CheckBoxX6 = New DevComponents.DotNetBar.Controls.CheckBoxX()
+        Me.CheckBoxX7 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -212,16 +213,6 @@ Partial Class FrmOptions
         resources.ApplyResources(Me.CheckBoxX1, "CheckBoxX1")
         Me.CheckBoxX1.Name = "CheckBoxX1"
         Me.CheckBoxX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'LabelX5
-        '
-        resources.ApplyResources(Me.LabelX5, "LabelX5")
-        Me.LabelX5.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.LabelX5.BackgroundStyle.Class = ""
-        Me.LabelX5.Name = "LabelX5"
         '
         'LabelX6
         '
@@ -615,10 +606,34 @@ Partial Class FrmOptions
         resources.ApplyResources(Me.Label3, "Label3")
         Me.Label3.Name = "Label3"
         '
+        'CheckBoxX6
+        '
+        Me.CheckBoxX6.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.CheckBoxX6.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.CheckBoxX6, "CheckBoxX6")
+        Me.CheckBoxX6.Name = "CheckBoxX6"
+        Me.CheckBoxX6.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
+        'CheckBoxX7
+        '
+        Me.CheckBoxX7.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.CheckBoxX7.BackgroundStyle.Class = ""
+        resources.ApplyResources(Me.CheckBoxX7, "CheckBoxX7")
+        Me.CheckBoxX7.Name = "CheckBoxX7"
+        Me.CheckBoxX7.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.CheckBoxX7)
+        Me.Controls.Add(Me.CheckBoxX6)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.CheckBoxX5)
@@ -654,7 +669,6 @@ Partial Class FrmOptions
         Me.Controls.Add(Me.LabelX7)
         Me.Controls.Add(Me.LabelX6)
         Me.Controls.Add(Me.ColorPickerButton2)
-        Me.Controls.Add(Me.LabelX5)
         Me.Controls.Add(Me.LabelX4)
         Me.Controls.Add(Me.ColorPickerButton1)
         Me.Controls.Add(Me.cmbLanguage)
@@ -694,7 +708,6 @@ Partial Class FrmOptions
     Friend WithEvents ColorPickerButton1 As DevComponents.DotNetBar.ColorPickerButton
     Friend WithEvents LabelX4 As DevComponents.DotNetBar.LabelX
     Friend WithEvents CheckBoxX1 As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents LabelX5 As DevComponents.DotNetBar.LabelX
     Friend WithEvents LabelX6 As DevComponents.DotNetBar.LabelX
     Friend WithEvents ColorPickerButton2 As DevComponents.DotNetBar.ColorPickerButton
     Friend WithEvents cmbBackupPreference As DevComponents.DotNetBar.Controls.ComboBoxEx
@@ -745,4 +758,6 @@ Partial Class FrmOptions
     Friend WithEvents CheckBoxX5 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents CheckBoxX6 As DevComponents.DotNetBar.Controls.CheckBoxX
+    Friend WithEvents CheckBoxX7 As DevComponents.DotNetBar.Controls.CheckBoxX
 End Class
