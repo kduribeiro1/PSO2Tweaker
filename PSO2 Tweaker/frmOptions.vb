@@ -395,7 +395,13 @@ Public Class FrmOptions
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
         FrmMain.lblProxyStats.Visible = CheckBoxX5.Checked
-        If CheckBoxX5.Checked = True Then FrmMain.GetProxyStats(Nothing)
         RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, CheckBoxX5.Checked)
+        If CheckBoxX5.Checked = True Then
+            If RegKey.GetValue(Of String)(RegKey.ProxyStatsURL) = "" Then RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, "http://cloud02.cyberkitsune.net:8080/")
+            FrmMain.lblProxyStats.Visible = True
+            FrmMain.lblProxyStats.BackColor = FrmMain.rtbDebug.BackColor
+            FrmMain.lblProxyStats.ForeColor = FrmMain.rtbDebug.ForeColor
+            FrmMain.GetProxyStats(Nothing)
+        End If
     End Sub
 End Class

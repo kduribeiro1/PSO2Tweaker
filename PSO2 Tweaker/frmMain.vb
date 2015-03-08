@@ -308,7 +308,7 @@ Public Class FrmMain
                 RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, "True")
             End If
 
-            If RegKey.GetValue(Of Boolean)(RegKey.GetProxyStats) = Nothing Then RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, True)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.GetProxyStats.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, True)
             If RegKey.GetValue(Of Boolean)(RegKey.GetProxyStats) = True Then
                 If RegKey.GetValue(Of String)(RegKey.ProxyStatsURL) = "" Then RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, "http://cloud02.cyberkitsune.net:8080/")
                 lblProxyStats.Visible = True
