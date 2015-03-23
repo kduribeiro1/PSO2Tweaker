@@ -23,9 +23,9 @@ Namespace My
         Public Shared IsPso2Installed As Boolean = True
         Public Shared SidebarEnabled As Boolean = True
         Public Shared IsMainFormTopMost As Boolean = False
+        Public Shared transOverride As Boolean = False
 
         Public Shared Sub Main()
-            Dim transOverride As Boolean = False
 
             Try
                 Helper.Log("Checking if the PSO2 Tweaker is running")

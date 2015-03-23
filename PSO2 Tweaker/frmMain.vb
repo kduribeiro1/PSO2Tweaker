@@ -1253,8 +1253,8 @@ Public Class FrmMain
             End If
 
             'End Item Translation stuff
-            Helper.DeleteFile(Program.Pso2RootDir & "\ddraw.dll")
-            File.WriteAllBytes(Program.Pso2RootDir & "\ddraw.dll", Resources.ddraw)
+            If Not Program.transOverride Then Helper.DeleteFile(Program.Pso2RootDir & "\ddraw.dll")
+            If Not Program.transOverride Then File.WriteAllBytes(Program.Pso2RootDir & "\ddraw.dll", Resources.ddraw)
             Dim startInfo As ProcessStartInfo = New ProcessStartInfo With {.FileName = (Program.Pso2RootDir & "\pso2.exe"), .Arguments = "+0x33aca2b9", .UseShellExecute = False}
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
             Dim shell As Process = New Process With {.StartInfo = startInfo}
@@ -1283,7 +1283,7 @@ Public Class FrmMain
                 If SkipDialogs = True Then Exit Do
             Loop
 
-            Helper.DeleteFile(Program.Pso2RootDir & "\ddraw.dll")
+            If Not Program.transOverride Then Helper.DeleteFile(Program.Pso2RootDir & "\ddraw.dll")
             tmrWaitingforPSO2.Enabled = False
             If RegKey.GetValue(Of String)(RegKey.SteamMode) = "True" Then
                 File.Copy(Program.Pso2RootDir & "\pso2.exe", Program.Pso2RootDir & "\pso2.exe_backup", True)
@@ -2786,6 +2786,8 @@ Public Class FrmMain
                 proxyInfo = DirectCast(serializer.ReadObject(stream), Pso2ProxyInfo)
             End Using
 
+            If File.Exists("ServerConfig.txt") Then File.Delete("ServerConfig.txt")
+
             If Convert.ToInt32(proxyInfo.Version) <> 1 Then
                 MsgBox("ERROR - Version is incorrect! Please recheck the JSON.")
                 Return
@@ -3018,8 +3020,8 @@ Public Class FrmMain
         Next
 
 
-        'Helper.DeleteFile("resume.txt")
-        'File.AppendAllLines("resume.txt", missingfiles)
+        Helper.DeleteFile("resume.txt")
+        File.AppendAllLines("resume.txt", missingfiles)
         Dim totaldownload As Long = missingfiles.Count
         Dim downloaded As Long = 0
         Dim totaldownloadedthings As Long = 0
@@ -3044,12 +3046,12 @@ Public Class FrmMain
             Helper.DeleteFile((Program.Pso2WinDir & "\" & downloadStr))
             File.Move(downloadStr, (Program.Pso2WinDir & "\" & downloadStr))
             If _vedaUnlocked Then Helper.WriteDebugInfo("DEBUG: Downloaded and installed " & downloadStr & ".")
-            'Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
+            Dim linesList As New List(Of String)(File.ReadAllLines("resume.txt"))
 
             'Remove the line to delete, e.g.
-            'linesList.Remove(downloadStr)
+            linesList.Remove(downloadStr)
 
-            'File.WriteAllLines("resume.txt", linesList.ToArray())
+            File.WriteAllLines("resume.txt", linesList.ToArray())
             Application.DoEvents()
         Next
         If missingfiles.Count = 0 Then Helper.WriteDebugInfo(Resources.strYouAppearToBeUpToDate)
@@ -3109,7 +3111,7 @@ Public Class FrmMain
 
         RegKey.SetValue(Of String)(RegKey.Pso2PatchlistMd5, Helper.GetMd5("patchlist.txt"))
         Helper.WriteDebugInfo("Game updated to the latest version. Don't forget to re-install/update the patches, as some of the files might have been untranslated.")
-        'Helper.DeleteFile("resume.txt")
+        Helper.DeleteFile("resume.txt")
         RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
         UnlockGui()
 
@@ -3596,6 +3598,8 @@ Public Class FrmMain
                 Dim serializer As DataContractJsonSerializer = New DataContractJsonSerializer(GetType(ProxyStats))
                 proxystats = DirectCast(serializer.ReadObject(stream), ProxyStats)
             End Using
+
+
 
             Dim FullDate As String = FromUnix(proxystats.upSince).ToString
 
