@@ -395,7 +395,7 @@ Public Class FrmOptions
 
     Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
         FrmMain.lblProxyStats.Visible = CheckBoxX5.Checked
-        If CheckBoxX5.Checked = True Then FrmMain.GetProxyStats()
+        If CheckBoxX5.Checked = True Then FrmMain.GetProxyStats(Nothing)
         RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, CheckBoxX5.Checked)
     End Sub
 End Class

@@ -314,10 +314,8 @@ Public Class FrmMain
                 lblProxyStats.Visible = True
                 lblProxyStats.BackColor = rtbDebug.BackColor
                 lblProxyStats.ForeColor = rtbDebug.ForeColor
-                'Fix this for me LightningDragon, pls. <3
-                Dim t1 As New Threading.Thread(AddressOf GetProxyStats)
-                t1.IsBackground = True
-                t1.Start()
+
+                ThreadPool.QueueUserWorkItem(AddressOf GetProxyStats, Nothing)
             Else
                 lblProxyStats.Visible = False
             End If
@@ -3545,9 +3543,10 @@ Public Class FrmMain
             MsgBox("ERROR - " & ex.Message.ToString)
         End Try
     End Sub
-    Public Sub GetProxyStats()
+
+    Public Sub GetProxyStats(state As Object)
         If lblProxyStats.InvokeRequired Then
-            lblProxyStats.Invoke(New Action(AddressOf GetProxyStats))
+            lblProxyStats.Invoke(New Action(Of Object)(AddressOf GetProxyStats), state)
         Else
             lblProxyStats.Text = Text
 
