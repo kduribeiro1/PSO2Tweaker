@@ -3052,6 +3052,9 @@ Public Class FrmMain
             linesList.Remove(downloadStr)
 
             File.WriteAllLines("resume.txt", linesList.ToArray())
+            lblStatus.Text = Resources.strDownloading & "" & downloaded & "/" & totaldownload & " (" & Helper.SizeSuffix(totaldownloadedthings) & ")"
+
+            Application.DoEvents()
             Application.DoEvents()
         Next
         If missingfiles.Count = 0 Then Helper.WriteDebugInfo(Resources.strYouAppearToBeUpToDate)
