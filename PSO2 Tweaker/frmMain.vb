@@ -2934,19 +2934,19 @@ Public Class FrmMain
         lblStatus.Text = ""
 
         If Directory.Exists(BuildBackupPath(EnglishPatch)) Then
-            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
+            'If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfo(Resources.strENBackupFound)
             RestoreBackup(EnglishPatch)
         End If
 
         If Directory.Exists(BuildBackupPath(LargeFiles)) Then
-            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
+            'If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfo(Resources.strLFBackupFound)
             RestoreBackup(LargeFiles)
         End If
 
         If Directory.Exists(BuildBackupPath(StoryPatch)) Then
-            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
+            'If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfo(Resources.strStoryBackupFound)
             RestoreBackup(StoryPatch)
         End If
@@ -3191,25 +3191,25 @@ Public Class FrmMain
 
             'execute pso2-transam stuff with -b flag for backup
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
-            'If Directory.Exists(backupdir) Then
-            'Dim counter = Computer.FileSystem.GetFiles(backupdir)
-            'If counter.Count > 0 Then
-            processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-            'Else
-            'Helper.Log("[TRANSAM] Creating backup directory")
-            'Directory.CreateDirectory(backupdir)
-            'Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-            'processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-            'End If
-            'End If
+            If Directory.Exists(backupdir) Then
+                Dim counter = Computer.FileSystem.GetFiles(backupdir)
+                If counter.Count > 0 Then
+                    processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+                Else
+                    Helper.Log("[TRANSAM] Creating backup directory")
+                    Directory.CreateDirectory(backupdir)
+                    Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+                    processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+                End If
+            End If
 
             'We don't need to make backups anymore
-            'If Not Directory.Exists(backupdir) Then
-            ' Helper.Log("[TRANSAM] Creating backup directory")
-            ' Directory.CreateDirectory(backupdir)
-            ' Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-            ' processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-            ' End If
+            If Not Directory.Exists(backupdir) Then
+                Helper.Log("[TRANSAM] Creating backup directory")
+                Directory.CreateDirectory(backupdir)
+                Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+                processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+            End If
 
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
