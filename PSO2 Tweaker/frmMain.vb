@@ -3204,6 +3204,7 @@ Public Class FrmMain
             End If
 
             'We don't need to make backups anymore
+            'Yes we do, shut up past AIDA.
             If Not Directory.Exists(backupdir) Then
                 Helper.Log("[TRANSAM] Creating backup directory")
                 Directory.CreateDirectory(backupdir)
