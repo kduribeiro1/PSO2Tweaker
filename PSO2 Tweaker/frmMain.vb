@@ -5,6 +5,7 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Net
 Imports System.Runtime.Serialization.Json
+Imports System.Security
 Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Xml
@@ -248,7 +249,7 @@ Public Class FrmMain
             End If
         End If
     End Sub
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub Form1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         If Me.BackgroundImage IsNot Nothing Then
             Dim FormWidth As Integer
@@ -332,7 +333,7 @@ Public Class FrmMain
                 btnLaunchPSO2.Visible = False
                 btnLaunchPSO2fromORB.Visible = True
             End If
-            
+
             'Remove the next 3 lines to try sidebar theming. - AIDA
             WebBrowser1.Visible = False
             lblProxyStats.BackColor = Color.White
@@ -2377,7 +2378,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub WebBrowser4_Navigated(sender As Object, e As WebBrowserNavigatedEventArgs) Handles WebBrowser4.Navigated
-        
+
     End Sub
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
@@ -2881,7 +2882,7 @@ Public Class FrmMain
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
             Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message.ToString)
-            If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then
+            If ex.GetType() = GetType(SecurityException) OrElse ex.GetType() = GetType(UnauthorizedAccessException) Then
                 MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again." & vbNewLine & "When you click Okay, the Tweaker will also generate a pastebin of your HOSTS file and what is locking it. Look at the bottom of the pastebin where the 'HOSTS Handle stuff' is.")
                 FrmDiagnostic.Button2.PerformClick()
             End If
