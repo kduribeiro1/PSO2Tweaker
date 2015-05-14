@@ -2873,6 +2873,28 @@ Public Class FrmMain
             File.WriteAllLines(Program.HostsFilePath, builtFile.ToArray())
             Helper.WriteDebugInfoSameLine(" Done!")
 
+            Helper.WriteDebugInfo("Testing connection...")
+            Dim gameHost As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
+            ' Although this is already an IP address in the case of the public proxy, there is the potnetial
+            ' that it could be a hostname. I could be wrong, but better safe than sorry!
+            Dim proxyHost As IPHostEntry = Dns.GetHostEntry(proxyInfo.Host)
+
+            Dim connectSuccess As Boolean = False
+            For Each address As IPAddress In gameHost.AddressList
+                If proxyHost.AddressList.Contains(address) Then
+                    connectSuccess = True
+                    Exit For
+                End If
+            Next
+
+            If Not connectSuccess Then
+                Helper.WriteDebugInfoAndFailed("Connection test failed!")
+                MessageBox.Show("Failed to connect to the right server. This could mean your hosts file was not properly modified. Disable your anti-virus software and try again.",
+                                "Connection test failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End If
+
+            Helper.WriteDebugInfoAndOk("Connection success!")
             Helper.WriteDebugInfo("Downloading and installing publickey.blob...")
             Program.Client.DownloadFile(proxyInfo.PublicKeyUrl, Program.StartPath & "\publickey.blob")
             If File.Exists(Program.Pso2RootDir & "\publickey.blob") AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile(Program.Pso2RootDir & "\publickey.blob")
