@@ -2781,6 +2781,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo("Downloading configuration...")
             Program.Client.DownloadFile(jsonurl, "ServerConfig.txt")
 
+            ' TODO: Deserialize directly from a string instead of saving to a file.
             Dim proxyInfo As Pso2ProxyInfo
             Using stream As FileStream = File.Open("ServerConfig.txt", FileMode.Open)
                 Dim serializer As DataContractJsonSerializer = New DataContractJsonSerializer(GetType(Pso2ProxyInfo))
@@ -2791,11 +2792,6 @@ Public Class FrmMain
 
             If Convert.ToInt32(proxyInfo.Version) <> 1 Then
                 MsgBox("ERROR - Version is incorrect! Please recheck the JSON.")
-                Return
-            End If
-
-            If Not proxyInfo.PublicKeyUrl.Contains("publickey.blob") Then
-                MsgBox("ERROR - Public Key URL doesn't point to a public key blob! Please recheck the JSON.")
                 Return
             End If
 
