@@ -5,6 +5,7 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Net
 Imports System.Runtime.Serialization.Json
+Imports System.Security
 Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Xml
@@ -248,7 +249,7 @@ Public Class FrmMain
             End If
         End If
     End Sub
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub Form1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         If Me.BackgroundImage IsNot Nothing Then
             Dim FormWidth As Integer
@@ -332,7 +333,7 @@ Public Class FrmMain
                 btnLaunchPSO2.Visible = False
                 btnLaunchPSO2fromORB.Visible = True
             End If
-            
+
             'Remove the next 3 lines to try sidebar theming. - AIDA
             WebBrowser1.Visible = False
             lblProxyStats.BackColor = Color.White
@@ -2377,7 +2378,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub WebBrowser4_Navigated(sender As Object, e As WebBrowserNavigatedEventArgs) Handles WebBrowser4.Navigated
-        
+
     End Sub
 
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
@@ -2780,6 +2781,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo("Downloading configuration...")
             Program.Client.DownloadFile(jsonurl, "ServerConfig.txt")
 
+            ' TODO: Deserialize directly from a string instead of saving to a file.
             Dim proxyInfo As Pso2ProxyInfo
             Using stream As FileStream = File.Open("ServerConfig.txt", FileMode.Open)
                 Dim serializer As DataContractJsonSerializer = New DataContractJsonSerializer(GetType(Pso2ProxyInfo))
@@ -2790,11 +2792,6 @@ Public Class FrmMain
 
             If Convert.ToInt32(proxyInfo.Version) <> 1 Then
                 MsgBox("ERROR - Version is incorrect! Please recheck the JSON.")
-                Return
-            End If
-
-            If Not proxyInfo.PublicKeyUrl.Contains("publickey.blob") Then
-                MsgBox("ERROR - Public Key URL doesn't point to a public key blob! Please recheck the JSON.")
                 Return
             End If
 
@@ -2872,6 +2869,28 @@ Public Class FrmMain
             File.WriteAllLines(Program.HostsFilePath, builtFile.ToArray())
             Helper.WriteDebugInfoSameLine(" Done!")
 
+            Helper.WriteDebugInfo("Testing connection...")
+            Dim gameHost As IPHostEntry = Dns.GetHostEntry("gs001.pso2gs.net")
+            ' Although this is already an IP address in the case of the public proxy, there is the potnetial
+            ' that it could be a hostname. I could be wrong, but better safe than sorry!
+            Dim proxyHost As IPHostEntry = Dns.GetHostEntry(proxyInfo.Host)
+
+            Dim connectSuccess As Boolean = False
+            For Each address As IPAddress In gameHost.AddressList
+                If proxyHost.AddressList.Contains(address) Then
+                    connectSuccess = True
+                    Exit For
+                End If
+            Next
+
+            If Not connectSuccess Then
+                Helper.WriteDebugInfoAndFailed("Connection test failed!")
+                MessageBox.Show("Failed to connect to the right server. This could mean your hosts file was not properly modified. Disable your anti-virus software and try again.",
+                                "Connection test failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End If
+
+            Helper.WriteDebugInfoAndOk("Connection success!")
             Helper.WriteDebugInfo("Downloading and installing publickey.blob...")
             Program.Client.DownloadFile(proxyInfo.PublicKeyUrl, Program.StartPath & "\publickey.blob")
             If File.Exists(Program.Pso2RootDir & "\publickey.blob") AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile(Program.Pso2RootDir & "\publickey.blob")
@@ -2880,8 +2899,9 @@ Public Class FrmMain
             Helper.WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
-            Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message.ToString)
-            If ex.Message.Contains("is denied.") AndAlso ex.Message.Contains("Access to the path") Then
+            Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message)
+            Dim exceptionType As Type = ex.GetType()
+            If exceptionType = GetType(SecurityException) OrElse exceptionType = GetType(UnauthorizedAccessException) Then
                 MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again." & vbNewLine & "When you click Okay, the Tweaker will also generate a pastebin of your HOSTS file and what is locking it. Look at the bottom of the pastebin where the 'HOSTS Handle stuff' is.")
                 FrmDiagnostic.Button2.PerformClick()
             End If
