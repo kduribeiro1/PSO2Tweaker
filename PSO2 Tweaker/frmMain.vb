@@ -1252,6 +1252,20 @@ Public Class FrmMain
                 DownloadFile(Program.FreedomUrl & "working.txt", "working.txt")
                 If File.ReadAllLines("working.txt")(0) = "No" Then
                     'You baka ass mother fucker.
+                    Cursor = Cursors.WaitCursor
+                    Try
+
+                        Baka.TopMost = TopMost
+                        Baka.Top += 50
+                        Baka.Left += 50
+                        Baka.ShowDialog()
+                        Exit Sub
+                    Catch ex As Exception
+                        Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                        Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+                    Finally
+                        Cursor = Cursors.Default
+                    End Try
                 End If
             End If
 

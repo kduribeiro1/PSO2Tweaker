@@ -145,6 +145,12 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Baka.Designer.vb">
+      <DependentUpon>Baka.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Baka.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="External.vb" />
     <Compile Include="Languages.vb" />
     <Compile Include="Md5Provider.vb" />
@@ -155,9 +161,7 @@
     </Compile>
     <Compile Include="MyWebClient.vb" />
     <Compile Include="My\ApplicationEvents.vb" />
-    <Compile Include="My\Program.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="My\Program.vb" />
     <Compile Include="My\Settings.vb" />
     <Compile Include="RegKey.vb" />
     <Compile Include="FrmDiagnostic.Designer.vb">
@@ -251,6 +255,9 @@
     <Compile Include="Pso2ProxyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Baka.resx">
+      <DependentUpon>Baka.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmDiagnostic.resx">
       <DependentUpon>FrmDiagnostic.vb</DependentUpon>
     </EmbeddedResource>
