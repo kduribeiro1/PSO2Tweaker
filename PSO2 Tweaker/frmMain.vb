@@ -1248,6 +1248,14 @@ Public Class FrmMain
             If SkipDialogs = False Then PBMainBar.Text = ""
             Helper.WriteDebugInfo(Resources.strLaunchingPSO2)
 
+            If chkItemTranslation.Checked Then
+                DownloadFile(Program.FreedomUrl & "working.txt", "working.txt")
+                If File.ReadAllLines("working.txt")(0) = "No" Then
+                    'You baka ass mother fucker.
+                End If
+            End If
+
+
             If chkItemTranslation.Checked AndAlso (Helper.GetMd5(Program.Pso2RootDir & "\translator.dll") <> RegKey.GetValue(Of String)(RegKey.Dllmd5)) Then
                 MsgBox(Resources.strTranslationFilesDontMatch)
                 Return
