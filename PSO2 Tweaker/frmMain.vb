@@ -478,6 +478,24 @@ Public Class FrmMain
 
                 Program.UseItemTranslation = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseItemTranslation))
 
+                If Directory.Exists(Program.Pso2RootDir & "\plugins\") = False Then
+                    Helper.WriteDebugInfoAndOk("Setting up plugin system...")
+                    Using downloadClient As New WebClient
+                        downloadClient.DownloadFile(New Uri(Program.FreedomUrl & "initial_plugin_pack.rar"), "initial_plugin_pack.rar")
+                    End Using
+
+                    Dim processStartInfo = New ProcessStartInfo()
+                    processStartInfo.FileName = (Program.StartPath & "\unrar.exe").Replace("\\", "\")
+                    processStartInfo.Verb = "runas"
+                    processStartInfo.Arguments = "x -inul -o+ initial_plugin_pack.rar """ & Program.Pso2RootDir & ""
+                    processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                    processStartInfo.UseShellExecute = True
+
+                    Process.Start(processStartInfo).WaitForExit()
+
+                    File.Delete("initial_plugin_pack.rar")
+                End If
+
                 If Program.UseItemTranslation Then
                     chkItemTranslation.Checked = True
                     Helper.WriteDebugInfo("Downloading latest item patch files...")
@@ -490,32 +508,41 @@ Public Class FrmMain
                     Loop
                 End If
 
-                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
-                    Helper.WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
-                    _itemDownloadingDone = False
-                    ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
-
-                    Do Until _itemDownloadingDone
-                        Application.DoEvents()
-                        Thread.Sleep(16)
-                    Loop
-
-                    If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
-                        File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
-                    End If
-
-                    Dim builtFile As New List(Of String)
-
-                    For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
-                        If line.Contains("TranslationPath:") Then line = "TranslationPath:"
-                        builtFile.Add(line)
-                    Next
-
-                    File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
+                If File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Then
+                    Try
+                        Helper.WriteDebugInfo("Downloading latest title patch file...")
+                        Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation_titles.bin", (Program.Pso2RootDir & "\translation_titles.bin"))
+                    Catch ex As Exception
+                        MsgBox("Failed to download title translation file! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+                    End Try
                 End If
-            End If
 
-            Helper.WriteDebugInfoSameLine(Resources.strDone)
+                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
+                        Helper.WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
+                        _itemDownloadingDone = False
+                        ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
+
+                        Do Until _itemDownloadingDone
+                            Application.DoEvents()
+                            Thread.Sleep(16)
+                        Loop
+
+                        If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
+                            File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
+                        End If
+
+                        Dim builtFile As New List(Of String)
+
+                        For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
+                            If line.Contains("TranslationPath:") Then line = "TranslationPath:"
+                            builtFile.Add(line)
+                        Next
+
+                        File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
+                    End If
+                End If
+
+                Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
@@ -3706,5 +3733,23 @@ Public Class FrmMain
 
     Private Sub btnLaunchPSO2fromORB_Click(sender As Object, e As EventArgs) Handles btnLaunchPSO2fromORB.Click
         btnLaunchPSO2.PerformClick()
+    End Sub
+
+    Private Sub btnPlugins_Click(sender As Object, e As EventArgs) Handles btnPlugins.Click
+        'Show the plugin form (GEE THIS CODE LOOKS FAMILIAR)
+        Cursor = Cursors.WaitCursor
+        Try
+
+            frmPlugins.TopMost = TopMost
+            frmPlugins.Top += 50
+            frmPlugins.Left += 50
+            frmPlugins.ShowDialog()
+            Exit Sub
+        Catch ex As Exception
+            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+        Finally
+            Cursor = Cursors.Default
+        End Try
     End Sub
 End Class

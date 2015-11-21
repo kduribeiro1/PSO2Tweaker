@@ -741,6 +741,12 @@
   <data name="btnOptions.Tooltip" xml:space="preserve">
     <value>Change options relating to the PSO2 Tweaker</value>
   </data>
+  <data name="btnPlugins.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="btnPlugins.Tooltip" xml:space="preserve">
+    <value>Change certain in-game PSO2 options</value>
+  </data>
   <data name="btnExit.Text" xml:space="preserve">
     <value>E&amp;xit</value>
   </data>
@@ -7610,6 +7616,12 @@
   <data name="&gt;&gt;ItemContainer3.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ItemContainer, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
+  <data name="&gt;&gt;btnLaunchPSO2fromORB.Name" xml:space="preserve">
+    <value>btnLaunchPSO2fromORB</value>
+  </data>
+  <data name="&gt;&gt;btnLaunchPSO2fromORB.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
   <data name="&gt;&gt;btnSelectPSODir.Name" xml:space="preserve">
     <value>btnSelectPSODir</value>
   </data>
@@ -8016,12 +8028,12 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.5.5, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;btnLaunchPSO2fromORB.Name" xml:space="preserve">
-    <value>btnLaunchPSO2fromORB</value>
+  <data name="&gt;&gt;btnPlugins.Name" xml:space="preserve">
+    <value>btnPlugins</value>
   </data>
-  <data name="&gt;&gt;btnLaunchPSO2fromORB.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnPlugins.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
