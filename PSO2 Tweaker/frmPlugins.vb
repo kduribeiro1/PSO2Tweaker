@@ -3,6 +3,7 @@ Imports PSO2_Tweaker.My
 
 Public Class frmPlugins
     Private Sub frmPlugins_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ListViewEx1.Clear()
         ' make a reference to a directory
         Dim di As New IO.DirectoryInfo(Program.Pso2RootDir & "\plugins\")
         Dim diar1 As IO.FileInfo() = di.GetFiles()
@@ -26,10 +27,16 @@ Public Class frmPlugins
     Private Sub ListViewEx1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewEx1.SelectedIndexChanged
         lblPluginInfo.Text = ""
         If ListViewEx1.FocusedItem.Text = "PSO2TitleTranslator.dll" Then
-            lblPluginInfo.Text = "Translates the titles in-game."
+            lblPluginInfo.Text = "Translates the titles in-game." & vbCrLf & "Author: Variant" & vbCrLf & "Support URL: <not implemented>"
+            Exit Sub
         End If
         If ListViewEx1.FocusedItem.Text = "translator.dll" Then
-            lblPluginInfo.Text = "Translates the items in-game."
+            lblPluginInfo.Text = "Translates the items in-game." & vbCrLf & "Author: arcnmx/Variant/Raven123" & vbCrLf & "Support URL: <not implemented>"
+            Exit Sub
+        End If
+        If ListViewEx1.FocusedItem.Text = "PSO2DamageDump.dll" Then
+            lblPluginInfo.Text = "DPS (Damage Per Second) Parser plugin. Exports damage logs into a damagelogs folder where pso2.exe is, in excel format." & vbCrLf & "Author: Variant" & "Support URL: <not implemented>"
+            Exit Sub
         End If
     End Sub
 

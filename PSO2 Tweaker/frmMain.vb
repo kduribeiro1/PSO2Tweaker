@@ -496,28 +496,39 @@ Public Class FrmMain
                     File.Delete("initial_plugin_pack.rar")
                 End If
 
-                If Program.UseItemTranslation Then
-                    chkItemTranslation.Checked = True
-                    Helper.WriteDebugInfo("Downloading latest item patch files...")
+                If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Or File.Exists(Program.Pso2RootDir & "\plugins\PSO2TitleTranslator.dll") = False Then
+
+                    'Helper.WriteDebugInfo("Downloading latest plugin files...")
                     _itemDownloadingDone = False
-                    ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
+                    ThreadPool.QueueUserWorkItem(AddressOf DownloadPluginFiles, Nothing)
 
                     Do Until _itemDownloadingDone
                         Application.DoEvents()
                         Thread.Sleep(16)
                     Loop
-                End If
 
-                If File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Then
-                    Try
-                        Helper.WriteDebugInfo("Downloading latest title patch file...")
-                        Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation_titles.bin", (Program.Pso2RootDir & "\translation_titles.bin"))
-                    Catch ex As Exception
-                        MsgBox("Failed to download title translation file! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-                    End Try
-                End If
+                    If Program.UseItemTranslation Then
+                        chkItemTranslation.Checked = True
+                        Helper.WriteDebugInfo("Downloading latest item patch files...")
+                        _itemDownloadingDone = False
+                        ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
 
-                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
+                        Do Until _itemDownloadingDone
+                            Application.DoEvents()
+                            Thread.Sleep(16)
+                        Loop
+                    End If
+
+                    If File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Then
+                        Try
+                            Helper.WriteDebugInfo("Downloading latest title patch file...")
+                            Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation_titles.bin", (Program.Pso2RootDir & "\translation_titles.bin"))
+                        Catch ex As Exception
+                            MsgBox("Failed to download title translation file! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+                        End Try
+                    End If
+
+                    If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
                         Helper.WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
                         _itemDownloadingDone = False
                         ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
@@ -615,6 +626,29 @@ Public Class FrmMain
             Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
         Catch ex As Exception
             MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+        End Try
+
+        _itemDownloadingDone = True
+    End Sub
+    Private Sub DownloadPluginFiles(state As Object)
+        Try
+            If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
+                Helper.WriteDebugInfo("Downloading DPS Parser plugin... (disabled by default)")
+                Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\disabled\PSO2DamageDump.dll"))
+                Helper.WriteDebugInfoSameLine("Done!")
+            End If
+            If File.Exists(Program.Pso2RootDir & "\plugins\PSO2TitleTranslator.dll") = False Then
+                Helper.WriteDebugInfo("Downloading Title Translator plugin... (enabled by default)")
+                Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "Plugins/PSO2TitleTranslator.dll", (Program.Pso2RootDir & "\Plugins\PSO2TitleTranslator.dll"))
+                Helper.WriteDebugInfoSameLine("Done!")
+            End If
+            'For when we use the item patch like this
+            'If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
+            'Helper.WriteDebugInfo("Installing DPS Parser plugin...")
+            'Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\PSO2DamageDump.dll"))
+            'End If
+        Catch ex As Exception
+            MsgBox("Failed to download plugin files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
         End Try
 
         _itemDownloadingDone = True
