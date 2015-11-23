@@ -985,8 +985,9 @@ Public Class FrmMain
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
             DownloadFile(Program.FreedomUrl & "precede.txt", "precede.txt")
             Dim precedeSplit As String() = File.ReadAllLines("precede.txt")(0).Split(":"c)
-            Dim precedeversionstring As String = precedeSplit(1)
 
+            Dim precedeversionstring As String = precedeSplit(1)
+            Helper.DeleteFile("precede.txt")
             If comingFromPrePatch Then
                 DownloadPrePatch(precedeversionstring)
             Else
@@ -3847,5 +3848,6 @@ Public Class FrmMain
                 Helper.Log("Checked for plugins, no updates neccessary!")
             End If
         End Using
+        Helper.DeleteFile("PluginMD5HashList.txt")
     End Sub
 End Class
