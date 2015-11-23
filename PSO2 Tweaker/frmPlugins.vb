@@ -35,7 +35,7 @@ Public Class frmPlugins
             Exit Sub
         End If
         If ListViewEx1.FocusedItem.Text = "PSO2DamageDump.dll" Then
-            lblPluginInfo.Text = "DPS (Damage Per Second) Parser plugin. Exports damage logs into a damagelogs folder where pso2.exe is, in excel format." & vbCrLf & "Author: Variant" & "Support URL: <not implemented>"
+            lblPluginInfo.Text = "DPS (Damage Per Second) Parser plugin. Exports damage logs into a damagelogs folder where pso2.exe is, in excel format." & vbCrLf & "Author: Variant" & vbCrLf & "Support URL: <not implemented>"
             Exit Sub
         End If
     End Sub
@@ -57,5 +57,9 @@ Public Class frmPlugins
             End If
         Next
         MsgBox("Changes saved! Feel free to close the window when done.")
+    End Sub
+
+    Private Sub lblPluginInfo_Click(sender As Object, e As EventArgs) Handles lblPluginInfo.Click
+
     End Sub
 End Class
