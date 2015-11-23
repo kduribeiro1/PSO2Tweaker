@@ -375,7 +375,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ddraw.dll" />
+    <EmbeddedResource Include="ddraw.dll" />
     <Content Include="pso2 icon 512.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

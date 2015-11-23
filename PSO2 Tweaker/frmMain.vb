@@ -425,6 +425,7 @@ Public Class FrmMain
             Helper.DeleteFile("precede_apply.txt")
             Helper.DeleteFile("version.ver")
             Helper.DeleteFile("Story MD5HashList.txt")
+            Helper.DeleteFile("PluginMD5HashList.txt")
 
             UnlockGui()
             btnLaunchPSO2.Enabled = False
@@ -469,6 +470,8 @@ Public Class FrmMain
 
             '            Helper.WriteDebugInfo(Resources.strIfAboveVersions)
 
+
+
             If Program.WayuIsAFailure Then
                 Helper.WriteDebugInfo("Skipping downloads for Wayu!")
             Else
@@ -496,18 +499,7 @@ Public Class FrmMain
                     File.Delete("initial_plugin_pack.rar")
                 End If
 
-                If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Or File.Exists(Program.Pso2RootDir & "\plugins\PSO2TitleTranslator.dll") = False Then
-
-                    'Helper.WriteDebugInfo("Downloading latest plugin files...")
-                    _itemDownloadingDone = False
-                    ThreadPool.QueueUserWorkItem(AddressOf DownloadPluginFiles, Nothing)
-
-                    Do Until _itemDownloadingDone
-                        Application.DoEvents()
-                        Thread.Sleep(16)
-                    Loop
-
-                    If Program.UseItemTranslation Then
+                If Program.UseItemTranslation Then
                         chkItemTranslation.Checked = True
                         Helper.WriteDebugInfo("Downloading latest item patch files...")
                         _itemDownloadingDone = False
@@ -552,8 +544,8 @@ Public Class FrmMain
                         File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
                     End If
                 End If
-
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
+            CheckForPluginUpdates()
+            Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
@@ -857,6 +849,7 @@ Public Class FrmMain
         Try
             If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) = "Not Installed" Then Return
             'We're going to comment this out for the moment, but DO NOT REMOVE IT as it may be used again in the future... [AIDA]
+            'And we did end up using it again for the plugin system. Thank you past AIDA <3 [AIDA]
             'DownloadFile(Program.FreedomUrl & "patchfiles/Story%20MD5HashList.txt", "Story MD5HashList.txt")
 
             'Using oReader As StreamReader = File.OpenText("Story MD5HashList.txt")
@@ -3785,5 +3778,74 @@ Public Class FrmMain
         Finally
             Cursor = Cursors.Default
         End Try
+    End Sub
+    Private Sub CheckForPluginUpdates()
+        DownloadFile(Program.FreedomUrl & "Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
+        Using oReader As StreamReader = File.OpenText("PluginMD5HashList.txt")
+            Dim strNewDate As String = oReader.ReadLine()
+            RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
+            RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
+            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Then
+                'Update plugins [AIDA]
+
+                Dim missingfiles As New List(Of String)
+                Dim numberofChecks As Integer = 0
+                Dim truefilename As String
+                Dim filename As String()
+                Helper.WriteDebugInfo("Beginning plugin update...")
+                'Update pso2h.dll
+                Try
+                    Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "pso2h.dll", (Program.Pso2RootDir & "\pso2h.dll"))
+                Catch ex As Exception
+                    MsgBox("Failed to download plugin file! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+                End Try
+                'Move all plugins to the base folder, will make code to remember disabled ones later [AIDA]
+                For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\disabled\").GetFiles
+                    File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\", fi.Name))
+                Next
+
+                While Not (oReader.EndOfStream)
+                    filename = oReader.ReadLine().Split(","c)
+                    truefilename = filename(0)
+
+                    If Not File.Exists((Program.Pso2RootDir & "\plugins\" & truefilename)) Then
+                        missingfiles.Add(truefilename)
+                    ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\" & truefilename)) <> filename(1) Then
+                        missingfiles.Add(truefilename)
+                    End If
+
+                    numberofChecks += 1
+                    lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
+                    Application.DoEvents()
+                End While
+
+                Helper.WriteDebugInfo("Downloading/Installing updates...")
+                Dim totaldownload As Long = missingfiles.Count
+                Dim downloaded As Long = 0
+
+                For Each downloadStr As String In missingfiles
+                    'Download the missing files:
+                    downloaded += 1
+                    lblStatus.Text = Resources.strUpdating & downloaded & "/" & totaldownload
+                    Application.DoEvents()
+                    _cancelled = False
+                    DownloadFile((Program.FreedomUrl & "Plugins/" & downloadStr), downloadStr)
+                    If _cancelled Then Return
+                    'Delete the existing file FIRST
+                    If Not File.Exists(downloadStr) Then
+                        Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
+                    End If
+                    Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
+                    File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                    Helper.DeleteFile(downloadStr)
+                    Application.DoEvents()
+                Next
+                Helper.WriteDebugInfoAndOk("Plugins updated. Please enable/disable the plugins you wish to use in the Plugins menu.")
+                RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
+                RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
+            Else
+                Helper.Log("Checked for plugins, no updates neccessary!")
+            End If
+        End Using
     End Sub
 End Class

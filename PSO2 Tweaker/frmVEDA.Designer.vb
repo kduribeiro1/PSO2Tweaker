@@ -32,6 +32,7 @@ Partial Class FrmVeda
         Me.Button1 = New System.Windows.Forms.Button()
         Me.txtAqua = New System.Windows.Forms.TextBox()
         Me.btnDLWUA = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'rtbStatus
@@ -52,7 +53,6 @@ Partial Class FrmVeda
         Me.btnMD5.TabIndex = 1
         Me.btnMD5.Text = "Get MD5 Hash"
         Me.btnMD5.UseVisualStyleBackColor = True
-        Me.btnMD5.Visible = False
         '
         'OpenFileDialog1
         '
@@ -126,11 +126,21 @@ Partial Class FrmVeda
         Me.btnDLWUA.UseVisualStyleBackColor = True
         Me.btnDLWUA.Visible = False
         '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(264, 133)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(114, 48)
+        Me.Button2.TabIndex = 10
+        Me.Button2.Text = "Make Plugin MD5 Hashlist"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'FrmVeda
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(408, 394)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.btnDLWUA)
         Me.Controls.Add(Me.txtAqua)
         Me.Controls.Add(Me.Button1)
@@ -157,4 +167,5 @@ Partial Class FrmVeda
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents txtAqua As System.Windows.Forms.TextBox
     Friend WithEvents btnDLWUA As System.Windows.Forms.Button
+    Friend WithEvents Button2 As Button
 End Class

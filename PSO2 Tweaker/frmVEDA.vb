@@ -186,4 +186,35 @@ Public Class FrmVeda
     Private Sub btnDLWUA_Click(sender As Object, e As EventArgs) Handles btnDLWUA.Click
         Program.MainForm.DownloadFile(txtAqua.Text, "testfile")
     End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        ' make a reference to a directory
+        WriteDebugInfo("Listing contents...")
+
+        Dim myFolderBrowser As New FolderBrowserDialog
+
+        ' Description that displays above the dialog box control.
+        myFolderBrowser.Description = "Select the folder you'd like to make the MD5HashList of."
+
+        ' Sets the root folder where the browsing starts from 
+        myFolderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
+
+        If myFolderBrowser.ShowDialog() = DialogResult.OK Then
+            Dim directoryString As String = myFolderBrowser.SelectedPath
+            If File.Exists("PluginMD5HashList.txt") Then File.Delete("PluginMD5HashList.txt")
+
+            'list the names of all files in the specified directory
+            Using writer = New StreamWriter(directoryString & " \PluginMD5HashList.txt", False)
+                For Each dra As FileInfo In New DirectoryInfo(directoryString).GetFiles()
+                    writer.WriteLine((dra.ToString() & "," & Helper.GetMd5(directoryString & " \" & dra.ToString())))
+                Next
+            End Using
+            WriteDebugInfo("Done.")
+            Process.Start("explorer.exe " & directoryString & "\")
+        End If
+    End Sub
+
+    Private Sub FrmVeda_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class
