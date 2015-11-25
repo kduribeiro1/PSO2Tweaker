@@ -3755,14 +3755,14 @@ Public Class FrmMain
                         Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
                     If downloadStr = "pso2h.dll" Then
-                        Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
+                        If File.Exists(Program.Pso2RootDir & "\pso2h.dll") = True Then Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
                         File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
                     Else
-                        Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
+                        If File.Exists(Program.Pso2RootDir & "\plugins\" & downloadStr) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
                         File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
                     End If
 
-                    Helper.DeleteFile(downloadStr)
+                    If File.Exists(downloadStr) = True Then Helper.DeleteFile(downloadStr)
                     Application.DoEvents()
                 Next
                 Helper.WriteDebugInfoAndOk("Plugins updated. Please enable/disable the plugins you wish to use in the Plugins menu.")
@@ -3772,6 +3772,6 @@ Public Class FrmMain
                 Helper.Log("Checked for plugins, no updates neccessary!")
             End If
         End Using
-        Helper.DeleteFile("PluginMD5HashList.txt")
+        If File.Exists("PluginMD5HashList.txt") = True Then Helper.DeleteFile("PluginMD5HashList.txt")
     End Sub
 End Class
