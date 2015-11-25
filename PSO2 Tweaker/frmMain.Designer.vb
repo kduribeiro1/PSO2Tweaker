@@ -762,13 +762,11 @@ Partial Class FrmMain
         '
         Me.chkItemTranslation.Name = "chkItemTranslation"
         resources.ApplyResources(Me.chkItemTranslation, "chkItemTranslation")
-        Me.chkItemTranslation.Visible = False
         '
         'btnConfigureItemTranslation
         '
         Me.btnConfigureItemTranslation.Name = "btnConfigureItemTranslation"
         resources.ApplyResources(Me.btnConfigureItemTranslation, "btnConfigureItemTranslation")
-        Me.btnConfigureItemTranslation.Visible = False
         '
         'ItemContainer4
         '

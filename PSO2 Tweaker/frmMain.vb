@@ -487,52 +487,24 @@ Public Class FrmMain
                     Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\disabled\")
                 End If
 
-                If Program.UseItemTranslation Then
-                        chkItemTranslation.Checked = True
-                        Helper.WriteDebugInfo("Downloading latest item patch files...")
-                        _itemDownloadingDone = False
-                        ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
-
-                        Do Until _itemDownloadingDone
-                            Application.DoEvents()
-                            Thread.Sleep(16)
-                        Loop
-                    End If
-
-                    If File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Then
-                        Try
-                            Helper.WriteDebugInfo("Downloading latest title patch file...")
-                            Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation_titles.bin", (Program.Pso2RootDir & "\translation_titles.bin"))
-                        Catch ex As Exception
-                            MsgBox("Failed to download title translation file! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-                        End Try
-                    End If
-
-                    If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") AndAlso Not _itemDownloadingDone Then
-                        Helper.WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
-                        _itemDownloadingDone = False
-                        ThreadPool.QueueUserWorkItem(AddressOf DownloadItemTranslationFiles, Nothing)
-
-                        Do Until _itemDownloadingDone
-                            Application.DoEvents()
-                            Thread.Sleep(16)
-                        Loop
-
-                        If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
-                            File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
-                        End If
-
-                        Dim builtFile As New List(Of String)
-
-                        For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
-                            If line.Contains("TranslationPath:") Then line = "TranslationPath:"
-                            builtFile.Add(line)
-                        Next
-
-                        File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
-                    End If
-                End If
-            CheckForPluginUpdates()
+                'If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
+                ' Helper.WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
+                '
+                '                If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
+                '                File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
+                '            End If
+                '
+                '                Dim builtFile As New List(Of String)
+                '
+                '                For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
+                '                If line.Contains("TranslationPath:") Then line = "TranslationPath:"
+                '                builtFile.Add(line)
+                '                Next
+                '
+                '                File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
+                '            End If
+            End If
+                CheckForPluginUpdates()
 
             'Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
@@ -593,16 +565,6 @@ Public Class FrmMain
         End If
         Return False
     End Function
-
-    Private Sub DownloadItemTranslationFiles(state As Object)
-        Try
-            Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
-        Catch ex As Exception
-            MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-        End Try
-
-        _itemDownloadingDone = True
-    End Sub
     Private Sub DownloadPluginFiles(state As Object)
         Try
             If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
@@ -3704,7 +3666,7 @@ Public Class FrmMain
             Dim strNewDate As String = oReader.ReadLine()
             RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
             RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
-            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\plugins\translator.dll") = False Then
+            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\plugins\translator.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
                 'Update plugins [AIDA]
 
                 Dim missingfiles As New List(Of String)
@@ -3721,7 +3683,7 @@ Public Class FrmMain
                     filename = oReader.ReadLine().Split(","c)
                     truefilename = filename(0)
 
-                    If truefilename = "pso2h.dll" Then
+                    If truefilename = "pso2h.dll" Or truefilename = "translation_titles.bin" Or truefilename = "translation.bin" Then
                         If Not File.Exists((Program.Pso2RootDir & "\" & truefilename)) Then
                             missingfiles.Add(truefilename)
                         ElseIf Helper.GetMd5((Program.Pso2RootDir & "\" & truefilename)) <> filename(1) Then
@@ -3755,15 +3717,17 @@ Public Class FrmMain
                     If Not File.Exists(downloadStr) Then
                         Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
-                    If downloadStr = "pso2h.dll" Then
-                        If Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
-                        File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
-                        Else
+                    If downloadStr = "pso2h.dll" Or downloadStr = "translation_titles.bin" Or downloadStr = "translation.bin" Then
+                        If Environment.CurrentDirectory <> Program.Pso2RootDir Then
+                            Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
+                            File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
+                        End If
+                    Else
                         Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
                         File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
                     End If
 
-                    If File.Exists(downloadStr) = True Then Helper.DeleteFile(downloadStr)
+                    If File.Exists(downloadStr) = True And Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile(downloadStr)
                     Application.DoEvents()
                 Next
                 Helper.WriteDebugInfoAndOk("Plugins updated. Please enable/disable the plugins you wish to use in the Plugins menu.")
@@ -3774,5 +3738,14 @@ Public Class FrmMain
             End If
         End Using
         If File.Exists("PluginMD5HashList.txt") = True Then Helper.DeleteFile("PluginMD5HashList.txt")
+    End Sub
+
+    Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
+        MsgBox("The item translation is now controlled through the plugin menu. Please click the Plugins button at the bottom of this menu.")
+        chkItemTranslation.Checked = False
+    End Sub
+
+    Private Sub btnConfigureItemTranslation_Click(sender As Object, e As EventArgs) Handles btnConfigureItemTranslation.Click
+        MsgBox("The item translation is now controlled through the plugin menu. Please click the Plugins button at the bottom of this menu.")
     End Sub
 End Class
