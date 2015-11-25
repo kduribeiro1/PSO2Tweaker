@@ -533,6 +533,7 @@ Public Class FrmMain
                     End If
                 End If
             CheckForPluginUpdates()
+
             'Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
@@ -3755,10 +3756,10 @@ Public Class FrmMain
                         Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
                     If downloadStr = "pso2h.dll" Then
-                        If File.Exists(Program.Pso2RootDir & "\pso2h.dll") = True Then Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
+                        If Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
                         File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
-                    Else
-                        If File.Exists(Program.Pso2RootDir & "\plugins\" & downloadStr) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
+                        Else
+                        Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
                         File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
                     End If
 
