@@ -25,6 +25,7 @@ Partial Class frmPlugins
         Me.ListViewEx1 = New DevComponents.DotNetBar.Controls.ListViewEx()
         Me.btnSave = New DevComponents.DotNetBar.ButtonX()
         Me.lblPluginInfo = New DevComponents.DotNetBar.LabelX()
+        Me.btnConfigure = New DevComponents.DotNetBar.ButtonX()
         Me.SuspendLayout()
         '
         'ListViewEx1
@@ -45,7 +46,7 @@ Partial Class frmPlugins
         '
         Me.btnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
         Me.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.btnSave.Location = New System.Drawing.Point(129, 328)
+        Me.btnSave.Location = New System.Drawing.Point(12, 328)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(155, 42)
         Me.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
@@ -66,11 +67,24 @@ Partial Class frmPlugins
         Me.lblPluginInfo.TextLineAlignment = System.Drawing.StringAlignment.Near
         Me.lblPluginInfo.WordWrap = True
         '
+        'btnConfigure
+        '
+        Me.btnConfigure.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.btnConfigure.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.btnConfigure.Location = New System.Drawing.Point(257, 328)
+        Me.btnConfigure.Name = "btnConfigure"
+        Me.btnConfigure.Size = New System.Drawing.Size(155, 42)
+        Me.btnConfigure.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.btnConfigure.TabIndex = 7
+        Me.btnConfigure.Text = "Configure plugin"
+        Me.btnConfigure.Visible = False
+        '
         'frmPlugins
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(424, 382)
+        Me.Controls.Add(Me.btnConfigure)
         Me.Controls.Add(Me.ListViewEx1)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.lblPluginInfo)
@@ -84,4 +98,5 @@ Partial Class frmPlugins
     Friend WithEvents ListViewEx1 As DevComponents.DotNetBar.Controls.ListViewEx
     Friend WithEvents btnSave As DevComponents.DotNetBar.ButtonX
     Friend WithEvents lblPluginInfo As DevComponents.DotNetBar.LabelX
+    Friend WithEvents btnConfigure As DevComponents.DotNetBar.ButtonX
 End Class

@@ -134,10 +134,10 @@ Partial Class FrmItemConfig
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(173, 40)
         Me.Label2.TabIndex = 24
-        Me.Label2.Text = "You can see the prices of items in your shop by holding control when selecting ""C" & _
+        Me.Label2.Text = "You can see the prices of items in your shop by holding control when selecting ""C" &
     "heck prices""."
         '
-        'frmItemConfig
+        'FrmItemConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -155,7 +155,7 @@ Partial Class FrmItemConfig
         Me.Controls.Add(Me.btnSave)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.KeyPreview = True
-        Me.Name = "frmItemConfig"
+        Me.Name = "FrmItemConfig"
         Me.Text = "Configure Item Translation"
         CType(Me.NUDDelay, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

@@ -267,6 +267,9 @@
     <EmbeddedResource Include="FrmDiagnostic.resx">
       <DependentUpon>FrmDiagnostic.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmItemConfig.resx">
+      <DependentUpon>FrmItemConfig.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.vb</DependentUpon>
       <SubType>Designer</SubType>

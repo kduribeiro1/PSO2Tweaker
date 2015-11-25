@@ -3,8 +3,13 @@ Imports PSO2_Tweaker.My
 
 Public Class FrmItemConfig
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        If cmbToggleKey.Text = "Please choose a key" Then
+            MsgBox("Please choose a key to toggle the item patch!")
+            Exit Sub
+        End If
         Dim pso2Launchpath = Program.Pso2RootDir
-        File.Delete(pso2Launchpath & "\translation.cfg")
+        If File.Exists(pso2Launchpath & "\translation.cfg") Then File.Delete(pso2Launchpath & "\translation.cfg")
+
 
         Dim splitKey As String() = DirectCast(cmbToggleKey.SelectedItem, String).Split("("c)
         Dim data As String()

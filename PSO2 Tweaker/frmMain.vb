@@ -483,20 +483,8 @@ Public Class FrmMain
 
                 If Directory.Exists(Program.Pso2RootDir & "\plugins\") = False Then
                     Helper.WriteDebugInfoAndOk("Setting up plugin system...")
-                    Using downloadClient As New WebClient
-                        downloadClient.DownloadFile(New Uri(Program.FreedomUrl & "initial_plugin_pack.rar"), "initial_plugin_pack.rar")
-                    End Using
-
-                    Dim processStartInfo = New ProcessStartInfo()
-                    processStartInfo.FileName = (Program.StartPath & "\unrar.exe").Replace("\\", "\")
-                    processStartInfo.Verb = "runas"
-                    processStartInfo.Arguments = "x -inul -o+ initial_plugin_pack.rar """ & Program.Pso2RootDir & ""
-                    processStartInfo.WindowStyle = ProcessWindowStyle.Hidden
-                    processStartInfo.UseShellExecute = True
-
-                    Process.Start(processStartInfo).WaitForExit()
-
-                    File.Delete("initial_plugin_pack.rar")
+                    Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\")
+                    Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\disabled\")
                 End If
 
                 If Program.UseItemTranslation Then
@@ -545,7 +533,7 @@ Public Class FrmMain
                     End If
                 End If
             CheckForPluginUpdates()
-            Helper.WriteDebugInfoSameLine(Resources.strDone)
+            'Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
@@ -606,14 +594,6 @@ Public Class FrmMain
     End Function
 
     Private Sub DownloadItemTranslationFiles(state As Object)
-        Try
-            Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
-        Catch ex As Exception
-            MsgBox("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-        End Try
-
-        RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
-
         Try
             Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
         Catch ex As Exception
@@ -1324,12 +1304,6 @@ Public Class FrmMain
                 End If
             End If
 
-
-            If chkItemTranslation.Checked AndAlso (Helper.GetMd5(Program.Pso2RootDir & "\translator.dll") <> RegKey.GetValue(Of String)(RegKey.Dllmd5)) Then
-                MsgBox(Resources.strTranslationFilesDontMatch)
-                Return
-            End If
-
             'End Item Translation stuff
             If Not Program.transOverride Then Helper.DeleteFile(Program.Pso2RootDir & "\ddraw.dll")
             If Not Program.transOverride Then File.WriteAllBytes(Program.Pso2RootDir & "\ddraw.dll", Resources.ddraw)
@@ -1442,59 +1416,6 @@ Public Class FrmMain
         'Else
         'Helper.WriteDebugInfo("Download was cancelled due to incompatibility.")
         'End If
-    End Sub
-
-    Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
-        If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
-            File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
-        End If
-        If chkItemTranslation.Checked Then
-            Helper.WriteDebugInfoAndOk(Resources.strDownloadingLatestItemTranslationFiles)
-
-            'Download translator.dll and translation.bin
-            For index As Integer = 1 To 5
-                Try
-                    Program.Client.DownloadFile(Program.FreedomUrl & "translator.dll", (Program.Pso2RootDir & "\translator.dll"))
-                Catch ex As Exception
-                    If index = 5 Then
-                        Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
-                    End If
-                End Try
-            Next
-
-            RegKey.SetValue(Of String)(RegKey.Dllmd5, Helper.GetMd5(Program.Pso2RootDir & "\translator.dll"))
-
-            For index As Integer = 1 To 5
-                Try
-                    Program.Client.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
-                Catch ex As Exception
-                    If index = 5 Then
-                        Helper.WriteDebugInfoAndWarning("Failed to download translation files! (" & ex.Message.ToString & " Stack Trace: " & ex.StackTrace & ")")
-                    End If
-                End Try
-            Next
-
-            'Start the shitstorm
-            Dim builtFile As New List(Of String)
-            For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
-                If line.Contains("TranslationPath:") Then line = "TranslationPath:translation.bin"
-                builtFile.Add(line)
-            Next
-            File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
-            Helper.WriteDebugInfoSameLine(Resources.strDone)
-        Else
-            Helper.WriteDebugInfoAndOk(Resources.strDeletingItemCache)
-            Helper.WriteDebugInfoSameLine(Resources.strDone)
-            Dim builtFile As New List(Of String)
-            For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
-                If line.Contains("TranslationPath:") Then line = "TranslationPath:"
-                builtFile.Add(line)
-            Next
-            File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
-        End If
-
-        Program.UseItemTranslation = chkItemTranslation.Checked
-        RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, Program.UseItemTranslation)
     End Sub
 
     Private Sub UpdatePso2(comingFromOldFiles As Boolean)
@@ -2767,10 +2688,6 @@ Public Class FrmMain
         'End If
     End Sub
 
-    Private Sub btnConfigureItemTranslation_Click(sender As Object, e As EventArgs) Handles btnConfigureItemTranslation.Click
-        FrmItemConfig.Show()
-    End Sub
-
     Private Shared Sub btnSymbolEditor_Click(sender As Object, e As EventArgs) Handles btnSymbolEditor.Click
         Process.Start("http://www.pso-world.com/forums/showthread.php?t=215777")
     End Sub
@@ -3786,7 +3703,7 @@ Public Class FrmMain
             Dim strNewDate As String = oReader.ReadLine()
             RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
             RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
-            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Then
+            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\plugins\translator.dll") = False Then
                 'Update plugins [AIDA]
 
                 Dim missingfiles As New List(Of String)
@@ -3794,12 +3711,6 @@ Public Class FrmMain
                 Dim truefilename As String
                 Dim filename As String()
                 Helper.WriteDebugInfo("Beginning plugin update...")
-                'Update pso2h.dll
-                Try
-                    Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "pso2h.dll", (Program.Pso2RootDir & "\pso2h.dll"))
-                Catch ex As Exception
-                    MsgBox("Failed to download plugin file! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-                End Try
                 'Move all plugins to the base folder, will make code to remember disabled ones later [AIDA]
                 For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\disabled\").GetFiles
                     File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\", fi.Name))
@@ -3809,12 +3720,19 @@ Public Class FrmMain
                     filename = oReader.ReadLine().Split(","c)
                     truefilename = filename(0)
 
-                    If Not File.Exists((Program.Pso2RootDir & "\plugins\" & truefilename)) Then
-                        missingfiles.Add(truefilename)
-                    ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\" & truefilename)) <> filename(1) Then
-                        missingfiles.Add(truefilename)
+                    If truefilename = "pso2h.dll" Then
+                        If Not File.Exists((Program.Pso2RootDir & "\" & truefilename)) Then
+                            missingfiles.Add(truefilename)
+                        ElseIf Helper.GetMd5((Program.Pso2RootDir & "\" & truefilename)) <> filename(1) Then
+                            missingfiles.Add(truefilename)
+                        End If
+                    Else
+                        If Not File.Exists((Program.Pso2RootDir & "\plugins\" & truefilename)) Then
+                            missingfiles.Add(truefilename)
+                        ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\" & truefilename)) <> filename(1) Then
+                            missingfiles.Add(truefilename)
+                        End If
                     End If
-
                     numberofChecks += 1
                     lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
                     Application.DoEvents()
@@ -3836,8 +3754,14 @@ Public Class FrmMain
                     If Not File.Exists(downloadStr) Then
                         Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
                     End If
-                    Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
-                    File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                    If downloadStr = "pso2h.dll" Then
+                        Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
+                        File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
+                    Else
+                        Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
+                        File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                    End If
+
                     Helper.DeleteFile(downloadStr)
                     Application.DoEvents()
                 Next

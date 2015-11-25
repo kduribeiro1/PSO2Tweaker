@@ -122,6 +122,7 @@ Partial Class FrmMain
         Me.ItemContainer4 = New DevComponents.DotNetBar.ItemContainer()
         Me.btnPSO2Options = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnPlugins = New DevComponents.DotNetBar.ButtonItem()
         Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
@@ -132,7 +133,6 @@ Partial Class FrmMain
         Me.lblProxyStats = New System.Windows.Forms.Label()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
-        Me.btnPlugins = New DevComponents.DotNetBar.ButtonItem()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -762,11 +762,13 @@ Partial Class FrmMain
         '
         Me.chkItemTranslation.Name = "chkItemTranslation"
         resources.ApplyResources(Me.chkItemTranslation, "chkItemTranslation")
+        Me.chkItemTranslation.Visible = False
         '
         'btnConfigureItemTranslation
         '
         Me.btnConfigureItemTranslation.Name = "btnConfigureItemTranslation"
         resources.ApplyResources(Me.btnConfigureItemTranslation, "btnConfigureItemTranslation")
+        Me.btnConfigureItemTranslation.Visible = False
         '
         'ItemContainer4
         '
@@ -793,6 +795,14 @@ Partial Class FrmMain
         Me.btnOptions.Name = "btnOptions"
         Me.btnOptions.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnOptions, "btnOptions")
+        '
+        'btnPlugins
+        '
+        Me.btnPlugins.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnPlugins.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.btnPlugins.Name = "btnPlugins"
+        Me.btnPlugins.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnPlugins, "btnPlugins")
         '
         'btnExit
         '
@@ -861,14 +871,6 @@ Partial Class FrmMain
         resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
-        '
-        'btnPlugins
-        '
-        Me.btnPlugins.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.btnPlugins.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.btnPlugins.Name = "btnPlugins"
-        Me.btnPlugins.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.btnPlugins, "btnPlugins")
         '
         'FrmMain
         '

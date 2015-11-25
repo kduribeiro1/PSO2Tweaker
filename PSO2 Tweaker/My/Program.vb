@@ -150,21 +150,8 @@ Namespace My
 
                                 If UseItemTranslation Then
                                     'Download the latest translator.dll and translation.bin
-                                    Dim dlLink1 As String = FreedomUrl & "translator.dll"
                                     Dim dlLink2 As String = FreedomUrl & "translation.bin"
                                     Helper.Log(Resources.strDownloadingItemTranslationFiles)
-                                    ' Try up to 4 times to download the translator DLL.
-                                    For tries As Integer = 1 To 4
-                                        Try
-                                            Client.DownloadFile(dlLink1, (Pso2RootDir & "\translator.dll"))
-                                            Exit For
-                                        Catch ex As Exception
-                                            If tries = 4 Then
-                                                Helper.Log("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-                                                Exit For
-                                            End If
-                                        End Try
-                                    Next
 
                                     ' TODO: WTF is gonig on with this for loop
                                     ' Try up to 4 times to download the translation strings.

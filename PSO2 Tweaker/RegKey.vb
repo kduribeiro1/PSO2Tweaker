@@ -6,7 +6,6 @@ Public Class RegKey
     Public Const Backup = "Backup"
     Public Const CloseAfterLaunch = "CloseAfterLaunch"
     Public Const Color = "Color"
-    Public Const Dllmd5 = "DLLMD5"
     Public Const EnPatchAfterInstall = "ENPatchAfterInstall"
     Public Const EnPatchVersion = "ENPatchVersion"
     Public Const FontColor = "FontColor"
