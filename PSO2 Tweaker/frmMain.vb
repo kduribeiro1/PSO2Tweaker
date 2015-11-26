@@ -3666,7 +3666,7 @@ Public Class FrmMain
             Dim strNewDate As String = oReader.ReadLine()
             RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
             RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
-            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\plugins\translator.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
+            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
                 'Update plugins [AIDA]
 
                 Dim missingfiles As New List(Of String)
