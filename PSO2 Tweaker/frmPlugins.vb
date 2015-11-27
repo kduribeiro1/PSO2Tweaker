@@ -105,4 +105,11 @@ Public Class frmPlugins
     Private Sub btnConfigure_Click(sender As Object, e As EventArgs) Handles btnConfigure.Click
         If ListViewEx1.FocusedItem.Text = "translator.dll" Then FrmItemConfig.Show()
     End Sub
+
+    Private Sub ButtonX1_Click(sender As Object, e As EventArgs) Handles ButtonX1.Click
+        Me.Hide()
+        FrmMain.WriteDebugInfo("Checking for plugin updates...")
+        FrmMain.CheckForPluginUpdates()
+        FrmMain.WriteDebugInfoSameLine("Done!")
+    End Sub
 End Class

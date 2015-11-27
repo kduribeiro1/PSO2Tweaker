@@ -26,6 +26,7 @@ Partial Class frmPlugins
         Me.btnSave = New DevComponents.DotNetBar.ButtonX()
         Me.lblPluginInfo = New DevComponents.DotNetBar.LabelX()
         Me.btnConfigure = New DevComponents.DotNetBar.ButtonX()
+        Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.SuspendLayout()
         '
         'ListViewEx1
@@ -46,9 +47,9 @@ Partial Class frmPlugins
         '
         Me.btnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
         Me.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.btnSave.Location = New System.Drawing.Point(12, 328)
+        Me.btnSave.Location = New System.Drawing.Point(153, 328)
         Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(155, 42)
+        Me.btnSave.Size = New System.Drawing.Size(114, 42)
         Me.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.btnSave.TabIndex = 5
         Me.btnSave.Text = "Save"
@@ -71,19 +72,31 @@ Partial Class frmPlugins
         '
         Me.btnConfigure.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
         Me.btnConfigure.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.btnConfigure.Location = New System.Drawing.Point(257, 328)
+        Me.btnConfigure.Location = New System.Drawing.Point(298, 328)
         Me.btnConfigure.Name = "btnConfigure"
-        Me.btnConfigure.Size = New System.Drawing.Size(155, 42)
+        Me.btnConfigure.Size = New System.Drawing.Size(114, 42)
         Me.btnConfigure.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.btnConfigure.TabIndex = 7
         Me.btnConfigure.Text = "Configure plugin"
         Me.btnConfigure.Visible = False
+        '
+        'ButtonX1
+        '
+        Me.ButtonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ButtonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.ButtonX1.Location = New System.Drawing.Point(12, 328)
+        Me.ButtonX1.Name = "ButtonX1"
+        Me.ButtonX1.Size = New System.Drawing.Size(114, 42)
+        Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        Me.ButtonX1.TabIndex = 8
+        Me.ButtonX1.Text = "Force plugin check"
         '
         'frmPlugins
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(424, 382)
+        Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.btnConfigure)
         Me.Controls.Add(Me.ListViewEx1)
         Me.Controls.Add(Me.btnSave)
@@ -99,4 +112,5 @@ Partial Class frmPlugins
     Friend WithEvents btnSave As DevComponents.DotNetBar.ButtonX
     Friend WithEvents lblPluginInfo As DevComponents.DotNetBar.LabelX
     Friend WithEvents btnConfigure As DevComponents.DotNetBar.ButtonX
+    Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
 End Class

@@ -3660,7 +3660,7 @@ Public Class FrmMain
             Cursor = Cursors.Default
         End Try
     End Sub
-    Private Sub CheckForPluginUpdates()
+    Public Sub CheckForPluginUpdates()
         DownloadFile(Program.FreedomUrl & "Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
         Using oReader As StreamReader = File.OpenText("PluginMD5HashList.txt")
             Dim strNewDate As String = oReader.ReadLine()
@@ -3674,9 +3674,9 @@ Public Class FrmMain
                 Dim truefilename As String
                 Dim filename As String()
                 Helper.WriteDebugInfo("Beginning plugin update...")
-                'Move all plugins to the base folder, will make code to remember disabled ones later [AIDA]
-                For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\disabled\").GetFiles
-                    File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\", fi.Name))
+                'Move all plugins to the disabled folder instead. [AIDA]
+                For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\").GetFiles
+                    File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
                 Next
 
                 While Not (oReader.EndOfStream)
@@ -3690,9 +3690,9 @@ Public Class FrmMain
                             missingfiles.Add(truefilename)
                         End If
                     Else
-                        If Not File.Exists((Program.Pso2RootDir & "\plugins\" & truefilename)) Then
+                        If Not File.Exists((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) Then
                             missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\" & truefilename)) <> filename(1) Then
+                        ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) <> filename(1) Then
                             missingfiles.Add(truefilename)
                         End If
                     End If
@@ -3723,14 +3723,14 @@ Public Class FrmMain
                             File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
                         End If
                     Else
-                        Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & downloadStr))
-                        File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                        Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                        File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
                     End If
 
                     If File.Exists(downloadStr) = True And Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile(downloadStr)
                     Application.DoEvents()
                 Next
-                Helper.WriteDebugInfoAndOk("Plugins updated. Please enable/disable the plugins you wish to use in the Plugins menu.")
+                Helper.WriteDebugInfoAndOk("Plugins updated. Please enable the plugins you wish to use in the Plugins menu.")
                 RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
                 RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
             Else
