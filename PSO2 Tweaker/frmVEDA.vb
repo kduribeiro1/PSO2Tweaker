@@ -210,7 +210,6 @@ Public Class FrmVeda
                 Next
             End Using
             WriteDebugInfo("Done.")
-            Process.Start("explorer.exe " & directoryString & "\")
         End If
     End Sub
 
