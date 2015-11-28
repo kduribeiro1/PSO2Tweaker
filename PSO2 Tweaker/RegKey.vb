@@ -57,6 +57,7 @@ Public Class RegKey
     Public Const CachedStats = "CachedStats"
     Public Const LaunchPSO2fromORB = "LaunchPSO2fromORB"
     Public Const UseOldProgressBar = "UseOldProgressBar"
+    Public Const PluginsEnabled = "PluginsEnabled"
 
     Private Shared ReadOnly RegistryCache As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
     Private Shared ReadOnly RegistrySubKey As RegistryKey = Registry.CurrentUser.OpenSubKey("Software\AIDA", True)

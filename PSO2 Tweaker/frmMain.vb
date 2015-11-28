@@ -487,22 +487,10 @@ Public Class FrmMain
                     Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\disabled\")
                 End If
 
-                'If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
-                ' Helper.WriteDebugInfo("PSO2Proxy usage detected! Downloading latest proxy file...")
-                '
-                '                If Not File.Exists(Program.Pso2RootDir & "\translation.cfg") Then
-                '                File.WriteAllText(Program.Pso2RootDir & "\translation.cfg", "TranslationPath:translation.bin")
-                '            End If
-                '
-                '                Dim builtFile As New List(Of String)
-                '
-                '                For Each line In Helper.GetLines(Program.Pso2RootDir & "\translation.cfg")
-                '                If line.Contains("TranslationPath:") Then line = "TranslationPath:"
-                '                builtFile.Add(line)
-                '                Next
-                '
-                '                File.WriteAllLines(Program.Pso2RootDir & "\translation.cfg", builtFile.ToArray())
-                '            End If
+                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") And File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll") = True And File.Exists(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll") = False Then
+                    Helper.WriteDebugInfo("PSO2Proxy usage detected! Auto-enabling PSO2Proxy plugin.")
+                    File.Move((Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll"), (Program.Pso2RootDir & "\plugins\PSO2Proxy.dll"))
+                End If
             End If
                 CheckForPluginUpdates()
 
@@ -2728,7 +2716,7 @@ Public Class FrmMain
         End Try
     End Sub
 
-    Private Shared Sub btnChooseProxyServer_Click(sender As Object, e As EventArgs) Handles btnChooseProxyServer.Click
+    Private Sub btnChooseProxyServer_Click(sender As Object, e As EventArgs) Handles btnChooseProxyServer.Click
         Try
             'JSON should look like { "version": 1, "host": "0.0.0.0", "name": "Super cool proxy", "publickeyurl": "http://url.com" }
 
@@ -2853,6 +2841,12 @@ Public Class FrmMain
             If File.Exists(Program.Pso2RootDir & "\publickey.blob") AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile(Program.Pso2RootDir & "\publickey.blob")
             If Program.StartPath <> Program.Pso2RootDir Then File.Move(Program.StartPath & "\publickey.blob", Program.Pso2RootDir & "\publickey.blob")
             Helper.WriteDebugInfoSameLine(" Done!")
+            CheckForPluginUpdates()
+            If File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll") Then
+                Helper.WriteDebugInfo("Auto-enabling the PSO2Proxy plugin...")
+                File.Move(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll", Path.Combine(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll"))
+                Helper.WriteDebugInfoSameLine("Done!")
+            End If
             Helper.WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
@@ -2878,6 +2872,11 @@ Public Class FrmMain
         File.WriteAllLines(Program.HostsFilePath, builtFile.ToArray())
         Helper.WriteDebugInfoSameLine(" Done!")
         Helper.DeleteFile(Program.Pso2RootDir & "\publickey.blob")
+        If File.Exists(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll") Then
+            Helper.WriteDebugInfo("Auto-disabling the PSO2Proxy plugin...")
+            File.Move(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll", Path.Combine(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll"))
+            Helper.WriteDebugInfoSameLine("Done!")
+        End If
         Helper.WriteDebugInfoAndOk("All normal JP connection settings restored!")
         RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, False)
     End Sub
@@ -3673,12 +3672,17 @@ Public Class FrmMain
                 Dim numberofChecks As Integer = 0
                 Dim truefilename As String
                 Dim filename As String()
+                Dim FinalExportString As String = ""
                 Helper.WriteDebugInfo("Beginning plugin update...")
                 'Move all plugins to the disabled folder instead. [AIDA]
+
+                RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
                 For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\").GetFiles
                     File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
+                    FinalExportString += fi.Name & ","
                 Next
-
+                If FinalExportString.Length > 0 Then FinalExportString = FinalExportString.Remove(FinalExportString.Length - 1, 1)
+                RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
                 While Not (oReader.EndOfStream)
                     filename = oReader.ReadLine().Split(","c)
                     truefilename = filename(0)
@@ -3723,18 +3727,53 @@ Public Class FrmMain
                             File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
                         End If
                     Else
-                        Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
-                        File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                        If downloadStr = "PSO2Proxy.dll" Then
+                            'If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
+                            If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
+                                Helper.WriteDebugInfo("PSO2Proxy usage detected! Auto-enabling PSO2Proxy plugin...")
+                                File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                            Else
+                                Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                                File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                            End If
+                        Else
+                            Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                            File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                        End If
                     End If
 
                     If File.Exists(downloadStr) = True And Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile(downloadStr)
                     Application.DoEvents()
                 Next
-                Helper.WriteDebugInfoAndOk("Plugins updated. Please enable the plugins you wish to use in the Plugins menu.")
+                'Restore the plugins to their proper folders now
+                'If there's enabled plugins, do stuff.
+                Dim FileToMove As String = ""
+                If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString.Length > 1 Then
+                    'Check to see if it's more than one file by seeing if there are any commas
+                    If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Contains(",") = False Then
+                        'It's just one file
+                        'MsgBox("One plugin enabled - " & RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString)
+                        FileToMove = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString
+                        If File.Exists(Program.Pso2RootDir & "\plugins\" & FileToMove) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & FileToMove))
+                        If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & FileToMove) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & FileToMove), (Program.Pso2RootDir & "\plugins\" & FileToMove))
+                    Else
+                        'It's multiple files
+                        Dim EnabledPlugins() As String = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Split(CType(",", Char()))
+                        For Each EnabledFilename In EnabledPlugins
+                            'MsgBox(EnabledFilename)
+                            If File.Exists(Program.Pso2RootDir & "\plugins\" & EnabledFilename) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & EnabledFilename))
+                            If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename), (Program.Pso2RootDir & "\plugins\" & EnabledFilename))
+                        Next
+                    End If
+                Else
+                    'MsgBox("No plugins enabled!")
+                End If
+
+                Helper.WriteDebugInfoAndOk("Plugins updated successfully.")
                 RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
-                RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
-            Else
-                Helper.Log("Checked for plugins, no updates neccessary!")
+                    RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
+                Else
+                Helper.WriteDebugInfoAndOk("No plugin updates available.")
             End If
         End Using
         If File.Exists("PluginMD5HashList.txt") = True Then Helper.DeleteFile("PluginMD5HashList.txt")

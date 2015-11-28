@@ -39,6 +39,7 @@ Partial Class frmPlugins
         Me.ListViewEx1.Location = New System.Drawing.Point(0, 0)
         Me.ListViewEx1.Name = "ListViewEx1"
         Me.ListViewEx1.Size = New System.Drawing.Size(424, 210)
+        Me.ListViewEx1.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListViewEx1.TabIndex = 0
         Me.ListViewEx1.UseCompatibleStateImageBehavior = False
         Me.ListViewEx1.View = System.Windows.Forms.View.List
