@@ -131,7 +131,7 @@ Public Class frmPlugins
         ButtonX1.Enabled = False
         btnConfigure.Enabled = False
         FrmMain.WriteDebugInfo("Forcing plugin update...")
-        FrmMain.DownloadFile(Program.FreedomUrl & "Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
+        FrmMain.DownloadFile("http://107.170.16.100/Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
         Using oReader As StreamReader = File.OpenText("PluginMD5HashList.txt")
             Dim strNewDate As String = oReader.ReadLine()
             RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
@@ -167,7 +167,7 @@ Public Class frmPlugins
             For Each downloadStr As String In missingfiles
                 'Download the missing files:
                 Application.DoEvents()
-                FrmMain.DownloadFile((Program.FreedomUrl & "Plugins/" & downloadStr), downloadStr)
+                FrmMain.DownloadFile(("http://107.170.16.100/Plugins/" & downloadStr), downloadStr)
                 'Delete the existing file FIRST
                 If Not File.Exists(downloadStr) Then
                     Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
@@ -266,5 +266,9 @@ Public Class frmPlugins
                 "Support URL: http://pso2proxy.cyberkitsune.net"
             Exit Sub
         End If
+    End Sub
+
+    Private Sub lblPluginInfo_Click(sender As Object, e As EventArgs) Handles lblPluginInfo.Click
+
     End Sub
 End Class

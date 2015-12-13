@@ -557,18 +557,18 @@ Public Class FrmMain
         Try
             If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
                 Helper.WriteDebugInfo("Downloading DPS Parser plugin... (disabled by default)")
-                Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\disabled\PSO2DamageDump.dll"))
+                Program.ItemPatchClient.DownloadFile("http://107.170.16.100/Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\disabled\PSO2DamageDump.dll"))
                 Helper.WriteDebugInfoSameLine("Done!")
             End If
             If File.Exists(Program.Pso2RootDir & "\plugins\PSO2TitleTranslator.dll") = False Then
                 Helper.WriteDebugInfo("Downloading Title Translator plugin... (enabled by default)")
-                Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "Plugins/PSO2TitleTranslator.dll", (Program.Pso2RootDir & "\Plugins\PSO2TitleTranslator.dll"))
+                Program.ItemPatchClient.DownloadFile("http://107.170.16.100/Plugins/PSO2TitleTranslator.dll", (Program.Pso2RootDir & "\Plugins\PSO2TitleTranslator.dll"))
                 Helper.WriteDebugInfoSameLine("Done!")
             End If
             'For when we use the item patch like this
             'If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
             'Helper.WriteDebugInfo("Installing DPS Parser plugin...")
-            'Program.ItemPatchClient.DownloadFile(Program.FreedomUrl & "Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\PSO2DamageDump.dll"))
+            'Program.ItemPatchClient.DownloadFile("http://107.170.16.100/Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\PSO2DamageDump.dll"))
             'End If
         Catch ex As Exception
             MsgBox("Failed to download plugin files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
@@ -3660,12 +3660,13 @@ Public Class FrmMain
         End Try
     End Sub
     Public Sub CheckForPluginUpdates()
-        DownloadFile(Program.FreedomUrl & "Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
+        DownloadFile("http://107.170.16.100/Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
         Using oReader As StreamReader = File.OpenText("PluginMD5HashList.txt")
             Dim strNewDate As String = oReader.ReadLine()
             RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
             RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
-            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
+
+            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or (Directory.GetFiles(Program.Pso2RootDir & "\plugins\").Count = 0 And Directory.GetFiles(Program.Pso2RootDir & "\plugins\disabled").Count = 0) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
                 'Update plugins [AIDA]
 
                 Dim missingfiles As New List(Of String)
@@ -3715,7 +3716,7 @@ Public Class FrmMain
                     lblStatus.Text = Resources.strUpdating & downloaded & "/" & totaldownload
                     Application.DoEvents()
                     _cancelled = False
-                    DownloadFile((Program.FreedomUrl & "Plugins/" & downloadStr), downloadStr)
+                    DownloadFile(("http://107.170.16.100/Plugins/" & downloadStr), downloadStr)
                     If _cancelled Then Return
                     'Delete the existing file FIRST
                     If Not File.Exists(downloadStr) Then
@@ -3771,8 +3772,8 @@ Public Class FrmMain
 
                 Helper.WriteDebugInfoAndOk("Plugins updated successfully.")
                 RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
-                    RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
-                Else
+                RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
+            Else
                 Helper.WriteDebugInfoAndOk("No plugin updates available.")
             End If
         End Using
