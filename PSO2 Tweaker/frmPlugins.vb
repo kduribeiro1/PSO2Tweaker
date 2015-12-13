@@ -236,7 +236,7 @@ Public Class frmPlugins
         If ListViewEx1.FocusedItem.Text = "Title Translation" Then
             lblPluginInfo.Text =
                 "Translates the titles in-game." & vbCrLf &
-                "Author: Variant" & vbCrLf &
+                "Plugin Author: Variant" & vbCrLf &
                 "DLL Name: PSO2TitleTranslator.dll" & vbCrLf &
                 "Support URL: N/A"
             Exit Sub
@@ -244,7 +244,7 @@ Public Class frmPlugins
         If ListViewEx1.FocusedItem.Text = "Item Translation" Then
             lblPluginInfo.Text =
                 "Translates the items in-game." & vbCrLf &
-                "Author: arcnmx/Variant/Raven123" & vbCrLf &
+                "Plugin Author: arcnmx/Variant/Raven123" & vbCrLf &
                 "DLL Name: translator.dll" & vbCrLf &
                 "Support URL: N/A"
             btnConfigure.Visible = True
@@ -253,7 +253,7 @@ Public Class frmPlugins
         If ListViewEx1.FocusedItem.Text = "Damage Parser" Then
             lblPluginInfo.Text =
                 "DPS (Damage Per Second) Parser plugin. Exports damage logs into a damagelogs folder where pso2.exe is, in excel format." & vbCrLf &
-                "Author: Variant" & vbCrLf &
+                "Plugin Author: Variant" & vbCrLf &
                 "DLL Name: PSO2DamageDump.dll" & vbCrLf &
                 "Support URL: N/A"
             Exit Sub
@@ -261,7 +261,7 @@ Public Class frmPlugins
         If ListViewEx1.FocusedItem.Text = "PSO2Proxy Plugin" Then
             lblPluginInfo.Text =
                 "PSO2Proxy plugin. Allows people from SEA and other blocked regions to connect to PSO2JP." & vbCrLf &
-                "Author: Variant/Cyberkitsune" & vbCrLf &
+                "Plugin Author: Alam_Squeeze" & vbCrLf &
                 "DLL Name: PSO2Proxy.dll" & vbCrLf &
                 "Support URL: http://pso2proxy.cyberkitsune.net"
             Exit Sub
