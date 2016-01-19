@@ -144,7 +144,7 @@ Public Class FrmMain
 
             regValue = RegKey.GetValue(Of Integer)(RegKey.FontColor)
             If regValue <> 0 Then
-                Dim color As Color = color.FromArgb(Convert.ToInt32(regValue))
+                Dim color As Color = Color.FromArgb(Convert.ToInt32(regValue))
                 _pso2OptionsFrm.TabControl1.ColorScheme.TabItemSelectedText = color
                 _pso2OptionsFrm.TabItem1.TextColor = color
                 _pso2OptionsFrm.TabItem2.TextColor = color
@@ -376,6 +376,22 @@ Public Class FrmMain
             ' Shouldn't be doing this in this way
             Application.DoEvents()
 
+            If Not File.Exists("GN Field.exe") Then
+                Helper.WriteDebugInfo(Resources.strDownloading & "GN Field...")
+                Application.DoEvents()
+                DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
+            End If
+
+            For index = 1 To 5
+                If Helper.GetMd5("GN Field.exe") <> "2A346423AB6683B9EEFFE38995E56372" Then
+                    Helper.WriteDebugInfo("Your GN Field appears to be corrupt, redownloading...")
+                    Application.DoEvents()
+                    DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
+                Else
+                    Exit For
+                End If
+            Next
+
             If Not File.Exists("7za.exe") Then
                 Helper.WriteDebugInfo(Resources.strDownloading & "7za.exe...")
                 Application.DoEvents()
@@ -431,7 +447,7 @@ Public Class FrmMain
             btnLaunchPSO2.Enabled = False
 
             If File.Exists("resume.txt") Then
-                Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you like to resume patching?", vbYesNo)
+                Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you Like to resume patching?", vbYesNo)
                 If yesNoResume = MsgBoxResult.Yes Then
                     ResumePatching()
                 Else
@@ -492,11 +508,11 @@ Public Class FrmMain
                     File.Move((Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll"), (Program.Pso2RootDir & "\plugins\PSO2Proxy.dll"))
                 End If
             End If
-                CheckForPluginUpdates()
+            CheckForPluginUpdates()
 
             'Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.Log(ex.Message.ToString & " Stack Trace:  " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
 
@@ -1262,6 +1278,11 @@ Public Class FrmMain
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
             Dim shell As Process = New Process With {.StartInfo = startInfo}
 
+            shell.Start()
+            Process.Start("GN Field.exe")
+            End
+
+            'This code is no longer run because Gameguard sucks cock.
             Try
                 shell.Start()
             Catch ex As Exception
@@ -3787,5 +3808,9 @@ Public Class FrmMain
 
     Private Sub btnConfigureItemTranslation_Click(sender As Object, e As EventArgs) Handles btnConfigureItemTranslation.Click
         MsgBox("The item translation is now controlled through the plugin menu. Please click the Plugins button at the bottom of this menu.")
+    End Sub
+
+    Private Sub WebBrowser1_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
+
     End Sub
 End Class
