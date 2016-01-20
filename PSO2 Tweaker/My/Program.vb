@@ -17,6 +17,7 @@ Namespace My
         Public Shared HostsFilePath As String
         Public Shared Pso2RootDir As String
         Public Shared Pso2WinDir As String
+        Public Shared GNFieldActive As Boolean = False
         Public Shared UseItemTranslation As Boolean = False
         Public Shared WayuIsAFailure As Boolean = False
         Public Shared Nodiag As Boolean = False

@@ -725,9 +725,6 @@
   <data name="&gt;&gt;cmbPredownload.ZOrder" xml:space="preserve">
     <value>21</value>
   </data>
-  <data name="CheckBoxX2.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="CheckBoxX2.Location" type="System.Drawing.Point, System.Drawing">
     <value>403, 51</value>
   </data>

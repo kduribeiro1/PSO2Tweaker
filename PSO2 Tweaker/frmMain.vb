@@ -375,22 +375,29 @@ Public Class FrmMain
 
             ' Shouldn't be doing this in this way
             Application.DoEvents()
-
-            If Not File.Exists("GN Field.exe") Then
-                Helper.WriteDebugInfo(Resources.strDownloading & "GN Field...")
-                Application.DoEvents()
-                DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
-            End If
-
-            For index = 1 To 5
-                If Helper.GetMd5("GN Field.exe") <> "2A346423AB6683B9EEFFE38995E56372" Then
-                    Helper.WriteDebugInfo("Your GN Field appears to be corrupt, redownloading...")
+            DownloadFile(Program.FreedomUrl & "gnfieldstatus.txt", "gnfieldstatus.txt")
+            If File.ReadAllLines("gnfieldstatus.txt")(0) = "Active" Then
+                'GN Field needs to be active
+                Program.GNFieldActive = True
+                If Not File.Exists("GN Field.exe") Then
+                    Helper.WriteDebugInfo(Resources.strDownloading & "GN Field...")
                     Application.DoEvents()
                     DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
-                Else
-                    Exit For
                 End If
-            Next
+
+                For index = 1 To 5
+                    If Helper.GetMd5("GN Field.exe") <> "347C30A58877A81344FB369E414A3CF1" Then
+                        Helper.WriteDebugInfo("Your GN Field appears to be corrupt, redownloading...")
+                        Application.DoEvents()
+                        DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
+                    Else
+                        Exit For
+                    End If
+                Next
+            Else
+                'It doesn't
+                Program.GNFieldActive = False
+            End If
 
             If Not File.Exists("7za.exe") Then
                 Helper.WriteDebugInfo(Resources.strDownloading & "7za.exe...")
@@ -442,6 +449,8 @@ Public Class FrmMain
             Helper.DeleteFile("version.ver")
             Helper.DeleteFile("Story MD5HashList.txt")
             Helper.DeleteFile("PluginMD5HashList.txt")
+            Helper.DeleteFile("working.txt")
+            Helper.DeleteFile("gnfieldstatus.txt")
 
             UnlockGui()
             btnLaunchPSO2.Enabled = False
@@ -1279,10 +1288,14 @@ Public Class FrmMain
             Dim shell As Process = New Process With {.StartInfo = startInfo}
 
             shell.Start()
-            Process.Start("GN Field.exe")
-            End
+            If Program.GNFieldActive = True Then
+                Process.Start("GN Field.exe")
+                Thread.Sleep(100)
+                End
+            End If
 
             'This code is no longer run because Gameguard sucks cock.
+            'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
             Try
                 shell.Start()
             Catch ex As Exception
