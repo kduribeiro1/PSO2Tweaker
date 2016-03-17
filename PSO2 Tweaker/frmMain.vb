@@ -1,4 +1,18 @@
-﻿Imports DevComponents.DotNetBar
+﻿'------------------------------------------------------------------------------
+' PSO2 Tweaker - A replacement for the normal PSO2JP Launcher, used to update
+' and launch the original Japanese version of the game with patches,
+' modifications, troubleshooting, and much more.
+'
+' Thanks for taking a look at this code.
+' Feel free to submit bugfixes/improvements to 
+' https://github.com/Arks-Layer/PSO2Tweaker
+' 
+' Take care, and have fun in everything you do. - AIDA
+' Program uses the GNU GENERAL PUBLIC LICENSE
+' Requirements: 
+'
+'------------------------------------------------------------------------------
+Imports DevComponents.DotNetBar
 Imports Microsoft.VisualBasic.FileIO
 Imports Microsoft.Win32
 Imports System.ComponentModel
