@@ -185,70 +185,6 @@ Public Class FrmMain
     Private Shared Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         Windows.Forms.Application.Exit()
     End Sub
-
-    Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        If e.Shift Then
-            If e.KeyCode = Keys.G Then
-                _systemUnlock = 1
-                lblStatus.Text = "Please enter the remaining commands to access Veda: *"
-            End If
-            If e.KeyCode = Keys.U AndAlso _systemUnlock = 1 Then
-                _systemUnlock = 2
-                lblStatus.Text = "Please enter the remaining commands to access Veda: **"
-            End If
-            If e.KeyCode = Keys.N AndAlso _systemUnlock = 2 Then
-                _systemUnlock = 3
-                lblStatus.Text = "Please enter the remaining commands to access Veda: ***"
-            End If
-            If e.KeyCode = Keys.D AndAlso _systemUnlock = 3 Then
-                _systemUnlock = 4
-                lblStatus.Text = "Please enter the remaining commands to access Veda: ****"
-            End If
-            If e.KeyCode = Keys.A AndAlso _systemUnlock = 4 Then
-                _systemUnlock = 5
-                lblStatus.Text = "Please enter the remaining commands to access Veda: *****"
-            End If
-            If e.KeyCode = Keys.M AndAlso _systemUnlock = 5 Then
-                _systemUnlock = 6
-                lblStatus.Text = "Please enter the remaining commands to access Veda: ******"
-                Application.DoEvents()
-                Thread.Sleep(2000)
-                lblStatus.Text = "[ACCESS GRANTED - SYSTEM UNLOCKED]"
-                Application.DoEvents()
-                Thread.Sleep(2000)
-                _vedaUnlocked = True
-                FrmVeda.Show()
-            End If
-            If e.KeyCode = Keys.M Then
-                _mileyCyrus = 1
-                lblStatus.Text = "Please enter the remaining commands: *"
-            End If
-            If e.KeyCode = Keys.I AndAlso _mileyCyrus = 1 Then
-                _mileyCyrus = 2
-                lblStatus.Text = "Please enter the remaining commands: **"
-            End If
-            If e.KeyCode = Keys.L AndAlso _mileyCyrus = 2 Then
-                _mileyCyrus = 3
-                lblStatus.Text = "Please enter the remaining commands: ***"
-            End If
-            If e.KeyCode = Keys.E AndAlso _mileyCyrus = 3 Then
-                _mileyCyrus = 4
-                lblStatus.Text = "Please enter the remaining commands: ****"
-            End If
-            If e.KeyCode = Keys.Y AndAlso _mileyCyrus = 4 Then
-                _mileyCyrus = 5
-                lblStatus.Text = "Please enter the remaining commands: *****"
-                Application.DoEvents()
-                Thread.Sleep(2000)
-                lblStatus.Text = "[ACCESS GRANTED - PSO2 TWERKER]"
-                Application.DoEvents()
-                Thread.Sleep(2000)
-                Text = ("PSO2 Twerker ver " & Application.Info.Version.ToString())
-                btnLaunchPSO2.Text = "Twerk it!"
-                chkItemTranslation.Text = "Twerk on Robin Thicke"
-            End If
-        End If
-    End Sub
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub Form1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         If Me.BackgroundImage IsNot Nothing Then
@@ -1005,6 +941,7 @@ Public Class FrmMain
                 lblStatus.Text = "Moved " & count & " files out of " & counter
                 Application.DoEvents()
             Next
+            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfoSameLine("Done!")
             Helper.DeleteDirectory(Program.Pso2RootDir & "\_precede")
         End If
@@ -1086,8 +1023,6 @@ Public Class FrmMain
         If missingfiles.Count = 0 Then Helper.WriteDebugInfo("Your precede data is up to date!")
         If missingfiles.Count <> 0 Then
             Helper.WriteDebugInfo("Precede data downloaded/updated!")
-            If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
-            Helper.WriteDebugInfo("You will need to generate a new win32 list via the new patch method. Sorry!")
         End If
         RegKey.SetValue(Of String)(RegKey.Pso2PrecedeVersion, version)
     End Sub
@@ -1428,7 +1363,7 @@ Public Class FrmMain
             RestoreBackup(StoryPatch)
         End If
 
-        ' Why is the UI being disabled here, is there something I'm missing? -Matthew
+        ' Why is the UI being disabled here, is there something I'm missing? -LightningDragon
         LockGui()
         Helper.WriteDebugInfo(Resources.strDownloadingPatchFile1)
 
@@ -2702,7 +2637,7 @@ Public Class FrmMain
         Process.Start("http://pso2.cirnopedia.info/support.php")
     End Sub
 
-    Private Shared Sub btnDonateToENPatchHost_Click(sender As Object, e As EventArgs) Handles btnDonateToENPatchHost.Click
+    Private Shared Sub btnDonateToENPatchHost_Click(sender As Object, e As EventArgs)
         Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UB7UN9MQ7WZ44")
     End Sub
 

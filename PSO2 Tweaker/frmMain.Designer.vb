@@ -1,11 +1,11 @@
 ﻿Imports PSO2_Tweaker.My
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmMain
     Inherits DevComponents.DotNetBar.Office2007Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -22,7 +22,7 @@ Partial Class FrmMain
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMain))
@@ -110,7 +110,6 @@ Partial Class FrmMain
         Me.btnDonations = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToBumped = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToCirno = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnDonateToENPatchHost = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
         Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
@@ -703,7 +702,7 @@ Partial Class FrmMain
         'btnDonations
         '
         Me.btnDonations.Name = "btnDonations"
-        Me.btnDonations.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnDonateToBumped, Me.btnDonateToCirno, Me.btnDonateToENPatchHost, Me.btnDonateToTweaker})
+        Me.btnDonations.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnDonateToBumped, Me.btnDonateToCirno, Me.btnDonateToTweaker})
         resources.ApplyResources(Me.btnDonations, "btnDonations")
         '
         'btnDonateToBumped
@@ -715,11 +714,6 @@ Partial Class FrmMain
         '
         Me.btnDonateToCirno.Name = "btnDonateToCirno"
         resources.ApplyResources(Me.btnDonateToCirno, "btnDonateToCirno")
-        '
-        'btnDonateToENPatchHost
-        '
-        Me.btnDonateToENPatchHost.Name = "btnDonateToENPatchHost"
-        resources.ApplyResources(Me.btnDonateToENPatchHost, "btnDonateToENPatchHost")
         '
         'btnDonateToTweaker
         '
@@ -1000,7 +994,6 @@ Partial Class FrmMain
     Friend WithEvents btnDonations As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToBumped As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToCirno As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnDonateToENPatchHost As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToTweaker As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnNewShit As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents BtnUpdatePso2 As DevComponents.DotNetBar.ButtonItem

@@ -130,7 +130,7 @@
     <value>Changes:</value>
   </data>
   <data name="strCheckforPSO2Updates" xml:space="preserve">
-    <value>Check for PSO2 Updates</value>
+    <value>Check for PSO2 Updates (Old Method)</value>
   </data>
   <data name="strCheckingforupdatesPleasewaitamoment" xml:space="preserve">
     <value>Checking for updates, please wait a moment...</value>

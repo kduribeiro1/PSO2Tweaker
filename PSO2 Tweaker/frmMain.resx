@@ -918,9 +918,6 @@
   <data name="btnDonateToCirno.Text" xml:space="preserve">
     <value>Cirnopedia Donation Link</value>
   </data>
-  <data name="btnDonateToENPatchHost.Text" xml:space="preserve">
-    <value>PSO2 Proxy Donation Link</value>
-  </data>
   <data name="btnDonateToTweaker.Text" xml:space="preserve">
     <value>PSO2 Tweaker Donation Link</value>
   </data>
@@ -7940,12 +7937,6 @@
   <data name="&gt;&gt;btnDonateToCirno.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;btnDonateToENPatchHost.Name" xml:space="preserve">
-    <value>btnDonateToENPatchHost</value>
-  </data>
-  <data name="&gt;&gt;btnDonateToENPatchHost.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
   <data name="&gt;&gt;btnDonateToTweaker.Name" xml:space="preserve">
     <value>btnDonateToTweaker</value>
   </data>
@@ -8034,7 +8025,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=0.6.6.6, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.7.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>

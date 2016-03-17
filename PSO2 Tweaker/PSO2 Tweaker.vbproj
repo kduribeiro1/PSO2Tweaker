@@ -195,12 +195,6 @@
     <Compile Include="FrmPso2Options.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmVeda.Designer.vb">
-      <DependentUpon>FrmVeda.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVeda.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="FrmOptions.Designer.vb">
       <DependentUpon>FrmOptions.vb</DependentUpon>
     </Compile>
@@ -279,9 +273,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPso2Options.resx">
       <DependentUpon>FrmPso2Options.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVeda.resx">
-      <DependentUpon>FrmVeda.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmOptions.resx">
       <DependentUpon>FrmOptions.vb</DependentUpon>
