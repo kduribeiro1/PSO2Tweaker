@@ -958,6 +958,7 @@ Public Class FrmMain
             If File.Exists("win32list_DO_NOT_DELETE_ME.txt") Then File.Delete("win32list_DO_NOT_DELETE_ME.txt")
             Helper.WriteDebugInfoSameLine("Done!")
             Helper.DeleteDirectory(Program.Pso2RootDir & "\_precede")
+            RegKey.SetValue(Of String)(RegKey.JustPrepatched, "True")
         End If
     End Sub
 
@@ -2866,6 +2867,12 @@ Public Class FrmMain
 
 #If DEBUG Then
     Private Sub btnNewShit_Click(sender As Object, e As EventArgs) Handles btnNewShit.Click
+        Dim ContinueWithNew As MsgBoxResult
+        If RegKey.GetValue(Of String)(RegKey.JustPrepatched) = "True" Then
+            ContinueWithNew = MsgBox("It looks like you just installed precede data. It's recommended that you use the OLD METHOD of patching after that. Are you sure you want to use the new mthod instead?", vbYesNo, vbExclamation)
+        End If
+        If ContinueWithNew = vbNo Then Exit Sub
+        If ContinueWithNew = vbYes Then RegKey.SetValue(Of String)(RegKey.JustPrepatched, "False")
         Helper.WriteDebugInfo("Starting TRANS-AM BURST system...")
         'All done!
 

@@ -24,6 +24,7 @@ Public Class RegKey
     Public Const Pso2Dir = "PSO2Dir"
     Public Const Pso2PatchlistMd5 = "PSO2PatchlistMD5"
     Public Const Pso2PrecedeVersion = "PSO2PrecedeVersion"
+    Public Const JustPrepatched = "JustPrepatched"
     Public Const Pso2RemoteVersion = "PSO2RemoteVersion"
     Public Const Pastebin = "Pastebin"
     Public Const PatchServer = "PatchServer"
