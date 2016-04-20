@@ -451,4 +451,12 @@ Public Class FrmPso2Options
     Private Sub SIGM_ValueChanged(sender As Object, e As EventArgs) Handles SIGM.ValueChanged
         SIGM.Text = "In-Game Movie Volume - " & SIGM.Value
     End Sub
+
+    Private Sub Slider1_ValueChanged(sender As Object, e As EventArgs) Handles Slider1.ValueChanged
+        LabelX3.Text = "Setting level " & Slider1.Value & vbCrLf & "The simple render setting changes the overall rendering level. If the number is set high, the general quality of graphics goes up, but the load on the PC increases. On some systems, the higher setting may not work correctly. " & vbCrLf & vbCrLf & "Level 1 will set the highest priority to smooth gameplay, however the quality of the graphics will be low. This is recommended for older machines (potatoes). Level 6 is the max graphical setting, which debuted alongside the PSO2JP PS4 release."
+    End Sub
+
+    Private Sub TabControlPanel1_Click(sender As Object, e As EventArgs) Handles TabControlPanel1.Click
+
+    End Sub
 End Class
