@@ -17,6 +17,7 @@ Namespace My
         Public Shared HostsFilePath As String
         Public Shared Pso2RootDir As String
         Public Shared Pso2WinDir As String
+        Public Shared ELSMode As Boolean = False
         Public Shared GNFieldActive As Boolean = False
         Public Shared UseItemTranslation As Boolean = False
         Public Shared WayuIsAFailure As Boolean = False
@@ -114,6 +115,11 @@ Namespace My
                                 Helper.Log("Detected command argument -nodiag")
                                 Helper.Log("Bypassing OS detection to fix compatibility!")
                                 Nodiag = True
+
+                            Case "-els"
+                                Helper.Log("Detected command argument -els")
+                                Helper.Log("Extraterrestrial Living-metal Shape-shifters mode activated! GN Field disabled manually!")
+                                Program.ELSMode = True
 
                             Case "-bypass"
                                 Helper.Log("Detected command argument -bypass")

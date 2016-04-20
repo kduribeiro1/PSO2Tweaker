@@ -326,7 +326,7 @@ Public Class FrmMain
             ' Shouldn't be doing this in this way
             Application.DoEvents()
             DownloadFile(Program.FreedomUrl & "gnfieldstatus.txt", "gnfieldstatus.txt")
-            If File.ReadAllLines("gnfieldstatus.txt")(0) = "Active" Then
+            If File.ReadAllLines("gnfieldstatus.txt")(0) = "Active" And Program.ELSMode = False Then
                 'GN Field needs to be active
                 Program.GNFieldActive = True
                 If Not File.Exists("GN Field.exe") Then
