@@ -3588,7 +3588,7 @@ Public Class FrmMain
             If File.Exists("ServerConfig.txt") Then File.Delete("ServerConfig.txt")
 
         Catch ex As Exception
-            MsgBox("ERROR - " & ex.Message.ToString)
+            Helper.WriteDebugInfoAndWarning("ERROR - " & ex.Message.ToString & " (While checking the PSO2Proxy stats)")
         End Try
     End Sub
     Public ReadOnly Property Epoch() As DateTime
