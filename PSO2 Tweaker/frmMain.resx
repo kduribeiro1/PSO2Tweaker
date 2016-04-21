@@ -1073,22 +1073,96 @@
   </data>
   <data name="txtPSO2DefaultINI.Text" xml:space="preserve">
     <value>Ini = {
+    FrameKeep = 0,
+    TraceToChatLog = true,
+    MultiThread = true,
+    System = {
+        StoryClear1 = false,
+        SaveFlag_NotFirstVita = false,
+        LastHostName = "Ship02",
+        StoryClear3 = false,
+        ShipCursorIndex = 8,
+    },
+    PrePadGUID = {
+        [6] = 0,
+        [7] = 80,
+        [2] = 1118,
+        [8] = 73,
+        [9] = 68,
+        [10] = 86,
+        [3] = 0,
+        [12] = 68,
+        [1] = 654,
+        [4] = 0,
+        [5] = 0,
+        [11] = 73,
+    },
+    Login = {
+        Password = "",
+        SaveAccount = false,
+        SavePassword = false,
+        Account = "",
+    },
+    Window = {
+        inventory_item = {
+            Setting = {
+                SelectDisplayformat = 1,
+            },
+        },
+        log_window_form = {
+            Height = 518.286,
+            FromRight = 15,
+            FromBottom = 15,
+            Width = 311,
+        },
+        pet_details = {
+            Setting = {
+                SelectTab = 0,
+            },
+        },
+        item_details = {
+            Setting = {
+                SelectTabAddon = 0,
+                SelectTabWeapon = 1,
+            },
+        },
+        item_inventory = {
+            Setting = {
+                SelectTab = 4,
+            },
+        },
+        item_warehouse = {
+            Setting = {
+                SelectTab = 3,
+                SelectDisplayformat = 1,
+            },
+        },
+        item_receipt_warehouse = {
+            Setting = {
+                SelectDisplayformat = 1,
+            },
+        },
+    },
+    IsNC = false,
     TraceEnabled = true,
     Config = {
         Simple = {
             DrawLevel = 3,
         },
         Notice = {
+            ShowPremiumNotice = false,
             GuildDialog = true,
             PartyDialog = true,
+            HideRecommendOrderNotice = false,
             FriendDialog = true,
             ShowItemLog = true,
             TradeDialog = true,
+            MultiToast = true,
         },
         Screen = {
-            InterfaceSize = 0,
+            InterfaceSize = 2,
             MaxScale = 1,
-            PreferredScale = 1,
+            PreferredScale = 1.4,
             ReferenceResolution = {
                 Y = 720,
                 X = 1280,
@@ -1099,6 +1173,42 @@
             ShowUI = "All",
         },
         Camera = {
+            InitFreeCameraSetting = true,
+            Move = {
+                Ignore = false,
+            },
+            FreeCamera0 = {
+                Roll = 0,
+                OffsetX = 0,
+                AngleUD = 1536,
+                AngleLR = 0,
+                OffsetY = 0,
+                Fovy = 45,
+                OffsetZ = 0,
+            },
+            CopyCameraSetting = true,
+            MoveS = {
+                Ignore = false,
+            },
+            FreeCamera2 = {
+                Roll = 0,
+                OffsetX = 0,
+                AngleUD = 1536,
+                AngleLR = 0,
+                OffsetY = 0,
+                Fovy = 45,
+                OffsetZ = 0,
+            },
+            RotateS = {
+                Speed = {
+                    Y = 50,
+                    X = 50,
+                },
+                Direction = {
+                    Y = 0,
+                    X = 0,
+                },
+            },
             Rotate = {
                 Speed = {
                     Y = 50,
@@ -1109,61 +1219,57 @@
                     X = 0,
                 },
             },
+            FreeCamera1 = {
+                Roll = 0,
+                OffsetX = 0,
+                AngleUD = 1536,
+                AngleLR = 0,
+                OffsetY = 0,
+                Fovy = 45,
+                OffsetZ = 0,
+            },
         },
         Basic = {
             PaletteChange = 1,
-            MoviePlay = true,
-            SmutFilter = true,
             PartySettingSave = {
                 Normal = false,
             },
-            KeyMoveEscape = 0,
+            PartyNameType = 0,
+            RareDropLevelType = 0,
+            EventTarget = true,
+            Lockon = 0,
+            MesetaPickUp = false,
+            HideLockItemAttribute = false,
+            IgnoreBeginnerBlock = false,
+            MoviePlay = true,
+            SmutFilter = true,
+            AttackProperty = false,
+            CharaNameColor = false,
+            LockonDontChangeWithStick = false,
+            WareHouseCursorType = 0,
+            UseNaviIcon = true,
+            HideLockItemCraftResolve = false,
             RadarMapDirection = 0,
-            Lockon = 1,
-        },
-        Locale = {
-            Language = "Ja",
-            Region = "Ja",
-        },
-        Draw = {
-            ShaderQuality = true,
-            Shadow = {
-                Quality = "middle",
-            },
-            Display = {
-                ShadowQuality = 3,
-                ReflectionQuality = 3,
-                DitailModelNum = 12,
-            },
-            TextureResolution = 1,
-            Function = {
-                Blur = true,
-                LightGeoGraphy = false,
-                Reflection = true,
-                LightShaft = false,
-                SoftParticle = false,
-                Bloom = false,
-                Depth = false,
-                LightEffect = true,
-                AntiAliasing = true,
-            },
-        },
-        Sound = {
-            Play = {
-                Surround = true,
-                GlobalFocus = false,
-            },
-            Volume = {
-                Movie = 70,
-                Se = 80,
-                Voice = 80,
-                Bgm = 50,
-            },
+            HideLockItemPotential = false,
+            HideLockItemElement = false,
+            SubPaletteContentDisp = 1,
+            HideLockItemNormal = false,
+            HideLockItemCraftExtend = false,
+            KeyMoveEscape = 0,
         },
         Communication = {
             LogAutoword = true,
-            DirectChatMode = false,
             TeamChat = 0,
+            DisableScrollLock = false,
+            HideKnockoutIcon = false,
+            ChatNameType = 0,
+            HideKnockoutNotice = false,
+            DirectChatMode = false,
+            ChatBGColor = true,
+            SymbolChat = 0,
+            MailQuote = false,
+            UseAutoword = true,
+            LoginCall = true,
             TabCustom = {
                 Party = true,
                 Public = true,
@@ -1172,27 +1278,69 @@
                 Reply = true,
                 System = true,
             },
-            MailQuote = false,
-            DisableScrollLock = false,
+        },
+        Esthetic = {
+            AccessorySelectType = 1,
+            CastBody = false,
+        },
+        Draw = {
+            ShaderQuality = true,
+            Shadow = {
+                Quality = "middle",
+            },
+            Display = {
+                CameraLight = 50,
+                ReflectionQuality = 3,
+                ShadowQuality = 3,
+                PhotonBlastNum = 12,
+                DitailModelNum = 12,
+            },
+            TextureResolution = 1,
+            Function = {
+                ColorToneCurve = true,
+                Blur = true,
+                AutoResolution = true,
+                LightGeoGraphy = false,
+                Depth = false,
+                Vignetting = false,
+                EffectDraw = true,
+                Reflection = true,
+                LightShaft = false,
+                EdgeLight = true,
+                SoftParticle = false,
+                Bloom = false,
+                LightEffect = true,
+                AmbientOcclusion = true,
+                AntiAliasing = true,
+            },
+            ShaderLevel = 1,
+        },
+        Sound = {
+            Play = {
+                Surround = true,
+                GlobalFocus = false,
+            },
+            Volume = {
+                Bgm = 50,
+                Voice = 80,
+                Movie = 70,
+                Se = 80,
+            },
+        },
+        Locale = {
+            Language = "Ja",
+            Region = "Ja",
         },
     },
-    Login = {
-        Password = "",
-        SaveAccount = false,
-        Account = "",
-        SavePassword = false,
-    },
     Windows = {
+        Width3d = 1280,
         FullScreen = false,
-        VirtualFullScreen = true,
+        Height3d = 720,
         Height = 720,
-        Height3d = 480,
-        Width3d = 640,
+        VirtualFullScreen = true,
+        ManagedDevice = false,
         Width = 1280,
     },
-    TraceToChatLog = true,
-    IsNC = false,
-    FrameKeep = 60,
 }</value>
   </data>
   <data name="txtPSO2DefaultINI.Visible" type="System.Boolean, mscorlib">
@@ -8025,7 +8173,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.7.1, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.7.4, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
