@@ -216,6 +216,11 @@ Public Class FrmMain
             End If
         End Using
 
+        If Program.CloseMe = True Then
+            MsgBox("All done! Please re-run the Tweaker.")
+            Close()
+        End If
+
         Try
             If Program.SidebarEnabled Then
                 OpenSideBar()
@@ -380,6 +385,8 @@ Public Class FrmMain
                     Exit For
                 End If
             Next
+
+            Helper.CheckIfOfficialLauncherRunning()
 
             Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
             Helper.DeleteFile("launcherlist.txt")

@@ -111,6 +111,27 @@ Public Class Helper
         Return True
     End Function
 
+
+    Public Shared Function CheckIfOfficialLauncherRunning() As Boolean
+        Dim processName As String = "pso2launcher"
+        Dim currentProcessId = Process.GetCurrentProcess().Id
+
+        If Process.GetProcessesByName(processName).Length > If(processName = "PSO2 Tweaker", 1, 0) Then
+            Dim closeItYesNo As MsgBoxResult = MsgBox("It seems that " & processName.Replace(".exe", "") & " is already running. This can cause various issues with filechecking. Would you like to close it?", vbYesNo)
+
+            If closeItYesNo = vbYes Then
+                For Each proc As Process In Process.GetProcessesByName(processName)
+                    If proc.Id <> currentProcessId Then proc.Kill()
+                Next
+
+            End If
+        Else
+            Return False
+        End If
+
+        Return True
+    End Function
+
     Public Shared Function GetFileSize(ByVal myFilePath As String) As Long
         Return New FileInfo(myFilePath).Length
     End Function

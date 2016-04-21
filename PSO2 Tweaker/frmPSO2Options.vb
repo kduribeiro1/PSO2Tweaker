@@ -82,7 +82,10 @@ Public Class FrmPso2Options
             ComboBoxEx7.SelectedIndex = Convert.ToInt32(ReadINISetting("InterfaceSize"))
             ComboBoxEx6.Text = ReadINISetting("FrameKeep") & " FPS"
             If ComboBoxEx6.Text = "0 FPS" Then ComboBoxEx6.Text = "Unlimited FPS"
-            ComboBoxEx2.SelectedIndex = CInt(ReadIniSetting("ShaderQuality"))
+            If ReadIniSetting("ShaderQuality") = "-1" Then ComboBoxEx2.SelectedIndex = 1
+            If ReadIniSetting("ShaderQuality") = "True" Then ComboBoxEx2.SelectedIndex = 1
+            If ReadIniSetting("ShaderQuality") = "False" Then ComboBoxEx2.SelectedIndex = 2
+            If ReadIniSetting("ShaderQuality") = "0" Or ReadIniSetting("ShaderQuality") = "1" Or ReadIniSetting("ShaderQuality") = "2" Then ComboBoxEx2.SelectedIndex = CInt(ReadIniSetting("ShaderQuality"))
             If ReadIniSetting("MoviePlay") = "true" Then ComboBoxEx3.SelectedIndex = 0
             If ReadINISetting("MoviePlay") = "false" Then ComboBoxEx3.SelectedIndex = 1
             If ReadINISetting("FullScreen") = "false" Then
@@ -379,6 +382,11 @@ Public Class FrmPso2Options
         End Try
     End Sub
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
+        Helper.Log("Looking for user.pso2 file...")
+        If File.Exists(_usersettingsfile) = False Then
+            Helper.WriteDebugInfoAndFailed("Unable to locate a PSO2 settings file. This should NOT happen. Please select Troubleshooting -> Reset PSO2 Settings and try again.")
+            Exit Sub
+        End If
         'Try
         Helper.Log("Saving Draw Level...")
         SaveIniSetting("DrawLevel", Slider1.Value.ToString())
@@ -585,6 +593,14 @@ Public Class FrmPso2Options
     End Sub
 
     Private Sub LabelX3_Click(sender As Object, e As EventArgs) Handles LabelX3.Click
+
+    End Sub
+
+    Private Sub LabelX19_Click(sender As Object, e As EventArgs) Handles LabelX19.Click
+
+    End Sub
+
+    Private Sub LabelX7_Click(sender As Object, e As EventArgs) Handles LabelX7.Click
 
     End Sub
 End Class

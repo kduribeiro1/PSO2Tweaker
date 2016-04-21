@@ -18,6 +18,7 @@ Namespace My
         Public Shared Pso2RootDir As String
         Public Shared Pso2WinDir As String
         Public Shared ELSMode As Boolean = False
+        Public Shared CloseMe As Boolean = False
         Public Shared GNFieldActive As Boolean = False
         Public Shared UseItemTranslation As Boolean = False
         Public Shared WayuIsAFailure As Boolean = False
@@ -121,6 +122,14 @@ Namespace My
                                 Helper.Log("Extraterrestrial Living-metal Shape-shifters mode activated! GN Field disabled manually!")
                                 Program.ELSMode = True
 
+                            Case "-reset"
+                                Helper.Log("Detected command argument -reset")
+                                Dim resetyesno As MsgBoxResult = MsgBox("This will erase all of the PSO2 Tweaker's settings, and will start the initial setup the next time you open it. Continue?", vbYesNo)
+                                If resetyesno = vbYes Then
+                                    Computer.Registry.CurrentUser.DeleteSubKeyTree("Software\AIDA", False)
+                                    Helper.Log("All settings reset, closing program!")
+                                    Program.CloseMe = True
+                                End If
                             Case "-bypass"
                                 Helper.Log("Detected command argument -bypass")
                                 Helper.Log("Emergency bypass mode activated - Please only use this mode if the Tweaker will not start normally!")

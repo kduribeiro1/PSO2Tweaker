@@ -31,8 +31,9 @@ Partial Class FrmPso2Options
         Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
         Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
         Me.ComboBoxEx2 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
-        Me.ComboItem4 = New DevComponents.Editors.ComboItem()
         Me.ComboItem5 = New DevComponents.Editors.ComboItem()
+        Me.ComboItem4 = New DevComponents.Editors.ComboItem()
+        Me.ComboItem19 = New DevComponents.Editors.ComboItem()
         Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
         Me.ComboBoxEx1 = New DevComponents.DotNetBar.Controls.ComboBoxEx()
         Me.ComboItem1 = New DevComponents.Editors.ComboItem()
@@ -89,7 +90,6 @@ Partial Class FrmPso2Options
         Me.btnSaveSettings = New DevComponents.DotNetBar.ButtonX()
         Me.TabItem5 = New DevComponents.DotNetBar.TabItem(Me.components)
         Me.TabItem6 = New DevComponents.DotNetBar.TabItem(Me.components)
-        Me.ComboItem19 = New DevComponents.Editors.ComboItem()
         CType(Me.TabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabControlPanel1.SuspendLayout()
@@ -248,13 +248,17 @@ Partial Class FrmPso2Options
         Me.ComboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.ComboBoxEx2.TabIndex = 7
         '
+        'ComboItem5
+        '
+        Me.ComboItem5.Text = "Simple (No shaders)"
+        '
         'ComboItem4
         '
         Me.ComboItem4.Text = "Normal"
         '
-        'ComboItem5
+        'ComboItem19
         '
-        Me.ComboItem5.Text = "Simple (No shaders)"
+        Me.ComboItem19.Text = "High Quality"
         '
         'LabelX4
         '
@@ -881,10 +885,6 @@ Partial Class FrmPso2Options
         '
         Me.TabItem6.Name = "TabItem6"
         Me.TabItem6.Text = "TabItem6"
-        '
-        'ComboItem19
-        '
-        Me.ComboItem19.Text = "High Quality"
         '
         'FrmPso2Options
         '
