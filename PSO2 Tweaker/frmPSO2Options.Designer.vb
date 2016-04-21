@@ -89,6 +89,7 @@ Partial Class FrmPso2Options
         Me.btnSaveSettings = New DevComponents.DotNetBar.ButtonX()
         Me.TabItem5 = New DevComponents.DotNetBar.TabItem(Me.components)
         Me.TabItem6 = New DevComponents.DotNetBar.TabItem(Me.components)
+        Me.ComboItem19 = New DevComponents.Editors.ComboItem()
         CType(Me.TabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabControlPanel1.SuspendLayout()
@@ -183,9 +184,9 @@ Partial Class FrmPso2Options
         '
         '
         Me.LabelX19.BackgroundStyle.Class = ""
-        Me.LabelX19.Location = New System.Drawing.Point(209, 256)
+        Me.LabelX19.Location = New System.Drawing.Point(208, 181)
         Me.LabelX19.Name = "LabelX19"
-        Me.LabelX19.Size = New System.Drawing.Size(161, 90)
+        Me.LabelX19.Size = New System.Drawing.Size(161, 169)
         Me.LabelX19.TabIndex = 11
         Me.LabelX19.Text = resources.GetString("LabelX19.Text")
         Me.LabelX19.WordWrap = True
@@ -240,7 +241,7 @@ Partial Class FrmPso2Options
         Me.ComboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.ComboBoxEx2.FormattingEnabled = True
         Me.ComboBoxEx2.ItemHeight = 14
-        Me.ComboBoxEx2.Items.AddRange(New Object() {Me.ComboItem4, Me.ComboItem5})
+        Me.ComboBoxEx2.Items.AddRange(New Object() {Me.ComboItem5, Me.ComboItem4, Me.ComboItem19})
         Me.ComboBoxEx2.Location = New System.Drawing.Point(433, 201)
         Me.ComboBoxEx2.Name = "ComboBoxEx2"
         Me.ComboBoxEx2.Size = New System.Drawing.Size(122, 20)
@@ -881,6 +882,10 @@ Partial Class FrmPso2Options
         Me.TabItem6.Name = "TabItem6"
         Me.TabItem6.Text = "TabItem6"
         '
+        'ComboItem19
+        '
+        Me.ComboItem19.Text = "High Quality"
+        '
         'FrmPso2Options
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -979,4 +984,5 @@ Partial Class FrmPso2Options
     Friend WithEvents SSE As DevComponents.DotNetBar.Controls.Slider
     Friend WithEvents SVOICE As DevComponents.DotNetBar.Controls.Slider
     Friend WithEvents SIGM As DevComponents.DotNetBar.Controls.Slider
+    Friend WithEvents ComboItem19 As DevComponents.Editors.ComboItem
 End Class

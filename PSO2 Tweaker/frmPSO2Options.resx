@@ -118,7 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LabelX19.Text" xml:space="preserve">
-    <value>If you're having issues with these settings not saving correctly, or issues in-game, you can try clicking "Troubleshooting -&gt; Reset PSO2 Settings" in the main window to restore your PSO2 settings to default.</value>
+    <value>If you're having issues with these settings not saving correctly, or issues in-game, you can try clicking "Troubleshooting -&gt; Reset PSO2 Settings" in the main window to restore your PSO2 settings to default.
+
+PLEASE NOTE: The Texture Resolution setting and the Shader Quality setting will OVERWRITE the simple render setting for those two.</value>
   </data>
   <data name="LabelX3.Text" xml:space="preserve">
     <value>The simple render setting changes the overall rendering level. If the number is set high, the general quality of graphics goes up, but the load on the PC increases. On some systems, the higher setting may not work correctly.</value>

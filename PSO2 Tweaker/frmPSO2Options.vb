@@ -82,9 +82,8 @@ Public Class FrmPso2Options
             ComboBoxEx7.SelectedIndex = Convert.ToInt32(ReadINISetting("InterfaceSize"))
             ComboBoxEx6.Text = ReadINISetting("FrameKeep") & " FPS"
             If ComboBoxEx6.Text = "0 FPS" Then ComboBoxEx6.Text = "Unlimited FPS"
-            If ReadINISetting("ShaderQuality") = "true" Then ComboBoxEx2.SelectedIndex = 0
-            If ReadINISetting("ShaderQuality") = "false" Then ComboBoxEx2.SelectedIndex = 1
-            If ReadINISetting("MoviePlay") = "true" Then ComboBoxEx3.SelectedIndex = 0
+            ComboBoxEx2.SelectedIndex = CInt(ReadIniSetting("ShaderQuality"))
+            If ReadIniSetting("MoviePlay") = "true" Then ComboBoxEx3.SelectedIndex = 0
             If ReadINISetting("MoviePlay") = "false" Then ComboBoxEx3.SelectedIndex = 1
             If ReadINISetting("FullScreen") = "false" Then
                 ComboBoxEx4.SelectedIndex = 0
@@ -151,6 +150,38 @@ Public Class FrmPso2Options
                     Dim strReturn As String() = strLine.Split("="c)
                     Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
                     textLines(i) = textLines(i).Replace(finalString, (" " & value))
+                    For j = 0 To textLines.Length
+                        If j + 1 = textLines.Length Then
+                            TextBoxX1.AppendText("}")
+                            File.Delete(_usersettingsfile)
+                            File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
+                            Return
+                        End If
+                        TextBoxX1.AppendText(textLines(j) & vbCrLf)
+                    Next j
+                End If
+            Next i
+        Catch ex As Exception
+            Helper.Log(ex.Message)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub SaveQualitySetting(value As String)
+        Try
+            'INICache(SettingToSave) = Value
+
+            TextBoxX1.Text = ""
+            Dim settingString As String = File.ReadAllText(_usersettingsfile)
+            Dim textLines As String() = settingString.Split(Environment.NewLine.ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+            Dim i As Integer
+            Dim j As Integer
+            For i = 0 To (textLines.Length - 1)
+                If textLines(i).Contains("Quality = ") = True And textLines(i).Contains("ShaderQuality") = False And textLines(i).Contains("ReflectionQuality") = False And textLines(i).Contains("ShadowQuality") = False Then
+                    Dim strLine As String = textLines(i).Replace(vbTab, "")
+                    Dim strReturn As String() = strLine.Split("="c)
+                    Dim finalString As String = strReturn(1).Replace("""", "").Replace(","c, "")
+                    textLines(i) = textLines(i).Replace(finalString.Replace(" ", ""), value)
                     For j = 0 To textLines.Length
                         If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
@@ -350,17 +381,110 @@ Public Class FrmPso2Options
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
         'Try
         Helper.Log("Saving Draw Level...")
-        SaveINISetting("DrawLevel", Slider1.Value.ToString())
+        SaveIniSetting("DrawLevel", Slider1.Value.ToString())
+        Helper.Log("Saving Simple Render Setting " & Slider1.Value & "!")
+        'Probably a much better way to do this, will revisit later. [AIDA]
+        Select Case Slider1.Value
+            Case 1
+                SaveQualitySetting("low")
+                SaveIniSetting("ReflectionQuality", "1")
+                SaveIniSetting("ShadowQuality", "1")
+                SaveIniSetting("DitailModelNum", "5")
+                SaveIniSetting("TextureResolution", "0")
+                SaveIniSetting("Blur", "false")
+                SaveIniSetting("LightGeoGraphy", "false")
+                SaveIniSetting("Depth", "false")
+                SaveIniSetting("Reflection", "false")
+                SaveIniSetting("LightShaft", "false")
+                SaveIniSetting("Bloom", "false")
+                SaveIniSetting("LightEffect", "false")
+                SaveIniSetting("AntiAliasing", "false")
+                SaveIniSetting("ShaderLevel", "0")
+            Case 2
+                SaveQualitySetting("low")
+                SaveIniSetting("ReflectionQuality", "2")
+                SaveIniSetting("ShadowQuality", "2")
+                SaveIniSetting("DitailModelNum", "5")
+                SaveIniSetting("TextureResolution", "1")
+                SaveIniSetting("Blur", "false")
+                SaveIniSetting("LightGeoGraphy", "false")
+                SaveIniSetting("Depth", "false")
+                SaveIniSetting("Reflection", "true")
+                SaveIniSetting("LightShaft", "false")
+                SaveIniSetting("Bloom", "false")
+                SaveIniSetting("LightEffect", "false")
+                SaveIniSetting("AntiAliasing", "false")
+                SaveIniSetting("ShaderLevel", "1")
+            Case 3
+                SaveQualitySetting("middle")
+                SaveIniSetting("ReflectionQuality", "3")
+                SaveIniSetting("ShadowQuality", "3")
+                SaveIniSetting("DitailModelNum", "12")
+                SaveIniSetting("TextureResolution", "1")
+                SaveIniSetting("Blur", "true")
+                SaveIniSetting("LightGeoGraphy", "false")
+                SaveIniSetting("Depth", "false")
+                SaveIniSetting("Reflection", "true")
+                SaveIniSetting("LightShaft", "false")
+                SaveIniSetting("Bloom", "false")
+                SaveIniSetting("LightEffect", "true")
+                SaveIniSetting("AntiAliasing", "true")
+                SaveIniSetting("ShaderLevel", "1")
+            Case 4
+                SaveQualitySetting("middle")
+                SaveIniSetting("ReflectionQuality", "4")
+                SaveIniSetting("ShadowQuality", "4")
+                SaveIniSetting("DitailModelNum", "20")
+                SaveIniSetting("TextureResolution", "1")
+                SaveIniSetting("Blur", "true")
+                SaveIniSetting("LightGeoGraphy", "false")
+                SaveIniSetting("Depth", "true")
+                SaveIniSetting("Reflection", "true")
+                SaveIniSetting("LightShaft", "true")
+                SaveIniSetting("Bloom", "true")
+                SaveIniSetting("LightEffect", "true")
+                SaveIniSetting("AntiAliasing", "true")
+                SaveIniSetting("ShaderLevel", "1")
+            Case 5
+                SaveQualitySetting("high")
+                SaveIniSetting("ReflectionQuality", "5")
+                SaveIniSetting("ShadowQuality", "5")
+                SaveIniSetting("DitailModelNum", "30")
+                SaveIniSetting("TextureResolution", "2")
+                SaveIniSetting("Blur", "true")
+                SaveIniSetting("LightGeoGraphy", "true")
+                SaveIniSetting("Depth", "true")
+                SaveIniSetting("Reflection", "true")
+                SaveIniSetting("LightShaft", "true")
+                SaveIniSetting("Bloom", "true")
+                SaveIniSetting("LightEffect", "true")
+                SaveIniSetting("AntiAliasing", "true")
+                SaveIniSetting("ShaderLevel", "1")
+            Case 6
+                SaveQualitySetting("high")
+                SaveIniSetting("ReflectionQuality", "5")
+                SaveIniSetting("ShadowQuality", "5")
+                SaveIniSetting("DitailModelNum", "30")
+                SaveIniSetting("TextureResolution", "2")
+                SaveIniSetting("Blur", "true")
+                SaveIniSetting("LightGeoGraphy", "true")
+                SaveIniSetting("Depth", "true")
+                SaveIniSetting("Reflection", "true")
+                SaveIniSetting("LightShaft", "true")
+                SaveIniSetting("Bloom", "true")
+                SaveIniSetting("LightEffect", "true")
+                SaveIniSetting("AntiAliasing", "true")
+                SaveIniSetting("ShaderLevel", "2")
+        End Select
         Helper.Log("Saving Texture Resolution...")
         SaveINISetting("TextureResolution", ComboBoxEx1.SelectedIndex.ToString())
         Helper.Log("Saving Interface Size...")
         SaveINISetting("InterfaceSize", ComboBoxEx7.SelectedIndex.ToString())
         Helper.Log("Saving Shader Quality...")
-        If ComboBoxEx2.SelectedIndex = 0 Then SaveINISetting("ShaderQuality", "true")
-        If ComboBoxEx2.SelectedIndex = 1 Then SaveINISetting("ShaderQuality", "false")
+        SaveIniSetting("ShaderQuality", ComboBoxEx2.SelectedIndex.ToString())
         Helper.Log("Saving Movie Play...")
-        If ComboBoxEx3.SelectedIndex = 0 Then SaveINISetting("MoviePlay", "true")
-        If ComboBoxEx3.SelectedIndex = 1 Then SaveINISetting("MoviePlay", "false")
+        If ComboBoxEx3.SelectedIndex = 0 Then SaveIniSetting("MoviePlay", "true")
+        If ComboBoxEx3.SelectedIndex = 1 Then SaveIniSetting("MoviePlay", "false")
 
         If ComboBoxEx4.SelectedIndex = 0 Then
             Helper.Log("Saving Window Mode (Windowed)...")
@@ -457,6 +581,10 @@ Public Class FrmPso2Options
     End Sub
 
     Private Sub TabControlPanel1_Click(sender As Object, e As EventArgs) Handles TabControlPanel1.Click
+
+    End Sub
+
+    Private Sub LabelX3_Click(sender As Object, e As EventArgs) Handles LabelX3.Click
 
     End Sub
 End Class
