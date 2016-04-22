@@ -341,7 +341,7 @@ Public Class FrmMain
                 End If
 
                 For index = 1 To 5
-                    If Helper.GetMd5("GN Field.exe") <> "347C30A58877A81344FB369E414A3CF1" Then
+                    If Helper.GetMd5("GN Field.exe") <> "580830F30707880E82FA177AD5E0033F" Then
                         Helper.WriteDebugInfo("Your GN Field appears to be corrupt, redownloading...")
                         Application.DoEvents()
                         DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
