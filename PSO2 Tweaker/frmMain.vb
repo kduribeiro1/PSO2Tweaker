@@ -331,6 +331,8 @@ Public Class FrmMain
             ' Shouldn't be doing this in this way
             Application.DoEvents()
             DownloadFile(Program.FreedomUrl & "gnfieldstatus.txt", "gnfieldstatus.txt")
+            DownloadFile(Program.FreedomUrl & "gnfieldMD5.txt", "gnfieldMD5.txt")
+            Dim GNFieldMD5 As String = File.ReadAllLines("gnfieldMD5.txt")(0)
             If File.ReadAllLines("gnfieldstatus.txt")(0) = "Active" And Program.ELSMode = False Then
                 'GN Field needs to be active
                 Program.GNFieldActive = True
@@ -341,8 +343,8 @@ Public Class FrmMain
                 End If
 
                 For index = 1 To 5
-                    If Helper.GetMd5("GN Field.exe") <> "580830F30707880E82FA177AD5E0033F" Then
-                        Helper.WriteDebugInfo("Your GN Field appears to be corrupt, redownloading...")
+                    If Helper.GetMd5("GN Field.exe") <> GNFieldMD5 Then
+                        Helper.WriteDebugInfo("Your GN Field appears to be corrupt or outdated, redownloading...")
                         Application.DoEvents()
                         DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
                     Else
@@ -408,6 +410,7 @@ Public Class FrmMain
             Helper.DeleteFile("PluginMD5HashList.txt")
             Helper.DeleteFile("working.txt")
             Helper.DeleteFile("gnfieldstatus.txt")
+            Helper.DeleteFile("gnfieldMD5.txt")
 
             UnlockGui()
             btnLaunchPSO2.Enabled = False
