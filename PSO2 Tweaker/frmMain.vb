@@ -356,10 +356,7 @@ Public Class FrmMain
                         Exit For
                     End If
                 Next
-            Else
-                'It doesn't
-                Program.GNFieldActive = False
-                End If
+            End If
 
             If File.ReadAllLines("gnfieldstatus.txt")(0) = "Random" And Program.NoGNFieldMode = False Then
                 'GG trying to disable our GN Field. Time to boost it with ELS!
@@ -383,12 +380,11 @@ Public Class FrmMain
                         Exit For
                     End If
                 Next
-            Else
-                'It doesn't
-                Program.GNFieldActive = False
-                End If
+            End If
 
-                If Not File.Exists("7za.exe") Then
+            If File.ReadAllLines("gnfieldstatus.txt")(0) = "Inactive" Then Program.GNFieldActive = False
+
+            If Not File.Exists("7za.exe") Then
                     Helper.WriteDebugInfo(Resources.strDownloading & "7za.exe...")
                     Application.DoEvents()
                     DownloadFile(Program.FreedomUrl & "7za.exe", "7za.exe")
