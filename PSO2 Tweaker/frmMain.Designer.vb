@@ -66,6 +66,7 @@ Partial Class FrmMain
         Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
         Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnRussianBigFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreBackups = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRestoreENBackup = New DevComponents.DotNetBar.ButtonItem()
@@ -372,9 +373,9 @@ Partial Class FrmMain
         Me.RibbonControl1.CaptionVisible = True
         Me.RibbonControl1.Cursor = System.Windows.Forms.Cursors.Default
         resources.ApplyResources(Me.RibbonControl1, "RibbonControl1")
-        Me.RibbonControl1.Items.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1})
         Me.RibbonControl1.KeyTipsFont = New System.Drawing.Font("Tahoma", 7.0!)
         Me.RibbonControl1.Name = "RibbonControl1"
+        Me.RibbonControl1.QuickToolbarItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.Office2007StartButton1})
         Me.RibbonControl1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         Me.RibbonControl1.TabGroupHeight = 14
         '
@@ -440,7 +441,7 @@ Partial Class FrmMain
         '
         Me.ButtonInstall.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
         Me.ButtonInstall.Name = "ButtonInstall"
-        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnInstallSpanishPatch})
+        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnRussianBigFiles, Me.btnInstallSpanishPatch})
         Me.ButtonInstall.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.ButtonInstall, "ButtonInstall")
         '
@@ -479,6 +480,11 @@ Partial Class FrmMain
         '
         Me.btnRussianPatch.Name = "btnRussianPatch"
         resources.ApplyResources(Me.btnRussianPatch, "btnRussianPatch")
+        '
+        'btnRussianBigFiles
+        '
+        Me.btnRussianBigFiles.Name = "btnRussianBigFiles"
+        resources.ApplyResources(Me.btnRussianBigFiles, "btnRussianBigFiles")
         '
         'btnInstallSpanishPatch
         '
@@ -1016,4 +1022,5 @@ Partial Class FrmMain
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents btnLaunchPSO2fromORB As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnPlugins As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnRussianBigFiles As DevComponents.DotNetBar.ButtonItem
 End Class

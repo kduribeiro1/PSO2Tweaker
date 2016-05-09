@@ -8,6 +8,7 @@ Public Class RegKey
     Public Const Color = "Color"
     Public Const EnPatchAfterInstall = "ENPatchAfterInstall"
     Public Const EnPatchVersion = "ENPatchVersion"
+    Public Const NullKey = "NullKey"
     Public Const FontColor = "FontColor"
     Public Const LargeFilesAfterInstall = "LargeFilesAfterInstall"
     Public Const LargeFilesVersion = "LargeFilesVersion"

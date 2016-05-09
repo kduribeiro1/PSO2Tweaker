@@ -1,4 +1,4 @@
-'------------------------------------------------------------------------------
+﻿'------------------------------------------------------------------------------
 ' PSO2 Tweaker - A replacement for the normal PSO2JP Launcher, used to update
 ' and launch the original Japanese version of the game with patches,
 ' modifications, troubleshooting, and much more.
@@ -31,6 +31,9 @@ Imports System.Text
 
 Public Class FrmMain
     Const EnglishPatch = "English Patch"
+    Const RussianPatch = "Russian Patch"
+    Const RussianBigPatch = "Russian Large Files Patch"
+    Const SpanishPatch = "Spanish Patch"
     Const StoryPatch = "Story Patch"
     Const LargeFiles = "Large Files"
 
@@ -2383,9 +2386,8 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
-        DownloadPatch("http://dl.cyberman.me/pso2/rupatch.rar", "RU Patch", "RUPatch.rar", Nothing,
-                      "Would you like to backup your files before applying the patch? This will erase all previous Pre-RU patch backups.",
-                      "Please select the pre-downloaded RU Patch RAR file")
+        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/rupatch.txt")
+        DownloadPatch(url, RussianPatch, "RUPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
     End Sub
 
     Private Sub tsmRestartDownload_Click(sender As Object, e As EventArgs) Handles tsmRestartDownload.Click
@@ -3346,8 +3348,8 @@ Public Class FrmMain
                 Helper.WriteDebugInfo((Resources.strDownloadCompleteDownloaded & patchUrl & ")"))
             ElseIf predownloadedyesno = MsgBoxResult.Yes Then
                 OpenFileDialog1.Title = msgSelectArchive
-                OpenFileDialog1.FileName = "PSO2 " & patchName & " RAR file"
-                OpenFileDialog1.Filter = "RAR Archives|*.rar|All Files (*.*) |*.*"
+                OpenFileDialog1.FileName = "PSO2 " & patchName & " RAR/ZIP file"
+                OpenFileDialog1.Filter = "RAR Archives|*.rar|ZIP Archives|*.zip|All Files (*.*) |*.*"
                 If OpenFileDialog1.ShowDialog() = DialogResult.Cancel Then Return
 
                 rarLocation = OpenFileDialog1.FileName
@@ -3359,16 +3361,34 @@ Public Class FrmMain
 
             Helper.DeleteDirectory("TEMPPATCHAIDAFOOL")
             Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-            Dim startInfo As New ProcessStartInfo() With {.FileName = (Program.StartPath & "\unrar.exe"), .Verb = "runas", .WindowStyle = ProcessWindowStyle.Normal, .UseShellExecute = True}
-            If predownloadedyesno = MsgBoxResult.No Then startInfo.Arguments = ("e " & patchFile & " TEMPPATCHAIDAFOOL")
-            If predownloadedyesno = MsgBoxResult.Yes Then startInfo.Arguments = ("e " & """" & rarLocation & """" & " TEMPPATCHAIDAFOOL")
 
-            Helper.WriteDebugInfo(Resources.strWaitingforPatch)
-            Process.Start(startInfo).WaitForExit()
+            If patchFile.Contains(".rar") = True Then
+
+
+                Dim startInfo As New ProcessStartInfo() With {.FileName = (Program.StartPath & "\unrar.exe"), .Verb = "runas", .WindowStyle = ProcessWindowStyle.Normal, .UseShellExecute = True}
+                If predownloadedyesno = MsgBoxResult.No Then startInfo.Arguments = ("e " & patchFile & " TEMPPATCHAIDAFOOL")
+                If predownloadedyesno = MsgBoxResult.Yes Then startInfo.Arguments = ("e " & """" & rarLocation & """" & " TEMPPATCHAIDAFOOL")
+
+                Helper.WriteDebugInfo(Resources.strWaitingforPatch)
+                Process.Start(startInfo).WaitForExit()
+            End If
+
+            If patchFile.Contains(".zip") = True Then
+                Dim processStartInfo2 As New ProcessStartInfo With
+                {
+                    .FileName = (Program.StartPath & "\7za.exe"),
+                    .Verb = "runas",
+                    .Arguments = ("e -y " & patchFile & " -oTEMPPATCHAIDAFOOL"),
+                    .WindowStyle = ProcessWindowStyle.Hidden,
+                    .UseShellExecute = True
+                }
+                Helper.WriteDebugInfo(Resources.strWaitingforPatch)
+                Process.Start(processStartInfo2).WaitForExit()
+            End If
 
             If Not Directory.Exists("TEMPPATCHAIDAFOOL") Then
                 Directory.CreateDirectory("TEMPPATCHAIDAFOOL")
-                Helper.WriteDebugInfo("Had to manually make temp update folder - Did the patch not extract right?")
+                Helper.WriteDebugInfo("Had to manually make temp folder - Did the patch not extract right?")
             End If
             Dim diar1 As FileInfo() = New DirectoryInfo("TEMPPATCHAIDAFOOL").GetFiles()
             Helper.WriteDebugInfoAndOk((Resources.strExtractingTo & Program.Pso2WinDir))
@@ -3414,12 +3434,12 @@ Public Class FrmMain
             Helper.DeleteDirectory("TEMPPATCHAIDAFOOL")
             If backupyesno = MsgBoxResult.No Then
                 External.FlashWindow(Handle, True)
-                Helper.WriteDebugInfo("English patch " & Resources.strInstalledUpdated)
+                Helper.WriteDebugInfo("Patch " & Resources.strInstalledUpdated)
                 If Not String.IsNullOrEmpty(versionStr) Then RegKey.SetValue(Of String)(versionStr, strVersion)
             End If
             If backupyesno = MsgBoxResult.Yes Then
                 External.FlashWindow(Handle, True)
-                Helper.WriteDebugInfo(("English patch " & Resources.strInstalledUpdatedBackup & backupPath))
+                Helper.WriteDebugInfo(("Patch " & Resources.strInstalledUpdatedBackup & backupPath))
                 If Not String.IsNullOrEmpty(versionStr) Then RegKey.SetValue(Of String)(versionStr, strVersion)
             End If
             Helper.DeleteFile(patchName)
@@ -3834,4 +3854,13 @@ Public Class FrmMain
         Next
         Return sb.ToString()
     End Function
+
+    Private Sub Office2007StartButton1_Click(sender As Object, e As EventArgs) Handles Office2007StartButton1.Click
+
+    End Sub
+
+    Private Sub btnRussianBigFiles_Click(sender As Object, e As EventArgs) Handles btnRussianBigFiles.Click
+        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/rulargefiles.txt")
+        DownloadPatch(url, RussianBigPatch, "RUBigFiles.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
+    End Sub
 End Class

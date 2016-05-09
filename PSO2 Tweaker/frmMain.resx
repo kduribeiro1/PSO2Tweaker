@@ -654,6 +654,12 @@
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
+  <data name="RibbonControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="RibbonControl1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 2</value>
+  </data>
   <data name="btnLaunchPSO2fromORB.Text" xml:space="preserve">
     <value>Launch Phantasy Star Online 2</value>
   </data>
@@ -708,6 +714,12 @@
   <data name="btnRussianPatch.Tooltip" xml:space="preserve">
     <value>Install the core Russian patch</value>
   </data>
+  <data name="btnRussianBigFiles.Text" xml:space="preserve">
+    <value>Russian Large Files</value>
+  </data>
+  <data name="btnRussianBigFiles.Tooltip" xml:space="preserve">
+    <value>Install the Russian Large Files patch</value>
+  </data>
   <data name="btnInstallSpanishPatch.Text" xml:space="preserve">
     <value>Spanish Patch</value>
   </data>
@@ -718,7 +730,7 @@
     <value>Install/Update Patches</value>
   </data>
   <data name="btnRestoreENBackup.Text" xml:space="preserve">
-    <value>English Patch</value>
+    <value>English/Russian/Spanish Patch</value>
   </data>
   <data name="btnRestoreENBackup.Tooltip" xml:space="preserve">
     <value>Restore a backup of the English patch (if it exists)</value>
@@ -751,7 +763,7 @@
     <value>Restore Backup of JP Files</value>
   </data>
   <data name="btnUninstallENPatch.Text" xml:space="preserve">
-    <value>English Patch</value>
+    <value>English/Russian/Spanish Patch</value>
   </data>
   <data name="btnUninstallENPatch.Tooltip" xml:space="preserve">
     <value>Uninstall the core English Patch</value>
@@ -980,12 +992,6 @@
   </data>
   <data name="Office2007StartButton1.Text" xml:space="preserve">
     <value>&amp;File</value>
-  </data>
-  <data name="RibbonControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="RibbonControl1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 2</value>
   </data>
   <data name="RibbonControl1.Size" type="System.Drawing.Size, System.Drawing">
     <value>796, 44</value>
@@ -7821,6 +7827,12 @@
   <data name="&gt;&gt;btnRussianPatch.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
+  <data name="&gt;&gt;btnRussianBigFiles.Name" xml:space="preserve">
+    <value>btnRussianBigFiles</value>
+  </data>
+  <data name="&gt;&gt;btnRussianBigFiles.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
   <data name="&gt;&gt;btnInstallSpanishPatch.Name" xml:space="preserve">
     <value>btnInstallSpanishPatch</value>
   </data>
@@ -8173,7 +8185,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.7.5, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
