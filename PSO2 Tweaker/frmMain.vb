@@ -3312,8 +3312,9 @@ Public Class FrmMain
             End Select
 
             ' Check the backup preference
-            patchPreference = "Never"
-            'patchPreference = RegKey.GetValue(Of String)(RegKey.Backup)
+            'Why was this changed to never? [AIDA]
+            'patchPreference = "Never"
+            patchPreference = RegKey.GetValue(Of String)(RegKey.Backup)
             Select Case patchPreference
                 Case "Ask"
                     backupyesno = MsgBox(msgBackup, vbYesNo)
@@ -3862,5 +3863,10 @@ Public Class FrmMain
     Private Sub btnRussianBigFiles_Click(sender As Object, e As EventArgs) Handles btnRussianBigFiles.Click
         Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/rulargefiles.txt")
         DownloadPatch(url, RussianBigPatch, "RUBigFiles.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
+    End Sub
+
+    Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
+        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/espatch.txt")
+        DownloadPatch(url, SpanishPatch, "ESPatch.rar", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Spanish Patch backups." & vbCrLf & "¿Deseas hacer una copia de tus ficheros antes de aplicar el parche? Esto eliminará las copias de seguridad anteriores del Parche español.", "Please select the pre-downloaded Spanish Patch ZIP file." & vbCrLf & "Por favor seleccione el fichero ZIP del parche español predescargado.")
     End Sub
 End Class

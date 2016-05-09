@@ -490,7 +490,6 @@ Partial Class FrmMain
         '
         Me.btnInstallSpanishPatch.Name = "btnInstallSpanishPatch"
         resources.ApplyResources(Me.btnInstallSpanishPatch, "btnInstallSpanishPatch")
-        Me.btnInstallSpanishPatch.Visible = False
         '
         'btnRestoreBackups
         '

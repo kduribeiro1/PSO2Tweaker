@@ -226,7 +226,7 @@ Namespace My
 
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PatchServer)) Then RegKey.SetValue(Of String)(RegKey.PatchServer, "Patch Server #1")
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenFuckSegaMessage)) Then RegKey.SetValue(Of Boolean)(RegKey.SeenFuckSegaMessage, False)
-                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Backup)) Then RegKey.SetValue(Of String)(RegKey.Backup, "Always")
+                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Backup)) Then RegKey.SetValue(Of String)(RegKey.Backup, "Never")
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.PreDownloadedRar)) Then RegKey.SetValue(Of String)(RegKey.PreDownloadedRar, "Never")
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then RegKey.SetValue(Of Boolean)(RegKey.Pastebin, True)
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.CloseAfterLaunch)) Then RegKey.SetValue(Of Boolean)(RegKey.CloseAfterLaunch, False)

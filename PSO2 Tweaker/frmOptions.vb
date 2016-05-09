@@ -26,21 +26,21 @@ Public Class FrmOptions
                 cmbBackupPreference.Text = backupMode
             End If
 
-            backupMode = GetBackupMode(RegKey.PreDownloadedRar)
+            Dim predownloadMode = GetPredownloadMode(RegKey.PreDownloadedRar)
 
-            If Not String.IsNullOrEmpty(backupMode) Then
-                cmbPredownload.Text = backupMode
+            If Not String.IsNullOrEmpty(predownloadMode) Then
+                cmbPredownload.Text = predownloadMode
             End If
 
             ' Checks if the DPI greater or equal to 120, and sets accordingly.
             ' Otherwise, we'll assume is 96 or lower.
             Using g As Graphics = CreateGraphics()
                 If g.DpiX >= 120 Then
-                    Size = New Size(814, 476)
+                    Size = New Size(814, 495)
                     'Size = New Size(543, 476)
                 Else
                     'Size = New Size(400, 373)
-                    Size = New Size(600, 373)
+                    Size = New Size(600, 392)
                 End If
             End Using
 
@@ -123,6 +123,18 @@ Public Class FrmOptions
                 Return "Always backup"
             Case "Never"
                 Return "Never backup"
+            Case Else
+                Return Nothing
+        End Select
+    End Function
+
+    Private Shared Function GetPredownloadMode(key As String) As String
+        Dim value As String = RegKey.GetValue(Of String)(key)
+        Select Case value
+            Case "Ask"
+                Return "Ask each time"
+            Case "Never"
+                Return "Never ask"
             Case Else
                 Return Nothing
         End Select
@@ -432,5 +444,9 @@ Public Class FrmOptions
         RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, CheckBoxX7.Checked)
         If FrmMain.btnLaunchPSO2fromORB.Visible = True Then FrmMain.btnLaunchPSO2.Visible = False
         If FrmMain.btnLaunchPSO2fromORB.Visible = False Then FrmMain.btnLaunchPSO2.Visible = True
+    End Sub
+
+    Private Sub LabelX8_Click(sender As Object, e As EventArgs) Handles LabelX8.Click
+
     End Sub
 End Class
