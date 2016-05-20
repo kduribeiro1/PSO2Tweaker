@@ -63,8 +63,7 @@ Partial Class FrmMain
         Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnLargeFilesTRANSAM = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStoryPatchNew = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnInstallGermanPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnRussianBigFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnInstallSpanishPatch = New DevComponents.DotNetBar.ButtonItem()
@@ -78,6 +77,8 @@ Partial Class FrmMain
         Me.btnUninstallENPatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnUninstallLargeFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnUninstallStory = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnJPETrials = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnJPEnemyNames = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnAnalyze = New DevComponents.DotNetBar.ButtonItem()
         Me.Button2 = New DevComponents.DotNetBar.ButtonItem()
@@ -441,7 +442,7 @@ Partial Class FrmMain
         '
         Me.ButtonInstall.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
         Me.ButtonInstall.Name = "ButtonInstall"
-        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnJPETrials, Me.btnJPEnemyNames, Me.btnRussianPatch, Me.btnRussianBigFiles, Me.btnInstallSpanishPatch})
+        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnInstallGermanPatch, Me.btnRussianPatch, Me.btnRussianBigFiles, Me.btnInstallSpanishPatch})
         Me.ButtonInstall.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.ButtonInstall, "ButtonInstall")
         '
@@ -466,15 +467,10 @@ Partial Class FrmMain
         Me.btnStoryPatchNew.Name = "btnStoryPatchNew"
         resources.ApplyResources(Me.btnStoryPatchNew, "btnStoryPatchNew")
         '
-        'btnJPETrials
+        'btnInstallGermanPatch
         '
-        Me.btnJPETrials.Name = "btnJPETrials"
-        resources.ApplyResources(Me.btnJPETrials, "btnJPETrials")
-        '
-        'btnJPEnemyNames
-        '
-        Me.btnJPEnemyNames.Name = "btnJPEnemyNames"
-        resources.ApplyResources(Me.btnJPEnemyNames, "btnJPEnemyNames")
+        Me.btnInstallGermanPatch.Name = "btnInstallGermanPatch"
+        resources.ApplyResources(Me.btnInstallGermanPatch, "btnInstallGermanPatch")
         '
         'btnRussianPatch
         '
@@ -529,7 +525,7 @@ Partial Class FrmMain
         'ButtonItem1
         '
         Me.ButtonItem1.Name = "ButtonItem1"
-        Me.ButtonItem1.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnUninstallENPatch, Me.btnUninstallLargeFiles, Me.btnUninstallStory})
+        Me.ButtonItem1.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnUninstallENPatch, Me.btnUninstallLargeFiles, Me.btnUninstallStory, Me.btnJPETrials, Me.btnJPEnemyNames})
         resources.ApplyResources(Me.ButtonItem1, "ButtonItem1")
         '
         'btnUninstallENPatch
@@ -546,6 +542,16 @@ Partial Class FrmMain
         '
         Me.btnUninstallStory.Name = "btnUninstallStory"
         resources.ApplyResources(Me.btnUninstallStory, "btnUninstallStory")
+        '
+        'btnJPETrials
+        '
+        Me.btnJPETrials.Name = "btnJPETrials"
+        resources.ApplyResources(Me.btnJPETrials, "btnJPETrials")
+        '
+        'btnJPEnemyNames
+        '
+        Me.btnJPEnemyNames.Name = "btnJPEnemyNames"
+        resources.ApplyResources(Me.btnJPEnemyNames, "btnJPEnemyNames")
         '
         'ButtonItem2
         '
@@ -1008,8 +1014,6 @@ Partial Class FrmMain
     Friend WithEvents chkItemTranslation As DevComponents.DotNetBar.CheckBoxItem
     Friend WithEvents btnConfigureItemTranslation As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnStoryPatchNew As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents DLS As MyWebClient
     Friend WithEvents tmrWaitingforPSO2 As System.Windows.Forms.Timer
     Friend WithEvents txtFiles As System.Windows.Forms.TextBox
@@ -1022,4 +1026,7 @@ Partial Class FrmMain
     Friend WithEvents btnLaunchPSO2fromORB As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnPlugins As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRussianBigFiles As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnInstallGermanPatch As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
 End Class

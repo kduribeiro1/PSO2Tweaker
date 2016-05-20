@@ -34,6 +34,7 @@ Public Class FrmMain
     Const RussianPatch = "Russian Patch"
     Const RussianBigPatch = "Russian Large Files Patch"
     Const SpanishPatch = "Spanish Patch"
+    Const GermanPatch = "German Patch"
     Const StoryPatch = "Story Patch"
     Const LargeFiles = "Large Files"
 
@@ -3249,11 +3250,11 @@ Public Class FrmMain
         End Try
     End Sub
 
-    Private Sub btnJPEnemyNames_Click(sender As Object, e As EventArgs) Handles btnJPEnemyNames.Click
+    Private Sub btnJPEnemyNames_Click(sender As Object, e As EventArgs)
         RestoreJapaneseNames("ceffe0e2386e8d39f188358303a92a7d", "JP enemy names")
     End Sub
 
-    Private Sub btnJPETrials_Click(sender As Object, e As EventArgs) Handles btnJPETrials.Click
+    Private Sub btnJPETrials_Click(sender As Object, e As EventArgs)
         RestoreJapaneseNames("057aa975bdd2b372fe092614b0f4399e", "JP E-Trials file")
     End Sub
 
@@ -3367,7 +3368,7 @@ Public Class FrmMain
 
 
                 Dim startInfo As New ProcessStartInfo() With {.FileName = (Program.StartPath & "\unrar.exe"), .Verb = "runas", .WindowStyle = ProcessWindowStyle.Normal, .UseShellExecute = True}
-                If predownloadedyesno = MsgBoxResult.No Then startInfo.Arguments = ("e " & patchFile & " TEMPPATCHAIDAFOOL")
+                If predownloadedyesno = MsgBoxResult.No Then startInfo.Arguments = ("e """ & patchFile & """ TEMPPATCHAIDAFOOL")
                 If predownloadedyesno = MsgBoxResult.Yes Then startInfo.Arguments = ("e " & """" & rarLocation & """" & " TEMPPATCHAIDAFOOL")
 
                 Helper.WriteDebugInfo(Resources.strWaitingforPatch)
@@ -3379,7 +3380,7 @@ Public Class FrmMain
                 {
                     .FileName = (Program.StartPath & "\7za.exe"),
                     .Verb = "runas",
-                    .Arguments = ("e -y " & patchFile & " -oTEMPPATCHAIDAFOOL"),
+                    .Arguments = ("e -y """ & patchFile & """ -oTEMPPATCHAIDAFOOL"),
                     .WindowStyle = ProcessWindowStyle.Hidden,
                     .UseShellExecute = True
                 }
@@ -3866,7 +3867,12 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
-        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/espatch.txt")
+        Dim url As String = Program.Client.DownloadString("http://107.170.16.100/patches/espatch.txt")
         DownloadPatch(url, SpanishPatch, "ESPatch.rar", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Spanish Patch backups." & vbCrLf & "¿Deseas hacer una copia de tus ficheros antes de aplicar el parche? Esto eliminará las copias de seguridad anteriores del Parche español.", "Please select the pre-downloaded Spanish Patch ZIP file." & vbCrLf & "Por favor seleccione el fichero ZIP del parche español predescargado.")
+    End Sub
+
+    Private Sub btnInstallGermanPatch_Click(sender As Object, e As EventArgs) Handles btnInstallGermanPatch.Click
+        Dim url As String = Program.Client.DownloadString("http://107.170.16.100/patches/depatch.txt")
+        DownloadPatch(url, GermanPatch, "DEPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous German Patch backups." & vbCrLf & "Möchtest du ein Backup anlegen bevor du das Spiel patchst? Dies wird alle vorherigen Backups des deutschen Patches löschen.", "Please select the pre-downloaded German Patch ZIP file." & vbCrLf & "Bitte wähle die vorher heruntergeladene deutsche Patch ZIP-Datei aus.")
     End Sub
 End Class

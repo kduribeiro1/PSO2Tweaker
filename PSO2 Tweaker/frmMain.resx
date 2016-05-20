@@ -149,12 +149,6 @@
   <metadata name="cmsTextBarOptions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 17</value>
   </metadata>
-  <data name="CopyAllTextToClipboardToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 22</value>
-  </data>
-  <data name="CopyAllTextToClipboardToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy all text to clipboard</value>
-  </data>
   <data name="cmsTextBarOptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 26</value>
   </data>
@@ -187,6 +181,12 @@
   </data>
   <data name="&gt;&gt;rtbDebug.ZOrder" xml:space="preserve">
     <value>23</value>
+  </data>
+  <data name="CopyAllTextToClipboardToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>206, 22</value>
+  </data>
+  <data name="CopyAllTextToClipboardToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy all text to clipboard</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>90, 17</value>
@@ -624,6 +624,15 @@
   <metadata name="cmsProgressBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>389, 17</value>
   </metadata>
+  <data name="cmsProgressBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 70</value>
+  </data>
+  <data name="&gt;&gt;cmsProgressBar.Name" xml:space="preserve">
+    <value>cmsProgressBar</value>
+  </data>
+  <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="tsmRestartDownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
   </data>
@@ -641,15 +650,6 @@
   </data>
   <data name="CancelProcessToolStripMenuItem.Text" xml:space="preserve">
     <value>Cancel process</value>
-  </data>
-  <data name="cmsProgressBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 70</value>
-  </data>
-  <data name="&gt;&gt;cmsProgressBar.Name" xml:space="preserve">
-    <value>cmsProgressBar</value>
-  </data>
-  <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -685,7 +685,7 @@
     <value>Install additional english files to enhance the core patch</value>
   </data>
   <data name="btnLargeFilesTRANSAM.Text" xml:space="preserve">
-    <value>English Large Files (New Method)</value>
+    <value>English Large Files</value>
   </data>
   <data name="btnLargeFilesTRANSAM.Tooltip" xml:space="preserve">
     <value>Install additional english files to enhance the core patch</value>
@@ -696,17 +696,11 @@
   <data name="btnStoryPatchNew.Tooltip" xml:space="preserve">
     <value>Install the story patch, so you can understand the, uh, story!</value>
   </data>
-  <data name="btnJPETrials.Text" xml:space="preserve">
-    <value>Revert E-Codes to JP</value>
+  <data name="btnInstallGermanPatch.Text" xml:space="preserve">
+    <value>German Patch</value>
   </data>
-  <data name="btnJPETrials.Tooltip" xml:space="preserve">
-    <value>Patch emergency codes/trials to be in Japanese</value>
-  </data>
-  <data name="btnJPEnemyNames.Text" xml:space="preserve">
-    <value>Revert Enemy Names to JP</value>
-  </data>
-  <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
-    <value>Patch enemy names to be in Japanese</value>
+  <data name="btnInstallGermanPatch.Tooltip" xml:space="preserve">
+    <value>Install the core German patch</value>
   </data>
   <data name="btnRussianPatch.Text" xml:space="preserve">
     <value>Russian Patch</value>
@@ -729,203 +723,20 @@
   <data name="ButtonInstall.Text" xml:space="preserve">
     <value>Install/Update Patches</value>
   </data>
-  <data name="btnRestoreENBackup.Text" xml:space="preserve">
-    <value>English/Russian/Spanish Patch</value>
-  </data>
-  <data name="btnRestoreENBackup.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the English patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreLargeFilesBackup.Text" xml:space="preserve">
-    <value>English Large Files</value>
-  </data>
-  <data name="btnRestoreLargeFilesBackup.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the Large Files patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreStoryBackup.Text" xml:space="preserve">
-    <value>English Story Patch</value>
-  </data>
-  <data name="btnRestoreStoryBackup.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the Story patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreJPNames.Text" xml:space="preserve">
-    <value>JP Enemy Names</value>
-  </data>
-  <data name="btnRestoreJPNames.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the JP Enemy names patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreJPETrials.Text" xml:space="preserve">
-    <value>JP Emergency Codes</value>
-  </data>
-  <data name="btnRestoreJPETrials.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the JP e-codes patch (if it exists)</value>
-  </data>
   <data name="btnRestoreBackups.Text" xml:space="preserve">
     <value>Restore Backup of JP Files</value>
-  </data>
-  <data name="btnUninstallENPatch.Text" xml:space="preserve">
-    <value>English/Russian/Spanish Patch</value>
-  </data>
-  <data name="btnUninstallENPatch.Tooltip" xml:space="preserve">
-    <value>Uninstall the core English Patch</value>
-  </data>
-  <data name="btnUninstallLargeFiles.Text" xml:space="preserve">
-    <value>English Large Files</value>
-  </data>
-  <data name="btnUninstallLargeFiles.Tooltip" xml:space="preserve">
-    <value>Uninstall the English Large Files Patch</value>
-  </data>
-  <data name="btnUninstallStory.Text" xml:space="preserve">
-    <value>English Story Patch</value>
-  </data>
-  <data name="btnUninstallStory.Tooltip" xml:space="preserve">
-    <value>Uninstall the English Story Patch</value>
   </data>
   <data name="ButtonItem1.Text" xml:space="preserve">
     <value>Redownload Original JP Files</value>
   </data>
-  <data name="btnAnalyze.Text" xml:space="preserve">
-    <value>Analyze Install for Issues</value>
-  </data>
-  <data name="btnAnalyze.Tooltip" xml:space="preserve">
-    <value>Analyze your installation for missing files or folders</value>
-  </data>
-  <data name="Button2.Text" xml:space="preserve">
-    <value>Check for Deleted/Empty Files</value>
-  </data>
-  <data name="Button2.Tooltip" xml:space="preserve">
-    <value>Checks to see if any data files are non-existant</value>
-  </data>
-  <data name="ButtonItem10.Text" xml:space="preserve">
-    <value>Check for Old/Missing Files</value>
-  </data>
-  <data name="ButtonItem10.Tooltip" xml:space="preserve">
-    <value>Checks for deleted files AND out-of-date files</value>
-  </data>
-  <data name="btnGameguard.Text" xml:space="preserve">
-    <value>Fix Gameguard Errors</value>
-  </data>
-  <data name="btnGameguard.Tooltip" xml:space="preserve">
-    <value>Fixes numberous Gameguard issues and errors</value>
-  </data>
-  <data name="btnFixPSO2EXEs.Text" xml:space="preserve">
-    <value>Fix PSO2 EXEs</value>
-  </data>
-  <data name="btnFixPSO2EXEs.Tooltip" xml:space="preserve">
-    <value>Re-downloads the PSO2 EXE files</value>
-  </data>
-  <data name="btnFixPermissions.Text" xml:space="preserve">
-    <value>Fix PSO2 Permissions</value>
-  </data>
-  <data name="btnFixPermissions.Tooltip" xml:space="preserve">
-    <value>Fixes PSO2 Permission issues caused by Bill Gates</value>
-  </data>
-  <data name="btnCopyInfo.Text" xml:space="preserve">
-    <value>Open Diagnostic Menu</value>
-  </data>
-  <data name="btnCopyInfo.Tooltip" xml:space="preserve">
-    <value>Opens a diagnostic menu to help with troubleshooting</value>
-  </data>
-  <data name="ButtonItem17.Text" xml:space="preserve">
-    <value>Reset PSO2 Settings</value>
-  </data>
-  <data name="ButtonItem17.Tooltip" xml:space="preserve">
-    <value>Resets your PSO2 Settings to default!</value>
-  </data>
-  <data name="btnResetTweaker.Text" xml:space="preserve">
-    <value>Reset Tweaker Settings</value>
-  </data>
-  <data name="btnResetTweaker.Tooltip" xml:space="preserve">
-    <value>Resets your PSO2 Tweaker settings to default!</value>
-  </data>
-  <data name="btnResumePatching.Text" xml:space="preserve">
-    <value>Resume Patching</value>
-  </data>
-  <data name="btnResumePatching.Tooltip" xml:space="preserve">
-    <value>Resume a failed/interrupted/canceled patchjob</value>
-  </data>
-  <data name="btnTerminate.Text" xml:space="preserve">
-    <value>Terminate PSO2 Process</value>
-  </data>
-  <data name="btnTerminate.Tooltip" xml:space="preserve">
-    <value>Forcibly ends PSO2 - Bye bye!</value>
-  </data>
   <data name="ButtonItem2.Text" xml:space="preserve">
     <value>Troubleshooting</value>
-  </data>
-  <data name="ButtonItem7.Text" xml:space="preserve">
-    <value>Launch Chrome in PSO2 Compatibility Mode</value>
-  </data>
-  <data name="ButtonItem7.Tooltip" xml:space="preserve">
-    <value>Launches Chrome without the built-in sandbox feature</value>
-  </data>
-  <data name="btnPredownloadLobbyVideos.Text" xml:space="preserve">
-    <value>Predownload Lobby Videos</value>
-  </data>
-  <data name="btnPredownloadLobbyVideos.Tooltip" xml:space="preserve">
-    <value>Predownloads the Lobby Videos so you don't lag in-game while you download them</value>
-  </data>
-  <data name="btnChooseProxyServer.Text" xml:space="preserve">
-    <value>Configure PSO2Proxy Server Settings</value>
-  </data>
-  <data name="btnChooseProxyServer.Tooltip" xml:space="preserve">
-    <value>Activates PSO2Proxy for the selected server</value>
-  </data>
-  <data name="btnRevertPSO2ProxyToJP.Text" xml:space="preserve">
-    <value>Revert PSO2Proxy Settings to JP</value>
-  </data>
-  <data name="btnRevertPSO2ProxyToJP.Tooltip" xml:space="preserve">
-    <value>Reverts your PSO2Proxy settings back to their original server</value>
-  </data>
-  <data name="btnClearSACache.Text" xml:space="preserve">
-    <value>Clear Symbol Art Cache</value>
-  </data>
-  <data name="btnInstallPSO2.Text" xml:space="preserve">
-    <value>Install Phantasy Star Online 2</value>
   </data>
   <data name="btnOtherStuff.Text" xml:space="preserve">
     <value>Other Tasks</value>
   </data>
-  <data name="btnBumped.Text" xml:space="preserve">
-    <value>Bumped.org (PSO2 News Site)</value>
-  </data>
-  <data name="btnCirno.Text" xml:space="preserve">
-    <value>Cirnopedia (PSO2 Database)</value>
-  </data>
-  <data name="btnArksCash.Text" xml:space="preserve">
-    <value>How to buy AC (Arks Cash)</value>
-  </data>
-  <data name="btnErrors.Text" xml:space="preserve">
-    <value>List of all PSO2 Errors</value>
-  </data>
-  <data name="btnOfficialPSO2JP.Text" xml:space="preserve">
-    <value>Official PSO2JP Site (via Cyberkitsune proxy)</value>
-  </data>
-  <data name="btnRegistration.Text" xml:space="preserve">
-    <value>PSO2 Registration Guide</value>
-  </data>
-  <data name="btnTweaker.Text" xml:space="preserve">
-    <value>PSO2 Tweaker Thread</value>
-  </data>
-  <data name="btnRunPSO2Linux.Text" xml:space="preserve">
-    <value>Running PSO2 in Linux (Tutorial)</value>
-  </data>
-  <data name="btnSymbolEditor.Text" xml:space="preserve">
-    <value>Symbol Art Editor (English Version)</value>
-  </data>
-  <data name="btnEXPFULL.Text" xml:space="preserve">
-    <value>The Ship 2 Voice Chat (EXPFULL)</value>
-  </data>
   <data name="ButtonItem3.Text" xml:space="preserve">
     <value>Web Links</value>
-  </data>
-  <data name="btnDonateToBumped.Text" xml:space="preserve">
-    <value>Bumped.org Donation Link</value>
-  </data>
-  <data name="btnDonateToCirno.Text" xml:space="preserve">
-    <value>Cirnopedia Donation Link</value>
-  </data>
-  <data name="btnDonateToTweaker.Text" xml:space="preserve">
-    <value>PSO2 Tweaker Donation Link</value>
   </data>
   <data name="btnDonations.Text" xml:space="preserve">
     <value>Donation Links</value>
@@ -1013,6 +824,201 @@
   </data>
   <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
     <value>26</value>
+  </data>
+  <data name="btnRestoreENBackup.Text" xml:space="preserve">
+    <value>English/Russian/Spanish Patch</value>
+  </data>
+  <data name="btnRestoreENBackup.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the English patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreLargeFilesBackup.Text" xml:space="preserve">
+    <value>English Large Files</value>
+  </data>
+  <data name="btnRestoreLargeFilesBackup.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the Large Files patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreStoryBackup.Text" xml:space="preserve">
+    <value>English Story Patch</value>
+  </data>
+  <data name="btnRestoreStoryBackup.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the Story patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreJPNames.Text" xml:space="preserve">
+    <value>JP Enemy Names</value>
+  </data>
+  <data name="btnRestoreJPNames.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the JP Enemy names patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreJPETrials.Text" xml:space="preserve">
+    <value>JP Emergency Codes</value>
+  </data>
+  <data name="btnRestoreJPETrials.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the JP e-codes patch (if it exists)</value>
+  </data>
+  <data name="btnUninstallENPatch.Text" xml:space="preserve">
+    <value>English/Russian/Spanish Patch</value>
+  </data>
+  <data name="btnUninstallENPatch.Tooltip" xml:space="preserve">
+    <value>Uninstall the core English Patch</value>
+  </data>
+  <data name="btnUninstallLargeFiles.Text" xml:space="preserve">
+    <value>English Large Files</value>
+  </data>
+  <data name="btnUninstallLargeFiles.Tooltip" xml:space="preserve">
+    <value>Uninstall the English Large Files Patch</value>
+  </data>
+  <data name="btnUninstallStory.Text" xml:space="preserve">
+    <value>English Story Patch</value>
+  </data>
+  <data name="btnUninstallStory.Tooltip" xml:space="preserve">
+    <value>Uninstall the English Story Patch</value>
+  </data>
+  <data name="btnJPETrials.Text" xml:space="preserve">
+    <value>Revert E-Codes to JP</value>
+  </data>
+  <data name="btnJPETrials.Tooltip" xml:space="preserve">
+    <value>Patch emergency codes/trials to be in Japanese</value>
+  </data>
+  <data name="btnJPEnemyNames.Text" xml:space="preserve">
+    <value>Revert Enemy Names to JP</value>
+  </data>
+  <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
+    <value>Patch enemy names to be in Japanese</value>
+  </data>
+  <data name="btnAnalyze.Text" xml:space="preserve">
+    <value>Analyze Install for Issues</value>
+  </data>
+  <data name="btnAnalyze.Tooltip" xml:space="preserve">
+    <value>Analyze your installation for missing files or folders</value>
+  </data>
+  <data name="Button2.Text" xml:space="preserve">
+    <value>Check for Deleted/Empty Files</value>
+  </data>
+  <data name="Button2.Tooltip" xml:space="preserve">
+    <value>Checks to see if any data files are non-existant</value>
+  </data>
+  <data name="ButtonItem10.Text" xml:space="preserve">
+    <value>Check for Old/Missing Files</value>
+  </data>
+  <data name="ButtonItem10.Tooltip" xml:space="preserve">
+    <value>Checks for deleted files AND out-of-date files</value>
+  </data>
+  <data name="btnGameguard.Text" xml:space="preserve">
+    <value>Fix Gameguard Errors</value>
+  </data>
+  <data name="btnGameguard.Tooltip" xml:space="preserve">
+    <value>Fixes numberous Gameguard issues and errors</value>
+  </data>
+  <data name="btnFixPSO2EXEs.Text" xml:space="preserve">
+    <value>Fix PSO2 EXEs</value>
+  </data>
+  <data name="btnFixPSO2EXEs.Tooltip" xml:space="preserve">
+    <value>Re-downloads the PSO2 EXE files</value>
+  </data>
+  <data name="btnFixPermissions.Text" xml:space="preserve">
+    <value>Fix PSO2 Permissions</value>
+  </data>
+  <data name="btnFixPermissions.Tooltip" xml:space="preserve">
+    <value>Fixes PSO2 Permission issues caused by Bill Gates</value>
+  </data>
+  <data name="btnCopyInfo.Text" xml:space="preserve">
+    <value>Open Diagnostic Menu</value>
+  </data>
+  <data name="btnCopyInfo.Tooltip" xml:space="preserve">
+    <value>Opens a diagnostic menu to help with troubleshooting</value>
+  </data>
+  <data name="ButtonItem17.Text" xml:space="preserve">
+    <value>Reset PSO2 Settings</value>
+  </data>
+  <data name="ButtonItem17.Tooltip" xml:space="preserve">
+    <value>Resets your PSO2 Settings to default!</value>
+  </data>
+  <data name="btnResetTweaker.Text" xml:space="preserve">
+    <value>Reset Tweaker Settings</value>
+  </data>
+  <data name="btnResetTweaker.Tooltip" xml:space="preserve">
+    <value>Resets your PSO2 Tweaker settings to default!</value>
+  </data>
+  <data name="btnResumePatching.Text" xml:space="preserve">
+    <value>Resume Patching</value>
+  </data>
+  <data name="btnResumePatching.Tooltip" xml:space="preserve">
+    <value>Resume a failed/interrupted/canceled patchjob</value>
+  </data>
+  <data name="btnTerminate.Text" xml:space="preserve">
+    <value>Terminate PSO2 Process</value>
+  </data>
+  <data name="btnTerminate.Tooltip" xml:space="preserve">
+    <value>Forcibly ends PSO2 - Bye bye!</value>
+  </data>
+  <data name="ButtonItem7.Text" xml:space="preserve">
+    <value>Launch Chrome in PSO2 Compatibility Mode</value>
+  </data>
+  <data name="ButtonItem7.Tooltip" xml:space="preserve">
+    <value>Launches Chrome without the built-in sandbox feature</value>
+  </data>
+  <data name="btnPredownloadLobbyVideos.Text" xml:space="preserve">
+    <value>Predownload Lobby Videos</value>
+  </data>
+  <data name="btnPredownloadLobbyVideos.Tooltip" xml:space="preserve">
+    <value>Predownloads the Lobby Videos so you don't lag in-game while you download them</value>
+  </data>
+  <data name="btnChooseProxyServer.Text" xml:space="preserve">
+    <value>Configure PSO2Proxy Server Settings</value>
+  </data>
+  <data name="btnChooseProxyServer.Tooltip" xml:space="preserve">
+    <value>Activates PSO2Proxy for the selected server</value>
+  </data>
+  <data name="btnRevertPSO2ProxyToJP.Text" xml:space="preserve">
+    <value>Revert PSO2Proxy Settings to JP</value>
+  </data>
+  <data name="btnRevertPSO2ProxyToJP.Tooltip" xml:space="preserve">
+    <value>Reverts your PSO2Proxy settings back to their original server</value>
+  </data>
+  <data name="btnClearSACache.Text" xml:space="preserve">
+    <value>Clear Symbol Art Cache</value>
+  </data>
+  <data name="btnInstallPSO2.Text" xml:space="preserve">
+    <value>Install Phantasy Star Online 2</value>
+  </data>
+  <data name="btnBumped.Text" xml:space="preserve">
+    <value>Bumped.org (PSO2 News Site)</value>
+  </data>
+  <data name="btnCirno.Text" xml:space="preserve">
+    <value>Cirnopedia (PSO2 Database)</value>
+  </data>
+  <data name="btnArksCash.Text" xml:space="preserve">
+    <value>How to buy AC (Arks Cash)</value>
+  </data>
+  <data name="btnErrors.Text" xml:space="preserve">
+    <value>List of all PSO2 Errors</value>
+  </data>
+  <data name="btnOfficialPSO2JP.Text" xml:space="preserve">
+    <value>Official PSO2JP Site (via Cyberkitsune proxy)</value>
+  </data>
+  <data name="btnRegistration.Text" xml:space="preserve">
+    <value>PSO2 Registration Guide</value>
+  </data>
+  <data name="btnTweaker.Text" xml:space="preserve">
+    <value>PSO2 Tweaker Thread</value>
+  </data>
+  <data name="btnRunPSO2Linux.Text" xml:space="preserve">
+    <value>Running PSO2 in Linux (Tutorial)</value>
+  </data>
+  <data name="btnSymbolEditor.Text" xml:space="preserve">
+    <value>Symbol Art Editor (English Version)</value>
+  </data>
+  <data name="btnEXPFULL.Text" xml:space="preserve">
+    <value>The Ship 2 Voice Chat (EXPFULL)</value>
+  </data>
+  <data name="btnDonateToBumped.Text" xml:space="preserve">
+    <value>Bumped.org Donation Link</value>
+  </data>
+  <data name="btnDonateToCirno.Text" xml:space="preserve">
+    <value>Cirnopedia Donation Link</value>
+  </data>
+  <data name="btnDonateToTweaker.Text" xml:space="preserve">
+    <value>PSO2 Tweaker Donation Link</value>
   </data>
   <data name="btnAnnouncements.Location" type="System.Drawing.Point, System.Drawing">
     <value>406, 30</value>
@@ -7809,16 +7815,10 @@
   <data name="&gt;&gt;btnStoryPatchNew.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
-  <data name="&gt;&gt;btnJPETrials.Name" xml:space="preserve">
-    <value>btnJPETrials</value>
+  <data name="&gt;&gt;btnInstallGermanPatch.Name" xml:space="preserve">
+    <value>btnInstallGermanPatch</value>
   </data>
-  <data name="&gt;&gt;btnJPETrials.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;btnJPEnemyNames.Name" xml:space="preserve">
-    <value>btnJPEnemyNames</value>
-  </data>
-  <data name="&gt;&gt;btnJPEnemyNames.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnInstallGermanPatch.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnRussianPatch.Name" xml:space="preserve">
@@ -7897,6 +7897,18 @@
     <value>btnUninstallStory</value>
   </data>
   <data name="&gt;&gt;btnUninstallStory.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;btnJPETrials.Name" xml:space="preserve">
+    <value>btnJPETrials</value>
+  </data>
+  <data name="&gt;&gt;btnJPETrials.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;btnJPEnemyNames.Name" xml:space="preserve">
+    <value>btnJPEnemyNames</value>
+  </data>
+  <data name="&gt;&gt;btnJPEnemyNames.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;ButtonItem2.Name" xml:space="preserve">
@@ -8185,7 +8197,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.1, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.2, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
