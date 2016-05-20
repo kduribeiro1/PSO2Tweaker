@@ -3868,7 +3868,8 @@ Public Class FrmMain
 
     Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
         Dim url As String = Program.Client.DownloadString("http://107.170.16.100/patches/espatch.txt")
-        DownloadPatch(url, SpanishPatch, "ESPatch.rar", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Spanish Patch backups." & vbCrLf & "¿Deseas hacer una copia de tus ficheros antes de aplicar el parche? Esto eliminará las copias de seguridad anteriores del Parche español.", "Please select the pre-downloaded Spanish Patch ZIP file." & vbCrLf & "Por favor seleccione el fichero ZIP del parche español predescargado.")
+        'Really need to rewrite this code to detect the filetype for me. [AIDA]
+        DownloadPatch(url, SpanishPatch, "ESPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Spanish Patch backups." & vbCrLf & "¿Deseas hacer una copia de tus ficheros antes de aplicar el parche? Esto eliminará las copias de seguridad anteriores del Parche español.", "Please select the pre-downloaded Spanish Patch ZIP file." & vbCrLf & "Por favor seleccione el fichero ZIP del parche español predescargado.")
     End Sub
 
     Private Sub btnInstallGermanPatch_Click(sender As Object, e As EventArgs) Handles btnInstallGermanPatch.Click
