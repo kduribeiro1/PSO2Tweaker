@@ -276,18 +276,6 @@ Public Class FrmMain
                 RegKey.SetValue(Of String)(RegKey.PSO2DirVisible, "True")
             End If
 
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.GetProxyStats.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, True)
-            If RegKey.GetValue(Of Boolean)(RegKey.GetProxyStats) = True Then
-                If RegKey.GetValue(Of String)(RegKey.ProxyStatsURL) = "" Then RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, "http://cloud02.cyberkitsune.net:8080/")
-                lblProxyStats.Visible = True
-                lblProxyStats.BackColor = rtbDebug.BackColor
-                lblProxyStats.ForeColor = rtbDebug.ForeColor
-
-                ThreadPool.QueueUserWorkItem(AddressOf GetProxyStats, Nothing)
-            Else
-                lblProxyStats.Visible = False
-            End If
-
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, False)
             If RegKey.GetValue(Of Boolean)(RegKey.LaunchPSO2fromORB) = True Then
                 btnLaunchPSO2.Visible = False
@@ -296,8 +284,6 @@ Public Class FrmMain
 
             'Remove the next 3 lines to try sidebar theming. - AIDA
             WebBrowser1.Visible = False
-            lblProxyStats.BackColor = Color.White
-            lblProxyStats.ForeColor = Color.Black
 
             Show()
 
@@ -410,17 +396,24 @@ Public Class FrmMain
                     DownloadFile(Program.FreedomUrl & "UnRAR.exe", "UnRAR.exe")
                 End If
 
-                For index = 1 To 5
-                    If Helper.GetMd5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
-                        Helper.WriteDebugInfo(Resources.strYourUnrariscorrupt)
-                        Application.DoEvents()
-                        DownloadFile(Program.FreedomUrl & "UnRAR.exe", "UnRAR.exe")
-                    Else
-                        Exit For
-                    End If
-                Next
+            For index = 1 To 5
+                If Helper.GetMd5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
+                    Helper.WriteDebugInfo(Resources.strYourUnrariscorrupt)
+                    Application.DoEvents()
+                    DownloadFile(Program.FreedomUrl & "UnRAR.exe", "UnRAR.exe")
+                Else
+                    Exit For
+                End If
+            Next
 
-                Helper.CheckIfOfficialLauncherRunning()
+            'Man, fuck GG. We have to remove the proxy stats function because things.
+
+            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.GetProxyStats.ToString)) Then RegKey.DeleteValue("GetProxyStats")
+            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.ProxyStatsURL.ToString)) Then RegKey.DeleteValue("ProxyStatsURL")
+            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.StatsLastChecked.ToString)) Then RegKey.DeleteValue("StatsLastChecked")
+            If Not String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.CachedStats.ToString)) Then RegKey.DeleteValue("CachedStats")
+
+            Helper.CheckIfOfficialLauncherRunning()
 
                 Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
                 Helper.DeleteFile("launcherlist.txt")
@@ -3603,61 +3596,6 @@ Public Class FrmMain
         End Try
     End Sub
 
-    Public Sub GetProxyStats(state As Object)
-        If lblProxyStats.InvokeRequired Then
-            lblProxyStats.Invoke(New Action(Of Object)(AddressOf GetProxyStats), state)
-        Else
-            lblProxyStats.Text = Text
-
-        End If
-
-        'Make it so it'll only check it after a minute (to cut down on possible DDOS)
-        Dim Now As Integer = TimeOfDay.Minute
-
-        If Now = RegKey.GetValue(Of Integer)(RegKey.StatsLastChecked) Or Now = RegKey.GetValue(Of Integer)(RegKey.StatsLastChecked) + 1 Or Now = RegKey.GetValue(Of Integer)(RegKey.StatsLastChecked) - 1 Then
-            lblProxyStats.Text = RegKey.GetValue(Of String)(RegKey.CachedStats)
-            Exit Sub
-        End If
-
-        'http://cloud02.cyberkitsune.net:8080/
-        '{"uniquePlayers": 25180, "upSince": 1425656237, "peakPlayers": 783, "blocksCached": 768, "playerCount": 783}
-        Try
-            Dim jsonurl As String = RegKey.GetValue(Of String)(RegKey.ProxyStatsURL)
-            If String.IsNullOrEmpty(jsonurl) Or jsonurl.Contains("http") = False Then
-                lblProxyStats.Text = "Error retrieving PSO2Proxy stats. Check the URL in Options."
-                Return
-            End If
-
-            Program.Client2.DownloadFile(jsonurl, "ServerConfig.txt")
-
-            Dim proxystats As ProxyStats
-            Using stream As FileStream = File.Open("ServerConfig.txt", FileMode.Open)
-                Dim serializer As DataContractJsonSerializer = New DataContractJsonSerializer(GetType(ProxyStats))
-                proxystats = DirectCast(serializer.ReadObject(stream), ProxyStats)
-            End Using
-
-
-
-            Dim FullDate As String = FromUnix(proxystats.upSince).ToString
-
-            Dim ShortDate() As String = FullDate.Split(CChar(" "))
-
-
-
-            lblProxyStats.Text = "Proxy stats: " & proxystats.playerCount & " players online (Peak: " & proxystats.peakPlayers & " since " & ShortDate(0) & ")  "
-
-            Dim NowDone As Integer = TimeOfDay.Minute
-
-            RegKey.SetValue(Of Integer)(RegKey.StatsLastChecked, NowDone)
-
-            RegKey.SetValue(Of String)(RegKey.CachedStats, lblProxyStats.Text)
-
-            If File.Exists("ServerConfig.txt") Then File.Delete("ServerConfig.txt")
-
-        Catch ex As Exception
-            Helper.WriteDebugInfoAndWarning("ERROR - " & ex.Message.ToString & " (While checking the PSO2Proxy stats)")
-        End Try
-    End Sub
     Public ReadOnly Property Epoch() As DateTime
         Get
             Return New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)

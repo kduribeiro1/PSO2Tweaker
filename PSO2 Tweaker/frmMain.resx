@@ -144,11 +144,17 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtHTML.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>23</value>
   </data>
   <metadata name="cmsTextBarOptions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 17</value>
   </metadata>
+  <data name="CopyAllTextToClipboardToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>206, 22</value>
+  </data>
+  <data name="CopyAllTextToClipboardToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy all text to clipboard</value>
+  </data>
   <data name="cmsTextBarOptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 26</value>
   </data>
@@ -180,13 +186,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;rtbDebug.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
-  <data name="CopyAllTextToClipboardToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 22</value>
-  </data>
-  <data name="CopyAllTextToClipboardToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy all text to clipboard</value>
+    <value>22</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>90, 17</value>
@@ -216,7 +216,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveCensor.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>21</value>
   </data>
   <data name="chkRemovePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -243,7 +243,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemovePC.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>20</value>
   </data>
   <data name="chkRemoveVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -270,7 +270,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveVita.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>19</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="PBMainBar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
@@ -295,7 +295,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PBMainBar.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <data name="chkRemoveNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +322,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveNVidia.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="chkRemoveSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -349,7 +349,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveSEGA.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="chkSwapOP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -379,7 +379,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkSwapOP.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>24</value>
   </data>
   <data name="lblDirectoryLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -406,7 +406,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblDirectoryLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="lblDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 55</value>
@@ -430,7 +430,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblDirectory.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="chkRestoreCensor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,7 +457,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreCensor.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <data name="chkRestorePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -484,7 +484,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestorePC.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
   <data name="chkRestoreVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -511,7 +511,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreVita.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="chkRestoreNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -538,7 +538,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreNVidia.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="chkRestoreSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -565,7 +565,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRestoreSEGA.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="btnApplyChanges.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 219</value>
@@ -592,7 +592,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnApplyChanges.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="btnLaunchPSO2.Location" type="System.Drawing.Point, System.Drawing">
     <value>254, 219</value>
@@ -619,20 +619,11 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnLaunchPSO2.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <metadata name="cmsProgressBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>389, 17</value>
   </metadata>
-  <data name="cmsProgressBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 70</value>
-  </data>
-  <data name="&gt;&gt;cmsProgressBar.Name" xml:space="preserve">
-    <value>cmsProgressBar</value>
-  </data>
-  <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tsmRestartDownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
   </data>
@@ -650,6 +641,15 @@
   </data>
   <data name="CancelProcessToolStripMenuItem.Text" xml:space="preserve">
     <value>Cancel process</value>
+  </data>
+  <data name="cmsProgressBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 70</value>
+  </data>
+  <data name="&gt;&gt;cmsProgressBar.Name" xml:space="preserve">
+    <value>cmsProgressBar</value>
+  </data>
+  <data name="&gt;&gt;cmsProgressBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="RibbonControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -723,20 +723,215 @@
   <data name="ButtonInstall.Text" xml:space="preserve">
     <value>Install/Update Patches</value>
   </data>
+  <data name="btnRestoreENBackup.Text" xml:space="preserve">
+    <value>English/Russian/Spanish Patch</value>
+  </data>
+  <data name="btnRestoreENBackup.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the English patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreLargeFilesBackup.Text" xml:space="preserve">
+    <value>English Large Files</value>
+  </data>
+  <data name="btnRestoreLargeFilesBackup.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the Large Files patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreStoryBackup.Text" xml:space="preserve">
+    <value>English Story Patch</value>
+  </data>
+  <data name="btnRestoreStoryBackup.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the Story patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreJPNames.Text" xml:space="preserve">
+    <value>JP Enemy Names</value>
+  </data>
+  <data name="btnRestoreJPNames.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the JP Enemy names patch (if it exists)</value>
+  </data>
+  <data name="btnRestoreJPETrials.Text" xml:space="preserve">
+    <value>JP Emergency Codes</value>
+  </data>
+  <data name="btnRestoreJPETrials.Tooltip" xml:space="preserve">
+    <value>Restore a backup of the JP e-codes patch (if it exists)</value>
+  </data>
   <data name="btnRestoreBackups.Text" xml:space="preserve">
     <value>Restore Backup of JP Files</value>
+  </data>
+  <data name="btnUninstallENPatch.Text" xml:space="preserve">
+    <value>English/Russian/Spanish Patch</value>
+  </data>
+  <data name="btnUninstallENPatch.Tooltip" xml:space="preserve">
+    <value>Uninstall the core English Patch</value>
+  </data>
+  <data name="btnUninstallLargeFiles.Text" xml:space="preserve">
+    <value>English Large Files</value>
+  </data>
+  <data name="btnUninstallLargeFiles.Tooltip" xml:space="preserve">
+    <value>Uninstall the English Large Files Patch</value>
+  </data>
+  <data name="btnUninstallStory.Text" xml:space="preserve">
+    <value>English Story Patch</value>
+  </data>
+  <data name="btnUninstallStory.Tooltip" xml:space="preserve">
+    <value>Uninstall the English Story Patch</value>
+  </data>
+  <data name="btnJPETrials.Text" xml:space="preserve">
+    <value>Revert E-Codes to JP</value>
+  </data>
+  <data name="btnJPETrials.Tooltip" xml:space="preserve">
+    <value>Patch emergency codes/trials to be in Japanese</value>
+  </data>
+  <data name="btnJPEnemyNames.Text" xml:space="preserve">
+    <value>Revert Enemy Names to JP</value>
+  </data>
+  <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
+    <value>Patch enemy names to be in Japanese</value>
   </data>
   <data name="ButtonItem1.Text" xml:space="preserve">
     <value>Redownload Original JP Files</value>
   </data>
+  <data name="btnAnalyze.Text" xml:space="preserve">
+    <value>Analyze Install for Issues</value>
+  </data>
+  <data name="btnAnalyze.Tooltip" xml:space="preserve">
+    <value>Analyze your installation for missing files or folders</value>
+  </data>
+  <data name="Button2.Text" xml:space="preserve">
+    <value>Check for Deleted/Empty Files</value>
+  </data>
+  <data name="Button2.Tooltip" xml:space="preserve">
+    <value>Checks to see if any data files are non-existant</value>
+  </data>
+  <data name="ButtonItem10.Text" xml:space="preserve">
+    <value>Check for Old/Missing Files</value>
+  </data>
+  <data name="ButtonItem10.Tooltip" xml:space="preserve">
+    <value>Checks for deleted files AND out-of-date files</value>
+  </data>
+  <data name="btnGameguard.Text" xml:space="preserve">
+    <value>Fix Gameguard Errors</value>
+  </data>
+  <data name="btnGameguard.Tooltip" xml:space="preserve">
+    <value>Fixes numberous Gameguard issues and errors</value>
+  </data>
+  <data name="btnFixPSO2EXEs.Text" xml:space="preserve">
+    <value>Fix PSO2 EXEs</value>
+  </data>
+  <data name="btnFixPSO2EXEs.Tooltip" xml:space="preserve">
+    <value>Re-downloads the PSO2 EXE files</value>
+  </data>
+  <data name="btnFixPermissions.Text" xml:space="preserve">
+    <value>Fix PSO2 Permissions</value>
+  </data>
+  <data name="btnFixPermissions.Tooltip" xml:space="preserve">
+    <value>Fixes PSO2 Permission issues caused by Bill Gates</value>
+  </data>
+  <data name="btnCopyInfo.Text" xml:space="preserve">
+    <value>Open Diagnostic Menu</value>
+  </data>
+  <data name="btnCopyInfo.Tooltip" xml:space="preserve">
+    <value>Opens a diagnostic menu to help with troubleshooting</value>
+  </data>
+  <data name="ButtonItem17.Text" xml:space="preserve">
+    <value>Reset PSO2 Settings</value>
+  </data>
+  <data name="ButtonItem17.Tooltip" xml:space="preserve">
+    <value>Resets your PSO2 Settings to default!</value>
+  </data>
+  <data name="btnResetTweaker.Text" xml:space="preserve">
+    <value>Reset Tweaker Settings</value>
+  </data>
+  <data name="btnResetTweaker.Tooltip" xml:space="preserve">
+    <value>Resets your PSO2 Tweaker settings to default!</value>
+  </data>
+  <data name="btnResumePatching.Text" xml:space="preserve">
+    <value>Resume Patching</value>
+  </data>
+  <data name="btnResumePatching.Tooltip" xml:space="preserve">
+    <value>Resume a failed/interrupted/canceled patchjob</value>
+  </data>
+  <data name="btnTerminate.Text" xml:space="preserve">
+    <value>Terminate PSO2 Process</value>
+  </data>
+  <data name="btnTerminate.Tooltip" xml:space="preserve">
+    <value>Forcibly ends PSO2 - Bye bye!</value>
+  </data>
   <data name="ButtonItem2.Text" xml:space="preserve">
     <value>Troubleshooting</value>
+  </data>
+  <data name="ButtonItem7.Text" xml:space="preserve">
+    <value>Launch Chrome in PSO2 Compatibility Mode</value>
+  </data>
+  <data name="ButtonItem7.Tooltip" xml:space="preserve">
+    <value>Launches Chrome without the built-in sandbox feature</value>
+  </data>
+  <data name="btnPredownloadLobbyVideos.Text" xml:space="preserve">
+    <value>Predownload Lobby Videos</value>
+  </data>
+  <data name="btnPredownloadLobbyVideos.Tooltip" xml:space="preserve">
+    <value>Predownloads the Lobby Videos so you don't lag in-game while you download them</value>
+  </data>
+  <data name="btnChooseProxyServer.Text" xml:space="preserve">
+    <value>Configure PSO2Proxy Server Settings</value>
+  </data>
+  <data name="btnChooseProxyServer.Tooltip" xml:space="preserve">
+    <value>Activates PSO2Proxy for the selected server</value>
+  </data>
+  <data name="btnRevertPSO2ProxyToJP.Text" xml:space="preserve">
+    <value>Revert PSO2Proxy Settings to JP</value>
+  </data>
+  <data name="btnRevertPSO2ProxyToJP.Tooltip" xml:space="preserve">
+    <value>Reverts your PSO2Proxy settings back to their original server</value>
+  </data>
+  <data name="btnClearSACache.Text" xml:space="preserve">
+    <value>Clear Symbol Art Cache</value>
+  </data>
+  <data name="btnInstallPSO2.Text" xml:space="preserve">
+    <value>Install Phantasy Star Online 2</value>
   </data>
   <data name="btnOtherStuff.Text" xml:space="preserve">
     <value>Other Tasks</value>
   </data>
+  <data name="btnBumped.Text" xml:space="preserve">
+    <value>Bumped.org (PSO2 News Site)</value>
+  </data>
+  <data name="btnCirno.Text" xml:space="preserve">
+    <value>Cirnopedia (PSO2 Database)</value>
+  </data>
+  <data name="btnArksCash.Text" xml:space="preserve">
+    <value>How to buy AC (Arks Cash)</value>
+  </data>
+  <data name="btnErrors.Text" xml:space="preserve">
+    <value>List of all PSO2 Errors</value>
+  </data>
+  <data name="btnOfficialPSO2JP.Text" xml:space="preserve">
+    <value>Official PSO2JP Site (via Cyberkitsune proxy)</value>
+  </data>
+  <data name="btnRegistration.Text" xml:space="preserve">
+    <value>PSO2 Registration Guide</value>
+  </data>
+  <data name="btnTweaker.Text" xml:space="preserve">
+    <value>PSO2 Tweaker Thread</value>
+  </data>
+  <data name="btnRunPSO2Linux.Text" xml:space="preserve">
+    <value>Running PSO2 in Linux (Tutorial)</value>
+  </data>
+  <data name="btnSymbolEditor.Text" xml:space="preserve">
+    <value>Symbol Art Editor (English Version)</value>
+  </data>
+  <data name="btnEXPFULL.Text" xml:space="preserve">
+    <value>The Ship 2 Voice Chat (EXPFULL)</value>
+  </data>
   <data name="ButtonItem3.Text" xml:space="preserve">
     <value>Web Links</value>
+  </data>
+  <data name="btnDonateToBumped.Text" xml:space="preserve">
+    <value>Bumped.org Donation Link</value>
+  </data>
+  <data name="btnDonateToCirno.Text" xml:space="preserve">
+    <value>Cirnopedia Donation Link</value>
+  </data>
+  <data name="btnDonateToTweaker.Text" xml:space="preserve">
+    <value>PSO2 Tweaker Donation Link</value>
   </data>
   <data name="btnDonations.Text" xml:space="preserve">
     <value>Donation Links</value>
@@ -823,202 +1018,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
-  <data name="btnRestoreENBackup.Text" xml:space="preserve">
-    <value>English/Russian/Spanish Patch</value>
-  </data>
-  <data name="btnRestoreENBackup.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the English patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreLargeFilesBackup.Text" xml:space="preserve">
-    <value>English Large Files</value>
-  </data>
-  <data name="btnRestoreLargeFilesBackup.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the Large Files patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreStoryBackup.Text" xml:space="preserve">
-    <value>English Story Patch</value>
-  </data>
-  <data name="btnRestoreStoryBackup.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the Story patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreJPNames.Text" xml:space="preserve">
-    <value>JP Enemy Names</value>
-  </data>
-  <data name="btnRestoreJPNames.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the JP Enemy names patch (if it exists)</value>
-  </data>
-  <data name="btnRestoreJPETrials.Text" xml:space="preserve">
-    <value>JP Emergency Codes</value>
-  </data>
-  <data name="btnRestoreJPETrials.Tooltip" xml:space="preserve">
-    <value>Restore a backup of the JP e-codes patch (if it exists)</value>
-  </data>
-  <data name="btnUninstallENPatch.Text" xml:space="preserve">
-    <value>English/Russian/Spanish Patch</value>
-  </data>
-  <data name="btnUninstallENPatch.Tooltip" xml:space="preserve">
-    <value>Uninstall the core English Patch</value>
-  </data>
-  <data name="btnUninstallLargeFiles.Text" xml:space="preserve">
-    <value>English Large Files</value>
-  </data>
-  <data name="btnUninstallLargeFiles.Tooltip" xml:space="preserve">
-    <value>Uninstall the English Large Files Patch</value>
-  </data>
-  <data name="btnUninstallStory.Text" xml:space="preserve">
-    <value>English Story Patch</value>
-  </data>
-  <data name="btnUninstallStory.Tooltip" xml:space="preserve">
-    <value>Uninstall the English Story Patch</value>
-  </data>
-  <data name="btnJPETrials.Text" xml:space="preserve">
-    <value>Revert E-Codes to JP</value>
-  </data>
-  <data name="btnJPETrials.Tooltip" xml:space="preserve">
-    <value>Patch emergency codes/trials to be in Japanese</value>
-  </data>
-  <data name="btnJPEnemyNames.Text" xml:space="preserve">
-    <value>Revert Enemy Names to JP</value>
-  </data>
-  <data name="btnJPEnemyNames.Tooltip" xml:space="preserve">
-    <value>Patch enemy names to be in Japanese</value>
-  </data>
-  <data name="btnAnalyze.Text" xml:space="preserve">
-    <value>Analyze Install for Issues</value>
-  </data>
-  <data name="btnAnalyze.Tooltip" xml:space="preserve">
-    <value>Analyze your installation for missing files or folders</value>
-  </data>
-  <data name="Button2.Text" xml:space="preserve">
-    <value>Check for Deleted/Empty Files</value>
-  </data>
-  <data name="Button2.Tooltip" xml:space="preserve">
-    <value>Checks to see if any data files are non-existant</value>
-  </data>
-  <data name="ButtonItem10.Text" xml:space="preserve">
-    <value>Check for Old/Missing Files</value>
-  </data>
-  <data name="ButtonItem10.Tooltip" xml:space="preserve">
-    <value>Checks for deleted files AND out-of-date files</value>
-  </data>
-  <data name="btnGameguard.Text" xml:space="preserve">
-    <value>Fix Gameguard Errors</value>
-  </data>
-  <data name="btnGameguard.Tooltip" xml:space="preserve">
-    <value>Fixes numberous Gameguard issues and errors</value>
-  </data>
-  <data name="btnFixPSO2EXEs.Text" xml:space="preserve">
-    <value>Fix PSO2 EXEs</value>
-  </data>
-  <data name="btnFixPSO2EXEs.Tooltip" xml:space="preserve">
-    <value>Re-downloads the PSO2 EXE files</value>
-  </data>
-  <data name="btnFixPermissions.Text" xml:space="preserve">
-    <value>Fix PSO2 Permissions</value>
-  </data>
-  <data name="btnFixPermissions.Tooltip" xml:space="preserve">
-    <value>Fixes PSO2 Permission issues caused by Bill Gates</value>
-  </data>
-  <data name="btnCopyInfo.Text" xml:space="preserve">
-    <value>Open Diagnostic Menu</value>
-  </data>
-  <data name="btnCopyInfo.Tooltip" xml:space="preserve">
-    <value>Opens a diagnostic menu to help with troubleshooting</value>
-  </data>
-  <data name="ButtonItem17.Text" xml:space="preserve">
-    <value>Reset PSO2 Settings</value>
-  </data>
-  <data name="ButtonItem17.Tooltip" xml:space="preserve">
-    <value>Resets your PSO2 Settings to default!</value>
-  </data>
-  <data name="btnResetTweaker.Text" xml:space="preserve">
-    <value>Reset Tweaker Settings</value>
-  </data>
-  <data name="btnResetTweaker.Tooltip" xml:space="preserve">
-    <value>Resets your PSO2 Tweaker settings to default!</value>
-  </data>
-  <data name="btnResumePatching.Text" xml:space="preserve">
-    <value>Resume Patching</value>
-  </data>
-  <data name="btnResumePatching.Tooltip" xml:space="preserve">
-    <value>Resume a failed/interrupted/canceled patchjob</value>
-  </data>
-  <data name="btnTerminate.Text" xml:space="preserve">
-    <value>Terminate PSO2 Process</value>
-  </data>
-  <data name="btnTerminate.Tooltip" xml:space="preserve">
-    <value>Forcibly ends PSO2 - Bye bye!</value>
-  </data>
-  <data name="ButtonItem7.Text" xml:space="preserve">
-    <value>Launch Chrome in PSO2 Compatibility Mode</value>
-  </data>
-  <data name="ButtonItem7.Tooltip" xml:space="preserve">
-    <value>Launches Chrome without the built-in sandbox feature</value>
-  </data>
-  <data name="btnPredownloadLobbyVideos.Text" xml:space="preserve">
-    <value>Predownload Lobby Videos</value>
-  </data>
-  <data name="btnPredownloadLobbyVideos.Tooltip" xml:space="preserve">
-    <value>Predownloads the Lobby Videos so you don't lag in-game while you download them</value>
-  </data>
-  <data name="btnChooseProxyServer.Text" xml:space="preserve">
-    <value>Configure PSO2Proxy Server Settings</value>
-  </data>
-  <data name="btnChooseProxyServer.Tooltip" xml:space="preserve">
-    <value>Activates PSO2Proxy for the selected server</value>
-  </data>
-  <data name="btnRevertPSO2ProxyToJP.Text" xml:space="preserve">
-    <value>Revert PSO2Proxy Settings to JP</value>
-  </data>
-  <data name="btnRevertPSO2ProxyToJP.Tooltip" xml:space="preserve">
-    <value>Reverts your PSO2Proxy settings back to their original server</value>
-  </data>
-  <data name="btnClearSACache.Text" xml:space="preserve">
-    <value>Clear Symbol Art Cache</value>
-  </data>
-  <data name="btnInstallPSO2.Text" xml:space="preserve">
-    <value>Install Phantasy Star Online 2</value>
-  </data>
-  <data name="btnBumped.Text" xml:space="preserve">
-    <value>Bumped.org (PSO2 News Site)</value>
-  </data>
-  <data name="btnCirno.Text" xml:space="preserve">
-    <value>Cirnopedia (PSO2 Database)</value>
-  </data>
-  <data name="btnArksCash.Text" xml:space="preserve">
-    <value>How to buy AC (Arks Cash)</value>
-  </data>
-  <data name="btnErrors.Text" xml:space="preserve">
-    <value>List of all PSO2 Errors</value>
-  </data>
-  <data name="btnOfficialPSO2JP.Text" xml:space="preserve">
-    <value>Official PSO2JP Site (via Cyberkitsune proxy)</value>
-  </data>
-  <data name="btnRegistration.Text" xml:space="preserve">
-    <value>PSO2 Registration Guide</value>
-  </data>
-  <data name="btnTweaker.Text" xml:space="preserve">
-    <value>PSO2 Tweaker Thread</value>
-  </data>
-  <data name="btnRunPSO2Linux.Text" xml:space="preserve">
-    <value>Running PSO2 in Linux (Tutorial)</value>
-  </data>
-  <data name="btnSymbolEditor.Text" xml:space="preserve">
-    <value>Symbol Art Editor (English Version)</value>
-  </data>
-  <data name="btnEXPFULL.Text" xml:space="preserve">
-    <value>The Ship 2 Voice Chat (EXPFULL)</value>
-  </data>
-  <data name="btnDonateToBumped.Text" xml:space="preserve">
-    <value>Bumped.org Donation Link</value>
-  </data>
-  <data name="btnDonateToCirno.Text" xml:space="preserve">
-    <value>Cirnopedia Donation Link</value>
-  </data>
-  <data name="btnDonateToTweaker.Text" xml:space="preserve">
-    <value>PSO2 Tweaker Donation Link</value>
+    <value>25</value>
   </data>
   <data name="btnAnnouncements.Location" type="System.Drawing.Point, System.Drawing">
     <value>406, 30</value>
@@ -1045,7 +1045,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnAnnouncements.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="WebBrowser4.Location" type="System.Drawing.Point, System.Drawing">
     <value>420, 31</value>
@@ -1069,7 +1069,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;WebBrowser4.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>26</value>
   </data>
   <data name="txtPSO2DefaultINI.Location" type="System.Drawing.Point, System.Drawing">
     <value>201, 129</value>
@@ -1368,7 +1368,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtPSO2DefaultINI.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <metadata name="tmrWaitingforPSO2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>527, 17</value>
@@ -1401,7 +1401,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtFiles.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="lblStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1431,36 +1431,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblStatus.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="lblProxyStats.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9.75pt</value>
-  </data>
-  <data name="lblProxyStats.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblProxyStats.Location" type="System.Drawing.Point, System.Drawing">
-    <value>420, 30</value>
-  </data>
-  <data name="lblProxyStats.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 18</value>
-  </data>
-  <data name="lblProxyStats.TabIndex" type="System.Int32, mscorlib">
-    <value>78</value>
-  </data>
-  <data name="lblProxyStats.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lblProxyStats.Name" xml:space="preserve">
-    <value>lblProxyStats</value>
-  </data>
-  <data name="&gt;&gt;lblProxyStats.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblProxyStats.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblProxyStats.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <metadata name="DLS.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -8197,7 +8167,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.2, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.4, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>

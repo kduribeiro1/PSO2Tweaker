@@ -67,7 +67,6 @@ Public Class FrmOptions
 
             CheckBoxX3.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.ChecksVisible))
             CheckBoxX4.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.PSO2DirVisible))
-            CheckBoxX5.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.GetProxyStats))
             CheckBoxX6.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseOldProgressBar))
             CheckBoxX7.Checked = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB))
 
@@ -404,28 +403,6 @@ Public Class FrmOptions
     Private Sub cpbFill2_SelectedColorChanged(sender As Object, e As EventArgs) Handles cpbFill2.SelectedColorChanged
         RegKey.SetValue(Of Integer)(RegKey.PBFill2, cpbFill2.SelectedColor.ToArgb)
         FrmMain.PBMainBar.ChunkColor2 = cpbFill2.SelectedColor
-    End Sub
-
-    Private Sub ButtonX1_Click_1(sender As Object, e As EventArgs) Handles ButtonX1.Click
-        Dim PSO2ProxyStatsString As String = InputBox("Please paste the URL for your PSO2Proxy, including the 8080 port. So, for example, if your PSO2Proxy was hosted on 102.142.725.123, it would be ""http://102.142.725.123:8080"". To reset to the PSO2Proxy Public stats, type ""default"".")
-        If PSO2ProxyStatsString = "default" Then PSO2ProxyStatsString = "http://cloud02.cyberkitsune.net:8080/"
-        RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, PSO2ProxyStatsString)
-    End Sub
-
-    Private Sub CheckBoxX5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX5.CheckedChanged
-        FrmMain.lblProxyStats.Visible = CheckBoxX5.Checked
-        RegKey.SetValue(Of Boolean)(RegKey.GetProxyStats, CheckBoxX5.Checked)
-        If CheckBoxX5.Checked = True Then
-            If RegKey.GetValue(Of String)(RegKey.ProxyStatsURL) = "" Then RegKey.SetValue(Of String)(RegKey.ProxyStatsURL, "http://cloud02.cyberkitsune.net:8080/")
-            FrmMain.lblProxyStats.Visible = True
-            FrmMain.lblProxyStats.BackColor = FrmMain.rtbDebug.BackColor
-            FrmMain.lblProxyStats.ForeColor = FrmMain.rtbDebug.ForeColor
-            'Delete the next two lines to enable sidebar theming. - AIDA
-            FrmMain.lblProxyStats.BackColor = Color.White
-            FrmMain.lblProxyStats.ForeColor = Color.Black
-
-            FrmMain.GetProxyStats(Nothing)
-        End If
     End Sub
 
     Private Sub CheckBoxX6_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX6.CheckedChanged

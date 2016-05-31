@@ -131,7 +131,6 @@ Partial Class FrmMain
         Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
         Me.txtFiles = New System.Windows.Forms.TextBox()
         Me.lblStatus = New System.Windows.Forms.Label()
-        Me.lblProxyStats = New System.Windows.Forms.Label()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.cmsTextBarOptions.SuspendLayout()
@@ -853,13 +852,6 @@ Partial Class FrmMain
         resources.ApplyResources(Me.lblStatus, "lblStatus")
         Me.lblStatus.Name = "lblStatus"
         '
-        'lblProxyStats
-        '
-        Me.lblProxyStats.BackColor = System.Drawing.Color.Transparent
-        Me.lblProxyStats.FlatStyle = System.Windows.Forms.FlatStyle.System
-        resources.ApplyResources(Me.lblProxyStats, "lblProxyStats")
-        Me.lblProxyStats.Name = "lblProxyStats"
-        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -883,7 +875,6 @@ Partial Class FrmMain
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.Controls.Add(Me.WebBrowser1)
-        Me.Controls.Add(Me.lblProxyStats)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.txtFiles)
         Me.Controls.Add(Me.lblDirectoryLabel)
@@ -1019,7 +1010,6 @@ Partial Class FrmMain
     Friend WithEvents txtFiles As System.Windows.Forms.TextBox
     Friend WithEvents btnLargeFilesTRANSAM As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents lblStatus As System.Windows.Forms.Label
-    Friend WithEvents lblProxyStats As System.Windows.Forms.Label
     Friend WithEvents cmsTextBarOptions As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CopyAllTextToClipboardToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser

@@ -82,4 +82,11 @@ Public Class RegKey
         My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\AIDA", key, value)
         RegistryCache(key) = value
     End Sub
+
+    Public Shared Sub DeleteValue(key As String)
+        'This is a dumb way to do this. [AIDA]
+        Dim keytodelete = My.Computer.Registry.CurrentUser.OpenSubKey("Software\AIDA", True)
+        keytodelete.DeleteValue(key)
+        keytodelete.Close()
+    End Sub
 End Class
