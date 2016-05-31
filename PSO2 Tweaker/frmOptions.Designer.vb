@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmOptions
     Inherits DevComponents.DotNetBar.Office2007Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FrmOptions
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmOptions))
         Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
@@ -93,8 +93,6 @@ Partial Class FrmOptions
         Me.Label3 = New System.Windows.Forms.Label()
         Me.CheckBoxX6 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.CheckBoxX7 = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.CheckBoxX5 = New DevComponents.DotNetBar.Controls.CheckBoxX()
-        Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -609,25 +607,6 @@ Partial Class FrmOptions
         Me.CheckBoxX7.Name = "CheckBoxX7"
         Me.CheckBoxX7.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
-        'CheckBoxX5
-        '
-        Me.CheckBoxX5.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.CheckBoxX5.BackgroundStyle.Class = ""
-        resources.ApplyResources(Me.CheckBoxX5, "CheckBoxX5")
-        Me.CheckBoxX5.Name = "CheckBoxX5"
-        Me.CheckBoxX5.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
-        'ButtonX1
-        '
-        Me.ButtonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
-        Me.ButtonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        resources.ApplyResources(Me.ButtonX1, "ButtonX1")
-        Me.ButtonX1.Name = "ButtonX1"
-        Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
-        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
@@ -635,8 +614,6 @@ Partial Class FrmOptions
         Me.Controls.Add(Me.CheckBoxX7)
         Me.Controls.Add(Me.CheckBoxX6)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.ButtonX1)
-        Me.Controls.Add(Me.CheckBoxX5)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.cpbFill2)
         Me.Controls.Add(Me.LabelX13)
@@ -758,6 +735,4 @@ Partial Class FrmOptions
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents CheckBoxX6 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents CheckBoxX7 As DevComponents.DotNetBar.Controls.CheckBoxX
-    Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
-    Friend WithEvents CheckBoxX5 As DevComponents.DotNetBar.Controls.CheckBoxX
 End Class
