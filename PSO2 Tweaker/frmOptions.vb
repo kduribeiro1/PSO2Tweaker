@@ -256,7 +256,6 @@ Public Class FrmOptions
         CheckBoxX2.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX3.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX4.TextColor = ColorPickerButton2.SelectedColor
-        CheckBoxX5.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX6.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX7.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
