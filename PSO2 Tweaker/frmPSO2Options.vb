@@ -156,7 +156,6 @@ Public Class FrmPso2Options
                     For j = 0 To textLines.Length
                         If j + 1 = textLines.Length Then
                             TextBoxX1.AppendText("}")
-                            File.Delete(_usersettingsfile)
                             File.WriteAllText(_usersettingsfile, TextBoxX1.Text)
                             Return
                         End If

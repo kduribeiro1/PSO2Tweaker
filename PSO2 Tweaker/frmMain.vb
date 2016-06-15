@@ -950,6 +950,16 @@ Public Class FrmMain
             End If
 
             If Not comingFromPrePatch Then
+                Try
+                    Dim source As String = Program.AreYouAlive.DownloadString("http://arks-layer.com/vanila/version.txt")
+                    Helper.Log("ERROR: Wasn't able to contact Arks Layer, help!")
+                    Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+                    If String.IsNullOrEmpty(source) Then Exit Sub
+                Catch ex As Exception
+                    Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                    Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+                    Exit Sub
+                End Try
                 DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
                 Dim version = File.ReadAllLines("version.ver")(0)
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion)) Then
@@ -2569,7 +2579,7 @@ Public Class FrmMain
         '    Return
         'End If
         'If installYesNo = vbYes Then
-        MsgBox("This will install Phantasy Star Online EPISODE 2! Please select a folder to install into." & vbCrLf & "A folder called PHANTASYSTARONLINE2 will be created inside the folder you choose." & vbCrLf & "(For example, if you choose the C drive, it will install to C:\PHANTASYSTARONLINE2\)" & vbCrLf & "It is HIGHLY RECOMMENDED that you do NOT install into the Program Files folder, but a normal folder like C:\PHANTASYSTARONLINE\")
+        MsgBox("This will install Phantasy Star Online EPISODE 4! Please select a folder to install into." & vbCrLf & "A folder called PHANTASYSTARONLINE2 will be created inside the folder you choose." & vbCrLf & "(For example, if you choose the C drive, it will install to C:\PHANTASYSTARONLINE2\)" & vbCrLf & "It is HIGHLY RECOMMENDED that you do NOT install into the Program Files folder, but a normal folder like C:\PHANTASYSTARONLINE\")
         Dim installPso2 As Boolean = True
         While installPso2
             Dim myFolderBrowser As New FolderBrowserDialog With {.RootFolder = Environment.SpecialFolder.MyComputer, .Description = "Please select a folder (or drive) to install PSO2 into"}
@@ -2593,12 +2603,12 @@ Public Class FrmMain
             If correctYesNo = vbYes Then
                 For Each drive In DriveInfo.GetDrives()
                     If (drive.DriveType = DriveType.Fixed) AndAlso (installFolder(0) = drive.Name(0)) Then
-                        If drive.TotalSize < 26992893636 Then
-                            MsgBox("There is not enough space on the selected disk to install PSO2. Please select a different drive. (Requires 16GB of free space)")
+                        If drive.TotalSize < 42000000000 Then
+                            MsgBox("There is not enough space on the selected disk to install PSO2. Please select a different drive. (Requires 41GB of free space)")
                             Continue While
                         End If
-                        If drive.AvailableFreeSpace < 26992893636 Then
-                            MsgBox("There is not enough free space on the selected disk to install PSO2. Please free up some space or select a different drive. (Requires 16GB of free space)")
+                        If drive.AvailableFreeSpace < 42000000000 Then
+                            MsgBox("There is not enough free space on the selected disk to install PSO2. Please free up some space or select a different drive. (Requires 41GB of free space)")
                             Continue While
                         End If
                     End If
@@ -3655,123 +3665,136 @@ Public Class FrmMain
         End Try
     End Sub
     Public Sub CheckForPluginUpdates()
+        Dim source As String
+        Try
+            source = Program.AreYouAlive.DownloadString("http://107.170.16.100/Plugins/PluginMD5HashList.txt")
+        Catch ex As Exception
+            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.WriteDebugInfo("Failed to get the plugin update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+            Exit Sub
+        End Try
         DownloadFile("http://107.170.16.100/Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
-        Using oReader As StreamReader = File.OpenText("PluginMD5HashList.txt")
-            Dim strNewDate As String = oReader.ReadLine()
-            RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
-            RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
+        source = File.ReadAllText("PluginMD5HashList.txt")
+        If Not String.IsNullOrEmpty(source) AndAlso source.Contains(".dll") AndAlso source.Contains(",") Then
+            Using oReader As StreamReader = File.OpenText("PluginMD5HashList.txt")
+                Dim strNewDate As String = oReader.ReadLine()
+                RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
+                RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
 
-            If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or (Directory.GetFiles(Program.Pso2RootDir & "\plugins\").Count = 0 And Directory.GetFiles(Program.Pso2RootDir & "\plugins\disabled").Count = 0) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
-                'Update plugins [AIDA]
+                If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or (Directory.GetFiles(Program.Pso2RootDir & "\plugins\").Count = 0 And Directory.GetFiles(Program.Pso2RootDir & "\plugins\disabled").Count = 0) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
+                    'Update plugins [AIDA]
 
-                Dim missingfiles As New List(Of String)
-                Dim numberofChecks As Integer = 0
-                Dim truefilename As String
-                Dim filename As String()
-                Dim FinalExportString As String = ""
-                Helper.WriteDebugInfo("Beginning plugin update...")
-                'Move all plugins to the disabled folder instead. [AIDA]
+                    Dim missingfiles As New List(Of String)
+                    Dim numberofChecks As Integer = 0
+                    Dim truefilename As String
+                    Dim filename As String()
+                    Dim FinalExportString As String = ""
+                    Helper.WriteDebugInfo("Beginning plugin update...")
+                    'Move all plugins to the disabled folder instead. [AIDA]
 
-                RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
-                For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\").GetFiles
-                    File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
-                    FinalExportString += fi.Name & ","
-                Next
-                If FinalExportString.Length > 0 Then FinalExportString = FinalExportString.Remove(FinalExportString.Length - 1, 1)
-                RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
-                While Not (oReader.EndOfStream)
-                    filename = oReader.ReadLine().Split(","c)
-                    truefilename = filename(0)
+                    RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
+                    For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\").GetFiles
+                        File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
+                        FinalExportString += fi.Name & ","
+                    Next
+                    If FinalExportString.Length > 0 Then FinalExportString = FinalExportString.Remove(FinalExportString.Length - 1, 1)
+                    RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
+                    While Not (oReader.EndOfStream)
+                        filename = oReader.ReadLine().Split(","c)
+                        truefilename = filename(0)
 
-                    If truefilename = "pso2h.dll" Or truefilename = "translation_titles.bin" Or truefilename = "translation.bin" Then
-                        If Not File.Exists((Program.Pso2RootDir & "\" & truefilename)) Then
-                            missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMd5((Program.Pso2RootDir & "\" & truefilename)) <> filename(1) Then
-                            missingfiles.Add(truefilename)
+                        If truefilename = "pso2h.dll" Or truefilename = "translation_titles.bin" Or truefilename = "translation.bin" Then
+                            If Not File.Exists((Program.Pso2RootDir & "\" & truefilename)) Then
+                                missingfiles.Add(truefilename)
+                            ElseIf Helper.GetMd5((Program.Pso2RootDir & "\" & truefilename)) <> filename(1) Then
+                                missingfiles.Add(truefilename)
+                            End If
+                        Else
+                            If Not File.Exists((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) Then
+                                missingfiles.Add(truefilename)
+                            ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) <> filename(1) Then
+                                missingfiles.Add(truefilename)
+                            End If
                         End If
-                    Else
-                        If Not File.Exists((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) Then
-                            missingfiles.Add(truefilename)
-                        ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) <> filename(1) Then
-                            missingfiles.Add(truefilename)
-                        End If
-                    End If
-                    numberofChecks += 1
-                    lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
-                    Application.DoEvents()
-                End While
+                        numberofChecks += 1
+                        lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
+                        Application.DoEvents()
+                    End While
 
-                Helper.WriteDebugInfo("Downloading/Installing updates...")
-                Dim totaldownload As Long = missingfiles.Count
-                Dim downloaded As Long = 0
+                    Helper.WriteDebugInfo("Downloading/Installing updates...")
+                    Dim totaldownload As Long = missingfiles.Count
+                    Dim downloaded As Long = 0
 
-                For Each downloadStr As String In missingfiles
-                    'Download the missing files:
-                    downloaded += 1
-                    lblStatus.Text = Resources.strUpdating & downloaded & "/" & totaldownload
-                    Application.DoEvents()
-                    _cancelled = False
-                    DownloadFile(("http://107.170.16.100/Plugins/" & downloadStr), downloadStr)
-                    If _cancelled Then Return
-                    'Delete the existing file FIRST
-                    If Not File.Exists(downloadStr) Then
-                        Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
-                    End If
-                    If downloadStr = "pso2h.dll" Or downloadStr = "translation_titles.bin" Or downloadStr = "translation.bin" Then
-                        If Environment.CurrentDirectory <> Program.Pso2RootDir Then
-                            Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
-                            File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
+                    For Each downloadStr As String In missingfiles
+                        'Download the missing files:
+                        downloaded += 1
+                        lblStatus.Text = Resources.strUpdating & downloaded & "/" & totaldownload
+                        Application.DoEvents()
+                        _cancelled = False
+                        DownloadFile(("http://107.170.16.100/Plugins/" & downloadStr), downloadStr)
+                        If _cancelled Then Return
+                        'Delete the existing file FIRST
+                        If Not File.Exists(downloadStr) Then
+                            Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
                         End If
-                    Else
-                        If downloadStr = "PSO2Proxy.dll" Then
-                            'If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
-                            If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
-                                Helper.WriteDebugInfo("PSO2Proxy usage detected! Auto-enabling PSO2Proxy plugin...")
-                                File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                        If downloadStr = "pso2h.dll" Or downloadStr = "translation_titles.bin" Or downloadStr = "translation.bin" Then
+                            If Environment.CurrentDirectory <> Program.Pso2RootDir Then
+                                Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
+                                File.Move(downloadStr, (Program.Pso2RootDir & "\" & downloadStr))
+                            End If
+                        Else
+                            If downloadStr = "PSO2Proxy.dll" Then
+                                'If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
+                                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") Then
+                                    Helper.WriteDebugInfo("PSO2Proxy usage detected! Auto-enabling PSO2Proxy plugin...")
+                                    File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\" & downloadStr))
+                                Else
+                                    Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                                    File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
+                                End If
                             Else
                                 Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
                                 File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
                             End If
-                        Else
-                            Helper.DeleteFile((Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
-                            File.Move(downloadStr, (Program.Pso2RootDir & "\plugins\disabled\" & downloadStr))
                         End If
-                    End If
 
-                    If File.Exists(downloadStr) = True And Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile(downloadStr)
-                    Application.DoEvents()
-                Next
-                'Restore the plugins to their proper folders now
-                'If there's enabled plugins, do stuff.
-                Dim FileToMove As String = ""
-                If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString.Length > 1 Then
-                    'Check to see if it's more than one file by seeing if there are any commas
-                    If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Contains(",") = False Then
-                        'It's just one file
-                        'MsgBox("One plugin enabled - " & RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString)
-                        FileToMove = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString
-                        If File.Exists(Program.Pso2RootDir & "\plugins\" & FileToMove) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & FileToMove))
-                        If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & FileToMove) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & FileToMove), (Program.Pso2RootDir & "\plugins\" & FileToMove))
+                        If File.Exists(downloadStr) = True And Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile(downloadStr)
+                        Application.DoEvents()
+                    Next
+                    'Restore the plugins to their proper folders now
+                    'If there's enabled plugins, do stuff.
+                    Dim FileToMove As String = ""
+                    If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString.Length > 1 Then
+                        'Check to see if it's more than one file by seeing if there are any commas
+                        If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Contains(",") = False Then
+                            'It's just one file
+                            'MsgBox("One plugin enabled - " & RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString)
+                            FileToMove = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString
+                            If File.Exists(Program.Pso2RootDir & "\plugins\" & FileToMove) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & FileToMove))
+                            If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & FileToMove) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & FileToMove), (Program.Pso2RootDir & "\plugins\" & FileToMove))
+                        Else
+                            'It's multiple files
+                            Dim EnabledPlugins() As String = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Split(CType(",", Char()))
+                            For Each EnabledFilename In EnabledPlugins
+                                'MsgBox(EnabledFilename)
+                                If File.Exists(Program.Pso2RootDir & "\plugins\" & EnabledFilename) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & EnabledFilename))
+                                If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename), (Program.Pso2RootDir & "\plugins\" & EnabledFilename))
+                            Next
+                        End If
                     Else
-                        'It's multiple files
-                        Dim EnabledPlugins() As String = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Split(CType(",", Char()))
-                        For Each EnabledFilename In EnabledPlugins
-                            'MsgBox(EnabledFilename)
-                            If File.Exists(Program.Pso2RootDir & "\plugins\" & EnabledFilename) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & EnabledFilename))
-                            If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename), (Program.Pso2RootDir & "\plugins\" & EnabledFilename))
-                        Next
+                        'MsgBox("No plugins enabled!")
                     End If
-                Else
-                    'MsgBox("No plugins enabled!")
-                End If
 
-                Helper.WriteDebugInfoAndOk("Plugins updated successfully.")
-                RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
-                RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
-            Else
-                Helper.WriteDebugInfoAndOk("No plugin updates available.")
-            End If
-        End Using
+                    Helper.WriteDebugInfoAndOk("Plugins updated successfully.")
+                    RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
+                    RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
+                Else
+                    Helper.WriteDebugInfoAndOk("No plugin updates available.")
+                End If
+            End Using
+        Else
+            Helper.WriteDebugInfoAndFailed("Failed to get the plugin update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+        End If
         If File.Exists("PluginMD5HashList.txt") = True Then Helper.DeleteFile("PluginMD5HashList.txt")
     End Sub
 

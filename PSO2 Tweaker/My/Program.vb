@@ -9,6 +9,7 @@ Namespace My
         Public Shared ReadOnly Args As String() = Environment.GetCommandLineArgs()
         Public Shared ReadOnly StartPath As String = Windows.Forms.Application.StartupPath
         Public Shared ReadOnly Client As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
+        Public Shared ReadOnly AreYouAlive As MyWebClient = New MyWebClient() With {.Timeout = 5000, .Proxy = Nothing}
         Public Shared ReadOnly ItemPatchClient As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
         Public Shared ReadOnly Client2 As MyWebClient = New MyWebClient() With {.Timeout = 10000, .Proxy = Nothing}
 
@@ -84,14 +85,18 @@ Namespace My
                 End If
 
                 Helper.Log("Pursuing freedom...")
-                Dim TestURL As String = Client.DownloadString("http://arks-layer.com/freedom.txt")
-
-                If Not TestURL.Contains("freedom") Then
+                Try
+                    Dim TestURL As String = Client.DownloadString("http://arks-layer.com/freedom.txt")
+                    If Not TestURL.Contains("freedom") Then
+                        Helper.Log("Reverting to default freedom...")
+                        FreedomUrl = "http://108.61.203.33/freedom/"
+                    Else
+                        FreedomUrl = TestURL
+                    End If
+                Catch ex As Exception
                     Helper.Log("Reverting to default freedom...")
                     FreedomUrl = "http://108.61.203.33/freedom/"
-                Else
-                    FreedomUrl = TestURL
-                End If
+                End Try
 
                 Dim launchPso2 As Boolean = False
 
