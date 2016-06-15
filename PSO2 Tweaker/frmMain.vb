@@ -952,9 +952,11 @@ Public Class FrmMain
             If Not comingFromPrePatch Then
                 Try
                     Dim source As String = Program.AreYouAlive.DownloadString("http://arks-layer.com/vanila/version.txt")
-                    Helper.Log("ERROR: Wasn't able to contact Arks Layer, help!")
-                    Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
-                    If String.IsNullOrEmpty(source) Then Exit Sub
+                    If String.IsNullOrEmpty(source) Then
+                        Helper.Log("ERROR: Wasn't able to contact Arks Layer, help!")
+                        Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+                        Exit Sub
+                    End If
                 Catch ex As Exception
                     Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
                     Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
