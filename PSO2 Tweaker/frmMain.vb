@@ -954,7 +954,7 @@ Public Class FrmMain
                     Dim source As String = Program.AreYouAlive.DownloadString("http://arks-layer.com/vanila/version.txt")
                     If String.IsNullOrEmpty(source) Then
                         Helper.Log("ERROR: Wasn't able to contact Arks Layer, help!")
-                        Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+                        Helper.WriteDebugInfo("Failed to get the PSO2 Version update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
                         Exit Sub
                     End If
                 Catch ex As Exception
