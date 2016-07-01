@@ -6,6 +6,7 @@ Public Class RegKey
     Public Const Backup = "Backup"
     Public Const CloseAfterLaunch = "CloseAfterLaunch"
     Public Const Color = "Color"
+    Public Const DeletedParserOnce = "DeletedParserOnce"
     Public Const EnPatchAfterInstall = "ENPatchAfterInstall"
     Public Const EnPatchVersion = "ENPatchVersion"
     Public Const NullKey = "NullKey"

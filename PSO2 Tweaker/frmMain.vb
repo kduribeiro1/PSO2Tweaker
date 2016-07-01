@@ -563,29 +563,6 @@ Public Class FrmMain
         End If
         Return False
     End Function
-    Private Sub DownloadPluginFiles(state As Object)
-        Try
-            If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
-                Helper.WriteDebugInfo("Downloading DPS Parser plugin... (disabled by default)")
-                Program.ItemPatchClient.DownloadFile("http://107.170.16.100/Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\disabled\PSO2DamageDump.dll"))
-                Helper.WriteDebugInfoSameLine("Done!")
-            End If
-            If File.Exists(Program.Pso2RootDir & "\plugins\PSO2TitleTranslator.dll") = False Then
-                Helper.WriteDebugInfo("Downloading Title Translator plugin... (enabled by default)")
-                Program.ItemPatchClient.DownloadFile("http://107.170.16.100/Plugins/PSO2TitleTranslator.dll", (Program.Pso2RootDir & "\Plugins\PSO2TitleTranslator.dll"))
-                Helper.WriteDebugInfoSameLine("Done!")
-            End If
-            'For when we use the item patch like this
-            'If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") = False Then
-            'Helper.WriteDebugInfo("Installing DPS Parser plugin...")
-            'Program.ItemPatchClient.DownloadFile("http://107.170.16.100/Plugins/PSO2DamageDump.dll", (Program.Pso2RootDir & "\Plugins\PSO2DamageDump.dll"))
-            'End If
-        Catch ex As Exception
-            MsgBox("Failed to download plugin files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
-        End Try
-
-        _itemDownloadingDone = True
-    End Sub
 
     Public Sub WriteDebugInfo(ByVal addThisText As String)
         If rtbDebug.InvokeRequired Then
@@ -3683,7 +3660,19 @@ Public Class FrmMain
                 RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, strNewDate)
                 RegKey.SetValue(Of String)(RegKey.NewPluginVersion, strNewDate)
 
-                If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or (Directory.GetFiles(Program.Pso2RootDir & "\plugins\").Count = 0 And Directory.GetFiles(Program.Pso2RootDir & "\plugins\disabled").Count = 0) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
+                Dim HasParser As Boolean = False
+
+                If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") Or File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2DamageDump.dll") Then HasParser = True
+
+                If RegKey.GetValue(Of String)(RegKey.DeletedParserOnce) = "" And HasParser = True Then
+                    If File.Exists(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll") Then File.Delete(Program.Pso2RootDir & "\plugins\PSO2DamageDump.dll")
+                    If File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2DamageDump.dll") Then File.Delete(Program.Pso2RootDir & "\plugins\disabled\PSO2DamageDump.dll")
+                    MsgBox("The PSO2 Damage Parser Plugin has been automatically deleted as it may cause your account to be banned. For more information (and how to use it if you'd still like to), please visit http://aida.moe/parser/")
+                        Helper.WriteDebugInfoAndWarning("The PSO2 Damage Parser Plugin has been automatically deleted as it may cause your account to be banned. For more information (and how to use it if you'd still like to), please visit http://aida.moe/parser/")
+                        RegKey.SetValue(Of String)(RegKey.DeletedParserOnce, "True")
+                    End If
+
+                    If strNewDate <> RegKey.GetValue(Of String)(RegKey.PluginVersion) Or (Directory.GetFiles(Program.Pso2RootDir & "\plugins\").Count = 0 And Directory.GetFiles(Program.Pso2RootDir & "\plugins\disabled").Count = 0) Or File.Exists(Program.Pso2RootDir & "\pso2h.dll") = False Or File.Exists(Program.Pso2RootDir & "\translation_titles.bin") = False Or File.Exists(Program.Pso2RootDir & "\translation.bin") = False Then
                     'Update plugins [AIDA]
 
                     Dim missingfiles As New List(Of String)
@@ -3838,5 +3827,9 @@ Public Class FrmMain
     Private Sub btnInstallGermanPatch_Click(sender As Object, e As EventArgs) Handles btnInstallGermanPatch.Click
         Dim url As String = Program.Client.DownloadString("http://107.170.16.100/patches/depatch.txt")
         DownloadPatch(url, GermanPatch, "DEPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous German Patch backups." & vbCrLf & "Möchtest du eine Sicherung erstellen, bevor Änderungen am Spiel vorgenommen werden? Damit werden alle vorherigen Sicherungen des deutschen Patchs gelöscht.", "Please select the pre-downloaded German Patch ZIP file." & vbCrLf & "Bitte wähle die zuvor heruntergeladene ZIP-Datei des deutschen Patchs aus.")
+    End Sub
+
+    Private Sub lblStatus_Click(sender As Object, e As EventArgs) Handles lblStatus.Click
+
     End Sub
 End Class
