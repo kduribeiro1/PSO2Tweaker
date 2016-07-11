@@ -131,8 +131,8 @@ Partial Class FrmMain
         Me.tmrWaitingforPSO2 = New System.Windows.Forms.Timer(Me.components)
         Me.txtFiles = New System.Windows.Forms.TextBox()
         Me.lblStatus = New System.Windows.Forms.Label()
-        Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
+        Me.DLS = New PSO2_Tweaker.My.MyWebClient()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -766,7 +766,6 @@ Partial Class FrmMain
         '
         Me.chkItemTranslation.Name = "chkItemTranslation"
         resources.ApplyResources(Me.chkItemTranslation, "chkItemTranslation")
-        Me.chkItemTranslation.Visible = False
         '
         'btnConfigureItemTranslation
         '
@@ -782,7 +781,7 @@ Partial Class FrmMain
         Me.ItemContainer4.BackgroundStyle.Class = "RibbonFileMenuBottomContainer"
         Me.ItemContainer4.HorizontalItemAlignment = DevComponents.DotNetBar.eHorizontalItemsAlignment.Right
         Me.ItemContainer4.Name = "ItemContainer4"
-        Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPSO2Options, Me.btnOptions, Me.btnPlugins, Me.btnExit})
+        Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPlugins, Me.btnPSO2Options, Me.btnOptions, Me.btnExit})
         '
         'btnPSO2Options
         '
@@ -852,6 +851,12 @@ Partial Class FrmMain
         resources.ApplyResources(Me.lblStatus, "lblStatus")
         Me.lblStatus.Name = "lblStatus"
         '
+        'WebBrowser1
+        '
+        resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
+        Me.WebBrowser1.Name = "WebBrowser1"
+        Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
+        '
         'DLS
         '
         Me.DLS.BaseAddress = ""
@@ -862,12 +867,6 @@ Partial Class FrmMain
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
-        '
-        'WebBrowser1
-        '
-        resources.ApplyResources(Me.WebBrowser1, "WebBrowser1")
-        Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
         '
         'FrmMain
         '

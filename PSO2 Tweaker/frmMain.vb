@@ -3790,7 +3790,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub chkItemTranslation_Click(sender As Object, e As EventArgs) Handles chkItemTranslation.Click
-        MsgBox("The item translation is now controlled through the plugin menu. Please click the Plugins button at the bottom of this menu.")
+        MsgBox("The item translation is now controlled through the plugin menu. Please click the Plugins button at the bottom of the menu.")
         chkItemTranslation.Checked = False
     End Sub
 

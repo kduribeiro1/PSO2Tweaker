@@ -972,6 +972,12 @@
   <data name="btnConfigureItemTranslation.Text" xml:space="preserve">
     <value>Configure Item Translation</value>
   </data>
+  <data name="btnPlugins.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="btnPlugins.Tooltip" xml:space="preserve">
+    <value>Configure plugins to add various extra features to the game!</value>
+  </data>
   <data name="btnPSO2Options.Text" xml:space="preserve">
     <value>PSO2 Options</value>
   </data>
@@ -983,12 +989,6 @@
   </data>
   <data name="btnOptions.Tooltip" xml:space="preserve">
     <value>Change options relating to the PSO2 Tweaker</value>
-  </data>
-  <data name="btnPlugins.Text" xml:space="preserve">
-    <value>Plugins</value>
-  </data>
-  <data name="btnPlugins.Tooltip" xml:space="preserve">
-    <value>Change certain in-game PSO2 options</value>
   </data>
   <data name="btnExit.Text" xml:space="preserve">
     <value>E&amp;xit</value>
@@ -1433,6 +1433,30 @@
   <data name="&gt;&gt;lblStatus.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="WebBrowser1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>420, 30</value>
+  </data>
+  <data name="WebBrowser1.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>19, 20</value>
+  </data>
+  <data name="WebBrowser1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>376, 458</value>
+  </data>
+  <data name="WebBrowser1.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="&gt;&gt;WebBrowser1.Name" xml:space="preserve">
+    <value>WebBrowser1</value>
+  </data>
+  <data name="&gt;&gt;WebBrowser1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;WebBrowser1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;WebBrowser1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <metadata name="DLS.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -1477,30 +1501,6 @@
         YXRpb24uQ29tcGFyZUluZm8EAAAABm1fbmFtZQl3aW4zMkxDSUQHY3VsdHVyZQ1tX1NvcnRWZXJzaW9u
         AQAAAwgIIFN5c3RlbS5HbG9iYWxpemF0aW9uLlNvcnRWZXJzaW9uCQoAAAAAAAAAfwAAAAoL
 </value>
-  </data>
-  <data name="WebBrowser1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>420, 30</value>
-  </data>
-  <data name="WebBrowser1.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>19, 20</value>
-  </data>
-  <data name="WebBrowser1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 458</value>
-  </data>
-  <data name="WebBrowser1.TabIndex" type="System.Int32, mscorlib">
-    <value>79</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.Name" xml:space="preserve">
-    <value>WebBrowser1</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;WebBrowser1.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -8167,7 +8167,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.8.8, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
