@@ -121,9 +121,9 @@ Partial Class FrmMain
         Me.chkItemTranslation = New DevComponents.DotNetBar.CheckBoxItem()
         Me.btnConfigureItemTranslation = New DevComponents.DotNetBar.ButtonItem()
         Me.ItemContainer4 = New DevComponents.DotNetBar.ItemContainer()
+        Me.btnPlugins = New DevComponents.DotNetBar.ButtonItem()
         Me.btnPSO2Options = New DevComponents.DotNetBar.ButtonItem()
         Me.btnOptions = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnPlugins = New DevComponents.DotNetBar.ButtonItem()
         Me.btnExit = New DevComponents.DotNetBar.ButtonItem()
         Me.btnAnnouncements = New DevComponents.DotNetBar.ButtonX()
         Me.WebBrowser4 = New System.Windows.Forms.WebBrowser()
@@ -783,6 +783,14 @@ Partial Class FrmMain
         Me.ItemContainer4.Name = "ItemContainer4"
         Me.ItemContainer4.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnPlugins, Me.btnPSO2Options, Me.btnOptions, Me.btnExit})
         '
+        'btnPlugins
+        '
+        Me.btnPlugins.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnPlugins.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        Me.btnPlugins.Name = "btnPlugins"
+        Me.btnPlugins.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnPlugins, "btnPlugins")
+        '
         'btnPSO2Options
         '
         Me.btnPSO2Options.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
@@ -798,14 +806,6 @@ Partial Class FrmMain
         Me.btnOptions.Name = "btnOptions"
         Me.btnOptions.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnOptions, "btnOptions")
-        '
-        'btnPlugins
-        '
-        Me.btnPlugins.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.btnPlugins.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
-        Me.btnPlugins.Name = "btnPlugins"
-        Me.btnPlugins.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.btnPlugins, "btnPlugins")
         '
         'btnExit
         '

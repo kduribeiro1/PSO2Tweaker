@@ -3237,7 +3237,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnJPETrials_Click(sender As Object, e As EventArgs)
-        RestoreJapaneseNames("057aa975bdd2b372fe092614b0f4399e", "JP E-Trials file")
+     
     End Sub
 
     Private Sub RestoreJapaneseNames(filename As String, patchname As String, Optional url As String = "http://107.170.16.100/patches/")
@@ -3831,5 +3831,13 @@ Public Class FrmMain
 
     Private Sub lblStatus_Click(sender As Object, e As EventArgs) Handles lblStatus.Click
 
+    End Sub
+
+    Private Sub btnJPETrials_Click_1(sender As Object, e As EventArgs) Handles btnJPETrials.Click
+        RestoreJapaneseNames("057aa975bdd2b372fe092614b0f4399e", "JP E-Trials file")
+    End Sub
+
+    Private Sub btnJPEnemyNames_Click_1(sender As Object, e As EventArgs) Handles btnJPEnemyNames.Click
+        RestoreJapaneseNames("ceffe0e2386e8d39f188358303a92a7d", "JP enemy names")
     End Sub
 End Class
