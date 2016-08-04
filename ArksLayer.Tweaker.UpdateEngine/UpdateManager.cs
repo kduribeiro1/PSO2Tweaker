@@ -44,7 +44,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             var gamefiles = EnumerateGameFiles().Select(Q => Q.FileName);
 
-            var requiredFiles = patchlist.Select(Q =>
+            var requiredFiles = patchlist.AsParallel().Select(Q =>
             {
                 var shortpath = Q.File.Replace('/', '\\');
                 return Path.Combine(Settings.GameDirectory, shortpath);
@@ -53,7 +53,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
             // Only delete files in /data/win32 for safety. 
             // Prevents deleting weird stuffs like GameGuard or Tweaker stuffs
 
-            var legacyFiles = gamefiles.Except(requiredFiles)
+            var legacyFiles = gamefiles
+                .AsParallel()
+                .Except(requiredFiles)
                 .Where(Q => Q.Contains(@"\data\win32\"))
                 .Select(Q => new FileInfo(Q))
                 .ToList();
@@ -333,7 +335,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             Output.WriteLine("All done!");
         }
-        
+
         /// <summary>
         /// Read missing files again prior to update interruptions / failure and then read the files that were successfully downloaded previously.
         /// Update the missing files using this information and then return it.
@@ -342,13 +344,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private async Task<IList<PatchInfo>> ResumePatching()
         {
             var missingFiles = await ReadMissingFilesFromJson();
-            var downloaded = await ReadDownloadedFilesFromLog();
+            var downloaded = new HashSet<string>(await ReadDownloadedFilesFromLog());
 
-            missingFiles = missingFiles.Where(Q => !downloaded.Contains(Q.File)).ToList();
-            await WriteMissingFilesToJson(missingFiles);
+            if (downloaded.Any())
+            {
+                missingFiles = missingFiles.Where(Q => !downloaded.Contains(Q.File)).ToList();
+            }
 
             Output.WriteLine($"Resuming patch download of {missingFiles.Count} files...");
-
             return missingFiles;
         }
 
@@ -358,6 +361,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private async Task<IList<string>> ReadDownloadedFilesFromLog()
         {
+            if (!File.Exists(DownloadedFilesLog)) return new List<string>();
+
             using (var file = File.OpenText(DownloadedFilesLog))
             {
                 return (await file.ReadToEndAsync()).Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -447,6 +452,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 var target = Path.Combine(DataWin32Directory, fileName);
 
                 if (File.Exists(target)) File.Delete(target);
+                Output.AppendLog($"Moving backup from {file} to {target}");
                 File.Move(file, target);
             }
 

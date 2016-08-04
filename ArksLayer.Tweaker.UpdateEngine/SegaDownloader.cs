@@ -143,9 +143,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 client.DownloadProgressChanged += (sender, e) =>
                 {
                     if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                    lastProgress = e.BytesReceived;
                     uiDelay.Restart();
+                    lastProgress = e.BytesReceived;
+                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                 };
 
                 Output.OnDownloadStart(url, client);
@@ -206,13 +206,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 client.DownloadProgressChanged += (sender, e) =>
                 {
                     if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                    lastProgress = e.BytesReceived;
                     uiDelay.Restart();
+                    lastProgress = e.BytesReceived;
+                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                 };
 
                 Output.OnDownloadStart(url, client);
                 var download = client.DownloadFileTaskAsync(url, file);
+                Output.AppendLog($"Downloading a file from {url} to {file}");
 
                 try
                 {
@@ -252,7 +253,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         {
             // 4^1 = 4 seconds
             // 4^2 = 16 seconds
-            // 4^3 = 64 seconds (1 minute and 4 seconds)
+            // 4^3 = 64 seconds (1 minute and 4 seconds) <-- 4th attempt
             // 4^4 = 256 seconds (4 minutes and 16 seconds)
             if (iteration > 0)
             {
