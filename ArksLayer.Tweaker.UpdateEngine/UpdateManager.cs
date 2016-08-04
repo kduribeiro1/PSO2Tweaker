@@ -333,7 +333,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             Output.WriteLine("All done!");
         }
-        
+
         /// <summary>
         /// Read missing files again prior to update interruptions / failure and then read the files that were successfully downloaded previously.
         /// Update the missing files using this information and then return it.
@@ -358,6 +358,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private async Task<IList<string>> ReadDownloadedFilesFromLog()
         {
+            if (!File.Exists(DownloadedFilesLog)) return new List<string>();
+
             using (var file = File.OpenText(DownloadedFilesLog))
             {
                 return (await file.ReadToEndAsync()).Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -447,6 +449,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 var target = Path.Combine(DataWin32Directory, fileName);
 
                 if (File.Exists(target)) File.Delete(target);
+                Output.AppendLog($"Moving backup from {file} to {target}");
                 File.Move(file, target);
             }
 
