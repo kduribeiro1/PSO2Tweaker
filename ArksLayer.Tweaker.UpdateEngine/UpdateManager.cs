@@ -255,12 +255,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
             }
             else
             {
+                var patchlistDownload = Downloader.FetchUpdatePatchlist();
                 RestoreBackupFiles();
-                patchlist = await Downloader.FetchUpdatePatchlist();
-
+                patchlist = await patchlistDownload;
                 if (cleanLegacy) CleanLegacyFiles(patchlist);
-                var gameFiles = await GetClientHash(rehash);
 
+                var gameFiles = await GetClientHash(rehash);
                 missingFiles = await DiscoverMissingPatches(gameFiles, patchlist);
             }
 

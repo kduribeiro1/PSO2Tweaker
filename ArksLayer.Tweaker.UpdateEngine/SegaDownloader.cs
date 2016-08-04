@@ -148,8 +148,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                 };
 
-                Output.OnDownloadStart(url, client);
                 var download = client.DownloadStringTaskAsync(url);
+                Output.OnDownloadStart(url, client);
 
                 try
                 {
@@ -211,9 +211,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                 };
 
-                Output.OnDownloadStart(url, client);
                 var download = client.DownloadFileTaskAsync(url, file);
                 Output.AppendLog($"Downloading a file from {url} to {file}");
+                Output.OnDownloadStart(url, client);
 
                 try
                 {
