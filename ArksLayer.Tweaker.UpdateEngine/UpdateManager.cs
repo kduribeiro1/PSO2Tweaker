@@ -44,7 +44,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             var gamefiles = EnumerateGameFiles().Select(Q => Q.FileName);
 
-            var requiredFiles = patchlist.Select(Q =>
+            var requiredFiles = patchlist.AsParallel().Select(Q =>
             {
                 var shortpath = Q.File.Replace('/', '\\');
                 return Path.Combine(Settings.GameDirectory, shortpath);
@@ -53,7 +53,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
             // Only delete files in /data/win32 for safety. 
             // Prevents deleting weird stuffs like GameGuard or Tweaker stuffs
 
-            var legacyFiles = gamefiles.Except(requiredFiles)
+            var legacyFiles = gamefiles
+                .AsParallel()
+                .Except(requiredFiles)
                 .Where(Q => Q.Contains(@"\data\win32\"))
                 .Select(Q => new FileInfo(Q))
                 .ToList();
@@ -342,13 +344,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private async Task<IList<PatchInfo>> ResumePatching()
         {
             var missingFiles = await ReadMissingFilesFromJson();
-            var downloaded = await ReadDownloadedFilesFromLog();
+            var downloaded = new HashSet<string>(await ReadDownloadedFilesFromLog());
 
-            missingFiles = missingFiles.Where(Q => !downloaded.Contains(Q.File)).ToList();
-            await WriteMissingFilesToJson(missingFiles);
+            if (downloaded.Any())
+            {
+                missingFiles = missingFiles.Where(Q => !downloaded.Contains(Q.File)).ToList();
+            }
 
             Output.WriteLine($"Resuming patch download of {missingFiles.Count} files...");
-
             return missingFiles;
         }
 
