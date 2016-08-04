@@ -25,6 +25,8 @@ Imports System.Threading
 Imports System.Xml
 Imports PSO2_Tweaker.My
 Imports System.Text
+Imports ArksLayer.Tweaker.Abstractions
+Imports ArksLayer.Tweaker.UpdateEngine
 
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
@@ -3839,5 +3841,17 @@ Public Class FrmMain
 
     Private Sub btnJPEnemyNames_Click_1(sender As Object, e As EventArgs) Handles btnJPEnemyNames.Click
         RestoreJapaneseNames("ceffe0e2386e8d39f188358303a92a7d", "JP enemy names")
+    End Sub
+
+    Private Sub btnQUANTUMSYSTEM_Click(sender As Object, e As EventArgs) Handles btnQUANTUMSYSTEM.Click
+        ' Use IOC Container in the main Tweaker project to deal with dependencies.
+        Dim output As IRenderer
+        Dim Settings = New RegistryTweakerSettings("Software\AIDA")
+        Dim updater = New UpdateManager(Settings, output)
+
+        'await updater.CleanLegacyFiles();
+
+        'Console.WriteLine(settings.GameDirectory)
+        updater.Update(True)
     End Sub
 End Class
