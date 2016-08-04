@@ -3843,7 +3843,7 @@ Public Class FrmMain
         RestoreJapaneseNames("ceffe0e2386e8d39f188358303a92a7d", "JP enemy names")
     End Sub
 
-    Private Sub btnQUANTUMSYSTEM_Click(sender As Object, e As EventArgs) Handles btnQUANTUMSYSTEM.Click
+    Private Async Sub btnQUANTUMSYSTEM_Click(sender As Object, e As EventArgs) Handles btnQUANTUMSYSTEM.Click
         ' Use IOC Container in the main Tweaker project to deal with dependencies.
         Dim output As New ConsoleRenderer
         Dim Settings = New RegistryTweakerSettings("Software\AIDA")
@@ -3852,7 +3852,7 @@ Public Class FrmMain
         'await updater.CleanLegacyFiles();
 
         'Console.WriteLine(settings.GameDirectory)
-        updater.Update(True)
+        Await updater.Update(True)
     End Sub
 End Class
 
