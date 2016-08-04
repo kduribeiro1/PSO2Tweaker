@@ -3852,7 +3852,7 @@ Public Class FrmMain
         'await updater.CleanLegacyFiles();
 
         'Console.WriteLine(settings.GameDirectory)
-        Await updater.Update(True)
+        Await updater.Update(False, True)
     End Sub
 End Class
 
@@ -3875,6 +3875,7 @@ Public Class ConsoleRenderer
     End Sub
 
     Public Sub WriteLine(s As String)
+        If s.Contains("PSO2 Tweaker ver") Then Exit Sub
         Helper.WriteDebugInfo(s)
     End Sub
 
@@ -3903,42 +3904,69 @@ Public Class ConsoleRenderer
     End Sub
 
     Private Sub IRenderer_WriteLine(s As String) Implements IRenderer.WriteLine
-        Helper.WriteDebugInfo(s)
+        'These are placeholders - Once everything is set in stone and ready, I'll modify the strings in a much better fashion. [AIDA]
+        'These nothing wrong with the engine strings themselves, but I can count the amount of PSO2 players who know what hashes are on two hands. [AIDA]
+
+        If s.Contains("PARSING ") Or s.Contains("READY ") Or s.Contains("Merging ") Then
+            Helper.Log(s)
+            Exit Sub
+        End If
+
+        If s.Contains("was deleted") Then
+            Helper.PatchLog(s)
+        Else
+            Helper.WriteDebugInfo(s)
+        End If
     End Sub
 
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
+        'Change this back later! [AIDA]
         Helper.WriteDebugInfo(s)
+        'Helper.PatchLog(s)
     End Sub
 
-    Private Sub IRenderer_OnDownloadStart(url As String) Implements IRenderer.OnDownloadStart
-        Throw New NotImplementedException()
+    Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
+        'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadProgress(url As String, progressByte As Long, totalByte As Long) Implements IRenderer.OnDownloadProgress
-        Throw New NotImplementedException()
+        Dim percentage As Integer = CInt(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
+        FrmMain.PBMainBar.Value = percentage
+        'Dim percentage = String.Format("{0:N2}%", Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
+        'Dim s = "DOWNLOADING {url} | {progressByte / 1024} KB out of {totalByte / 1024} KB | {percentage}"
+        FrmMain.PBMainBar.Text = (Helper.SizeSuffix(progressByte) & " / " & Helper.SizeSuffix(totalByte) & " (" & Format(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100) & "%) - " & Resources.strRightClickforOptions)
+        'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadFinish(url As String) Implements IRenderer.OnDownloadFinish
-        Throw New NotImplementedException()
+        FrmMain.PBMainBar.Text = ""
+        FrmMain.PBMainBar.Value = 0
+        Helper.Log("Download complete!")
+        'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadRetry(url As String, delaySecond As Integer) Implements IRenderer.OnDownloadRetry
-        Throw New NotImplementedException()
+        Helper.Log("Retrying download for " & url)
+        'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadAborted(url As String) Implements IRenderer.OnDownloadAborted
-        Throw New NotImplementedException()
+        Helper.WriteDebugInfoAndFailed("Download aborted for " & url & "!")
+        'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnHashStart() Implements IRenderer.OnHashStart
-        Helper.WriteDebugInfo("Commence full hash against game client files.")
+        Helper.WriteDebugInfo("Beginning QUANTUM SYSTEM update check...")
     End Sub
 
     Private Sub IRenderer_OnHashProgress(progress As Integer, total As Integer) Implements IRenderer.OnHashProgress
-        FrmMain.lblStatus.Text = progress & " out of " & total & " files hashed."
+        Dim progressvalue As Integer = CInt((progress * 100 / total))
+        FrmMain.PBMainBar.Value = progressvalue
+        FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (" & Format((progress * 100 / total), "00.00") & "%) - " & Resources.strRightClickforOptions)
+        'FrmMain.lblStatus.Text = progress & " out of " & total & " files hashed."
     End Sub
 
     Private Sub IRenderer_OnHashComplete() Implements IRenderer.OnHashComplete
-        Throw New NotImplementedException()
+        'Throw New NotImplementedException()
     End Sub
 End Class

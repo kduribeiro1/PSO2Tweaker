@@ -278,6 +278,10 @@ Namespace My
                     File.WriteAllText(StartPath & "\logfile.txt", "")
                 End If
 
+                If File.Exists(StartPath & "\patchlog.txt") AndAlso Helper.GetFileSize(StartPath & "\patchlog.txt") > 10000000 Then
+                    File.WriteAllText(StartPath & "\patchlog.txt", "")
+                End If
+
                 Application.DoEvents()
 
                 If Nodiag Then
