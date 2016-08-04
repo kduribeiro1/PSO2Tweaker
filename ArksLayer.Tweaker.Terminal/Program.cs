@@ -20,7 +20,7 @@ namespace ArksLayer.Tweaker.Terminal
             var updater = new UpdateManager(settings, output);
 
             Console.WriteLine(settings.GameDirectory);
-            await updater.Update(false);
+            await updater.Update(false, true);
         }
 
         public static void Main(string[] args)

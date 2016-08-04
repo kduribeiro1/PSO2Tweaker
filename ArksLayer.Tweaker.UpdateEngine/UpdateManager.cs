@@ -35,7 +35,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Apparently, there are many files that are not listed in the patchlist.
         /// I assume these are legacy files that are not needed anymore and can be safely deleted!
         /// My game client was updated ever since Episode 2: using this method weeds out 1300+ files (1GB).
-        /// Warning: doing this will delete all backup files too.
+        /// This method will delete all backup files as well, so backup restore should be performed BEFORE invoking this method.
         /// </summary>
         /// <returns></returns>
         private void CleanLegacyFiles(IList<PatchInfo> patchlist)
@@ -53,21 +53,21 @@ namespace ArksLayer.Tweaker.UpdateEngine
             // Only delete files in /data/win32 for safety. 
             // Prevents deleting weird stuffs like GameGuard or Tweaker stuffs
 
-            var unneededFiles = gamefiles.Except(requiredFiles)
+            var legacyFiles = gamefiles.Except(requiredFiles)
                 .Where(Q => Q.Contains(@"\data\win32\"))
                 .Select(Q => new FileInfo(Q))
                 .ToList();
 
-            if (!unneededFiles.Any())
+            if (!legacyFiles.Any())
             {
                 Output.WriteLine("There are no legacy files to clean up!");
                 return;
             }
 
-            var megabytes = unneededFiles.Sum(Q => Q.Length) / 1024 / 1024;
-            Output.WriteLine($"Found { unneededFiles.Count } legacy files: {megabytes} MB");
+            var megabytes = legacyFiles.Sum(Q => Q.Length) / 1024 / 1024;
+            Output.WriteLine($"Found { legacyFiles.Count } legacy files: {megabytes} MB");
 
-            Parallel.ForEach(unneededFiles, Q =>
+            Parallel.ForEach(legacyFiles, Q =>
             {
                 File.Delete(Q.FullName);
                 Output.WriteLine($"{Q.FullName} deleted.");
@@ -146,60 +146,60 @@ namespace ArksLayer.Tweaker.UpdateEngine
             var gameFiles = EnumerateGameFiles();
             var fileCount = gameFiles.Count();
 
-            Output.WriteLine($"Discovered {fileCount.ToString()} files in game directory.");
-
-            // Progress output operates independenty from the multi-threaded workload as observer for performance.
+            // Perform the long-running operation in the background thread instead of the UI thread.
             var progress = 0;
-            var watch = Task.Run(async () =>
+            var hashJob = Task.Run(() =>
             {
-                int lastProgress = 0;
-                do
+                Output.WriteLine($"Discovered { fileCount } files in game directory.");
+
+                // Should probably not use multi-threading here.
+                // Hashing is input-bound instead of CPU-bound. Logically should be able to use Async-Await here, but...
+                // Unless you're using SSD, parallel read will cause hard drive head to move back and forth trying to read two files at the same time.
+                // Hence, files are read and hashed in sequential. Too bad.
+                // However, binary hashes can be converted to string later using PLINQ.
+                for (progress = 0; progress < fileCount; progress++)
                 {
-                    await Task.Delay(2 * 1000);
-                    if (progress > lastProgress)
+                    var file = gameFiles[progress];
+                    try
                     {
-                        lastProgress = progress;
-                        Output.OnHashProgress(lastProgress, fileCount);
+                        using (var stream = new FileStream(file.FileName, FileMode.Open, FileAccess.Read, FileShare.Read, file.BufferSize))
+                        using (var md5 = MD5.Create())
+                        {
+                            file.HashBinary = md5.ComputeHash(stream);
+                        }
                     }
-                } while (lastProgress < fileCount);
+                    catch (Exception Ex)
+                    {
+                        Output.AppendLog($"Hashing failed for file {file.FileName} : {Ex.Message}");
+                    }
+                }
+
+                Output.WriteLine("Converting hash results into a file-hash dictionary...");
+
+                return gameFiles.AsParallel().Where(Q => Q.HashBinary != null).Select(Q =>
+                {
+                    var key = Q.FileName.Remove(0, Settings.GameDirectory.Length + 1).Replace('\\', '/');
+                    var hash = BitConverter.ToString(Q.HashBinary).Replace("-", "").ToLower();
+
+                    return new KeyValuePair<string, string>(key, hash);
+                }).ToDictionary(Q => Q.Key, Q => Q.Value);
             });
 
-            // Should probably not use multi-threading here.
-            // Hashing is input-bound instead of CPU-bound. Logically should be able to use Async-Await here, but...
-            // Unless you're using SSD, parallel read will cause hard drive head to move back and forth trying to read two files at the same time.
-            // Hence, files are read and hashed in sequential. Too bad.
-            // However, binary hashes can be converted to string later using PLINQ.
-            for (progress = 0; progress < fileCount; progress++)
+            var lastProgress = 0;
+            do
             {
-                var file = gameFiles[progress];
-                try
+                await Task.Delay(2 * 1000);
+                if (progress > lastProgress)
                 {
-                    using (var stream = new FileStream(file.FileName, FileMode.Open, FileAccess.Read, FileShare.Read, file.BufferSize))
-                    using (var md5 = MD5.Create())
-                    {
-                        file.HashBinary = md5.ComputeHash(stream);
-                    }
+                    lastProgress = progress;
+                    Output.OnHashProgress(lastProgress, fileCount);
                 }
-                catch (Exception Ex)
-                {
-                    Output.AppendLog($"Hashing failed for file {file.FileName} : {Ex.Message}");
-                }
-            }
-
-            Output.WriteLine("Converting hash results into a file-hash dictionary...");
-
-            var hashes = gameFiles.AsParallel().Where(Q => Q.HashBinary != null).Select(Q =>
-              {
-                  var key = Q.FileName.Remove(0, Settings.GameDirectory.Length + 1).Replace('\\', '/');
-                  var hash = BitConverter.ToString(Q.HashBinary).Replace("-", "").ToLower();
-
-                  return new KeyValuePair<string, string>(key, hash);
-              }).ToDictionary(Q => Q.Key, Q => Q.Value);
-
-            await OverwriteLatestClientJson(hashes);
-            await watch;
+            } while (lastProgress < fileCount);
 
             Output.OnHashComplete();
+
+            var hashes = await hashJob;
+            await OverwriteLatestClientJson(hashes);
             return hashes;
         }
 
@@ -231,15 +231,17 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
         /// <summary>
         /// Execute a game client update operation.
-        /// Parameter can be set true if desiring a full client rehash and hence rebuilding the game client hash file.
-        /// Else, will attempt to read from past client hashes, which in turn gets compiled from the latest game client update patchlist. 
+        /// First parameter can be set true if desiring a full client rehash and hence rebuilding the game client hash file.
+        /// Else, will attempt to read from past client hashes, which in turn gets compiled from the latest game client update patchlist.
         /// (A much more elegant solution instead of maintaining your own hashes!)
-        /// In addition, support download resume in case of interruptions or due to failure to download certain files.
+        /// Second parameter can be set true if desiring a legacy (unneeded) file cleanup, which should be used with caution.
+        /// In addition, support download resume in case of interruptions or due to past failure of downloading certain files.
         /// Uncensor the client chat automatically, regardless of the Tweaker settings.
         /// </summary>
         /// <param name="rehash"></param>
+        /// <param name="cleanLegacy"></param>
         /// <returns></returns>
-        public async Task<bool> Update(bool rehash)
+        public async Task<bool> Update(bool rehash = false, bool cleanLegacy = true)
         {
             IList<PatchInfo> patchlist;
             IList<PatchInfo> missingFiles;
@@ -254,7 +256,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 RestoreBackupFiles();
                 patchlist = await Downloader.FetchUpdatePatchlist();
 
-                CleanLegacyFiles(patchlist);
+                if (cleanLegacy) CleanLegacyFiles(patchlist);
                 var gameFiles = await GetClientHash(rehash);
 
                 missingFiles = await DiscoverMissingPatches(gameFiles, patchlist);

@@ -169,6 +169,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
             throw new Exception("Unable to download " + url);
         }
 
+        /// <summary>
+        /// This object will be locked when a download has been successfully completed and is about to log to a text file.
+        /// </summary>
         private static object PatchDownloadSuccessLogLock = new object();
 
         /// <summary>
