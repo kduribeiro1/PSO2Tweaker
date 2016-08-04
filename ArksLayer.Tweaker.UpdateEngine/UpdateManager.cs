@@ -38,13 +38,13 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Warning: doing this will delete all backup files too.
         /// </summary>
         /// <returns></returns>
-        public async Task CleanLegacyFiles()
+        private void CleanLegacyFiles(IList<PatchInfo> patchlist)
         {
-            Output.WriteLine("Commence legacy files cleanup!");
+            Output.WriteLine("Scanning for legacy files...");
 
             var gamefiles = EnumerateGameFiles().Select(Q => Q.FileName);
-            //await ReadPatchlistFromJson
-            var patchlist = (await Downloader.FetchUpdatePatchlist()).Select(Q =>
+
+            var requiredFiles = patchlist.Select(Q =>
             {
                 var shortpath = Q.File.Replace('/', '\\');
                 return Path.Combine(Settings.GameDirectory, shortpath);
@@ -53,27 +53,25 @@ namespace ArksLayer.Tweaker.UpdateEngine
             // Only delete files in /data/win32 for safety. 
             // Prevents deleting weird stuffs like GameGuard or Tweaker stuffs
 
-            var legacyFiles = gamefiles.Except(patchlist)
+            var unneededFiles = gamefiles.Except(requiredFiles)
                 .Where(Q => Q.Contains(@"\data\win32\"))
                 .Select(Q => new FileInfo(Q))
                 .ToList();
 
-            if (!legacyFiles.Any())
+            if (!unneededFiles.Any())
             {
                 Output.WriteLine("There are no legacy files to clean up!");
                 return;
             }
 
-            var megabytes = legacyFiles.Sum(Q => Q.Length) / 1024 / 1024;
-            Output.WriteLine($"Found { legacyFiles.Count } legacy files: {megabytes} MB");
+            var megabytes = unneededFiles.Sum(Q => Q.Length) / 1024 / 1024;
+            Output.WriteLine($"Found { unneededFiles.Count } legacy files: {megabytes} MB");
 
-            Parallel.ForEach(legacyFiles, Q =>
+            Parallel.ForEach(unneededFiles, Q =>
             {
                 File.Delete(Q.FullName);
                 Output.WriteLine($"{Q.FullName} deleted.");
             });
-
-            HousekeepingThenUncensor();
         }
 
         /// <summary>
@@ -157,7 +155,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 int lastProgress = 0;
                 do
                 {
-                    await Task.Delay(5 * 1000);
+                    await Task.Delay(2 * 1000);
                     if (progress > lastProgress)
                     {
                         lastProgress = progress;
@@ -187,6 +185,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     Output.AppendLog($"Hashing failed for file {file.FileName} : {Ex.Message}");
                 }
             }
+
+            Output.WriteLine("Converting hash results into a file-hash dictionary...");
 
             var hashes = gameFiles.AsParallel().Where(Q => Q.HashBinary != null).Select(Q =>
               {
@@ -252,10 +252,10 @@ namespace ArksLayer.Tweaker.UpdateEngine
             else
             {
                 RestoreBackupFiles();
-                var gameFiles = await GetClientHash(rehash);
-
-                //patchlist = await ReadPatchlistFromJson();
                 patchlist = await Downloader.FetchUpdatePatchlist();
+
+                CleanLegacyFiles(patchlist);
+                var gameFiles = await GetClientHash(rehash);
 
                 missingFiles = await DiscoverMissingPatches(gameFiles, patchlist);
             }
@@ -277,7 +277,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     Output.WriteLine("Saving the latest client hashes...");
                     await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
                     Output.WriteLine("Update complete!");
-                    HousekeepingThenUncensor();
+                    Housekeeping();
 
                     return true;
                 }
@@ -285,7 +285,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             else
             {
                 Output.WriteLine("Your game is up-to-date!");
-                HousekeepingThenUncensor();
+                Housekeeping();
 
                 return true;
             }
@@ -314,7 +314,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// Deletes the file that must not exist for the next patching operation and then uncensor the game if not uncensored already.
         /// </summary>
-        private void HousekeepingThenUncensor()
+        private void Housekeeping()
         {
             Output.WriteLine("A little housekeeping...");
             if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);

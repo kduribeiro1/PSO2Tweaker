@@ -137,19 +137,19 @@ namespace ArksLayer.Tweaker.UpdateEngine
             {
                 await ExponentialBackoff(i, url);
 
-                Output.OnDownloadStart(url);
                 var client = new AquaClient();
-                var download = client.DownloadStringTaskAsync(url);
-
                 var uiDelay = Stopwatch.StartNew();
                 long lastProgress = 0;
                 client.DownloadProgressChanged += (sender, e) =>
                 {
-                    if (uiDelay.ElapsedMilliseconds < (5 * 1000) || lastProgress == e.BytesReceived) return;
+                    if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
                     Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                     lastProgress = e.BytesReceived;
                     uiDelay.Restart();
                 };
+
+                Output.OnDownloadStart(url, client);
+                var download = client.DownloadStringTaskAsync(url);
 
                 try
                 {
@@ -196,19 +196,19 @@ namespace ArksLayer.Tweaker.UpdateEngine
             for (int i = 0; i < attempts; i++)
             {
                 await ExponentialBackoff(i, url);
-                Output.OnDownloadStart(url);
 
                 var client = new AquaClient();
                 var uiDelay = Stopwatch.StartNew();
                 long lastProgress = 0;
                 client.DownloadProgressChanged += (sender, e) =>
                 {
-                    if (uiDelay.ElapsedMilliseconds < (5 * 1000) || lastProgress == e.BytesReceived) return;
+                    if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
                     Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                     lastProgress = e.BytesReceived;
                     uiDelay.Restart();
                 };
 
+                Output.OnDownloadStart(url, client);
                 var download = client.DownloadFileTaskAsync(url, file);
 
                 try
@@ -216,7 +216,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     await download;
                     if (new FileInfo(file).Length == 0) throw new Exception("Empty response!");
 
-                    if (string.IsNullOrEmpty(logName))
+                    if (!string.IsNullOrEmpty(logName))
                     {
                         lock (PatchDownloadSuccessLogLock)
                         {

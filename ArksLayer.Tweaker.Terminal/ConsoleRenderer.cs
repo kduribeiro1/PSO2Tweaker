@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ArksLayer.Tweaker.Terminal
@@ -31,7 +32,7 @@ namespace ArksLayer.Tweaker.Terminal
             Console.WriteLine(s);
         }
 
-        public void OnDownloadStart(string url)
+        public void OnDownloadStart(string url, WebClient client)
         {
             WriteLine($"GET {url}");
         }
