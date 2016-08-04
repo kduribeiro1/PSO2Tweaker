@@ -133,6 +133,7 @@ Partial Class FrmMain
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
+        Me.btnQUANTUMSYSTEM = New DevComponents.DotNetBar.ButtonItem()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -420,7 +421,7 @@ Partial Class FrmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnLaunchPSO2fromORB, Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnLaunchPSO2fromORB, Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.btnQUANTUMSYSTEM, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'btnLaunchPSO2fromORB
         '
@@ -868,6 +869,14 @@ Partial Class FrmMain
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
         '
+        'btnQUANTUMSYSTEM
+        '
+        Me.btnQUANTUMSYSTEM.BeginGroup = True
+        Me.btnQUANTUMSYSTEM.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnQUANTUMSYSTEM.Name = "btnQUANTUMSYSTEM"
+        Me.btnQUANTUMSYSTEM.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnQUANTUMSYSTEM, "btnQUANTUMSYSTEM")
+        '
         'FrmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -1018,4 +1027,5 @@ Partial Class FrmMain
     Friend WithEvents btnInstallGermanPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPEnemyNames As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnJPETrials As DevComponents.DotNetBar.ButtonItem
+    Friend WithEvents btnQUANTUMSYSTEM As DevComponents.DotNetBar.ButtonItem
 End Class
