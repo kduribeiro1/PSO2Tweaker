@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ArksLayer.Tweaker.Abstractions</id>
+    <version>0.1.0</version>
+    <title>ArksLayer.Tweaker.Abstractions</title>
+    <authors>Ryan Elian</authors>
+    <owners>Ryan Elian</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/ryanelian/PSO2Tweaker</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An abstraction layer for PSO2 Tweaker for communicating with other modules.</description>
+    <releaseNotes>Hello World.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>PSO2 Tweaker Abstraction Layer Module</tags>
+  </metadata>
+</package>

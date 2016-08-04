@@ -1,0 +1,177 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "compile": {
+          "net45/ArksLayer.Tweaker.Abstractions.dll": {}
+        },
+        "runtime": {
+          "net45/ArksLayer.Tweaker.Abstractions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5.1": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "compile": {
+          "net451/ArksLayer.Tweaker.Abstractions.dll": {}
+        },
+        "runtime": {
+          "net451/ArksLayer.Tweaker.Abstractions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5.2": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.2",
+        "compile": {
+          "net452/ArksLayer.Tweaker.Abstractions.dll": {}
+        },
+        "runtime": {
+          "net452/ArksLayer.Tweaker.Abstractions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "compile": {
+          "net46/ArksLayer.Tweaker.Abstractions.dll": {}
+        },
+        "runtime": {
+          "net46/ArksLayer.Tweaker.Abstractions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6.1": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
+        "compile": {
+          "net461/ArksLayer.Tweaker.Abstractions.dll": {}
+        },
+        "runtime": {
+          "net461/ArksLayer.Tweaker.Abstractions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6.2": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.2",
+        "compile": {
+          "net462/ArksLayer.Tweaker.Abstractions.dll": {}
+        },
+        "runtime": {
+          "net462/ArksLayer.Tweaker.Abstractions.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Newtonsoft.Json/9.0.1": {
+      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
+      "type": "package",
+      "path": "Newtonsoft.Json/9.0.1",
+      "files": [
+        "Newtonsoft.Json.9.0.1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "tools/install.ps1"
+      ]
+    },
+    "ArksLayer.Tweaker.Abstractions/0.1.0": {
+      "type": "project",
+      "path": "../ArksLayer.Tweaker.Abstractions/project.json",
+      "msbuildProject": "../ArksLayer.Tweaker.Abstractions/ArksLayer.Tweaker.Abstractions.xproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "ArksLayer.Tweaker.Abstractions >= 0.1.0-*",
+      "Newtonsoft.Json >= 9.0.1"
+    ],
+    ".NETFramework,Version=v4.5": [],
+    ".NETFramework,Version=v4.5.1": [],
+    ".NETFramework,Version=v4.5.2": [],
+    ".NETFramework,Version=v4.6": [],
+    ".NETFramework,Version=v4.6.1": [],
+    ".NETFramework,Version=v4.6.2": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
+}
