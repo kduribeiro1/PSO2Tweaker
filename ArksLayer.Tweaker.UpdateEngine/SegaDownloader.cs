@@ -143,9 +143,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 client.DownloadProgressChanged += (sender, e) =>
                 {
                     if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                    lastProgress = e.BytesReceived;
                     uiDelay.Restart();
+                    lastProgress = e.BytesReceived;
+                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                 };
 
                 Output.OnDownloadStart(url, client);
@@ -206,9 +206,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 client.DownloadProgressChanged += (sender, e) =>
                 {
                     if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                    lastProgress = e.BytesReceived;
                     uiDelay.Restart();
+                    lastProgress = e.BytesReceived;
+                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
                 };
 
                 Output.OnDownloadStart(url, client);
