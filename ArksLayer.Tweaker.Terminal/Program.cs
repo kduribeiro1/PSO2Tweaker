@@ -19,10 +19,8 @@ namespace ArksLayer.Tweaker.Terminal
             var settings = new RegistryTweakerSettings(@"Software\AIDA");
             var updater = new UpdateManager(settings, output);
 
-            //await updater.CleanLegacyFiles();
-
             Console.WriteLine(settings.GameDirectory);
-            await updater.Update(false);
+            await updater.Update(false, true);
         }
 
         public static void Main(string[] args)

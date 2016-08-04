@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace ArksLayer.Tweaker.Abstractions
 {
@@ -23,12 +24,14 @@ namespace ArksLayer.Tweaker.Abstractions
         /// <summary>
         /// Called when a file download is started.
         /// You might want to summon a progress bar here...
+        /// Also, you can save that WebClient object into something like a Dictionary of url and WebClient, so user can cancel the individual file download if stuck, if provided the UI control to do so.
         /// </summary>
         /// <param name="url"></param>
-        void OnDownloadStart(string url);
+        /// <param name="client"></param>
+        void OnDownloadStart(string url, WebClient client);
 
         /// <summary>
-        /// Called every 5 seconds, sends a progress update for a file download.
+        /// Called every 2 seconds, sends a progress update for a file download.
         /// You might want to update the progress bar of this file here...
         /// </summary>
         /// <param name="url"></param>
@@ -65,7 +68,7 @@ namespace ArksLayer.Tweaker.Abstractions
         void OnHashStart();
 
         /// <summary>
-        /// Called every 5 seconds, sends hash progress update.
+        /// Called every 2 seconds, sends hash progress update.
         /// You might want to update the hash progress bar here...
         /// </summary>
         /// <param name="progress"></param>

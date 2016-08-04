@@ -11,7 +11,7 @@
       "url": "https://github.com/ryanelian/PSO2Tweaker"
     }
   },
-  "version": "0.1.0-*",
+  "version": "0.2.0-*",
   "authors": [ "Ryan Elian" ],
   "description": "A collection of interface and strongly-typed configuration classes for PSO2 Tweaker.",
   "title": "ArksLayer.Tweaker.Abstractions",
@@ -20,16 +20,6 @@
   },
   "frameworks": {
     "net45": {
-    },
-    "net451": {
-    },
-    "net452": {
-    },
-    "net46": {
-    },
-    "net461": {
-    },
-    "net462": {
     }
   },
   "buildOptions": {

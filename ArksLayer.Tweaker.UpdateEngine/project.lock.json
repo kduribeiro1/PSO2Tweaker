@@ -12,7 +12,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "ArksLayer.Tweaker.Abstractions/0.1.0": {
+      "ArksLayer.Tweaker.Abstractions/0.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "compile": {
@@ -20,111 +20,6 @@
         },
         "runtime": {
           "net45/ArksLayer.Tweaker.Abstractions.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1": {
-      "Newtonsoft.Json/9.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "ArksLayer.Tweaker.Abstractions/0.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "compile": {
-          "net451/ArksLayer.Tweaker.Abstractions.dll": {}
-        },
-        "runtime": {
-          "net451/ArksLayer.Tweaker.Abstractions.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.2": {
-      "Newtonsoft.Json/9.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "ArksLayer.Tweaker.Abstractions/0.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.2",
-        "compile": {
-          "net452/ArksLayer.Tweaker.Abstractions.dll": {}
-        },
-        "runtime": {
-          "net452/ArksLayer.Tweaker.Abstractions.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.6": {
-      "Newtonsoft.Json/9.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "ArksLayer.Tweaker.Abstractions/0.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.6",
-        "compile": {
-          "net46/ArksLayer.Tweaker.Abstractions.dll": {}
-        },
-        "runtime": {
-          "net46/ArksLayer.Tweaker.Abstractions.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.6.1": {
-      "Newtonsoft.Json/9.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "ArksLayer.Tweaker.Abstractions/0.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.6.1",
-        "compile": {
-          "net461/ArksLayer.Tweaker.Abstractions.dll": {}
-        },
-        "runtime": {
-          "net461/ArksLayer.Tweaker.Abstractions.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.6.2": {
-      "Newtonsoft.Json/9.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "ArksLayer.Tweaker.Abstractions/0.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.6.2",
-        "compile": {
-          "net462/ArksLayer.Tweaker.Abstractions.dll": {}
-        },
-        "runtime": {
-          "net462/ArksLayer.Tweaker.Abstractions.dll": {}
         }
       }
     }
@@ -154,7 +49,7 @@
         "tools/install.ps1"
       ]
     },
-    "ArksLayer.Tweaker.Abstractions/0.1.0": {
+    "ArksLayer.Tweaker.Abstractions/0.2.0": {
       "type": "project",
       "path": "../ArksLayer.Tweaker.Abstractions/project.json",
       "msbuildProject": "../ArksLayer.Tweaker.Abstractions/ArksLayer.Tweaker.Abstractions.xproj"
@@ -162,15 +57,10 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "ArksLayer.Tweaker.Abstractions >= 0.1.0-*",
+      "ArksLayer.Tweaker.Abstractions >= 0.2.0-*",
       "Newtonsoft.Json >= 9.0.1"
     ],
-    ".NETFramework,Version=v4.5": [],
-    ".NETFramework,Version=v4.5.1": [],
-    ".NETFramework,Version=v4.5.2": [],
-    ".NETFramework,Version=v4.6": [],
-    ".NETFramework,Version=v4.6.1": [],
-    ".NETFramework,Version=v4.6.2": []
+    ".NETFramework,Version=v4.5": []
   },
   "tools": {},
   "projectFileToolGroups": {}
