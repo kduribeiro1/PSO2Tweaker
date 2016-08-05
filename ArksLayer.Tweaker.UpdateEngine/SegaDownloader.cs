@@ -99,6 +99,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
         {
             Parallel.ForEach(patchlist, p =>
             {
+                if (p.File.Contains("data/win32/script/")) return;
+
                 p.Old = old;
                 // TryAdd returns false if the key already exists, unlike TryUpdate or AddOrUpdate.
                 merge.TryAdd(p.File, p);
