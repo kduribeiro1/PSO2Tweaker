@@ -266,7 +266,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             if (missingFiles.Count > 0)
             {
-                var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, DownloadedFilesLog));
+                var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, DownloadedFilesLog)).ToList();
+                Output.OnPatchingStart(downloads.Count);
                 var failCount = (await Task.WhenAll(downloads)).Count(Q => !Q);
 
                 if (failCount > 0)

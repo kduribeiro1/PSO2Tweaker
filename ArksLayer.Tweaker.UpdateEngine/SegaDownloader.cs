@@ -140,16 +140,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 await ExponentialBackoff(i, url);
 
                 var client = new AquaClient();
-                var uiDelay = Stopwatch.StartNew();
-                long lastProgress = 0;
-                client.DownloadProgressChanged += (sender, e) =>
-                {
-                    if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    uiDelay.Restart();
-                    lastProgress = e.BytesReceived;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                };
-
                 var download = client.DownloadStringTaskAsync(url);
                 Output.OnDownloadStart(url, client);
 
@@ -203,16 +193,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 await ExponentialBackoff(i, url);
 
                 var client = new AquaClient();
-                var uiDelay = Stopwatch.StartNew();
-                long lastProgress = 0;
-                client.DownloadProgressChanged += (sender, e) =>
-                {
-                    if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    uiDelay.Restart();
-                    lastProgress = e.BytesReceived;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                };
-
                 var download = client.DownloadFileTaskAsync(url, file);
                 Output.AppendLog($"Downloading a file from {url} to {file}");
                 Output.OnDownloadStart(url, client);
