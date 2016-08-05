@@ -114,6 +114,7 @@ Partial Class FrmMain
         Me.btnDonateToCirno = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnQUANTUMSYSTEM = New DevComponents.DotNetBar.ButtonItem()
         Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDownloadPrepatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnCheckForStoryUpdates = New DevComponents.DotNetBar.ButtonItem()
@@ -133,7 +134,6 @@ Partial Class FrmMain
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
-        Me.btnQUANTUMSYSTEM = New DevComponents.DotNetBar.ButtonItem()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -738,6 +738,15 @@ Partial Class FrmMain
         Me.btnNewShit.Name = "btnNewShit"
         Me.btnNewShit.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnNewShit, "btnNewShit")
+        Me.btnNewShit.Visible = False
+        '
+        'btnQUANTUMSYSTEM
+        '
+        Me.btnQUANTUMSYSTEM.BeginGroup = True
+        Me.btnQUANTUMSYSTEM.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnQUANTUMSYSTEM.Name = "btnQUANTUMSYSTEM"
+        Me.btnQUANTUMSYSTEM.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnQUANTUMSYSTEM, "btnQUANTUMSYSTEM")
         '
         'BtnUpdatePso2
         '
@@ -746,6 +755,7 @@ Partial Class FrmMain
         Me.BtnUpdatePso2.Name = "BtnUpdatePso2"
         Me.BtnUpdatePso2.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.BtnUpdatePso2, "BtnUpdatePso2")
+        Me.BtnUpdatePso2.Visible = False
         '
         'btnDownloadPrepatch
         '
@@ -860,6 +870,8 @@ Partial Class FrmMain
         '
         'DLS
         '
+        Me.DLS.AllowReadStreamBuffering = False
+        Me.DLS.AllowWriteStreamBuffering = False
         Me.DLS.BaseAddress = ""
         Me.DLS.CachePolicy = Nothing
         Me.DLS.Credentials = Nothing
@@ -868,14 +880,6 @@ Partial Class FrmMain
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
-        '
-        'btnQUANTUMSYSTEM
-        '
-        Me.btnQUANTUMSYSTEM.BeginGroup = True
-        Me.btnQUANTUMSYSTEM.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.btnQUANTUMSYSTEM.Name = "btnQUANTUMSYSTEM"
-        Me.btnQUANTUMSYSTEM.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.btnQUANTUMSYSTEM, "btnQUANTUMSYSTEM")
         '
         'FrmMain
         '

@@ -442,12 +442,12 @@ Public Class FrmMain
             UnlockGui()
             btnLaunchPSO2.Enabled = False
 
-            If File.Exists("resume.txt") Then
+            If File.Exists("missing.json") Then
                 Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you Like to resume patching?", vbYesNo)
                 If yesNoResume = MsgBoxResult.Yes Then
-                    ResumePatching()
+                    btnQUANTUMSYSTEM.RaiseClick()
                 Else
-                    Helper.DeleteFile("resume.txt")
+                    Helper.DeleteFile("missing.json")
                 End If
             End If
 
@@ -901,6 +901,9 @@ Public Class FrmMain
     End Sub
 
     Private Sub CheckForPso2Updates(comingFromPrePatch As Boolean)
+
+        btnQUANTUMSYSTEM.RaiseClick()
+        Exit Sub
         Try
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
             DownloadFile(Program.FreedomUrl & "precede.txt", "precede.txt")
@@ -1353,40 +1356,13 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnLargeFiles_Click(sender As Object, e As EventArgs) Handles btnLargeFiles.Click
-        DownloadLargeFiles()
-    End Sub
-
-    Private Sub DownloadLargeFiles()
-
-        ' The Using statement will dispose "net" as soon as we're done with it.
-        ' This parses the sidebar page for compatibility
-        ' First it downloads the page and splits it by line
-        'Dim compat As String() = Regex.Split(Program.Client.DownloadString(Program.FreedomUrl & "tweaker2.html"), "\r\n|\r|\n")
-        'Dim doDownload As Boolean = True
-
-        ' Then for each string in the split page, it does a regex match to grab the compatibility.
-        ' This way we can avoid .replace.replace.replace.replace.replace and just get straight to the point;
-        ' is it equal to "Compatible"
-        'For Each str As String In compat
-        ' If Regex.IsMatch(Str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>") Then
-        ' If Not Regex.Match(Str, "> Large Files: <font color=""[^""]+"">([^<]+)</font><br>").Groups(1).Value.StartsWith("Compatible") Then
-        ' Dim reallyInstall As MsgBoxResult = MsgBox("It looks like the Large Files patch isn't compatible right now. Installing it may break your game, force an endless loading screen, crash the universe and/or destablize space and time. Do you really want to install it?", MsgBoxStyle.YesNo)
-
-        '        doDownload = reallyInstall <> MsgBoxResult.No
-        '        End If
-        '        End If
-        '       Next
-
-        'If doDownload Then
-        ' Here we parse the text file before passing it to the DownloadPatch function.
         Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefiles.txt")
         DownloadPatch(url, LargeFiles, "LargeFiles.rar", RegKey.LargeFilesVersion, Resources.strWouldYouLikeToBackupLargeFiles, Resources.strWouldYouLikeToUse)
-        'Else
-        'Helper.WriteDebugInfo("Download was cancelled due to incompatibility.")
-        'End If
     End Sub
 
     Private Sub UpdatePso2(comingFromOldFiles As Boolean)
+        btnQUANTUMSYSTEM.RaiseClick()
+        Exit Sub
         _cancelledFull = False
         If IsPso2WinDirMissing() Then Return
         Dim missingfiles As New List(Of String)
@@ -2899,6 +2875,8 @@ Public Class FrmMain
 
 #If DEBUG Then
     Private Sub btnNewShit_Click(sender As Object, e As EventArgs) Handles btnNewShit.Click
+        btnQUANTUMSYSTEM.RaiseClick()
+        Exit Sub
         Dim ContinueWithNew As MsgBoxResult
         If RegKey.GetValue(Of String)(RegKey.JustPrepatched) = "True" Then
             ContinueWithNew = MsgBox("It looks like you just installed precede data. It's recommended that you use the OLD METHOD of patching after that. Are you sure you want to use the new mthod instead?", vbYesNo, vbExclamation)
@@ -3526,6 +3504,7 @@ Public Class FrmMain
 
             ' Create a match using regular exp<b></b>ressions
             ' Spit out the value plucked from the code
+            Dim backupdir As String = BuildBackupPath(LargeFiles)
             Dim LFDate As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt")
 
             Helper.WriteDebugInfoAndOk("Downloading Large Files info... ")
@@ -3545,26 +3524,28 @@ Public Class FrmMain
 
             'execute pso2-transam stuff with -b flag for backup
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
-            'If Directory.Exists(backupdir) Then
-            'Dim counter = Computer.FileSystem.GetFiles(backupdir)
-            'If counter.Count > 0 Then
-            processStartInfo.Arguments = ("-t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
-            Clipboard.SetText(processStartInfo.Arguments)
-            'Else
-            'Helper.Log("[TRANSAM] Creating backup directory")
-            'Directory.CreateDirectory(backupdir)
-            'Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-            'processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-            'End If
-            'End If
+            If Directory.Exists(backupdir) Then
+                Dim counter = Computer.FileSystem.GetFiles(backupdir)
+                If counter.Count > 0 Then
+                    processStartInfo.Arguments = ("-t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+                Else
+                    Helper.Log("[TRANSAM] Creating backup directory")
+                    Directory.CreateDirectory(backupdir)
+                    Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+                    processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+                End If
+            End If
 
             'We don't need to make backups anymore
-            'If Not Directory.Exists(backupdir) Then
-            ' Helper.Log("[TRANSAM] Creating backup directory")
-            ' Directory.CreateDirectory(backupdir)
-            ' Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-            ' processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
-            ' End If
+            'Yes we do, shut up past AIDA.
+            If Not Directory.Exists(backupdir) Then
+                Helper.Log("[TRANSAM] Creating backup directory")
+                Directory.CreateDirectory(backupdir)
+                Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
+                processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+            End If
+
+
 
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
@@ -3831,10 +3812,6 @@ Public Class FrmMain
         DownloadPatch(url, GermanPatch, "DEPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous German Patch backups." & vbCrLf & "Möchtest du eine Sicherung erstellen, bevor Änderungen am Spiel vorgenommen werden? Damit werden alle vorherigen Sicherungen des deutschen Patchs gelöscht.", "Please select the pre-downloaded German Patch ZIP file." & vbCrLf & "Bitte wähle die zuvor heruntergeladene ZIP-Datei des deutschen Patchs aus.")
     End Sub
 
-    Private Sub lblStatus_Click(sender As Object, e As EventArgs) Handles lblStatus.Click
-
-    End Sub
-
     Private Sub btnJPETrials_Click_1(sender As Object, e As EventArgs) Handles btnJPETrials.Click
         RestoreJapaneseNames("057aa975bdd2b372fe092614b0f4399e", "JP E-Trials file")
     End Sub
@@ -3852,14 +3829,14 @@ Public Class FrmMain
         'await updater.CleanLegacyFiles();
 
         'Console.WriteLine(settings.GameDirectory)
-        Await updater.Update(False, True)
+        Await updater.Update(True, True)
     End Sub
 End Class
 
 
 Public Class ConsoleRenderer
     Implements IRenderer
-
+    Dim _downloadedfilecount As Integer = 0
     Public Sub AppendLog(s As String)
         Helper.WriteDebugInfo(s)
     End Sub
@@ -3907,12 +3884,15 @@ Public Class ConsoleRenderer
         'These are placeholders - Once everything is set in stone and ready, I'll modify the strings in a much better fashion. [AIDA]
         'These nothing wrong with the engine strings themselves, but I can count the amount of PSO2 players who know what hashes are on two hands. [AIDA]
 
+        If s.Contains("Download failed http://download.pso2.jp/patch_prod/patches/data/win32/script/user_default.pso2.pat") = True Then Exit Sub
+        If s.Contains("Download failed http://download.pso2.jp/patch_prod/patches_old/data/win32/script/user_intel.pso2.pat") = True Then Exit Sub
+
         If s.Contains("PARSING ") Or s.Contains("READY ") Or s.Contains("Merging ") Then
             Helper.Log(s)
             Exit Sub
         End If
 
-        If s.Contains("was deleted") Then
+        If s.Contains(" deleted") Then
             Helper.PatchLog(s)
         Else
             Helper.WriteDebugInfo(s)
@@ -3920,9 +3900,8 @@ Public Class ConsoleRenderer
     End Sub
 
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
-        'Change this back later! [AIDA]
-        Helper.WriteDebugInfo(s)
-        'Helper.PatchLog(s)
+        'Helper.WriteDebugInfo(s)
+        Helper.PatchLog(s)
     End Sub
 
     Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
@@ -3941,7 +3920,9 @@ Public Class ConsoleRenderer
     Private Sub IRenderer_OnDownloadFinish(url As String) Implements IRenderer.OnDownloadFinish
         FrmMain.PBMainBar.Text = ""
         FrmMain.PBMainBar.Value = 0
-        Helper.Log("Download complete!")
+        Helper.PatchLog("Download complete - " & url & "!")
+        _downloadedfilecount += 1
+        FrmMain.lblStatus.Text = "Downloaded " & _downloadedfilecount & " files"
         'Throw New NotImplementedException()
     End Sub
 
@@ -3957,6 +3938,7 @@ Public Class ConsoleRenderer
 
     Private Sub IRenderer_OnHashStart() Implements IRenderer.OnHashStart
         Helper.WriteDebugInfo("Beginning QUANTUM SYSTEM update check...")
+        _downloadedfilecount = 0
     End Sub
 
     Private Sub IRenderer_OnHashProgress(progress As Integer, total As Integer) Implements IRenderer.OnHashProgress
