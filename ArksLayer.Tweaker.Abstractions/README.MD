@@ -11,8 +11,9 @@ public interface IRenderer
     void WriteLine(string s);
     void AppendLog(string s);
 
+	void OnPatchingStart(int fileCount);
+
     void OnDownloadStart(string url, WebClient client);
-    void OnDownloadProgress(string url, long progressByte, long totalByte);
     void OnDownloadFinish(string url);
     void OnDownloadRetry(string url, int delaySecond);
     void OnDownloadAborted(string url);

@@ -20,21 +20,28 @@ namespace ArksLayer.Tweaker.Terminal
             WriteLine($"{progress} out of {total} files hashed.");
         }
 
-        public void OnDownloadProgress(string url, long progressByte, long totalByte)
-        {
-            var percentage = string.Format("{0:N2}%", Math.Truncate(progressByte / (double)totalByte * 100 * 100) / 100);
-            var s = $"DOWNLOADING {url} | {progressByte / 1024} KB out of {totalByte / 1024} KB | {percentage}";
-            WriteLine(s);
-        }
-
         public void WriteLine(string s)
         {
             Console.WriteLine(s);
         }
-
+        
         public void OnDownloadStart(string url, WebClient client)
         {
             WriteLine($"GET {url}");
+
+            var uiDelay = Stopwatch.StartNew();
+            long lastProgress = 0;
+            
+            client.DownloadProgressChanged += (sender, e) =>
+            {
+                if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
+                uiDelay.Restart();
+                lastProgress = e.BytesReceived;
+
+                var percentage = string.Format("{0:N2}%", Math.Truncate(e.BytesReceived / (double)e.TotalBytesToReceive * 100 * 100) / 100);
+                var s = $"DOWNLOADING {url} | {e.BytesReceived / 1024} KB out of {e.TotalBytesToReceive / 1024} KB | {percentage}";
+                WriteLine(s);
+            };
         }
 
         public void OnDownloadFinish(string url)
@@ -60,6 +67,11 @@ namespace ArksLayer.Tweaker.Terminal
         public void OnHashComplete()
         {
             WriteLine("Game files hash complete!");
+        }
+
+        public void OnPatchingStart(int fileCount)
+        {
+            WriteLine($"Begin downloading {fileCount} patches.");
         }
     }
 }
