@@ -35,7 +35,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Apparently, there are many files that are not listed in the patchlist.
         /// I assume these are legacy files that are not needed anymore and can be safely deleted!
         /// My game client was updated ever since Episode 2: using this method weeds out 1300+ files (1GB).
-        /// This method will delete all backup files as well, so backup restore should be performed BEFORE invoking this method.
         /// </summary>
         /// <returns></returns>
         private void CleanLegacyFiles(IList<PatchInfo> patchlist)
@@ -56,7 +55,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             var legacyFiles = gamefiles
                 .AsParallel()
                 .Except(requiredFiles)
-                .Where(Q => Q.Contains(@"\data\win32\"))
+                .Where(Q => Q.StartsWith(DataWin32Directory, StringComparison.InvariantCultureIgnoreCase))
                 .Select(Q => new FileInfo(Q))
                 .ToList();
 
@@ -114,9 +113,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// Returns all hashable information of game files that does not contain the word "backup".
         /// File order is sorted for optimal hill-climbing disk buffer and to avoid Branch Predictor failures.
-        /// https://en.wikipedia.org/wiki/Branch_predictor
-        /// AIDA tends to have folders named "backup" or files with ".backup" extension.
-        /// Dammit make up your mind. Be consistent. Why not put all files into backup folder anyway?
         /// </summary>
         /// <returns></returns>
         private IList<HashModel> EnumerateGameFiles()
@@ -124,7 +120,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
             return Directory.GetFiles(Settings.GameDirectory, "*.*", SearchOption.AllDirectories)
                 .AsParallel()
                 .Select(Q => new FileInfo(Q))
-                .Where(Q => !Q.DirectoryName.Contains("backup"))
+                // Logically, since this method is being called AFTER backup restore, there shouldn't be any more files in the backup folder.
+                // But hey, better be safe than sorry!
+                .Where(Q => !Q.DirectoryName.StartsWith(BackupDirectory, StringComparison.InvariantCultureIgnoreCase))
                 .Select(Q => new HashModel
                 {
                     FileName = Q.FullName,
@@ -147,6 +145,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             var gameFiles = EnumerateGameFiles();
             var fileCount = gameFiles.Count();
+
+            foreach (var file in gameFiles)
+            {
+                Output.AppendLog("Queued for hashing: " + file.FileName);
+            }
 
             // Perform the long-running operation in the background thread instead of the UI thread.
             var progress = 0;
@@ -206,10 +209,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
-        /// Calculate a hard disk buffer size for a given file. 
-        /// Buffer size block gets increased by multiply of 2, starting from 4KB and up to 4MB.
+        /// Calculate a hard disk buffer size. Buffer size block gets increased by multiply of 2, starting from 4KB and up to 4MB.
         /// </summary>
-        /// <param name="length"></param>
+        /// <param name="length">File size in bytes.</param>
         /// <returns></returns>
         private int GetBufferSize(long length)
         {
@@ -233,16 +235,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
         /// <summary>
         /// Execute a game client update operation.
-        /// First parameter can be set true if desiring a full client rehash and hence rebuilding the game client hash file.
-        /// Else, will attempt to read from past client hashes, which in turn gets compiled from the latest game client update patchlist.
-        /// (A much more elegant solution instead of maintaining your own hashes!)
-        /// Second parameter can be set true if desiring a legacy (unneeded) file cleanup, which should be used with caution.
-        /// In addition, support download resume in case of interruptions or due to past failure of downloading certain files.
+        /// Supports download resume in case of interruptions or due to past failure of downloading certain files.
         /// Uncensor the client chat automatically, regardless of the Tweaker settings.
         /// </summary>
-        /// <param name="rehash"></param>
-        /// <param name="cleanLegacy"></param>
-        /// <returns></returns>
+        /// <param name="rehash">Can be set true if desiring a full client rehash and hence rebuilding the game client hash file.
+        /// Else will attempt to read from past client hashes, which in turn gets compiled from the latest game client update patchlist.
+        /// (A much more elegant solution instead of maintaining your own hashes!)</param>
+        /// <param name="cleanLegacy">Can be set true if desiring a legacy (unneeded) file cleanup.</param>
+        /// <returns>True if patching is successful. False otherwise.</returns>
         public async Task<bool> Update(bool rehash = false, bool cleanLegacy = true)
         {
             IList<PatchInfo> patchlist;
@@ -319,7 +319,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// Deletes the file that must not exist for the next patching operation and then uncensor the game if not uncensored already.
         /// </summary>
-        private void Housekeeping()
+        public void Housekeeping()
         {
             Output.WriteLine("A little housekeeping...");
             if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);
@@ -420,7 +420,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         {
             get
             {
-                return DataWin32Directory + @"\backup";
+                return Path.Combine(DataWin32Directory, "backup");
             }
         }
 
@@ -431,7 +431,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         {
             get
             {
-                return Settings.GameDirectory + @"\data\win32";
+                return Path.Combine(Settings.GameDirectory, @"data\win32");
             }
         }
 

@@ -11,9 +11,10 @@ var updater = new UpdateManager(settings, output);
 await updater.Update();
 ```
 
-Also this:
+Also these:
 
 ```
+updater.Housekeeping();
 updater.RestoreBackupFiles();
 ```
 

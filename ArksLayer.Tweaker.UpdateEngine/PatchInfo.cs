@@ -9,7 +9,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
     /// <summary>
     /// An class containing information of how to download a specific patch file from SEGA server.
     /// </summary>
-    public class PatchInfo
+    internal class PatchInfo
     {
         /// <summary>
         /// The file name. Expected value example: "data/win32/abc123"

@@ -8,7 +8,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
     /// <summary>
     /// A class containing values required for mass hashing operation.
     /// </summary>
-    public class HashModel
+    internal class HashModel
     {
         /// <summary>
         /// The full path to the file to be hashed.

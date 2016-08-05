@@ -9,7 +9,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
     /// <summary>
     /// A special web client class that is capable of downloading from SEGA PSO2 patch server.
     /// </summary>
-    public class AquaClient : WebClient
+    internal class AquaClient : WebClient
     {
         /// <summary>
         /// Creates an instance of AquaClient.
