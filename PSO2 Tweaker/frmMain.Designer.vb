@@ -841,9 +841,6 @@ Partial Class FrmMain
         Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
         '
         'DLS
-        '
-        Me.DLS.AllowReadStreamBuffering = False
-        Me.DLS.AllowWriteStreamBuffering = False
         Me.DLS.BaseAddress = ""
         Me.DLS.CachePolicy = Nothing
         Me.DLS.Credentials = Nothing

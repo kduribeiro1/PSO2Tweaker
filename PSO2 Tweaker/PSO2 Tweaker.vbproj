@@ -130,12 +130,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArksLayer.Tweaker.Abstractions, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.2.0\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.Abstractions, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.3.0\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.2.3\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.3.1\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2">
@@ -168,10 +168,22 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="External.vb" />
+    <Compile Include="frmDownloader.Designer.vb">
+      <DependentUpon>frmDownloader.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDownloader.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPlugins.Designer.vb">
       <DependentUpon>frmPlugins.vb</DependentUpon>
     </Compile>
     <Compile Include="frmPlugins.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateDownload.Designer.vb">
+      <DependentUpon>frmUpdateDownload.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUpdateDownload.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Languages.vb" />
@@ -277,6 +289,9 @@
     <EmbeddedResource Include="FrmDiagnostic.resx">
       <DependentUpon>FrmDiagnostic.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmDownloader.resx">
+      <DependentUpon>frmDownloader.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmItemConfig.resx">
       <DependentUpon>FrmItemConfig.vb</DependentUpon>
     </EmbeddedResource>
@@ -293,6 +308,9 @@
     <EmbeddedResource Include="FrmOptions.resx">
       <DependentUpon>FrmOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateDownload.resx">
+      <DependentUpon>frmUpdateDownload.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\GlobalStrings.pl.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -386,6 +404,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\theme_ntp_background2.png" />
     <EmbeddedResource Include="ddraw.dll" />
     <Content Include="pso2 icon 512.ico" />
   </ItemGroup>

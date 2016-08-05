@@ -28,6 +28,7 @@ Imports System.Text
 Imports ArksLayer.Tweaker.Abstractions
 Imports ArksLayer.Tweaker.UpdateEngine
 
+
 ' TODO: Replace all redundant code with functions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
 
@@ -3142,6 +3143,17 @@ Public Class FrmMain
         'await updater.CleanLegacyFiles();
 
         'Console.WriteLine(settings.GameDirectory)
+        Try
+
+            frmDownloader.TopMost = TopMost
+            frmDownloader.Bounds = Bounds
+            frmDownloader.Top += 50
+            frmDownloader.Left += 50
+            frmDownloader.Visible = True
+        Catch ex As Exception
+            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+        End Try
         Await updater.Update(False, True)
     End Sub
 End Class
@@ -3149,6 +3161,7 @@ End Class
 
 Public Class ConsoleRenderer
     Implements IRenderer
+
     Dim _downloadedfilecount As Integer = 0
     Public Sub AppendLog(s As String)
         Helper.WriteDebugInfo(s)
@@ -3217,21 +3230,78 @@ Public Class ConsoleRenderer
     End Sub
 
     Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
-        'Throw New NotImplementedException()
-    End Sub
+        'Public Event DownloadProgressChanged As DownloadProgressChangedEventHandler' is an event, and cannot be called directly. Use a 'RaiseEvent' statement to raise an event.
+        '
+        'client.DownloadProgressChanged += Function(sender, e)
+        ' If uiDelay.ElapsedMilliseconds < (2 * 1000) OrElse lastProgress = e.BytesReceived Then
+        ' Return
+        ' End If
+        ' uiDelay.Restart()
+        ' lastProgress = e.BytesReceived
+        '
+        '       Dim percentage = String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+        '       Dim s = "DOWNLOADING {url} | {e.BytesReceived / 1024} KB out of {e.TotalBytesToReceive / 1024} KB | {percentage}"
+        '       WriteLine(s)
+        '
+        'End Function
 
-    Private Sub IRenderer_OnDownloadProgress(url As String, progressByte As Long, totalByte As Long) Implements IRenderer.OnDownloadProgress
-        Dim percentage As Integer = CInt(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
-        FrmMain.PBMainBar.Value = percentage
-        'Dim percentage = String.Format("{0:N2}%", Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
-        'Dim s = "DOWNLOADING {url} | {progressByte / 1024} KB out of {totalByte / 1024} KB | {percentage}"
-        FrmMain.PBMainBar.Text = (Helper.SizeSuffix(progressByte) & " / " & Helper.SizeSuffix(totalByte) & " (" & Format(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100) & "%) - " & Resources.strRightClickforOptions)
+        If frmDownloader.ProgressBarX1.Text = "" Then
+            frmDownloader.ProgressBarX1.Text = url
+        End If
+        If frmDownloader.ProgressBarX2.Text = "" Then
+            frmDownloader.ProgressBarX2.Text = url
+        End If
+        If frmDownloader.ProgressBarX3.Text = "" Then
+            frmDownloader.ProgressBarX3.Text = url
+        End If
+        If frmDownloader.ProgressBarX4.Text = "" Then
+            frmDownloader.ProgressBarX4.Text = url
+        End If
         'Throw New NotImplementedException()
     End Sub
+    ' RIP
+    'Private Sub IRenderer_OnDownloadProgress(url As String, progressByte As Long, totalByte As Long) Implements IRenderer.OnDownloadProgress
+    ' If frmDownloader.ProgressBarX1.Text = url Then
+    'Dim percentage As Integer = CInt(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
+    '         frmDownloader.ProgressBarX1.Value = percentage
+    ' 'frmDownloader.ProgressBarX1.Text = (Helper.SizeSuffix(progressByte) & " / " & Helper.SizeSuffix(totalByte) & " (" & Format(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100) & "%) - " & Resources.strRightClickforOptions)
+    ' End If
+    ' If frmDownloader.ProgressBarX2.Text = url Then
+    ' Dim percentage As Integer = CInt(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
+    '         frmDownloader.ProgressBarX2.Value = percentage
+    ' 'frmDownloader.ProgressBarX2.Text = (Helper.SizeSuffix(progressByte) & " / " & Helper.SizeSuffix(totalByte) & " (" & Format(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100) & "%) - " & Resources.strRightClickforOptions)
+    ' End If
+    ' If frmDownloader.ProgressBarX3.Text = url Then
+    ' Dim percentage As Integer = CInt(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
+    '         frmDownloader.ProgressBarX3.Value = percentage
+    ' 'frmDownloader.ProgressBarX3.Text = (Helper.SizeSuffix(progressByte) & " / " & Helper.SizeSuffix(totalByte) & " (" & Format(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100) & "%) - " & Resources.strRightClickforOptions)
+    ' End If
+    ' If frmDownloader.ProgressBarX4.Text = url Then
+    ' Dim percentage As Integer = CInt(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
+    '         frmDownloader.ProgressBarX4.Value = percentage
+    ' 'frmDownloader.ProgressBarX4.Text = (Helper.SizeSuffix(progressByte) & " / " & Helper.SizeSuffix(totalByte) & " (" & Format(Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100) & "%) - " & Resources.strRightClickforOptions)
+    ' End If
+    '
+    '    End Sub
 
     Private Sub IRenderer_OnDownloadFinish(url As String) Implements IRenderer.OnDownloadFinish
-        FrmMain.PBMainBar.Text = ""
-        FrmMain.PBMainBar.Value = 0
+        If frmDownloader.ProgressBarX1.Text = url Then
+            frmDownloader.ProgressBarX1.Text = ""
+            'frmDownloader.ProgressBarX1.Value = 0
+        End If
+        If frmDownloader.ProgressBarX2.Text = url Then
+            frmDownloader.ProgressBarX2.Text = ""
+            'frmDownloader.ProgressBarX2.Value = 0
+        End If
+        If frmDownloader.ProgressBarX3.Text = url Then
+            frmDownloader.ProgressBarX3.Text = ""
+            '    frmDownloader.ProgressBarX3.Value = 0
+        End If
+        If frmDownloader.ProgressBarX4.Text = url Then
+            frmDownloader.ProgressBarX4.Text = ""
+            '   frmDownloader.ProgressBarX4.Value = 0
+        End If
+
         Helper.PatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "") & "!")
         If url.Contains(".txt") = False Then _downloadedfilecount += 1
         FrmMain.lblStatus.Text = "Downloaded " & _downloadedfilecount & " files"
@@ -3261,6 +3331,11 @@ Public Class ConsoleRenderer
     End Sub
 
     Private Sub IRenderer_OnHashComplete() Implements IRenderer.OnHashComplete
+        'Throw New NotImplementedException()
+
+    End Sub
+
+    Private Sub IRenderer_OnPatchingStart(fileCount As Integer) Implements IRenderer.OnPatchingStart
         'Throw New NotImplementedException()
     End Sub
 End Class
