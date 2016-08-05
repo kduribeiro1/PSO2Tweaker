@@ -110,7 +110,6 @@ Partial Class FrmMain
         Me.btnDonateToBumped = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToCirno = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
         Me.btnQUANTUMSYSTEM = New DevComponents.DotNetBar.ButtonItem()
         Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDownloadPrepatch = New DevComponents.DotNetBar.ButtonItem()
@@ -398,7 +397,7 @@ Partial Class FrmMain
         Me.ItemContainer3.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical
         Me.ItemContainer3.MinimumSize = New System.Drawing.Size(120, 0)
         Me.ItemContainer3.Name = "ItemContainer3"
-        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnLaunchPSO2fromORB, Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnNewShit, Me.btnQUANTUMSYSTEM, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
+        Me.ItemContainer3.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnLaunchPSO2fromORB, Me.btnSelectPSODir, Me.ButtonInstall, Me.btnRestoreBackups, Me.ButtonItem1, Me.ButtonItem2, Me.btnOtherStuff, Me.ButtonItem3, Me.btnDonations, Me.btnQUANTUMSYSTEM, Me.BtnUpdatePso2, Me.btnDownloadPrepatch, Me.btnCheckForStoryUpdates, Me.chkAlwaysOnTop, Me.chkItemTranslation, Me.btnConfigureItemTranslation})
         '
         'btnLaunchPSO2fromORB
         '
@@ -703,15 +702,6 @@ Partial Class FrmMain
         Me.btnDonateToTweaker.Name = "btnDonateToTweaker"
         resources.ApplyResources(Me.btnDonateToTweaker, "btnDonateToTweaker")
         '
-        'btnNewShit
-        '
-        Me.btnNewShit.BeginGroup = True
-        Me.btnNewShit.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.btnNewShit.Name = "btnNewShit"
-        Me.btnNewShit.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.btnNewShit, "btnNewShit")
-        Me.btnNewShit.Visible = False
-        '
         'btnQUANTUMSYSTEM
         '
         Me.btnQUANTUMSYSTEM.BeginGroup = True
@@ -841,6 +831,7 @@ Partial Class FrmMain
         Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
         '
         'DLS
+        '
         Me.DLS.BaseAddress = ""
         Me.DLS.CachePolicy = Nothing
         Me.DLS.Credentials = Nothing
@@ -973,7 +964,6 @@ Partial Class FrmMain
     Friend WithEvents btnDonateToBumped As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToCirno As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDonateToTweaker As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnNewShit As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents BtnUpdatePso2 As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnDownloadPrepatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnCheckForStoryUpdates As DevComponents.DotNetBar.ButtonItem

@@ -876,12 +876,6 @@
   <data name="btnDonations.Text" xml:space="preserve">
     <value>Donation Links</value>
   </data>
-  <data name="btnNewShit.Text" xml:space="preserve">
-    <value>Check for PSO2 Updates (New method)</value>
-  </data>
-  <data name="btnNewShit.Tooltip" xml:space="preserve">
-    <value>Checks for any files that need to be updated</value>
-  </data>
   <data name="btnQUANTUMSYSTEM.Text" xml:space="preserve">
     <value>Check for PSO2 Updates (QUANTUM SYSTEM)</value>
   </data>
@@ -8023,12 +8017,6 @@
     <value>btnDonateToTweaker</value>
   </data>
   <data name="&gt;&gt;btnDonateToTweaker.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;btnNewShit.Name" xml:space="preserve">
-    <value>btnNewShit</value>
-  </data>
-  <data name="&gt;&gt;btnNewShit.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnQUANTUMSYSTEM.Name" xml:space="preserve">

@@ -22,49 +22,20 @@ Partial Class frmDownloader
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.ProgressBarX8 = New DevComponents.DotNetBar.Controls.ProgressBarX()
-        Me.ProgressBarX7 = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.ProgressBarX6 = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.ProgressBarX5 = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.ProgressBarX4 = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.ProgressBarX3 = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.ProgressBarX2 = New DevComponents.DotNetBar.Controls.ProgressBarX()
         Me.ProgressBarX1 = New DevComponents.DotNetBar.Controls.ProgressBarX()
+        Me.lblTotal = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX1 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX2 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX3 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX4 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX5 = New DevComponents.DotNetBar.LabelX()
+        Me.LabelX6 = New DevComponents.DotNetBar.LabelX()
         Me.SuspendLayout()
-        '
-        'ProgressBarX8
-        '
-        Me.ProgressBarX8.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.ProgressBarX8.BackgroundStyle.Class = ""
-        Me.ProgressBarX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
-        Me.ProgressBarX8.ChunkColor = System.Drawing.Color.Lime
-        Me.ProgressBarX8.ChunkColor2 = System.Drawing.Color.Lime
-        Me.ProgressBarX8.Location = New System.Drawing.Point(12, 268)
-        Me.ProgressBarX8.Name = "ProgressBarX8"
-        Me.ProgressBarX8.Size = New System.Drawing.Size(417, 31)
-        Me.ProgressBarX8.TabIndex = 20
-        Me.ProgressBarX8.TextVisible = True
-        Me.ProgressBarX8.Value = 20
-        '
-        'ProgressBarX7
-        '
-        Me.ProgressBarX7.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.ProgressBarX7.BackgroundStyle.Class = ""
-        Me.ProgressBarX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
-        Me.ProgressBarX7.ChunkColor = System.Drawing.Color.Lime
-        Me.ProgressBarX7.ChunkColor2 = System.Drawing.Color.Lime
-        Me.ProgressBarX7.Location = New System.Drawing.Point(12, 231)
-        Me.ProgressBarX7.Name = "ProgressBarX7"
-        Me.ProgressBarX7.Size = New System.Drawing.Size(417, 31)
-        Me.ProgressBarX7.TabIndex = 19
-        Me.ProgressBarX7.TextVisible = True
-        Me.ProgressBarX7.Value = 20
         '
         'ProgressBarX6
         '
@@ -74,14 +45,13 @@ Partial Class frmDownloader
         '
         Me.ProgressBarX6.BackgroundStyle.Class = ""
         Me.ProgressBarX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
+        Me.ProgressBarX6.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ProgressBarX6.ChunkColor = System.Drawing.Color.Lime
         Me.ProgressBarX6.ChunkColor2 = System.Drawing.Color.Lime
         Me.ProgressBarX6.Location = New System.Drawing.Point(12, 194)
         Me.ProgressBarX6.Name = "ProgressBarX6"
         Me.ProgressBarX6.Size = New System.Drawing.Size(417, 31)
         Me.ProgressBarX6.TabIndex = 18
-        Me.ProgressBarX6.TextVisible = True
-        Me.ProgressBarX6.Value = 20
         '
         'ProgressBarX5
         '
@@ -91,14 +61,13 @@ Partial Class frmDownloader
         '
         Me.ProgressBarX5.BackgroundStyle.Class = ""
         Me.ProgressBarX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
+        Me.ProgressBarX5.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ProgressBarX5.ChunkColor = System.Drawing.Color.Lime
         Me.ProgressBarX5.ChunkColor2 = System.Drawing.Color.Lime
         Me.ProgressBarX5.Location = New System.Drawing.Point(12, 157)
         Me.ProgressBarX5.Name = "ProgressBarX5"
         Me.ProgressBarX5.Size = New System.Drawing.Size(417, 31)
         Me.ProgressBarX5.TabIndex = 17
-        Me.ProgressBarX5.TextVisible = True
-        Me.ProgressBarX5.Value = 20
         '
         'ProgressBarX4
         '
@@ -108,14 +77,13 @@ Partial Class frmDownloader
         '
         Me.ProgressBarX4.BackgroundStyle.Class = ""
         Me.ProgressBarX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
+        Me.ProgressBarX4.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ProgressBarX4.ChunkColor = System.Drawing.Color.Lime
         Me.ProgressBarX4.ChunkColor2 = System.Drawing.Color.Lime
         Me.ProgressBarX4.Location = New System.Drawing.Point(12, 120)
         Me.ProgressBarX4.Name = "ProgressBarX4"
         Me.ProgressBarX4.Size = New System.Drawing.Size(417, 31)
         Me.ProgressBarX4.TabIndex = 16
-        Me.ProgressBarX4.TextVisible = True
-        Me.ProgressBarX4.Value = 20
         '
         'ProgressBarX3
         '
@@ -125,14 +93,13 @@ Partial Class frmDownloader
         '
         Me.ProgressBarX3.BackgroundStyle.Class = ""
         Me.ProgressBarX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
+        Me.ProgressBarX3.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ProgressBarX3.ChunkColor = System.Drawing.Color.Lime
         Me.ProgressBarX3.ChunkColor2 = System.Drawing.Color.Lime
         Me.ProgressBarX3.Location = New System.Drawing.Point(12, 83)
         Me.ProgressBarX3.Name = "ProgressBarX3"
         Me.ProgressBarX3.Size = New System.Drawing.Size(417, 31)
         Me.ProgressBarX3.TabIndex = 15
-        Me.ProgressBarX3.TextVisible = True
-        Me.ProgressBarX3.Value = 20
         '
         'ProgressBarX2
         '
@@ -142,6 +109,7 @@ Partial Class frmDownloader
         '
         Me.ProgressBarX2.BackgroundStyle.Class = ""
         Me.ProgressBarX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
+        Me.ProgressBarX2.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ProgressBarX2.ChunkColor = System.Drawing.Color.Lime
         Me.ProgressBarX2.ChunkColor2 = System.Drawing.Color.Lime
         Me.ProgressBarX2.Location = New System.Drawing.Point(12, 46)
@@ -149,8 +117,6 @@ Partial Class frmDownloader
         Me.ProgressBarX2.Size = New System.Drawing.Size(417, 31)
         Me.ProgressBarX2.TabIndex = 14
         Me.ProgressBarX2.Tag = ""
-        Me.ProgressBarX2.TextVisible = True
-        Me.ProgressBarX2.Value = 20
         '
         'ProgressBarX1
         '
@@ -160,45 +126,167 @@ Partial Class frmDownloader
         '
         Me.ProgressBarX1.BackgroundStyle.Class = ""
         Me.ProgressBarX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Diagonal
+        Me.ProgressBarX1.BackgroundStyle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ProgressBarX1.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ProgressBarX1.ChunkColor = System.Drawing.Color.Lime
         Me.ProgressBarX1.ChunkColor2 = System.Drawing.Color.Lime
+        Me.ProgressBarX1.Cursor = System.Windows.Forms.Cursors.Default
         Me.ProgressBarX1.Location = New System.Drawing.Point(12, 9)
         Me.ProgressBarX1.Name = "ProgressBarX1"
         Me.ProgressBarX1.Size = New System.Drawing.Size(417, 31)
         Me.ProgressBarX1.TabIndex = 13
         Me.ProgressBarX1.Tag = ""
-        Me.ProgressBarX1.TextVisible = True
-        Me.ProgressBarX1.Value = 20
+        '
+        'lblTotal
+        '
+        Me.lblTotal.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.lblTotal.BackgroundStyle.Class = ""
+        Me.lblTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotal.ForeColor = System.Drawing.Color.Black
+        Me.lblTotal.Location = New System.Drawing.Point(12, 235)
+        Me.lblTotal.Name = "lblTotal"
+        Me.lblTotal.SingleLineColor = System.Drawing.Color.Black
+        Me.lblTotal.Size = New System.Drawing.Size(416, 57)
+        Me.lblTotal.TabIndex = 19
+        Me.lblTotal.TextAlignment = System.Drawing.StringAlignment.Center
+        '
+        'LabelX1
+        '
+        Me.LabelX1.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX1.BackgroundStyle.Class = ""
+        Me.LabelX1.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.LabelX1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelX1.ForeColor = System.Drawing.Color.Black
+        Me.LabelX1.Location = New System.Drawing.Point(435, 9)
+        Me.LabelX1.Name = "LabelX1"
+        Me.LabelX1.SingleLineColor = System.Drawing.Color.Black
+        Me.LabelX1.Size = New System.Drawing.Size(339, 31)
+        Me.LabelX1.TabIndex = 20
+        '
+        'LabelX2
+        '
+        Me.LabelX2.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX2.BackgroundStyle.Class = ""
+        Me.LabelX2.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.LabelX2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelX2.ForeColor = System.Drawing.Color.Black
+        Me.LabelX2.Location = New System.Drawing.Point(435, 46)
+        Me.LabelX2.Name = "LabelX2"
+        Me.LabelX2.SingleLineColor = System.Drawing.Color.Black
+        Me.LabelX2.Size = New System.Drawing.Size(339, 31)
+        Me.LabelX2.TabIndex = 21
+        '
+        'LabelX3
+        '
+        Me.LabelX3.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX3.BackgroundStyle.Class = ""
+        Me.LabelX3.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.LabelX3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelX3.ForeColor = System.Drawing.Color.Black
+        Me.LabelX3.Location = New System.Drawing.Point(435, 83)
+        Me.LabelX3.Name = "LabelX3"
+        Me.LabelX3.SingleLineColor = System.Drawing.Color.Black
+        Me.LabelX3.Size = New System.Drawing.Size(339, 31)
+        Me.LabelX3.TabIndex = 22
+        '
+        'LabelX4
+        '
+        Me.LabelX4.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX4.BackgroundStyle.Class = ""
+        Me.LabelX4.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.LabelX4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelX4.ForeColor = System.Drawing.Color.Black
+        Me.LabelX4.Location = New System.Drawing.Point(435, 120)
+        Me.LabelX4.Name = "LabelX4"
+        Me.LabelX4.SingleLineColor = System.Drawing.Color.Black
+        Me.LabelX4.Size = New System.Drawing.Size(339, 31)
+        Me.LabelX4.TabIndex = 23
+        '
+        'LabelX5
+        '
+        Me.LabelX5.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX5.BackgroundStyle.Class = ""
+        Me.LabelX5.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.LabelX5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelX5.ForeColor = System.Drawing.Color.Black
+        Me.LabelX5.Location = New System.Drawing.Point(435, 157)
+        Me.LabelX5.Name = "LabelX5"
+        Me.LabelX5.SingleLineColor = System.Drawing.Color.Black
+        Me.LabelX5.Size = New System.Drawing.Size(339, 31)
+        Me.LabelX5.TabIndex = 24
+        '
+        'LabelX6
+        '
+        Me.LabelX6.BackColor = System.Drawing.Color.Transparent
+        '
+        '
+        '
+        Me.LabelX6.BackgroundStyle.Class = ""
+        Me.LabelX6.BackgroundStyle.TextColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.LabelX6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelX6.ForeColor = System.Drawing.Color.Black
+        Me.LabelX6.Location = New System.Drawing.Point(435, 194)
+        Me.LabelX6.Name = "LabelX6"
+        Me.LabelX6.SingleLineColor = System.Drawing.Color.Black
+        Me.LabelX6.Size = New System.Drawing.Size(339, 31)
+        Me.LabelX6.TabIndex = 25
         '
         'frmDownloader
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = Global.PSO2_Tweaker.My.Resources.Resources.theme_ntp_background2
+        Me.BackgroundImage = Global.PSO2_Tweaker.My.Resources.Resources.QUANTUMSYSTEM
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(667, 333)
-        Me.Controls.Add(Me.ProgressBarX8)
-        Me.Controls.Add(Me.ProgressBarX7)
+        Me.ClientSize = New System.Drawing.Size(786, 331)
+        Me.Controls.Add(Me.lblTotal)
         Me.Controls.Add(Me.ProgressBarX6)
         Me.Controls.Add(Me.ProgressBarX5)
         Me.Controls.Add(Me.ProgressBarX4)
         Me.Controls.Add(Me.ProgressBarX3)
         Me.Controls.Add(Me.ProgressBarX2)
         Me.Controls.Add(Me.ProgressBarX1)
+        Me.Controls.Add(Me.LabelX6)
+        Me.Controls.Add(Me.LabelX5)
+        Me.Controls.Add(Me.LabelX4)
+        Me.Controls.Add(Me.LabelX3)
+        Me.Controls.Add(Me.LabelX2)
+        Me.Controls.Add(Me.LabelX1)
         Me.DoubleBuffered = True
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "frmDownloader"
-        Me.Text = "frmDownloader"
+        Me.TopMost = True
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents ProgressBarX8 As DevComponents.DotNetBar.Controls.ProgressBarX
-    Friend WithEvents ProgressBarX7 As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents ProgressBarX6 As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents ProgressBarX5 As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents ProgressBarX4 As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents ProgressBarX3 As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents ProgressBarX2 As DevComponents.DotNetBar.Controls.ProgressBarX
     Friend WithEvents ProgressBarX1 As DevComponents.DotNetBar.Controls.ProgressBarX
+    Friend WithEvents lblTotal As DevComponents.DotNetBar.LabelX
+    Friend WithEvents LabelX1 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents LabelX2 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents LabelX3 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents LabelX4 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents LabelX5 As DevComponents.DotNetBar.LabelX
+    Friend WithEvents LabelX6 As DevComponents.DotNetBar.LabelX
 End Class
