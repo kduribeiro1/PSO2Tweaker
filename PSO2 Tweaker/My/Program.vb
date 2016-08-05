@@ -278,9 +278,7 @@ Namespace My
                     File.WriteAllText(StartPath & "\logfile.txt", "")
                 End If
 
-                If File.Exists(StartPath & "\patchlog.txt") AndAlso Helper.GetFileSize(StartPath & "\patchlog.txt") > 10000000 Then
-                    File.WriteAllText(StartPath & "\patchlog.txt", "")
-                End If
+                If File.Exists(StartPath & "\patchlog.txt") Then File.WriteAllText(StartPath & "\patchlog.txt", "")
 
                 Application.DoEvents()
 
@@ -295,13 +293,12 @@ Namespace My
                     Helper.Log(Resources.strIsTheCurrentOS64bit & Environment.Is64BitOperatingSystem)
                     Helper.Log(Resources.strRunDirectory & StartPath)
                     Helper.Log(Resources.strSelectedPSO2win32directory & Pso2RootDir)
-                    Helper.Log(Resources.strIsUnrarAvailable & File.Exists(StartPath & "\UnRar.exe"))
                     Dim identity = WindowsIdentity.GetCurrent()
                     Dim principal = New WindowsPrincipal(identity)
                     Dim isElevated As Boolean = principal.IsInRole(WindowsBuiltInRole.Administrator)
                     Helper.Log("Run as Administrator: " & isElevated)
                     Helper.Log("Is 7zip available: " & File.Exists(StartPath & "\7za.exe"))
-                    Helper.Log("Is 7zip available: " & File.Exists("7za.exe"))
+                    Helper.Log(Resources.strIsUnrarAvailable & File.Exists(StartPath & "\UnRar.exe"))
                     Helper.Log("----------------------------------------")
                 End If
             Catch ex As Exception

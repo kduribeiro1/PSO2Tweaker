@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtHTML.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>21</value>
   </data>
   <metadata name="cmsTextBarOptions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 17</value>
@@ -186,38 +186,11 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;rtbDebug.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>20</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>90, 17</value>
   </metadata>
-  <data name="chkRemoveCensor.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkRemoveCensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 101</value>
-  </data>
-  <data name="chkRemoveCensor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 15</value>
-  </data>
-  <data name="chkRemoveCensor.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="chkRemoveCensor.Text" xml:space="preserve">
-    <value>Remove Censor File</value>
-  </data>
-  <data name="&gt;&gt;chkRemoveCensor.Name" xml:space="preserve">
-    <value>chkRemoveCensor</value>
-  </data>
-  <data name="&gt;&gt;chkRemoveCensor.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.CheckBoxX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;chkRemoveCensor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkRemoveCensor.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
   <data name="chkRemovePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -243,7 +216,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemovePC.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>19</value>
   </data>
   <data name="chkRemoveVita.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -270,7 +243,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveVita.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="PBMainBar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
@@ -295,7 +268,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PBMainBar.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="chkRemoveNVidia.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +295,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveNVidia.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="chkRemoveSEGA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -349,7 +322,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkRemoveSEGA.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <data name="chkSwapOP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -379,7 +352,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkSwapOP.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>22</value>
   </data>
   <data name="lblDirectoryLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -431,33 +404,6 @@
   </data>
   <data name="&gt;&gt;lblDirectory.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="chkRestoreCensor.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkRestoreCensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>243, 101</value>
-  </data>
-  <data name="chkRestoreCensor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 15</value>
-  </data>
-  <data name="chkRestoreCensor.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="chkRestoreCensor.Text" xml:space="preserve">
-    <value>Restore Censor File</value>
-  </data>
-  <data name="&gt;&gt;chkRestoreCensor.Name" xml:space="preserve">
-    <value>chkRestoreCensor</value>
-  </data>
-  <data name="&gt;&gt;chkRestoreCensor.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.Controls.CheckBoxX, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;chkRestoreCensor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkRestoreCensor.ZOrder" xml:space="preserve">
-    <value>15</value>
   </data>
   <data name="chkRestorePC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -678,12 +624,6 @@
   <data name="btnENPatch.Tooltip" xml:space="preserve">
     <value>Install the core English patch</value>
   </data>
-  <data name="btnLargeFiles.Text" xml:space="preserve">
-    <value>English Large Files</value>
-  </data>
-  <data name="btnLargeFiles.Tooltip" xml:space="preserve">
-    <value>Install additional english files to enhance the core patch</value>
-  </data>
   <data name="btnLargeFilesTRANSAM.Text" xml:space="preserve">
     <value>English Large Files</value>
   </data>
@@ -802,7 +742,7 @@
     <value>Checks to see if any data files are non-existant</value>
   </data>
   <data name="ButtonItem10.Text" xml:space="preserve">
-    <value>Check for Old/Missing Files</value>
+    <value>Completely check all files</value>
   </data>
   <data name="ButtonItem10.Tooltip" xml:space="preserve">
     <value>Checks for deleted files AND out-of-date files</value>
@@ -1024,7 +964,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;RibbonControl1.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>23</value>
   </data>
   <data name="btnAnnouncements.Location" type="System.Drawing.Point, System.Drawing">
     <value>406, 30</value>
@@ -1075,7 +1015,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;WebBrowser4.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>24</value>
   </data>
   <data name="txtPSO2DefaultINI.Location" type="System.Drawing.Point, System.Drawing">
     <value>201, 129</value>
@@ -7692,9 +7632,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
   </data>
@@ -7774,12 +7711,6 @@
     <value>btnENPatch</value>
   </data>
   <data name="&gt;&gt;btnENPatch.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
-  </data>
-  <data name="&gt;&gt;btnLargeFiles.Name" xml:space="preserve">
-    <value>btnLargeFiles</value>
-  </data>
-  <data name="&gt;&gt;btnLargeFiles.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;btnLargeFilesTRANSAM.Name" xml:space="preserve">
