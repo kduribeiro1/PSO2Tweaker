@@ -31,7 +31,6 @@ Partial Class FrmMain
         Me.cmsTextBarOptions = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.CopyAllTextToClipboardToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.chkRemoveCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemovePC = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRemoveVita = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.PBMainBar = New DevComponents.DotNetBar.Controls.ProgressBarX()
@@ -40,7 +39,6 @@ Partial Class FrmMain
         Me.chkSwapOP = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.lblDirectoryLabel = New DevComponents.DotNetBar.LabelX()
         Me.lblDirectory = New DevComponents.DotNetBar.LabelX()
-        Me.chkRestoreCensor = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestorePC = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestoreVita = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.chkRestoreNVidia = New DevComponents.DotNetBar.Controls.CheckBoxX()
@@ -60,7 +58,6 @@ Partial Class FrmMain
         Me.btnSelectPSODir = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonInstall = New DevComponents.DotNetBar.ButtonItem()
         Me.btnENPatch = New DevComponents.DotNetBar.ButtonItem()
-        Me.btnLargeFiles = New DevComponents.DotNetBar.ButtonItem()
         Me.btnLargeFilesTRANSAM = New DevComponents.DotNetBar.ButtonItem()
         Me.btnStoryPatchNew = New DevComponents.DotNetBar.ButtonItem()
         Me.btnInstallGermanPatch = New DevComponents.DotNetBar.ButtonItem()
@@ -114,6 +111,7 @@ Partial Class FrmMain
         Me.btnDonateToCirno = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDonateToTweaker = New DevComponents.DotNetBar.ButtonItem()
         Me.btnNewShit = New DevComponents.DotNetBar.ButtonItem()
+        Me.btnQUANTUMSYSTEM = New DevComponents.DotNetBar.ButtonItem()
         Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnDownloadPrepatch = New DevComponents.DotNetBar.ButtonItem()
         Me.btnCheckForStoryUpdates = New DevComponents.DotNetBar.ButtonItem()
@@ -133,7 +131,6 @@ Partial Class FrmMain
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
-        Me.btnQUANTUMSYSTEM = New DevComponents.DotNetBar.ButtonItem()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -167,16 +164,6 @@ Partial Class FrmMain
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenPatchDialog"
-        '
-        'chkRemoveCensor
-        '
-        resources.ApplyResources(Me.chkRemoveCensor, "chkRemoveCensor")
-        Me.chkRemoveCensor.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.chkRemoveCensor.BackgroundStyle.Class = ""
-        Me.chkRemoveCensor.Name = "chkRemoveCensor"
         '
         'chkRemovePC
         '
@@ -276,16 +263,6 @@ Partial Class FrmMain
         Me.lblDirectory.BackgroundStyle.Class = ""
         resources.ApplyResources(Me.lblDirectory, "lblDirectory")
         Me.lblDirectory.Name = "lblDirectory"
-        '
-        'chkRestoreCensor
-        '
-        resources.ApplyResources(Me.chkRestoreCensor, "chkRestoreCensor")
-        Me.chkRestoreCensor.BackColor = System.Drawing.Color.Transparent
-        '
-        '
-        '
-        Me.chkRestoreCensor.BackgroundStyle.Class = ""
-        Me.chkRestoreCensor.Name = "chkRestoreCensor"
         '
         'chkRestorePC
         '
@@ -442,7 +419,7 @@ Partial Class FrmMain
         '
         Me.ButtonInstall.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
         Me.ButtonInstall.Name = "ButtonInstall"
-        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFiles, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnInstallGermanPatch, Me.btnRussianPatch, Me.btnRussianBigFiles, Me.btnInstallSpanishPatch})
+        Me.ButtonInstall.SubItems.AddRange(New DevComponents.DotNetBar.BaseItem() {Me.btnENPatch, Me.btnLargeFilesTRANSAM, Me.btnStoryPatchNew, Me.btnInstallGermanPatch, Me.btnRussianPatch, Me.btnRussianBigFiles, Me.btnInstallSpanishPatch})
         Me.ButtonInstall.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.ButtonInstall, "ButtonInstall")
         '
@@ -450,12 +427,6 @@ Partial Class FrmMain
         '
         Me.btnENPatch.Name = "btnENPatch"
         resources.ApplyResources(Me.btnENPatch, "btnENPatch")
-        '
-        'btnLargeFiles
-        '
-        Me.btnLargeFiles.Name = "btnLargeFiles"
-        resources.ApplyResources(Me.btnLargeFiles, "btnLargeFiles")
-        Me.btnLargeFiles.Visible = False
         '
         'btnLargeFilesTRANSAM
         '
@@ -608,6 +579,7 @@ Partial Class FrmMain
         '
         Me.btnResumePatching.Name = "btnResumePatching"
         resources.ApplyResources(Me.btnResumePatching, "btnResumePatching")
+        Me.btnResumePatching.Visible = False
         '
         'btnTerminate
         '
@@ -738,6 +710,15 @@ Partial Class FrmMain
         Me.btnNewShit.Name = "btnNewShit"
         Me.btnNewShit.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.btnNewShit, "btnNewShit")
+        Me.btnNewShit.Visible = False
+        '
+        'btnQUANTUMSYSTEM
+        '
+        Me.btnQUANTUMSYSTEM.BeginGroup = True
+        Me.btnQUANTUMSYSTEM.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
+        Me.btnQUANTUMSYSTEM.Name = "btnQUANTUMSYSTEM"
+        Me.btnQUANTUMSYSTEM.SubItemsExpandWidth = 24
+        resources.ApplyResources(Me.btnQUANTUMSYSTEM, "btnQUANTUMSYSTEM")
         '
         'BtnUpdatePso2
         '
@@ -746,6 +727,7 @@ Partial Class FrmMain
         Me.BtnUpdatePso2.Name = "BtnUpdatePso2"
         Me.BtnUpdatePso2.SubItemsExpandWidth = 24
         resources.ApplyResources(Me.BtnUpdatePso2, "BtnUpdatePso2")
+        Me.BtnUpdatePso2.Visible = False
         '
         'btnDownloadPrepatch
         '
@@ -860,6 +842,8 @@ Partial Class FrmMain
         '
         'DLS
         '
+        Me.DLS.AllowReadStreamBuffering = False
+        Me.DLS.AllowWriteStreamBuffering = False
         Me.DLS.BaseAddress = ""
         Me.DLS.CachePolicy = Nothing
         Me.DLS.Credentials = Nothing
@@ -868,14 +852,6 @@ Partial Class FrmMain
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
-        '
-        'btnQUANTUMSYSTEM
-        '
-        Me.btnQUANTUMSYSTEM.BeginGroup = True
-        Me.btnQUANTUMSYSTEM.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
-        Me.btnQUANTUMSYSTEM.Name = "btnQUANTUMSYSTEM"
-        Me.btnQUANTUMSYSTEM.SubItemsExpandWidth = 24
-        resources.ApplyResources(Me.btnQUANTUMSYSTEM, "btnQUANTUMSYSTEM")
         '
         'FrmMain
         '
@@ -895,13 +871,11 @@ Partial Class FrmMain
         Me.Controls.Add(Me.chkRestoreNVidia)
         Me.Controls.Add(Me.chkRestoreVita)
         Me.Controls.Add(Me.chkRestorePC)
-        Me.Controls.Add(Me.chkRestoreCensor)
         Me.Controls.Add(Me.chkRemoveSEGA)
         Me.Controls.Add(Me.chkRemoveNVidia)
         Me.Controls.Add(Me.PBMainBar)
         Me.Controls.Add(Me.chkRemoveVita)
         Me.Controls.Add(Me.chkRemovePC)
-        Me.Controls.Add(Me.chkRemoveCensor)
         Me.Controls.Add(Me.rtbDebug)
         Me.Controls.Add(Me.txtHTML)
         Me.Controls.Add(Me.chkSwapOP)
@@ -923,7 +897,6 @@ Partial Class FrmMain
     Friend WithEvents txtHTML As System.Windows.Forms.TextBox
     Public WithEvents rtbDebug As System.Windows.Forms.RichTextBox
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents chkRemoveCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemovePC As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRemoveVita As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents PBMainBar As DevComponents.DotNetBar.Controls.ProgressBarX
@@ -932,7 +905,6 @@ Partial Class FrmMain
     Friend WithEvents chkSwapOP As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents lblDirectoryLabel As DevComponents.DotNetBar.LabelX
     Friend WithEvents lblDirectory As DevComponents.DotNetBar.LabelX
-    Friend WithEvents chkRestoreCensor As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestorePC As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestoreVita As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents chkRestoreNVidia As DevComponents.DotNetBar.Controls.CheckBoxX
@@ -958,7 +930,6 @@ Partial Class FrmMain
     Friend WithEvents btnSelectPSODir As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents ButtonInstall As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnENPatch As DevComponents.DotNetBar.ButtonItem
-    Friend WithEvents btnLargeFiles As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRussianPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnInstallSpanishPatch As DevComponents.DotNetBar.ButtonItem
     Friend WithEvents btnRestoreBackups As DevComponents.DotNetBar.ButtonItem

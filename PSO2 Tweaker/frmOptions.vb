@@ -258,12 +258,10 @@ Public Class FrmOptions
         CheckBoxX4.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX6.TextColor = ColorPickerButton2.SelectedColor
         CheckBoxX7.TextColor = ColorPickerButton2.SelectedColor
-        Program.MainForm.chkRemoveCensor.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveNVidia.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemovePC.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveSEGA.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRemoveVita.TextColor = ColorPickerButton2.SelectedColor
-        Program.MainForm.chkRestoreCensor.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRestoreNVidia.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRestorePC.TextColor = ColorPickerButton2.SelectedColor
         Program.MainForm.chkRestoreSEGA.TextColor = ColorPickerButton2.SelectedColor
@@ -368,8 +366,6 @@ Public Class FrmOptions
     End Sub
 
     Private Sub CheckBoxX3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX3.CheckedChanged
-        FrmMain.chkRemoveCensor.Visible = CheckBoxX3.Checked
-        FrmMain.chkRestoreCensor.Visible = CheckBoxX3.Checked
         FrmMain.chkRemovePC.Visible = CheckBoxX3.Checked
         FrmMain.chkRestorePC.Visible = CheckBoxX3.Checked
         FrmMain.chkRemoveVita.Visible = CheckBoxX3.Checked
