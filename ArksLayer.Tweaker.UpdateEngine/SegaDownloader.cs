@@ -14,7 +14,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
     /// <summary>
     /// A class capable of interacting with SEGA patch server.
     /// </summary>
-    public class SegaDownloader
+    internal class SegaDownloader
     {
         /// <summary>
         /// Construct an instance of SegaDownloader using the provided UI renderer.
@@ -90,15 +90,16 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// Attempts to merge multiple patches into a dictionary of filename to patch information.
         /// If a filename already exists in the dictionary, then the patch information will be disregarded. (First Come First Serve)
-        /// Old parameter indicates whether the patch should be downloaded from the older patch server.
         /// </summary>
         /// <param name="merge"></param>
         /// <param name="patchlist"></param>
-        /// <param name="old"></param>
+        /// <param name="old">Indicates whether the patch should be downloaded from the older patch server</param>
         private void MergePatchlist(ConcurrentDictionary<string, PatchInfo> merge, IList<PatchInfo> patchlist, bool old)
         {
             Parallel.ForEach(patchlist, p =>
             {
+                if (p.File.Contains("data/win32/script/")) return;
+
                 p.Old = old;
                 // TryAdd returns false if the key already exists, unlike TryUpdate or AddOrUpdate.
                 merge.TryAdd(p.File, p);
@@ -123,11 +124,10 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
         /// <summary>
         /// Attempts to download a patchlist from a given url, then read as string and returned to caller.
-        /// If attempt number is provided, will cause the download to be retried as much as the number allows, with exponential backoff algorithm.
         /// If download failed, will throw an exception.
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="attempts"></param>
+        /// <param name="attempts">Causes the download to be retried as much as the number allows, with exponential backoff algorithm.</param>
         /// <returns></returns>
         private async Task<string> DownloadPatchlist(string url, int attempts = 4)
         {
@@ -138,18 +138,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 await ExponentialBackoff(i, url);
 
                 var client = new AquaClient();
-                var uiDelay = Stopwatch.StartNew();
-                long lastProgress = 0;
-                client.DownloadProgressChanged += (sender, e) =>
-                {
-                    if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    uiDelay.Restart();
-                    lastProgress = e.BytesReceived;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                };
-
-                Output.OnDownloadStart(url, client);
                 var download = client.DownloadStringTaskAsync(url);
+                Output.OnDownloadStart(url, client);
 
                 try
                 {
@@ -176,15 +166,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
         /// <summary>
         /// Attempts to download a patch into a target directory.
-        /// If log name is provided, will write a line then flush immediately into the log when a download is successful.
-        /// If attempt number is provided, will cause the download to be retried as much as the number allows, with exponential backoff algorithm.
-        /// Returns true if download is successful, else false.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="directory"></param>
-        /// <param name="logName"></param>
-        /// <param name="attempts"></param>
-        /// <returns></returns>
+        /// <param name="logName">If provided, will write a line containing the patch file name then flush immediately into a log when a download is successful.</param>
+        /// <param name="attempts">Causes the download to be retried as much as the number allows, with exponential backoff algorithm</param>
+        /// <returns>True if download is successful, else false.</returns>
         public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, string logName = null, int attempts = 4)
         {
             if (attempts < 1) attempts = 1;
@@ -201,19 +188,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 await ExponentialBackoff(i, url);
 
                 var client = new AquaClient();
-                var uiDelay = Stopwatch.StartNew();
-                long lastProgress = 0;
-                client.DownloadProgressChanged += (sender, e) =>
-                {
-                    if (uiDelay.ElapsedMilliseconds < (2 * 1000) || lastProgress == e.BytesReceived) return;
-                    uiDelay.Restart();
-                    lastProgress = e.BytesReceived;
-                    Output.OnDownloadProgress(url, e.BytesReceived, e.TotalBytesToReceive);
-                };
-
-                Output.OnDownloadStart(url, client);
                 var download = client.DownloadFileTaskAsync(url, file);
                 Output.AppendLog($"Downloading a file from {url} to {file}");
+                Output.OnDownloadStart(url, client);
 
                 try
                 {

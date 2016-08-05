@@ -20,15 +20,15 @@ namespace ArksLayer.Tweaker.Terminal
             var updater = new UpdateManager(settings, output);
 
             Console.WriteLine(settings.GameDirectory);
+            Console.WriteLine(updater.DataWin32Directory);
+            Console.WriteLine(updater.BackupDirectory);
+            
             await updater.Update(false, true);
         }
 
         public static void Main(string[] args)
         {
-            Task.Run(async () =>
-            {
-                await MainAsync();
-            }).GetAwaiter().GetResult();
+            MainAsync().GetAwaiter().GetResult();
         }
     }
 }

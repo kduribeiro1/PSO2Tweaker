@@ -22,22 +22,19 @@ namespace ArksLayer.Tweaker.Abstractions
         void AppendLog(string s);
 
         /// <summary>
+        /// Called when the UpdateEngine is going to batch start patch download Tasks. Sends how many files are to be downloaded in total.
+        /// </summary>
+        /// <param name="fileCount"></param>
+        void OnPatchingStart(int fileCount);
+
+        /// <summary>
         /// Called when a file download is started.
-        /// You might want to summon a progress bar here...
+        /// You might want to attach a progress delegate to that WebClient object here or summon a progress bar here...
         /// Also, you can save that WebClient object into something like a Dictionary of url and WebClient, so user can cancel the individual file download if stuck, if provided the UI control to do so.
         /// </summary>
         /// <param name="url"></param>
         /// <param name="client"></param>
         void OnDownloadStart(string url, WebClient client);
-
-        /// <summary>
-        /// Called every 2 seconds, sends a progress update for a file download.
-        /// You might want to update the progress bar of this file here...
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="progressByte"></param>
-        /// <param name="totalByte"></param>
-        void OnDownloadProgress(string url, long progressByte, long totalByte);
 
         /// <summary>
         /// Called when a file download finished successfully!
