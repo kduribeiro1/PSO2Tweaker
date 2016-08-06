@@ -20,6 +20,11 @@ after_build:
 - cmd: 7z a %BUILD_ARCHIVE% *.* -xr!.gitignore
 - appveyor PushArtifact %BUILD_ARCHIVE%
 - cmd: cd ..\..\..
+- set BUILD_ARCHIVE=%APPVEYOR_REPO_BRANCH%-%GITSHORT%-%CONFIGURATION%-Terminal.7z
+- cmd: cd ArksLayer.Tweaker.Terminal\bin\%CONFIGURATION%
+- cmd: 7z a %BUILD_ARCHIVE% *.* -xr!.gitignore
+- appveyor PushArtifact %BUILD_ARCHIVE%
+- cmd: cd ..\..\..
 
 build:
   verbosity: minimal
