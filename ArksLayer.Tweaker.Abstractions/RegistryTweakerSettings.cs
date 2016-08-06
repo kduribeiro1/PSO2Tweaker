@@ -21,12 +21,27 @@ namespace ArksLayer.Tweaker.Abstractions
         }
 
         /// <summary>
-        /// pso2_bin folder registry key.
+        /// Registry key for value containing directory path to pso2_bin.
         /// </summary>
         private const string GameDirectoryKey = "PSO2Dir";
 
         /// <summary>
-        /// Sets or gets value to the folder path for pso2_bin.
+        /// Registry key for value containing the version of English Patch.
+        /// </summary>
+        private const string EnglishPatchVersionKey = "ENPatchVersion";
+
+        /// <summary>
+        /// Registry key for value containing the version of English Large Patch.
+        /// </summary>
+        private const string EnglishLargePatchVersionKey = "LargeFilesVersion";
+
+        /// <summary>
+        /// Registry key for value containing the version of Story Patch.
+        /// </summary>
+        private const string StoryPatchVersionKey = "StoryPatchVersion";
+
+        /// <summary>
+        /// Sets or gets value of the directory path to pso2_bin.
         /// Expected result example: D:\PSO2\pso2_bin
         /// </summary>
         public string GameDirectory
@@ -39,6 +54,51 @@ namespace ArksLayer.Tweaker.Abstractions
             set
             {
                 Root.SetValue(GameDirectoryKey, value.TrimEnd('\\'));
+            }
+        }
+
+        /// <summary>
+        /// Sets or gets value of the directory path to the English Patch version.
+        /// </summary>
+        public string EnglishPatchVersion
+        {
+            get
+            {
+                return (string)Root.GetValue(EnglishPatchVersionKey);
+            }
+            set
+            {
+                Root.SetValue(EnglishPatchVersionKey, value.Trim());
+            }
+        }
+
+        /// <summary>
+        /// Sets or gets value of the directory path to the English Large Patch version.
+        /// </summary>
+        public string EnglishLargePatchVersion
+        {
+            get
+            {
+                return (string)Root.GetValue(EnglishLargePatchVersionKey);
+            }
+            set
+            {
+                Root.SetValue(EnglishLargePatchVersionKey, value.Trim());
+            }
+        }
+
+        /// <summary>
+        /// Sets or gets value of the directory path to the Story Patch version.
+        /// </summary>
+        public string StoryPatchVersion
+        {
+            get
+            {
+                return (string)Root.GetValue(StoryPatchVersionKey);
+            }
+            set
+            {
+                Root.SetValue(StoryPatchVersionKey, value.Trim());
             }
         }
 

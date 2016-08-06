@@ -90,18 +90,24 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// Attempts to merge multiple patches into a dictionary of filename to patch information.
         /// If a filename already exists in the dictionary, then the patch information will be disregarded. (First Come First Serve)
+        /// Has built-in blacklist to prevent certain files do be downloaded. (Because baka AIDA always failed to download them)
         /// </summary>
         /// <param name="merge"></param>
         /// <param name="patchlist"></param>
         /// <param name="old">Indicates whether the patch should be downloaded from the older patch server</param>
         private void MergePatchlist(ConcurrentDictionary<string, PatchInfo> merge, IList<PatchInfo> patchlist, bool old)
         {
+            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "gameversion.ver", "user_default.pso2", "user_intel.pso2", "edition.txt" };
+
             Parallel.ForEach(patchlist, p =>
             {
-                if (p.File.Contains("data/win32/script/")) return;
+                foreach (var black in blacklist)
+                {
+                    if (p.File.EndsWith(black, StringComparison.InvariantCultureIgnoreCase)) return;
+                }
 
                 p.Old = old;
-                // TryAdd returns false if the key already exists, unlike TryUpdate or AddOrUpdate.
+                // TryAdd returns false if the key already exists
                 merge.TryAdd(p.File, p);
             });
         }

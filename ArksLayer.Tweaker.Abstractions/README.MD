@@ -32,6 +32,10 @@ Provides an interface that can be loaded by other `ArksLayer.Tweaker` modules fo
 public interface ITweakerSettings
 {
     string GameDirectory { set; get; }
+
+	string EnglishPatchVersion { set; get; }
+	string EnglishLargePatchVersion { set; get; }
+	string StoryPatchVersion { set; get; }
 }
 ```
 

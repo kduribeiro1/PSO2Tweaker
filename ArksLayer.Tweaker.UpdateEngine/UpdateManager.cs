@@ -1,9 +1,7 @@
 ﻿using ArksLayer.Tweaker.Abstractions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -266,6 +264,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             if (missingFiles.Count > 0)
             {
+                // TODO: implement sideloading against prepatch files here.
+
                 var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, DownloadedFilesLog)).ToList();
                 Output.OnPatchingStart(downloads.Count);
                 var failCount = (await Task.WhenAll(downloads)).Count(Q => !Q);
@@ -456,6 +456,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 Output.AppendLog($"Moving backup from {file} to {target}");
                 File.Move(file, target);
             }
+
+            // Why the fuck are we using hard-coded string as enum values? This is stupid
+            Settings.EnglishPatchVersion = "Not Installed";
+            Settings.EnglishLargePatchVersion = "Not Installed";
+            Settings.StoryPatchVersion = "Not Installed";
 
             Output.WriteLine("Backup restore complete!");
         }
