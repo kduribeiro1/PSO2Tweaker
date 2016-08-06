@@ -4,9 +4,16 @@ configuration:
 - Release
 - Debug
 
+cache:
+- packages -> **\PSO2 Tweaker\packages.config
+
+before_build:
+- cmd: nuget source add -Name Local -Source %APPVEYOR_BUILD_FOLDER%\dist
+- cmd: nuget restore "PSO2 Tweaker.sln"
+
 after_build:
-- cmd: git rev-parse --short %APPVEYOR_REPO_COMMIT%>%TMP%/gitshort.txt
-- cmd: set /P GITSHORT=<%TMP%/gitshort.txt
+- cmd: git rev-parse --short %APPVEYOR_REPO_COMMIT%>%TMP%\gitshort.txt
+- cmd: set /P GITSHORT=<%TMP%\gitshort.txt
 - set BUILD_ARCHIVE=%APPVEYOR_REPO_BRANCH%-%GITSHORT%-%CONFIGURATION%.7z
 - cmd: cd "PSO2 Tweaker\bin\"
 - cmd: cd %CONFIGURATION%
