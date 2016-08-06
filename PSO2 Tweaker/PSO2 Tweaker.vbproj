@@ -130,12 +130,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArksLayer.Tweaker.Abstractions, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.3.0\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.Abstractions, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.3.2\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.3.1\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.3.2\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2">
@@ -396,7 +396,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\QUANTUMSYSTEM.png" />
-    <None Include="Resources\theme_ntp_background2.png" />
     <EmbeddedResource Include="ddraw.dll" />
     <Content Include="pso2 icon 512.ico" />
   </ItemGroup>

@@ -444,6 +444,7 @@ Public Class FrmMain
                     Exit Sub
                 Else
                     Helper.DeleteFile("missing.json")
+                    Helper.DeleteFile("done.log")
                 End If
             End If
 
@@ -563,6 +564,7 @@ Public Class FrmMain
     End Function
 
     Public Sub WriteDebugInfo(ByVal addThisText As String)
+        If addThisText.Contains("PSO2 Tweaker ver ") Then Exit Sub
         If rtbDebug.InvokeRequired Then
             rtbDebug.Invoke(New Action(Of String)(AddressOf WriteDebugInfo), Text)
         Else
@@ -1148,20 +1150,6 @@ Public Class FrmMain
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
             Dim shell As Process = New Process With {.StartInfo = startInfo}
 
-            shell.Start()
-
-            If Program.GNFieldActive = True And Program.ELSActive = False Then
-                Process.Start("GN Field.exe")
-                Thread.Sleep(100)
-                End
-            End If
-
-            If Program.GNFieldActive = True And Program.ELSActive = True Then
-                Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
-                Thread.Sleep(100)
-                End
-            End If
-
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
             Try
@@ -1174,6 +1162,18 @@ Public Class FrmMain
                 Helper.WriteDebugInfoSameLine(Resources.strDone)
                 shell.Start()
             End Try
+
+            If Program.GNFieldActive = True And Program.ELSActive = False Then
+                Process.Start("GN Field.exe")
+                Thread.Sleep(100)
+                Windows.Forms.Application.Exit()
+            End If
+
+            If Program.GNFieldActive = True And Program.ELSActive = True Then
+                Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
+                Thread.Sleep(100)
+                Windows.Forms.Application.Exit()
+            End If
 
             Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
@@ -1490,6 +1490,7 @@ Public Class FrmMain
         'await updater.CleanLegacyFiles();
 
         'Console.WriteLine(settings.GameDirectory)
+        frmDownloader.CleanupUI()
         Await updater.Update(True, True)
     End Sub
 
@@ -2895,6 +2896,7 @@ Public Class FrmMain
             Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
+        frmDownloader.CleanupUI()
         Await updater.Update(False, True)
     End Sub
 
@@ -2904,15 +2906,15 @@ Public Class FrmMain
         _cancelled = False
         'Helper.WriteDebugInfo(Resources.strDownloading & "version file...")
         Program.Client.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
-        If _cancelled Then Return
+
 
         If File.Exists((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver")) Then Helper.DeleteFile((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
         File.Copy("version.ver", (_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
         'Helper.WriteDebugInfoAndOk((Resources.strDownloadedandInstalled & "version file"))
 
-        If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Updated")
-        If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Updated")
-        If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Updated")
+        'If RegKey.GetValue(Of String)(RegKey.StoryPatchVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Updated")
+        'If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Updated")
+        'If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) <> "Not Installed" Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Updated")
 
         Helper.WriteDebugInfo("Game updated to the latest version. Don't forget to re-install/update the patches, as some of the files might have been untranslated.")
         RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
@@ -2928,6 +2930,7 @@ Public Class ConsoleRenderer
     Dim patchfilecount As Integer = 0
     Dim TotalDownloadedQuantum As Long
     Dim DoneDownloading As Boolean = False
+    Dim SeenMessage As Boolean = False
     Public Sub AppendLog(s As String)
         Helper.WriteDebugInfo(s)
     End Sub
@@ -2953,9 +2956,12 @@ Public Class ConsoleRenderer
         If s.Contains("Downloading patchlists...") Then s = "Checking for PSO2 updates..."
         If s.Contains("Scanning for legacy files...") Or s.Contains("There are no legacy files to clean up!") Or s.Contains("Patchlist contains ") Then Exit Sub
         If s.Contains("Searching for latest game client hashes...") Then Exit Sub
+        If s.Contains("Unable to read the latest client file hashes!") Then s = "Couldn't find previous update data, starting from scratch..."
         If s.Contains("Game client hashes found!") Then s = "Found previous update data!"
         If s.Contains("Discovering missing files...") Then s = "Checking for missing files..."
         If s.Contains("A little housekeeping...") Then s = "Cleaning up..."
+
+        If s.Contains("PSO2 Tweaker ver") Then Exit Sub
 
         If s.Contains("PARSING ") Or s.Contains("READY ") Or s.Contains("Merging ") Then
             Exit Sub
@@ -2970,11 +2976,25 @@ Public Class ConsoleRenderer
 
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
         'Helper.WriteDebugInfo(s)
-        Helper.PatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", ""))
+        If s.Contains("Downloading a file from") Then s = s.Replace("Downloading a file from ", "Downloading ")
+        Helper.PatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
     End Sub
 
 
     Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
+        If DoneDownloading = True Then Exit Sub
+        'If url.Contains("PSO2JP.ini") Or url.Contains("gameversion.ver") Or url.Contains("GameGuard.des") Or url.Contains("edition.txt") Then
+        ' patchfilecount -= 1
+        ' client.CancelAsync()
+        ' If patchfilecount = 0 Then
+        ' DoneDownloading = True
+        ' frmDownloader.Hide()
+        ' FrmMain.FinalUpdateSteps()
+        ' Thread.Sleep(10000)
+        ' frmDownloader.Close()
+        ' End If
+        ' End If
+
         If patchfilecount > 0 Then frmDownloader.Show()
         'Dim lastprogress As Long
         Dim CaptureBar As Boolean = False
@@ -2982,9 +3002,8 @@ Public Class ConsoleRenderer
         AddHandler client.DownloadProgressChanged,
             Sub(o, e)
 
-
                 If DoneDownloading = True Then Exit Sub
-                Filename = url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "")
+                Filename = url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "")
 
                 If frmDownloader.ProgressBarX1.Text = "" And CaptureBar = False Then
                     frmDownloader.ProgressBarX1.Text = url
@@ -3084,21 +3103,21 @@ Public Class ConsoleRenderer
             frmDownloader.ProgressBarX6.Text = ""
         End If
 
-        Helper.PatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "") & "!")
-        If url.Contains(".pat") And url.Contains("exe") = False Then TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", ""))
-        If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", ""))
-        If url.Contains(".txt") = False Then _downloadedfilecount += 1
+        Helper.PatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
+        _downloadedfilecount += 1
+        If url.Contains(".pat") And url.Contains("exe") = False Then TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
+        If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("http://download.pso2.jp/patch_prod/patches/", ""))
         'FrmMain.lblStatus.Text = "Downloaded " & _downloadedfilecount & " files"
         'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadRetry(url As String, delaySecond As Integer) Implements IRenderer.OnDownloadRetry
-        Helper.Log("Retrying download for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", ""))
+        Helper.Log("Retrying download for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
         'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadAborted(url As String) Implements IRenderer.OnDownloadAborted
-        Helper.WriteDebugInfoAndWarning("Download aborted for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "") & "!")
+        Helper.WriteDebugInfoAndWarning("Download aborted for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
         'Throw New NotImplementedException()
     End Sub
 
@@ -3109,13 +3128,22 @@ Public Class ConsoleRenderer
 
     Private Sub IRenderer_OnHashProgress(progress As Integer, total As Integer) Implements IRenderer.OnHashProgress
         Dim progressvalue As Integer = CInt((progress * 100 / total))
-        FrmMain.PBMainBar.Value = progressvalue
-        FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (" & Format((progress * 100 / total), "00.00") & "%) - " & Resources.strRightClickforOptions)
+        If total - progress > 0 And total - progress < 10 And SeenMessage = False Then
+            Helper.WriteDebugInfo("These last few files might take a bit, please wait...")
+            SeenMessage = True
+        End If
+        If total - progress > 0 And total - progress < 5 Then
+            FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (99.99%) - " & Resources.strRightClickforOptions)
+            FrmMain.PBMainBar.Value = 99
+        Else
+            FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (" & Format((progress * 100 / total), "00.00") & "%) - " & Resources.strRightClickforOptions)
+            FrmMain.PBMainBar.Value = progressvalue
+        End If
+
         'FrmMain.lblStatus.Text = progress & " out of " & total & " files hashed."
     End Sub
 
     Private Sub IRenderer_OnHashComplete() Implements IRenderer.OnHashComplete
-
         'Throw New NotImplementedException()
 
     End Sub
