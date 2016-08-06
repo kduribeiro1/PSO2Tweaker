@@ -30,7 +30,12 @@ Public Class Helper
         File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
     End Sub
 
+    Public Shared Sub PatchLog(output As String)
+        File.AppendAllText(Program.StartPath & "\patchlog.txt", DateTime.Now.ToString("G") & ": " & output & vbCrLf)
+    End Sub
+
     Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
+        If addThisText.Contains("PSO2 Tweaker ver") Then Exit Sub
         Try
             Program.MainForm.WriteDebugInfo(addThisText)
         Catch
