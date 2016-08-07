@@ -27,6 +27,7 @@ Imports PSO2_Tweaker.My
 Imports System.Text
 Imports ArksLayer.Tweaker.Abstractions
 Imports ArksLayer.Tweaker.UpdateEngine
+Imports System.Security.Permissions
 
 
 ' TODO: Replace all redundant code with functions
@@ -2931,6 +2932,7 @@ Public Class ConsoleRenderer
     Dim TotalDownloadedQuantum As Long
     Dim DoneDownloading As Boolean = False
     Dim SeenMessage As Boolean = False
+    Dim patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
     Public Sub AppendLog(s As String)
         Helper.WriteDebugInfo(s)
     End Sub
@@ -2961,6 +2963,7 @@ Public Class ConsoleRenderer
         If s.Contains("Discovering missing files...") Then s = "Checking for missing files..."
         If s.Contains("A little housekeeping...") Then s = "Cleaning up..."
 
+
         If s.Contains("PSO2 Tweaker ver") Then Exit Sub
 
         If s.Contains("PARSING ") Or s.Contains("READY ") Or s.Contains("Merging ") Then
@@ -2968,20 +2971,24 @@ Public Class ConsoleRenderer
         End If
 
         If s.Contains(" deleted") Then
-            Helper.PatchLog(s)
+            patchwriter.WriteLine(s)
+            'Helper.PatchLog(s)
         Else
             Helper.WriteDebugInfo(s)
         End If
     End Sub
-
+    Public Sub WritePatchLog(s As String)
+        patchwriter.WriteLine(DateTime.Now.ToString("G") & " " & s)
+    End Sub
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
         'Helper.WriteDebugInfo(s)
         If s.Contains("Downloading a file from") Then s = s.Replace("Downloading a file from ", "Downloading ")
-        Helper.PatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
+        WritePatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
     End Sub
 
 
     Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
+
         If DoneDownloading = True Then Exit Sub
         'If url.Contains("PSO2JP.ini") Or url.Contains("gameversion.ver") Or url.Contains("GameGuard.des") Or url.Contains("edition.txt") Then
         ' patchfilecount -= 1
@@ -3076,6 +3083,7 @@ Public Class ConsoleRenderer
                 frmDownloader.lblTotal.Text = "Total amount downloaded: " & Helper.SizeSuffix(TotalDownloadedQuantum) & vbCrLf & "Total files downloaded: " & _downloadedfilecount & vbCrLf & "Files left to download: " & patchfilecount - _downloadedfilecount & "/" & patchfilecount
                 If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
                     DoneDownloading = True
+                    patchwriter.Flush()
                     frmDownloader.Hide()
                     FrmMain.FinalUpdateSteps()
                 End If
@@ -3103,7 +3111,7 @@ Public Class ConsoleRenderer
             frmDownloader.ProgressBarX6.Text = ""
         End If
 
-        Helper.PatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
+        WritePatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
         _downloadedfilecount += 1
         If url.Contains(".pat") And url.Contains("exe") = False Then TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
         If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("http://download.pso2.jp/patch_prod/patches/", ""))
