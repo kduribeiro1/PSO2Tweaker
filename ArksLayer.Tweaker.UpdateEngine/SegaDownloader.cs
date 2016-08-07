@@ -166,19 +166,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
-        /// This object will be locked when a download has been successfully completed and is about to log to a text file.
-        /// </summary>
-        private static object PatchDownloadSuccessLogLock = new object();
-
-        /// <summary>
         /// Attempts to download a patch into a target directory.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="directory"></param>
-        /// <param name="logName">If provided, will write a line containing the patch file name then flush immediately into a log when a download is successful.</param>
+        /// <param name="successLog">If provided, will write a line containing the patch file name then flush immediately into the log when a download is successful.</param>
         /// <param name="attempts">Causes the download to be retried as much as the number allows, with exponential backoff algorithm</param>
         /// <returns>True if download is successful, else false.</returns>
-        public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, string logName = null, int attempts = 4)
+        public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, StreamWriter successLog = null, int attempts = 4)
         {
             if (attempts < 1) attempts = 1;
 
@@ -203,15 +198,16 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     await download;
                     if (new FileInfo(file).Length == 0) throw new Exception("Empty response!");
 
-                    if (!string.IsNullOrEmpty(logName))
+                    Output.OnDownloadFinish(url);
+                    if (successLog != null)
                     {
-                        lock (PatchDownloadSuccessLogLock)
+                        lock (successLog)
                         {
-                            File.AppendAllText(logName, target.File + "\n", Encoding.UTF8);
+                            successLog.WriteLine(target.File);
+                            successLog.Flush();
                         }
                     }
 
-                    Output.OnDownloadFinish(url);
                     return true;
                 }
                 catch (Exception Ex)

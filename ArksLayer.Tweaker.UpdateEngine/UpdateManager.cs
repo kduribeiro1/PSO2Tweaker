@@ -106,7 +106,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// File name for logging files that were successfully downloaded.
         /// </summary>
-        private const string DownloadedFilesLog = "done.log";
+        private const string DownloadSuccessLog = "done.log";
 
         /// <summary>
         /// Returns all hashable information of game files that does not contain the word "backup".
@@ -264,35 +264,42 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             if (missingFiles.Count > 0)
             {
-                // TODO: implement sideloading against prepatch files here.
-
-                var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, DownloadedFilesLog)).ToList();
-                Output.OnPatchingStart(downloads.Count);
-                var failCount = (await Task.WhenAll(downloads)).Count(Q => !Q);
-
+                int failCount = await TryUpdateGame(missingFiles);
                 if (failCount > 0)
                 {
                     // Uh-oh, one or more download failed
                     Output.WriteLine($"Failed to download {failCount} files!");
-
                     return false;
                 }
-                else
-                {
-                    Output.WriteLine("Saving the latest client hashes...");
-                    await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
-                    Output.WriteLine("Update complete!");
-                    Housekeeping();
 
-                    return true;
-                }
-            }
-            else
-            {
-                Output.WriteLine("Your game is up-to-date!");
+                Output.WriteLine("Saving the latest client hashes...");
+                await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
+                Output.WriteLine("Update complete!");
                 Housekeeping();
-
                 return true;
+            }
+
+            Output.WriteLine("Your game is up-to-date!");
+            Housekeeping();
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to recover the missing files from remote update server or local update repository.
+        /// </summary>
+        /// <param name="missingFiles">List of missing files</param>
+        /// <returns>How many files failed to download</returns>
+        private async Task<int> TryUpdateGame(IList<PatchInfo> missingFiles)
+        {
+            using (var doneLog = File.CreateText(DownloadSuccessLog))
+            {
+                // TODO: implement sideloading prepatch files here.
+
+                Output.OnPatchingStart(missingFiles.Count);
+
+                var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, doneLog)).ToList();
+
+                return (await Task.WhenAll(downloads)).Count(Q => Q == false);
             }
         }
 
@@ -324,7 +331,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             Output.WriteLine("A little housekeeping...");
             if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);
             if (File.Exists(MissingFilesJson)) File.Delete(MissingFilesJson);
-            if (File.Exists(DownloadedFilesLog)) File.Delete(DownloadedFilesLog);
+            if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
 
             //Remove Censor
             var censorFile = Path.Combine(DataWin32Directory, "ffbff2ac5b7a7948961212cefd4d402c");
@@ -362,9 +369,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private async Task<IList<string>> ReadDownloadedFilesFromLog()
         {
-            if (!File.Exists(DownloadedFilesLog)) return new List<string>();
+            if (!File.Exists(DownloadSuccessLog)) return new List<string>();
 
-            using (var file = File.OpenText(DownloadedFilesLog))
+            using (var file = File.OpenText(DownloadSuccessLog))
             {
                 return (await file.ReadToEndAsync()).Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             }
