@@ -105,6 +105,14 @@ Public Class Helper
                 End If
 
             End If
+
+        ElseIf Process.GetProcessesByName(processName).Length > If(processName = "GN Field", 1, 0) Then
+
+            For Each proc As Process In Process.GetProcessesByName(processName)
+                If proc.Id <> currentProcessId Then proc.Kill()
+                Helper.Log("Found a mis-activated GN Field, closing!")
+            Next
+
         Else
             Return False
         End If

@@ -1153,6 +1153,7 @@ Public Class FrmMain
 
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
+            Helper.CheckIfRunning("GN Field")
             Helper.Log("Spinning GN Drives...")
             Try
                 Helper.Log("Start PSO2!")
