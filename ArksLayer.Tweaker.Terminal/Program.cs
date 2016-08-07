@@ -23,7 +23,7 @@ namespace ArksLayer.Tweaker.Terminal
             Console.WriteLine(updater.DataWin32Directory);
             Console.WriteLine(updater.BackupDirectory);
             
-            await updater.Update(false, true);
+            await updater.Update(false);
         }
 
         public static void Main(string[] args)
