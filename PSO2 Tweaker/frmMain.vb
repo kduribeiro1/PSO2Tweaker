@@ -1153,7 +1153,13 @@ Public Class FrmMain
 
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
-            Helper.CheckIfRunning("GN Field")
+            Helper.Log("Checking for extra GN Fields...")
+            Dim processname As String = "GN Field"
+            If Process.GetProcessesByName(processname).Length > 0 Then
+                For Each proc As Process In Process.GetProcessesByName(processname)
+                    proc.Kill()
+                Next
+            End If
             Helper.Log("Spinning GN Drives...")
             Try
                 Helper.Log("Start PSO2!")
