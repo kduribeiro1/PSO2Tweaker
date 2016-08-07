@@ -2962,7 +2962,11 @@ Public Class ConsoleRenderer
         If s.Contains("Game client hashes found!") Then s = "Found previous update data!"
         If s.Contains("Discovering missing files...") Then s = "Checking for missing files..."
         If s.Contains("A little housekeeping...") Then s = "Cleaning up..."
-
+        If s.Contains("Your game is up-to-date!") Then
+            s = "Your game appears to be up-to-date! If you believe this is incorrect, please click Troubleshooting -> Check for Old/Missing Files to do a full filecheck instead of a fast check."
+            patchwriter.Flush()
+            patchwriter.Close()
+        End If
 
         If s.Contains("PSO2 Tweaker ver") Then Exit Sub
 

@@ -742,7 +742,7 @@
     <value>Checks to see if any data files are non-existant</value>
   </data>
   <data name="ButtonItem10.Text" xml:space="preserve">
-    <value>Completely check all files</value>
+    <value>Check for Old/Missing Files</value>
   </data>
   <data name="ButtonItem10.Tooltip" xml:space="preserve">
     <value>Checks for deleted files AND out-of-date files</value>
@@ -8101,7 +8101,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.0.9.1, Culture=neutral, PublicKeyToken=null</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.1.0.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
