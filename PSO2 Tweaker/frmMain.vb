@@ -1153,27 +1153,37 @@ Public Class FrmMain
 
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
+            Helper.Log("Spinning GN Drives...")
             Try
+                Helper.Log("Start PSO2!")
                 shell.Start()
             Catch ex As Exception
+                Helper.Log("EXCEPTION, HELP! ;_;")
                 Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
                 DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
                 If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
                 File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
                 Helper.WriteDebugInfoSameLine(Resources.strDone)
+                Helper.Log("Starting PSO2 again.")
                 shell.Start()
             End Try
 
             If Program.GNFieldActive = True And Program.ELSActive = False Then
+                Helper.Log("GN Field is supposed to be active! Let's start it!")
                 Process.Start("GN Field.exe")
-                Thread.Sleep(100)
-                Windows.Forms.Application.Exit()
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
+                Helper.Log("CLOSING APPLICATION!")
+                Me.Close()
             End If
 
             If Program.GNFieldActive = True And Program.ELSActive = True Then
+                Helper.Log("GN Field is supposed to be active, and the ELS are invading! Let's start it with a random name!")
                 Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
-                Thread.Sleep(100)
-                Windows.Forms.Application.Exit()
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
+                Helper.Log("CLOSING APPLICATION!")
+                Me.Close()
             End If
 
             Hide()
