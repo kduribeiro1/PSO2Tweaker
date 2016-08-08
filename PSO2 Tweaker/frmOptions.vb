@@ -80,8 +80,7 @@ Public Class FrmOptions
             ComboItem40.Text = "Last installed: " & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)
             ComboItem42.Text = "Latest version: " & RegKey.GetValue(Of String)(RegKey.NewLargeFilesVersion)
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.Log(ex.Message)
         Finally
             _isLoading = False
             ResumeLayout(False)

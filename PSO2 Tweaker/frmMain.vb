@@ -194,8 +194,7 @@ Public Class FrmMain
                 chkSwapOP.TextColor = color
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         Finally
             ResumeLayout(False)
         End Try
@@ -287,15 +286,13 @@ Public Class FrmMain
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
 
         Try
             CheckForTweakerUpdates()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
 
         Try
@@ -507,8 +504,7 @@ Public Class FrmMain
 
             'Helper.WriteDebugInfoSameLine(Resources.strDone)
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace:  " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
 
         Helper.DeleteFile("Story MD5HashList.txt")
@@ -791,8 +787,7 @@ Public Class FrmMain
             End If
 
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -810,8 +805,7 @@ Public Class FrmMain
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -831,8 +825,7 @@ Public Class FrmMain
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -889,8 +882,7 @@ Public Class FrmMain
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1101,8 +1093,7 @@ Public Class FrmMain
             UnlockGui()
 
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1137,8 +1128,7 @@ Public Class FrmMain
                         Baka.ShowDialog()
                         Exit Sub
                     Catch ex As Exception
-                        Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-                        Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+                        Helper.LogWithException(Resources.strERROR, ex)
                     Finally
                         Cursor = Cursors.Default
                     End Try
@@ -1228,8 +1218,7 @@ Public Class FrmMain
             Close()
 
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1272,8 +1261,7 @@ Public Class FrmMain
                 RestoreBackup(EnglishPatch)
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1284,8 +1272,7 @@ Public Class FrmMain
                 RestoreBackup(LargeFiles)
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1592,8 +1579,7 @@ Public Class FrmMain
             If SkipDialogs = False Then Helper.WriteDebugInfoAndOk(Resources.strGGReset)
             If SkipDialogs = True Then btnLaunchPSO2.PerformClick()
         Catch ex As Exception
-            If SkipDialogs = False Then Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            If SkipDialogs = False Then Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            If SkipDialogs = False Then Helper.LogWithException(Resources.strERROR, ex)
             If ex.Message.Contains("Access to the ") Then MsgBox("It looks like Gameguard believes it's open, whether or not it actually is. You'll need to restart your computer to fix this problem. Sorry!")
         End Try
     End Sub
@@ -1647,8 +1633,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo(Resources.strAllNecessaryFiles)
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1659,8 +1644,7 @@ Public Class FrmMain
                 RestoreBackup(StoryPatch)
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1696,8 +1680,7 @@ Public Class FrmMain
             Helper.WriteDebugInfoSameLine(Resources.strDone)
             MsgBox(Resources.strFixPermissionsDone)
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1773,8 +1756,7 @@ Public Class FrmMain
             _pso2OptionsFrm.Left += 50
             _pso2OptionsFrm.ShowDialog()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         Finally
             Cursor = Cursors.Default
         End Try
@@ -1790,8 +1772,7 @@ Public Class FrmMain
             _optionsFrm.Left += 50
             _optionsFrm.ShowDialog()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         Finally
             Cursor = Cursors.Default
         End Try
@@ -2044,7 +2025,7 @@ Public Class FrmMain
             'Change to Tweaker2 to test Sidebar theming.
             WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.html")
         Catch ex As Exception
-            Helper.WriteDebugInfo("Web Browser failed: " & ex.Message.ToString)
+            Helper.LogWithException("Web Browser failed: ", ex)
         End Try
     End Sub
 
@@ -2081,8 +2062,7 @@ Public Class FrmMain
             FrmDiagnostic.Left += 50
             FrmDiagnostic.ShowDialog()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -2220,7 +2200,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo("All done! You should now be able to connect to " & proxyInfo.Name & ".")
             RegKey.SetValue(Of Boolean)(RegKey.ProxyEnabled, True)
         Catch ex As Exception
-            Helper.WriteDebugInfoAndFailed("ERROR - " & ex.Message)
+            Helper.WriteDebugInfoAndFailed(Helper.ExceptionDump("ERROR - ", ex))
             Dim exceptionType As Type = ex.GetType()
             If exceptionType = GetType(SecurityException) OrElse exceptionType = GetType(UnauthorizedAccessException) Then
                 MsgBox("It seems you've gotten an error while trying to patch your HOSTS file. Please go to the " & Environment.SystemDirectory & "\drivers\etc\ folder, right click on the hosts file, and make sure ""Read Only"" is not checked. Then try again." & vbNewLine & "When you click Okay, the Tweaker will also generate a pastebin of your HOSTS file and what is locking it. Look at the bottom of the pastebin where the 'HOSTS Handle stuff' is.")
@@ -2352,8 +2332,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo(patchname & " " & Resources.strInstalledUpdated)
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -2515,8 +2494,7 @@ Public Class FrmMain
             Helper.DeleteFile(patchName)
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -2548,8 +2526,7 @@ Public Class FrmMain
             RegKey.SetValue(Of String)(patchVersionKey, "Not Installed")
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -2709,8 +2686,7 @@ Public Class FrmMain
             frmPlugins.ShowDialog()
             Exit Sub
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         Finally
             Cursor = Cursors.Default
         End Try
@@ -2720,8 +2696,7 @@ Public Class FrmMain
         Try
             source = Program.AreYouAlive.DownloadString("http://107.170.16.100/Plugins/PluginMD5HashList.txt")
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo("Failed to get the plugin update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
+            Helper.LogWithException("Failed to get the plugin update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.", ex)
             Exit Sub
         End Try
         DownloadFile("http://107.170.16.100/Plugins/PluginMD5HashList.txt", "PluginMD5HashList.txt")
@@ -2923,8 +2898,7 @@ Public Class FrmMain
             'frmDownloader.TopMost = True
             'Me.TopMost = False
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
         frmDownloader.CleanupUI()
         Await updater.Update(False)
