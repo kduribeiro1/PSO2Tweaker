@@ -30,10 +30,6 @@ Public Class Helper
         File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
     End Sub
 
-    Public Shared Sub PatchLog(output As String)
-        File.AppendAllText(Program.StartPath & "\patchlog.txt", DateTime.Now.ToString("G") & ": " & output & vbCrLf)
-    End Sub
-
     Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
         If addThisText.Contains("PSO2 Tweaker ver") Then Exit Sub
         Try
@@ -93,7 +89,9 @@ Public Class Helper
         End Try
     End Sub
 
+
     Public Shared Function CheckIfRunning(processName As String) As Boolean
+
         Dim currentProcessId = Process.GetCurrentProcess().Id
 
         If Process.GetProcessesByName(processName).Length > If(processName = "PSO2 Tweaker", 1, 0) Then

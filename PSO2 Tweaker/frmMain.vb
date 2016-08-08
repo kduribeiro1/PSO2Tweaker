@@ -27,6 +27,7 @@ Imports PSO2_Tweaker.My
 Imports System.Text
 Imports ArksLayer.Tweaker.Abstractions
 Imports ArksLayer.Tweaker.UpdateEngine
+Imports System.Security.Permissions
 
 
 ' TODO: Replace all redundant code with functions
@@ -334,6 +335,7 @@ Public Class FrmMain
                 For index = 1 To 5
                     If Helper.GetMd5("GN Field.exe") <> GNFieldMD5 Then
                         Helper.WriteDebugInfo("Your GN Field appears to be corrupt or outdated, redownloading...")
+                        Helper.Log("MD5 of current GN Field is " & Helper.GetMd5("GN Field.exe") & ", should have been " & GNFieldMD5 & ".")
                         Application.DoEvents()
                         DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
                     Else
@@ -1142,28 +1144,53 @@ Public Class FrmMain
 
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
-            Try
-                shell.Start()
-            Catch ex As Exception
-                Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
-                If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
-                File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
-                shell.Start()
-            End Try
+            Helper.Log("Checking for extra GN Fields...")
+            Dim processname As String = "GN Field"
+            If Process.GetProcessesByName(processname).Length > 0 Then
+                For Each proc As Process In Process.GetProcessesByName(processname)
+                    proc.Kill()
+                Next
+            End If
+            Helper.Log("Spinning GN Drives...")
 
             If Program.GNFieldActive = True And Program.ELSActive = False Then
+                Helper.Log("GN Field is supposed to be active! Let's start it!")
                 Process.Start("GN Field.exe")
-                Thread.Sleep(100)
-                Windows.Forms.Application.Exit()
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
             End If
 
             If Program.GNFieldActive = True And Program.ELSActive = True Then
+                Helper.Log("GN Field is supposed to be active, and the ELS are invading! Let's start it with a random name!")
                 Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
-                Thread.Sleep(100)
-                Windows.Forms.Application.Exit()
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
             End If
+
+            If Program.GNFieldActive = False Then
+                Try
+                    Helper.Log("Start PSO2!")
+                    shell.Start()
+                Catch ex As Exception
+                    Helper.Log("EXCEPTION, HELP! ;_;")
+                    Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
+                    If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
+                    File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
+                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    Helper.Log("Starting PSO2 again.")
+                    shell.Start()
+                End Try
+            Else
+                Thread.Sleep(100)
+                Helper.Log("Waiting for GN Field to activate...")
+                Thread.Sleep(60000)
+                Helper.WriteDebugInfoAndFailed("GN Field failed to launch! Please restart the PSO2 Tweaker.")
+                Helper.Log("Slept for 60 seconds, GN Field didn't launch. Exiting PSO2 Launch method.")
+                Exit Sub
+            End If
+
+
 
             Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
@@ -1478,7 +1505,7 @@ Public Class FrmMain
 
         'Console.WriteLine(settings.GameDirectory)
         frmDownloader.CleanupUI()
-        Await updater.Update(True, True)
+        Await updater.Update(True)
     End Sub
 
     Private Sub btnGameguard_Click(sender As Object, e As EventArgs) Handles btnGameguard.Click
@@ -2505,7 +2532,10 @@ Public Class FrmMain
 
     Private Sub RestoreBackup(patchName As String)
         Dim backupPath As String = BuildBackupPath(patchName)
-        If Directory.Exists(backupPath) = False Then Return
+        If Directory.Exists(backupPath) = False Then
+            Helper.WriteDebugInfoAndWarning("Could not find the backup path! Are you sure you have a backup in your win32/backup folder?")
+            Return
+        End If
 
         Dim di As New DirectoryInfo(backupPath)
         Helper.WriteDebugInfoAndOk("Restoring " & patchName & " backup...")
@@ -2871,7 +2901,7 @@ Public Class FrmMain
             Helper.LogWithException(Resources.strERROR, ex)
         End Try
         frmDownloader.CleanupUI()
-        Await updater.Update(False, True)
+        Await updater.Update(False)
     End Sub
 
     Public Sub FinalUpdateSteps()
@@ -2905,6 +2935,7 @@ Public Class ConsoleRenderer
     Dim TotalDownloadedQuantum As Long
     Dim DoneDownloading As Boolean = False
     Dim SeenMessage As Boolean = False
+    Dim patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
     Public Sub AppendLog(s As String)
         Helper.WriteDebugInfo(s)
     End Sub
@@ -2934,6 +2965,11 @@ Public Class ConsoleRenderer
         If s.Contains("Game client hashes found!") Then s = "Found previous update data!"
         If s.Contains("Discovering missing files...") Then s = "Checking for missing files..."
         If s.Contains("A little housekeeping...") Then s = "Cleaning up..."
+        If s.Contains("Your game is up-to-date!") Then
+            s = "Your game appears to be up-to-date! If you believe this is incorrect, please click Troubleshooting -> Check for Old/Missing Files to do a full filecheck instead of a fast check."
+            patchwriter.Flush()
+            patchwriter.Close()
+        End If
 
         If s.Contains("PSO2 Tweaker ver") Then Exit Sub
 
@@ -2942,20 +2978,24 @@ Public Class ConsoleRenderer
         End If
 
         If s.Contains(" deleted") Then
-            Helper.PatchLog(s)
+            patchwriter.WriteLine(s)
+            'Helper.PatchLog(s)
         Else
             Helper.WriteDebugInfo(s)
         End If
     End Sub
-
+    Public Sub WritePatchLog(s As String)
+        patchwriter.WriteLine(DateTime.Now.ToString("G") & " " & s)
+    End Sub
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
         'Helper.WriteDebugInfo(s)
         If s.Contains("Downloading a file from") Then s = s.Replace("Downloading a file from ", "Downloading ")
-        Helper.PatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
+        WritePatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
     End Sub
 
 
     Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
+
         If DoneDownloading = True Then Exit Sub
         'If url.Contains("PSO2JP.ini") Or url.Contains("gameversion.ver") Or url.Contains("GameGuard.des") Or url.Contains("edition.txt") Then
         ' patchfilecount -= 1
@@ -3050,6 +3090,7 @@ Public Class ConsoleRenderer
                 frmDownloader.lblTotal.Text = "Total amount downloaded: " & Helper.SizeSuffix(TotalDownloadedQuantum) & vbCrLf & "Total files downloaded: " & _downloadedfilecount & vbCrLf & "Files left to download: " & patchfilecount - _downloadedfilecount & "/" & patchfilecount
                 If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
                     DoneDownloading = True
+                    patchwriter.Flush()
                     frmDownloader.Hide()
                     FrmMain.FinalUpdateSteps()
                 End If
@@ -3077,7 +3118,7 @@ Public Class ConsoleRenderer
             frmDownloader.ProgressBarX6.Text = ""
         End If
 
-        Helper.PatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
+        WritePatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/", "").Replace(".pat", "") & "!")
         _downloadedfilecount += 1
         If url.Contains(".pat") And url.Contains("exe") = False Then TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
         If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("http://download.pso2.jp/patch_prod/patches/", ""))
