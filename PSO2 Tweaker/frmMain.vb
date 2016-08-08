@@ -1176,23 +1176,27 @@ Public Class FrmMain
                 'Thread.Sleep(100)
             End If
 
-            Try
-                Helper.Log("Start PSO2!")
-                shell.Start()
-            Catch ex As Exception
-                Helper.Log("EXCEPTION, HELP! ;_;")
-                Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
-                If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
-                File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
-                Helper.Log("Starting PSO2 again.")
-                shell.Start()
-            End Try
+            If Program.GNFieldActive = False Then
+                Try
+                    Helper.Log("Start PSO2!")
+                    shell.Start()
+                Catch ex As Exception
+                    Helper.Log("EXCEPTION, HELP! ;_;")
+                    Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
+                    If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
+                    File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
+                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    Helper.Log("Starting PSO2 again.")
+                    shell.Start()
+                End Try
+            Else
+                Thread.Sleep(100)
+                Helper.Log("CLOSING APPLICATION!")
+                Me.Close()
+            End If
 
-            Thread.Sleep(100)
-            Helper.Log("CLOSING APPLICATION!")
-            Me.Close()
+
 
             Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
