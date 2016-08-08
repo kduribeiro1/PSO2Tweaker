@@ -294,7 +294,7 @@ Public Class Helper
 
     Public Shared Sub LogWithException(message As String, e As Exception)
         Log(e.Message.ToString & " Stack Trace: " & e.StackTrace)
-        Helper.WriteDebugInfo(Helper.ExceptionDump(Resources.strERROR, e))
+        Helper.WriteDebugInfo(Helper.ExceptionDump(message, e))
     End Sub
 
     Public Shared Function ExceptionDump(message As String, e As Exception) As String
