@@ -1161,6 +1161,21 @@ Public Class FrmMain
                 Next
             End If
             Helper.Log("Spinning GN Drives...")
+
+            If Program.GNFieldActive = True And Program.ELSActive = False Then
+                Helper.Log("GN Field is supposed to be active! Let's start it!")
+                Process.Start("GN Field.exe")
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
+            End If
+
+            If Program.GNFieldActive = True And Program.ELSActive = True Then
+                Helper.Log("GN Field is supposed to be active, and the ELS are invading! Let's start it with a random name!")
+                Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
+            End If
+
             Try
                 Helper.Log("Start PSO2!")
                 shell.Start()
@@ -1175,23 +1190,9 @@ Public Class FrmMain
                 shell.Start()
             End Try
 
-            If Program.GNFieldActive = True And Program.ELSActive = False Then
-                Helper.Log("GN Field is supposed to be active! Let's start it!")
-                Process.Start("GN Field.exe")
-                'Maybe the sleep is the problem?
-                'Thread.Sleep(100)
-                Helper.Log("CLOSING APPLICATION!")
-                Me.Close()
-            End If
-
-            If Program.GNFieldActive = True And Program.ELSActive = True Then
-                Helper.Log("GN Field is supposed to be active, and the ELS are invading! Let's start it with a random name!")
-                Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
-                'Maybe the sleep is the problem?
-                'Thread.Sleep(100)
-                Helper.Log("CLOSING APPLICATION!")
-                Me.Close()
-            End If
+            Thread.Sleep(100)
+            Helper.Log("CLOSING APPLICATION!")
+            Me.Close()
 
             Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
