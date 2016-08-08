@@ -89,8 +89,7 @@ Public Class Helper
         Try
             If File.Exists(path) Then File.Delete(path)
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -289,8 +288,23 @@ Public Class Helper
             WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            WriteDebugInfo(Resources.strERROR & ex.Message)
+            LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
+
+    Public Shared Sub LogWithException(message As String, e As Exception)
+        Log(e.Message.ToString & " Stack Trace: " & e.StackTrace)
+        Helper.WriteDebugInfo(Helper.ExceptionDump(Resources.strERROR, e))
+    End Sub
+
+    Public Shared Function ExceptionDump(message As String, e As Exception) As String
+        Dim text As String = String.Empty
+
+        text += String.Format("{0} - {1}: {2}", message, e.[GetType](), e)
+        If e.InnerException IsNot Nothing Then
+            text += String.Format(vbLf & "[Error] Inner Exception: {0}", e.InnerException)
+        End If
+
+        Return text
+    End Function
 End Class

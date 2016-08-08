@@ -184,6 +184,7 @@ Namespace My
                                         Catch ex As Exception
                                             If tries = 4 Then
                                                 Helper.Log("Failed to download translation files! (" & ex.Message.ToString & "). Try rebooting your computer or making sure PSO2 isn't open.")
+                                                Helper.WriteDebugInfo(Helper.ExceptionDump(Resources.strERROR, ex))
                                                 Exit Try
                                             End If
                                         End Try
@@ -215,15 +216,13 @@ Namespace My
                         If launchPso2 Then Environment.Exit(0)
 
                     Catch ex As Exception
-                        Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-                        Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+                        Helper.LogWithException(Resources.strERROR, ex)
                     End Try
                 Next
 
                 If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-                Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+                Helper.LogWithException(Resources.strERROR, ex)
             End Try
 
             Try
@@ -302,8 +301,7 @@ Namespace My
                     Helper.Log("----------------------------------------")
                 End If
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-                Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+                Helper.LogWithException(Resources.strERROR, ex)
             End Try
         End Sub
     End Class

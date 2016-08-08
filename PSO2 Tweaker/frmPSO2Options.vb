@@ -107,8 +107,7 @@ Public Class FrmPso2Options
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         Finally
             ResumeLayout(False)
         End Try
@@ -132,8 +131,7 @@ Public Class FrmPso2Options
                 End If
             Next
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
         Return ""
     End Function
@@ -164,8 +162,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -196,8 +193,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -240,8 +236,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -286,8 +281,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -330,8 +324,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -376,8 +369,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
     Private Sub btnSaveSettings_Click(sender As Object, e As EventArgs) Handles btnSaveSettings.Click
