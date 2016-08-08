@@ -338,6 +338,7 @@ Public Class FrmMain
                 For index = 1 To 5
                     If Helper.GetMd5("GN Field.exe") <> GNFieldMD5 Then
                         Helper.WriteDebugInfo("Your GN Field appears to be corrupt or outdated, redownloading...")
+                        Helper.Log("MD5 of current GN Field is " & Helper.GetMd5("GN Field.exe") & ", should have been " & GNFieldMD5 & ".")
                         Application.DoEvents()
                         DownloadFile(Program.FreedomUrl & "GN Field.exe", "GN Field.exe")
                     Else
@@ -1192,8 +1193,11 @@ Public Class FrmMain
                 End Try
             Else
                 Thread.Sleep(100)
-                Helper.Log("CLOSING APPLICATION!")
-                End
+                Helper.Log("Waiting for GN Field to activate...")
+                Thread.Sleep(60000)
+                Helper.WriteDebugInfoAndFailed("GN Field failed to launch! Please restart the PSO2 Tweaker.")
+                Helper.Log("Slept for 60 seconds, GN Field didn't launch. Exiting PSO2 Launch method.")
+                Exit Sub
             End If
 
 
@@ -2551,7 +2555,10 @@ Public Class FrmMain
 
     Private Sub RestoreBackup(patchName As String)
         Dim backupPath As String = BuildBackupPath(patchName)
-        If Directory.Exists(backupPath) = False Then Return
+        If Directory.Exists(backupPath) = False Then
+            Helper.WriteDebugInfoAndWarning("Could not find the backup path! Are you sure you have a backup in your win32/backup folder?")
+            Return
+        End If
 
         Dim di As New DirectoryInfo(backupPath)
         Helper.WriteDebugInfoAndOk("Restoring " & patchName & " backup...")
