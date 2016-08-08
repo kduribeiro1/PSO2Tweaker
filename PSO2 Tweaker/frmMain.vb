@@ -1509,7 +1509,7 @@ Public Class FrmMain
 
         'Console.WriteLine(settings.GameDirectory)
         frmDownloader.CleanupUI()
-        Await updater.Update(True, True)
+        Await updater.Update(True)
     End Sub
 
     Private Sub btnGameguard_Click(sender As Object, e As EventArgs) Handles btnGameguard.Click
@@ -2915,7 +2915,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
         frmDownloader.CleanupUI()
-        Await updater.Update(False, True)
+        Await updater.Update(False)
     End Sub
 
     Public Sub FinalUpdateSteps()
