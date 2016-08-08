@@ -85,7 +85,7 @@ Public Class Helper
         Try
             If File.Exists(path) Then File.Delete(path)
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -287,7 +287,7 @@ Public Class Helper
             WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub

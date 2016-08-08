@@ -215,14 +215,14 @@ Namespace My
                         If launchPso2 Then Environment.Exit(0)
 
                     Catch ex As Exception
-                        Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                        Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
                         Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
                     End Try
                 Next
 
                 If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             End Try
 
@@ -302,7 +302,7 @@ Namespace My
                     Helper.Log("----------------------------------------")
                 End If
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             End Try
         End Sub

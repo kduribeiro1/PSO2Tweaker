@@ -107,7 +107,7 @@ Public Class FrmPso2Options
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             ResumeLayout(False)
@@ -132,7 +132,7 @@ Public Class FrmPso2Options
                 End If
             Next
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
         Return ""
@@ -164,7 +164,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -196,7 +196,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -240,7 +240,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -286,7 +286,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -330,7 +330,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -376,7 +376,7 @@ Public Class FrmPso2Options
                 End If
             Next i
         Catch ex As Exception
-            Helper.Log(ex.Message)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
