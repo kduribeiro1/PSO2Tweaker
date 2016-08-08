@@ -35,11 +35,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// My game client was updated ever since Episode 2: using this method weeds out 1300+ files (1GB).
         /// </summary>
         /// <returns></returns>
-        private void CleanLegacyFiles(IList<PatchInfo> patchlist)
+        private void CleanLegacyFiles(IList<PatchInfo> patchlist, IList<string> gameFiles)
         {
             Output.WriteLine("Scanning for legacy files...");
-
-            var gamefiles = EnumerateGameFiles().Select(Q => Q.FileName);
 
             var requiredFiles = patchlist.AsParallel().Select(Q =>
             {
@@ -47,13 +45,13 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 return Path.Combine(Settings.GameDirectory, shortpath);
             });
 
-            // Only delete files in /data/win32 for safety. 
-            // Prevents deleting weird stuffs like GameGuard or Tweaker stuffs
+            // Only delete files in /data/win32 for safety. Prevents deleting weird stuffs like GameGuard or Tweaker stuffs.
+            // The following line is no longer needed because EnumerateGameFiles already only sending out files in /data/win32 and several whitelisted files in pso2_bin.
+            // .Where(Q => Q.StartsWith(DataWin32Directory, StringComparison.InvariantCultureIgnoreCase))
 
-            var legacyFiles = gamefiles
+            var legacyFiles = gameFiles
                 .AsParallel()
                 .Except(requiredFiles)
-                .Where(Q => Q.StartsWith(DataWin32Directory, StringComparison.InvariantCultureIgnoreCase))
                 .Select(Q => new FileInfo(Q))
                 .ToList();
 
@@ -68,7 +66,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             Parallel.ForEach(legacyFiles, Q =>
             {
-                File.Delete(Q.FullName);
+                Q.Delete();
                 Output.WriteLine($"{Q.FullName} deleted.");
             });
         }
@@ -106,21 +104,40 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// File name for logging files that were successfully downloaded.
         /// </summary>
-        private const string DownloadedFilesLog = "done.log";
+        private const string DownloadSuccessLog = "done.log";
 
         /// <summary>
-        /// Returns all hashable information of game files that does not contain the word "backup".
+        /// Returns a list of all game files.
+        /// </summary>
+        /// <returns></returns>
+        private IList<string> EnumerateGameFiles()
+        {
+            var gameFiles = Directory.GetFiles(DataWin32Directory, "*.*", SearchOption.AllDirectories)
+                .AsParallel()
+                // Logically, since this method is being called AFTER backup restore, there shouldn't be any more files in the backup folder. But hey, better be safe than sorry!
+                .Where(Q => !Q.StartsWith(BackupDirectory, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+
+            // Initially only get files in data/win32 directory because some dude has 20M files in the pso2_bin folder. The fuck?
+            gameFiles.Add(Path.Combine(Settings.GameDirectory, "pso2.exe"));
+            gameFiles.Add(Path.Combine(Settings.GameDirectory, "pso2launcher.exe"));
+            gameFiles.Add(Path.Combine(Settings.GameDirectory, "pso2updater.exe"));
+            gameFiles.Add(Path.Combine(Settings.GameDirectory, "pso2download.exe"));
+            gameFiles.Add(Path.Combine(Settings.GameDirectory, "pso2predownload.exe"));
+
+            return gameFiles;
+        }
+
+        /// <summary>
+        /// Return all hashable information of game files.
         /// File order is sorted for optimal hill-climbing disk buffer and to avoid Branch Predictor failures.
         /// </summary>
         /// <returns></returns>
-        private IList<HashModel> EnumerateGameFiles()
+        private IList<HashModel> PrepareGameFilesHashModels()
         {
-            return Directory.GetFiles(Settings.GameDirectory, "*.*", SearchOption.AllDirectories)
+            return EnumerateGameFiles()
                 .AsParallel()
                 .Select(Q => new FileInfo(Q))
-                // Logically, since this method is being called AFTER backup restore, there shouldn't be any more files in the backup folder.
-                // But hey, better be safe than sorry!
-                .Where(Q => !Q.DirectoryName.StartsWith(BackupDirectory, StringComparison.InvariantCultureIgnoreCase))
                 .Select(Q => new HashModel
                 {
                     FileName = Q.FullName,
@@ -134,16 +151,15 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
         /// <summary>
         /// Perform a (fast) whole client rehash.
-        /// When done, save the hashes into the named JSON file.
+        /// When done, save the hashes into the named JSON file and return the result.
         /// </summary>
         /// <returns></returns>
         private async Task<IDictionary<string, string>> RehashWholeClient()
         {
             Output.OnHashStart();
 
-            var gameFiles = EnumerateGameFiles();
-            var fileCount = gameFiles.Count();
-
+            var gameFiles = PrepareGameFilesHashModels();
+            var fileCount = gameFiles.Count;
             foreach (var file in gameFiles)
             {
                 Output.AppendLog("Queued for hashing: " + file.FileName);
@@ -239,9 +255,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <param name="rehash">Can be set true if desiring a full client rehash and hence rebuilding the game client hash file.
         /// Else will attempt to read from past client hashes, which in turn gets compiled from the latest game client update patchlist.
         /// (A much more elegant solution instead of maintaining your own hashes!)</param>
-        /// <param name="cleanLegacy">Can be set true if desiring a legacy (unneeded) file cleanup.</param>
         /// <returns>True if patching is successful. False otherwise.</returns>
-        public async Task<bool> Update(bool rehash = false, bool cleanLegacy = true)
+        public async Task<bool> Update(bool rehash = false)
         {
             IList<PatchInfo> patchlist;
             IList<PatchInfo> missingFiles;
@@ -254,45 +269,55 @@ namespace ArksLayer.Tweaker.UpdateEngine
             else
             {
                 var patchlistDownload = Downloader.FetchUpdatePatchlist();
-                RestoreBackupFiles();
-                patchlist = await patchlistDownload;
-                if (cleanLegacy) CleanLegacyFiles(patchlist);
 
-                var gameFiles = await GetClientHash(rehash);
-                missingFiles = await DiscoverMissingPatches(gameFiles, patchlist);
+                RestoreBackupFiles();
+                var gameFiles = EnumerateGameFiles();
+                patchlist = await patchlistDownload;
+
+                CleanLegacyFiles(patchlist, gameFiles);
+                var gameHashes = await GetClientHash(rehash);
+
+                missingFiles = await DiscoverMissingPatches(gameHashes, patchlist);
             }
 
             if (missingFiles.Count > 0)
             {
-                // TODO: implement sideloading against prepatch files here.
-
-                var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, DownloadedFilesLog)).ToList();
-                Output.OnPatchingStart(downloads.Count);
-                var failCount = (await Task.WhenAll(downloads)).Count(Q => !Q);
-
+                int failCount = await TryUpdateGame(missingFiles);
                 if (failCount > 0)
                 {
                     // Uh-oh, one or more download failed
                     Output.WriteLine($"Failed to download {failCount} files!");
-
                     return false;
                 }
-                else
-                {
-                    Output.WriteLine("Saving the latest client hashes...");
-                    await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
-                    Output.WriteLine("Update complete!");
-                    Housekeeping();
 
-                    return true;
-                }
-            }
-            else
-            {
-                Output.WriteLine("Your game is up-to-date!");
+                Output.WriteLine("Saving the latest client hashes...");
+                await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
+                Output.WriteLine("Update complete!");
                 Housekeeping();
-
                 return true;
+            }
+
+            Output.WriteLine("Your game is up-to-date!");
+            Housekeeping();
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to recover the missing files from remote update server or local update repository.
+        /// </summary>
+        /// <param name="missingFiles">List of missing files</param>
+        /// <returns>How many files failed to download</returns>
+        private async Task<int> TryUpdateGame(IList<PatchInfo> missingFiles)
+        {
+            using (var doneLog = File.CreateText(DownloadSuccessLog))
+            {
+                // TODO: implement sideloading prepatch files here.
+
+                Output.OnPatchingStart(missingFiles.Count);
+
+                var downloads = missingFiles.Select(patch => Downloader.DownloadGamePatch(patch, Settings.GameDirectory, doneLog)).ToList();
+
+                return (await Task.WhenAll(downloads)).Count(Q => Q == false);
             }
         }
 
@@ -324,7 +349,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             Output.WriteLine("A little housekeeping...");
             if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);
             if (File.Exists(MissingFilesJson)) File.Delete(MissingFilesJson);
-            if (File.Exists(DownloadedFilesLog)) File.Delete(DownloadedFilesLog);
+            if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
 
             //Remove Censor
             var censorFile = Path.Combine(DataWin32Directory, "ffbff2ac5b7a7948961212cefd4d402c");
@@ -362,9 +387,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private async Task<IList<string>> ReadDownloadedFilesFromLog()
         {
-            if (!File.Exists(DownloadedFilesLog)) return new List<string>();
+            if (!File.Exists(DownloadSuccessLog)) return new List<string>();
 
-            using (var file = File.OpenText(DownloadedFilesLog))
+            using (var file = File.OpenText(DownloadSuccessLog))
             {
                 return (await file.ReadToEndAsync()).Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             }

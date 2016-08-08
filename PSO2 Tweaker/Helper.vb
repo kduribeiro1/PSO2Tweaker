@@ -30,10 +30,6 @@ Public Class Helper
         File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": DEBUG - " & output & vbCrLf)
     End Sub
 
-    Public Shared Sub PatchLog(output As String)
-        File.AppendAllText(Program.StartPath & "\patchlog.txt", DateTime.Now.ToString("G") & ": " & output & vbCrLf)
-    End Sub
-
     Public Shared Sub WriteDebugInfo(ByVal addThisText As String)
         If addThisText.Contains("PSO2 Tweaker ver") Then Exit Sub
         Try
@@ -89,12 +85,14 @@ Public Class Helper
         Try
             If File.Exists(path) Then File.Delete(path)
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
 
+
     Public Shared Function CheckIfRunning(processName As String) As Boolean
+
         Dim currentProcessId = Process.GetCurrentProcess().Id
 
         If Process.GetProcessesByName(processName).Length > If(processName = "PSO2 Tweaker", 1, 0) Then
@@ -289,7 +287,7 @@ Public Class Helper
             WriteDebugInfoAndOk(Program.Pso2RootDir & " " & Resources.strSetAsYourPSO2)
 
         Catch ex As Exception
-            Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.Log(ex.Message.ToString & vbCrLf & "Base Exception: " & ex.GetBaseException.ToString & vbCrLf & "Inner Exception: " & ex.InnerException.ToString & vbCrLf & "Stack Trace: " & ex.StackTrace.ToString & vbCrLf & "Target Site: " & ex.TargetSite.ToString)
             WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
