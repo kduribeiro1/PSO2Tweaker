@@ -1193,7 +1193,7 @@ Public Class FrmMain
             Else
                 Thread.Sleep(100)
                 Helper.Log("CLOSING APPLICATION!")
-                Me.Close()
+                End
             End If
 
 
