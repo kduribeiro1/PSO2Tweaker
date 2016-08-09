@@ -2990,7 +2990,7 @@ Public Class ConsoleRenderer
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
         'Helper.WriteDebugInfo(s)
         If s.Contains("Downloading a file from") Then s = s.Replace("Downloading a file from ", "Downloading ")
-        WritePatchLog(s.Replace("http: //download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
+        WritePatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
     End Sub
 
 
