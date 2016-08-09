@@ -3016,7 +3016,7 @@ Public Class ConsoleRenderer
     Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
         'Helper.WriteDebugInfo(s)
         If s.Contains("Downloading a file from") Then s = s.Replace("Downloading a file from ", "Downloading ")
-        WritePatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
+        WritePatchLog(s.Replace("http: //download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
     End Sub
 
 
@@ -3153,12 +3153,14 @@ Public Class ConsoleRenderer
     End Sub
 
     Private Sub IRenderer_OnDownloadRetry(url As String, delaySecond As Integer) Implements IRenderer.OnDownloadRetry
-        Helper.Log("Retrying download for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
+        WritePatchLog("Retrying download for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
         'Throw New NotImplementedException()
     End Sub
 
     Private Sub IRenderer_OnDownloadAborted(url As String) Implements IRenderer.OnDownloadAborted
+        WritePatchLog("Download aborted for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
         Helper.WriteDebugInfoAndWarning("Download aborted for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
+        patchfilecount -= 1
         'Throw New NotImplementedException()
     End Sub
 
