@@ -88,7 +88,7 @@ Namespace My
                 Dim TestURL As String = "http://arks-layer.com/freedom.txt"
                 Try
                     If RegKey.GetValue(Of Boolean)(RegKey.EnableBeta) = True Then
-                        TestURL = Client.DownloadString("http://aida.moe/freedom/")
+                        TestURL = "http://aida.moe/freedom/"
                     Else
                         TestURL = Client.DownloadString("http://arks-layer.com/freedom.txt")
                     End If
