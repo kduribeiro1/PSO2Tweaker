@@ -59,6 +59,7 @@ Public Class RegKey
     Public Const StatsLastChecked = "StatsLastChecked"
     Public Const CachedStats = "CachedStats"
     Public Const LaunchPSO2fromORB = "LaunchPSO2fromORB"
+    Public Const EnableBeta = "EnableBeta"
     Public Const UseOldProgressBar = "UseOldProgressBar"
     Public Const PluginsEnabled = "PluginsEnabled"
 

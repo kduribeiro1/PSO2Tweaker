@@ -274,6 +274,8 @@ Public Class FrmMain
             End If
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnableBeta.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, False)
+
             If RegKey.GetValue(Of Boolean)(RegKey.LaunchPSO2fromORB) = True Then
                 btnLaunchPSO2.Visible = False
                 btnLaunchPSO2fromORB.Visible = True
@@ -1115,7 +1117,7 @@ Public Class FrmMain
             If SkipDialogs = False Then PBMainBar.Text = ""
             Helper.WriteDebugInfo(Resources.strLaunchingPSO2)
 
-            If chkItemTranslation.Checked Then
+            If File.Exists(Program.Pso2RootDir & "\plugins\translator.dll") = True Then
                 DownloadFile(Program.FreedomUrl & "working.txt", "working.txt")
                 If File.ReadAllLines("working.txt")(0) = "No" Then
                     'You baka ass mother fucker.
@@ -1154,7 +1156,7 @@ Public Class FrmMain
             Helper.Log("Spinning GN Drives...")
 
             If Program.GNFieldActive = True And Program.ELSActive = False Then
-                Helper.Log("GN Field is supposed to be active! Let's start it!")
+                Helper.Log("GN Field Is supposed to be active! Let's start it!")
                 Process.Start("GN Field.exe")
                 'Maybe the sleep is the problem?
                 'Thread.Sleep(100)

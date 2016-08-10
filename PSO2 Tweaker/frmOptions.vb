@@ -420,4 +420,15 @@ Public Class FrmOptions
     Private Sub LabelX8_Click(sender As Object, e As EventArgs) Handles LabelX8.Click
 
     End Sub
+
+    Private Sub ButtonX1_Click_1(sender As Object, e As EventArgs) Handles ButtonX1.Click
+        Dim EnableBetaYesNo As MsgBoxResult = MsgBox("Do you want to enable Tweaker beta testing? This will usually include new features, but could be unstable. You can change this at any time. Changes will take effect when you restart the Tweaker.", vbYesNo)
+        If EnableBetaYesNo = vbYes Then
+            RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, True)
+            Helper.WriteDebugInfo("Tweaker beta testing enabled!")
+        Else
+            RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, False)
+            Helper.WriteDebugInfo("Tweaker beta testing disabled!")
+        End If
+    End Sub
 End Class

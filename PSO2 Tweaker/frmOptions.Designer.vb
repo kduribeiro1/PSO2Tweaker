@@ -93,6 +93,7 @@ Partial Class FrmOptions
         Me.Label3 = New System.Windows.Forms.Label()
         Me.CheckBoxX6 = New DevComponents.DotNetBar.Controls.CheckBoxX()
         Me.CheckBoxX7 = New DevComponents.DotNetBar.Controls.CheckBoxX()
+        Me.ButtonX1 = New DevComponents.DotNetBar.ButtonX()
         Me.SuspendLayout()
         '
         'LabelX1
@@ -607,10 +608,19 @@ Partial Class FrmOptions
         Me.CheckBoxX7.Name = "CheckBoxX7"
         Me.CheckBoxX7.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
         '
+        'ButtonX1
+        '
+        Me.ButtonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton
+        Me.ButtonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground
+        resources.ApplyResources(Me.ButtonX1, "ButtonX1")
+        Me.ButtonX1.Name = "ButtonX1"
+        Me.ButtonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled
+        '
         'FrmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.ButtonX1)
         Me.Controls.Add(Me.CheckBoxX7)
         Me.Controls.Add(Me.CheckBoxX6)
         Me.Controls.Add(Me.Label3)
@@ -735,4 +745,5 @@ Partial Class FrmOptions
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents CheckBoxX6 As DevComponents.DotNetBar.Controls.CheckBoxX
     Friend WithEvents CheckBoxX7 As DevComponents.DotNetBar.Controls.CheckBoxX
+    Friend WithEvents ButtonX1 As DevComponents.DotNetBar.ButtonX
 End Class
