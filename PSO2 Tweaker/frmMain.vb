@@ -375,26 +375,26 @@ Public Class FrmMain
             If File.ReadAllLines("gnfieldstatus.txt")(0) = "Inactive" Then Program.GNFieldActive = False
 
             If Not File.Exists("7za.exe") Then
-                    Helper.WriteDebugInfo(Resources.strDownloading & "7za.exe...")
+                Helper.WriteDebugInfo(Resources.strDownloading & "7za.exe...")
+                Application.DoEvents()
+                DownloadFile(Program.FreedomUrl & "7za.exe", "7za.exe")
+            End If
+
+            For index = 1 To 5
+                If Helper.GetMd5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
+                    Helper.WriteDebugInfo(Resources.strYour7zipiscorrupt)
                     Application.DoEvents()
                     DownloadFile(Program.FreedomUrl & "7za.exe", "7za.exe")
+                Else
+                    Exit For
                 End If
+            Next
 
-                For index = 1 To 5
-                    If Helper.GetMd5("7za.exe") <> "42BADC1D2F03A8B1E4875740D3D49336" Then
-                        Helper.WriteDebugInfo(Resources.strYour7zipiscorrupt)
-                        Application.DoEvents()
-                        DownloadFile(Program.FreedomUrl & "7za.exe", "7za.exe")
-                    Else
-                        Exit For
-                    End If
-                Next
-
-                If Not File.Exists("UnRar.exe") Then
-                    Helper.WriteDebugInfo(Resources.strDownloading & "UnRar.exe...")
-                    Application.DoEvents()
-                    DownloadFile(Program.FreedomUrl & "UnRAR.exe", "UnRAR.exe")
-                End If
+            If Not File.Exists("UnRar.exe") Then
+                Helper.WriteDebugInfo(Resources.strDownloading & "UnRar.exe...")
+                Application.DoEvents()
+                DownloadFile(Program.FreedomUrl & "UnRAR.exe", "UnRAR.exe")
+            End If
 
             For index = 1 To 5
                 If Helper.GetMd5("UnRar.exe") <> "0C83C1293723A682577E3D0B21562B79" Then
@@ -415,97 +415,97 @@ Public Class FrmMain
 
             Helper.CheckIfOfficialLauncherRunning()
 
-                Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
-                Helper.DeleteFile("launcherlist.txt")
-                Helper.DeleteFile("patchlist.txt")
-                Helper.DeleteFile("patchlist_old.txt")
+            Helper.DeleteDirectory("TEMPSTORYAIDAFOOL")
+            Helper.DeleteFile("launcherlist.txt")
+            Helper.DeleteFile("patchlist.txt")
+            Helper.DeleteFile("patchlist_old.txt")
 
-                'Added in precede files. Stupid ass SEGA.
-                Helper.DeleteFile("patchlist0.txt")
-                Helper.DeleteFile("patchlist1.txt")
-                Helper.DeleteFile("patchlist2.txt")
-                Helper.DeleteFile("patchlist3.txt")
-                Helper.DeleteFile("patchlist4.txt")
-                Helper.DeleteFile("patchlist5.txt")
-                Helper.DeleteFile("precede.txt")
-                Helper.DeleteFile("ServerConfig.txt")
-                Helper.DeleteFile("precede_apply.txt")
-                Helper.DeleteFile("version.ver")
-                Helper.DeleteFile("Story MD5HashList.txt")
-                Helper.DeleteFile("PluginMD5HashList.txt")
-                Helper.DeleteFile("working.txt")
-                Helper.DeleteFile("gnfieldstatus.txt")
-                Helper.DeleteFile("gnfieldMD5.txt")
+            'Added in precede files. Stupid ass SEGA.
+            Helper.DeleteFile("patchlist0.txt")
+            Helper.DeleteFile("patchlist1.txt")
+            Helper.DeleteFile("patchlist2.txt")
+            Helper.DeleteFile("patchlist3.txt")
+            Helper.DeleteFile("patchlist4.txt")
+            Helper.DeleteFile("patchlist5.txt")
+            Helper.DeleteFile("precede.txt")
+            Helper.DeleteFile("ServerConfig.txt")
+            Helper.DeleteFile("precede_apply.txt")
+            Helper.DeleteFile("version.ver")
+            Helper.DeleteFile("Story MD5HashList.txt")
+            Helper.DeleteFile("PluginMD5HashList.txt")
+            Helper.DeleteFile("working.txt")
+            Helper.DeleteFile("gnfieldstatus.txt")
+            Helper.DeleteFile("gnfieldMD5.txt")
 
-                UnlockGui()
-                btnLaunchPSO2.Enabled = False
+            UnlockGui()
+            btnLaunchPSO2.Enabled = False
 
-                If File.Exists("resume.txt") Then
-                    Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you Like to resume patching?", vbYesNo)
-                    If yesNoResume = MsgBoxResult.Yes Then
-                        ResumePatching()
-                    Else
-                        Helper.DeleteFile("resume.txt")
-                    End If
-                End If
-
-                Helper.WriteDebugInfo(Resources.strCheckingforPSO2Updates)
-                Application.DoEvents()
-
-                CheckForPso2Updates(False)
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
-                Application.DoEvents()
-
-                'Check for PSO2 Updates here, download the version.ver thingie
-                'Check for PSO2 EN Patch updates here, parse the URL and see if it's different from the saved one
-                'Check for EN Story Patch
-                Helper.WriteDebugInfo(Resources.strCheckingforUpdatestopatches)
-
-                'Check for English Patches (Done! :D)
-                CheckForEnPatchUpdates()
-                Helper.WriteDebugInfo(Resources.strCurrentENPatchis & RegKey.GetValue(Of String)(RegKey.EnPatchVersion))
-                Application.DoEvents()
-
-                'Check for LargeFiles Update (Work-In-Progress!)
-                CheckForLargeFilesUpdates()
-                Helper.WriteDebugInfo(Resources.strCurrentLargeFilesis & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion))
-                Application.DoEvents()
-
-                'Check for Story Patches (Done! :D)
-                Application.DoEvents()
-                CheckForStoryUpdates()
-                Helper.WriteDebugInfo(Resources.strCurrentStoryPatchis & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion))
-                Application.DoEvents()
-
-
-                '            Helper.WriteDebugInfo(Resources.strIfAboveVersions)
-
-
-
-                If Program.WayuIsAFailure Then
-                    Helper.WriteDebugInfo("Skipping downloads for Wayu!")
+            If File.Exists("resume.txt") Then
+                Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you Like to resume patching?", vbYesNo)
+                If yesNoResume = MsgBoxResult.Yes Then
+                    ResumePatching()
                 Else
-                    If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseItemTranslation)) Then
-                        RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, True)
-                    End If
-
-                    Program.UseItemTranslation = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseItemTranslation))
-
-                    If Directory.Exists(Program.Pso2RootDir & "\plugins\") = False Then
-                        Helper.WriteDebugInfoAndOk("Setting up plugin system...")
-                        Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\")
-                        Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\disabled\")
-                    End If
-
-                    If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") And File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll") = True And File.Exists(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll") = False Then
-                        Helper.WriteDebugInfo("PSO2Proxy usage detected! Auto-enabling PSO2Proxy plugin.")
-                        File.Move((Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll"), (Program.Pso2RootDir & "\plugins\PSO2Proxy.dll"))
-                    End If
+                    Helper.DeleteFile("resume.txt")
                 End If
-                CheckForPluginUpdates()
+            End If
 
-                'Helper.WriteDebugInfoSameLine(Resources.strDone)
-            Catch ex As Exception
+            Helper.WriteDebugInfo(Resources.strCheckingforPSO2Updates)
+            Application.DoEvents()
+
+            CheckForPso2Updates(False)
+            Helper.WriteDebugInfoSameLine(Resources.strDone)
+            Application.DoEvents()
+
+            'Check for PSO2 Updates here, download the version.ver thingie
+            'Check for PSO2 EN Patch updates here, parse the URL and see if it's different from the saved one
+            'Check for EN Story Patch
+            Helper.WriteDebugInfo(Resources.strCheckingforUpdatestopatches)
+
+            'Check for English Patches (Done! :D)
+            CheckForEnPatchUpdates()
+            Helper.WriteDebugInfo(Resources.strCurrentENPatchis & RegKey.GetValue(Of String)(RegKey.EnPatchVersion))
+            Application.DoEvents()
+
+            'Check for LargeFiles Update (Work-In-Progress!)
+            CheckForLargeFilesUpdates()
+            Helper.WriteDebugInfo(Resources.strCurrentLargeFilesis & RegKey.GetValue(Of String)(RegKey.LargeFilesVersion))
+            Application.DoEvents()
+
+            'Check for Story Patches (Done! :D)
+            Application.DoEvents()
+            CheckForStoryUpdates()
+            Helper.WriteDebugInfo(Resources.strCurrentStoryPatchis & RegKey.GetValue(Of String)(RegKey.StoryPatchVersion))
+            Application.DoEvents()
+
+
+            '            Helper.WriteDebugInfo(Resources.strIfAboveVersions)
+
+
+
+            If Program.WayuIsAFailure Then
+                Helper.WriteDebugInfo("Skipping downloads for Wayu!")
+            Else
+                If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.UseItemTranslation)) Then
+                    RegKey.SetValue(Of Boolean)(RegKey.UseItemTranslation, True)
+                End If
+
+                Program.UseItemTranslation = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.UseItemTranslation))
+
+                If Directory.Exists(Program.Pso2RootDir & "\plugins\") = False Then
+                    Helper.WriteDebugInfoAndOk("Setting up plugin system...")
+                    Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\")
+                    Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\disabled\")
+                End If
+
+                If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") And File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll") = True And File.Exists(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll") = False Then
+                    Helper.WriteDebugInfo("PSO2Proxy usage detected! Auto-enabling PSO2Proxy plugin.")
+                    File.Move((Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll"), (Program.Pso2RootDir & "\plugins\PSO2Proxy.dll"))
+                End If
+            End If
+            CheckForPluginUpdates()
+
+            'Helper.WriteDebugInfoSameLine(Resources.strDone)
+        Catch ex As Exception
             Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
