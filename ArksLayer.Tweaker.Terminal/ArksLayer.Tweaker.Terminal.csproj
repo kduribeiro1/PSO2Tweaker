@@ -38,8 +38,8 @@
       <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.3.2\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.3.5\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.3.6\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -86,8 +86,7 @@
       <Using xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Namespace="System" />
       <Using xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Namespace="System.IO" />
       <Using xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Namespace="System.Xml.Linq" />
-      <Code xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Type="Fragment" Language="cs">
-<![CDATA[
+      <Code xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Type="Fragment" Language="cs"><![CDATA[
 var config = XElement.Load(Config.ItemSpec).Elements("Costura").FirstOrDefault();
 
 if (config == null) return true;
@@ -106,8 +105,8 @@ var filesToCleanup = Files.Select(f => f.ItemSpec).Where(f => !excludedAssemblie
 
 foreach (var item in filesToCleanup)
   File.Delete(item);
-]]>
-      </Code></Task>
+]]></Code>
+    </Task>
   </UsingTask>
   <Target Name="CleanReferenceCopyLocalPaths" AfterTargets="AfterBuild;NonWinFodyTarget">
     <CosturaCleanup Config="FodyWeavers.xml" Files="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />

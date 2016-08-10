@@ -30,6 +30,15 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
+        /// Throws an exception on-demand from within the engine.
+        /// Might be useful if you're trying to develop a working exception handler for the engine that doesn't say Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs
+        /// </summary>
+        public void Crash()
+        {
+            throw new Exception("Jesus bless your soul.");
+        }
+
+        /// <summary>
         /// Apparently, there are many files that are not listed in the patchlist.
         /// I assume these are legacy files that are not needed anymore and can be safely deleted!
         /// My game client was updated ever since Episode 2: using this method weeds out 1300+ files (1GB).
@@ -67,7 +76,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             Parallel.ForEach(legacyFiles, Q =>
             {
                 Q.Delete();
-                Output.WriteLine($"{Q.FullName} deleted.");
+                Output.AppendLog($"Legacy file {Q.FullName} deleted.");
             });
         }
 
