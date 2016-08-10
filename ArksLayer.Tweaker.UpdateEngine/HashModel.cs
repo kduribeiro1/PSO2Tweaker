@@ -11,6 +11,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
     internal class HashModel
     {
         /// <summary>
+        /// The hard disk buffer size for hashing the file.
+        /// </summary>
+        public int BufferSize { set; get; }
+
+        /// <summary>
         /// The full path to the file to be hashed.
         /// </summary>
         public string FileName { set; get; }
@@ -19,11 +24,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// The size of the file to be hashed.
         /// </summary>
         public long FileSize { set; get; }
-
-        /// <summary>
-        /// The hard disk buffer size for hashing the file.
-        /// </summary>
-        public int BufferSize { set; get; }
 
         /// <summary>
         /// The resulting hash, in binary. You might want to convert this into human-readable string.

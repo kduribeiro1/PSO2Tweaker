@@ -12,18 +12,9 @@ namespace ArksLayer.Tweaker.Abstractions
     public class RegistryTweakerSettings : ITweakerSettings
     {
         /// <summary>
-        /// Constructs an instance of the class, pointing to parameter registry path for HKEY_CURRENT_USER.
+        /// Registry key for value containing the version of English Large Patch.
         /// </summary>
-        /// <param name="path"></param>
-        public RegistryTweakerSettings(string path = @"Software\AIDA")
-        {
-            this.Root = Registry.CurrentUser.CreateSubKey(path);
-        }
-
-        /// <summary>
-        /// Registry key for value containing directory path to pso2_bin.
-        /// </summary>
-        private const string GameDirectoryKey = "PSO2Dir";
+        private const string EnglishLargePatchVersionKey = "LargeFilesVersion";
 
         /// <summary>
         /// Registry key for value containing the version of English Patch.
@@ -31,9 +22,9 @@ namespace ArksLayer.Tweaker.Abstractions
         private const string EnglishPatchVersionKey = "ENPatchVersion";
 
         /// <summary>
-        /// Registry key for value containing the version of English Large Patch.
+        /// Registry key for value containing directory path to pso2_bin.
         /// </summary>
-        private const string EnglishLargePatchVersionKey = "LargeFilesVersion";
+        private const string GameDirectoryKey = "PSO2Dir";
 
         /// <summary>
         /// Registry key for value containing the version of Story Patch.
@@ -41,19 +32,25 @@ namespace ArksLayer.Tweaker.Abstractions
         private const string StoryPatchVersionKey = "StoryPatchVersion";
 
         /// <summary>
-        /// Sets or gets value of the directory path to pso2_bin.
-        /// Expected result example: D:\PSO2\pso2_bin
+        /// Constructs an instance of the class, pointing to parameter registry path for HKEY_CURRENT_USER.
         /// </summary>
-        public string GameDirectory
+        /// <param name="path"></param>
+        public RegistryTweakerSettings(string path = @"Software\AIDA")
+        {
+            this.Root = Registry.CurrentUser.CreateSubKey(path);
+        }
+        /// <summary>
+        /// Sets or gets value of the directory path to the English Large Patch version.
+        /// </summary>
+        public string EnglishLargePatchVersion
         {
             get
             {
-                var value = (string)Root.GetValue(GameDirectoryKey);
-                return value.TrimEnd('\\');
+                return (string)Root.GetValue(EnglishLargePatchVersionKey);
             }
             set
             {
-                Root.SetValue(GameDirectoryKey, value.TrimEnd('\\'));
+                Root.SetValue(EnglishLargePatchVersionKey, value.Trim());
             }
         }
 
@@ -73,19 +70,25 @@ namespace ArksLayer.Tweaker.Abstractions
         }
 
         /// <summary>
-        /// Sets or gets value of the directory path to the English Large Patch version.
+        /// Sets or gets value of the directory path to pso2_bin.
+        /// Expected result example: D:\PSO2\pso2_bin
         /// </summary>
-        public string EnglishLargePatchVersion
+        public string GameDirectory
         {
             get
             {
-                return (string)Root.GetValue(EnglishLargePatchVersionKey);
+                var value = (string)Root.GetValue(GameDirectoryKey);
+                return value.TrimEnd('\\');
             }
             set
             {
-                Root.SetValue(EnglishLargePatchVersionKey, value.Trim());
+                Root.SetValue(GameDirectoryKey, value.TrimEnd('\\'));
             }
         }
+        /// <summary>
+        /// Using this property, you can manipulate Windows Registry for Tweaker directly.
+        /// </summary>
+        public RegistryKey Root { get; private set; }
 
         /// <summary>
         /// Sets or gets value of the directory path to the Story Patch version.
@@ -101,10 +104,5 @@ namespace ArksLayer.Tweaker.Abstractions
                 Root.SetValue(StoryPatchVersionKey, value.Trim());
             }
         }
-
-        /// <summary>
-        /// Using this property, you can manipulate Windows Registry for Tweaker directly.
-        /// </summary>
-        public RegistryKey Root { get; private set; }
     }
 }

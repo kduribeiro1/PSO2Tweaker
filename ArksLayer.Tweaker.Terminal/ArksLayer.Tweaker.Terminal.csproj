@@ -34,12 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArksLayer.Tweaker.Abstractions, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.3.2\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.Abstractions, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.Abstractions.0.4.0\lib\net45\ArksLayer.Tweaker.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.3.6\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
+    <Reference Include="ArksLayer.Tweaker.UpdateEngine, Version=0.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArksLayer.Tweaker.UpdateEngine.0.4.1\lib\net45\ArksLayer.Tweaker.UpdateEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleRenderer.cs" />
+    <Compile Include="ConsoleTrigger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
