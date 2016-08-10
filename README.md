@@ -1,4 +1,4 @@
-PSO2Tweaker
+PSO2Tweaker (Pre-QUANTUM SYSTEM code)
 ===========
 [![Build status](https://ci.appveyor.com/api/projects/status/github/Arks-Layer/PSO2Tweaker?branch=preQuantum&svg=true&retina=true)](https://ci.appveyor.com/project/TheCrimsonDevil/pso2tweaker/branch/preQuantum)
 
