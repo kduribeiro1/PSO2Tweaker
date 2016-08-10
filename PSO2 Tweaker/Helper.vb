@@ -288,4 +288,20 @@ Public Class Helper
             WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
+
+    Public Shared Sub LogWithException(message As String, e As Exception)
+        Log(e.Message.ToString & " Stack Trace: " & e.StackTrace)
+        Helper.WriteDebugInfo(Helper.ExceptionDump(message, e))
+    End Sub
+
+    Public Shared Function ExceptionDump(message As String, e As Exception) As String
+        Dim text As String = String.Empty
+
+        text += String.Format("{0} - {1}: {2}", message, e.[GetType](), e)
+        If e.InnerException IsNot Nothing Then
+            text += String.Format(vbLf & "[Error] Inner Exception: {0}", e.InnerException)
+        End If
+
+        Return text
+    End Function
 End Class

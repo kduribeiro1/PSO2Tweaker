@@ -194,7 +194,7 @@ Public Class FrmMain
                 chkSwapOP.TextColor = color
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             ResumeLayout(False)
@@ -289,14 +289,14 @@ Public Class FrmMain
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
 
         Try
             CheckForTweakerUpdates()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
 
@@ -506,7 +506,7 @@ Public Class FrmMain
 
                 'Helper.WriteDebugInfoSameLine(Resources.strDone)
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace:  " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
 
@@ -853,7 +853,7 @@ Public Class FrmMain
             ' End If
             ' End Using
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -872,7 +872,7 @@ Public Class FrmMain
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -893,7 +893,7 @@ Public Class FrmMain
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -935,7 +935,7 @@ Public Class FrmMain
                         Exit Sub
                     End If
                 Catch ex As Exception
-                    Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                    Helper.LogWithException(Resources.strERROR, ex)
                     Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
                     Exit Sub
                 End Try
@@ -950,7 +950,7 @@ Public Class FrmMain
                 End If
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -1210,7 +1210,7 @@ Public Class FrmMain
                 chkSwapOP.Text = "Swap PC/Vita Openings (UNKNOWN)"
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -1233,7 +1233,7 @@ Public Class FrmMain
             If SkipDialogs = False Then PBMainBar.Text = ""
             Helper.WriteDebugInfo(Resources.strLaunchingPSO2)
 
-            If chkItemTranslation.Checked Then
+            If File.Exists(Program.Pso2RootDir & "\plugins\translator.dll") = True Then
                 DownloadFile(Program.FreedomUrl & "working.txt", "working.txt")
                 If File.ReadAllLines("working.txt")(0) = "No" Then
                     'You baka ass mother fucker.
@@ -1246,7 +1246,7 @@ Public Class FrmMain
                         Baka.ShowDialog()
                         Exit Sub
                     Catch ex As Exception
-                        Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                        Helper.LogWithException(Resources.strERROR, ex)
                         Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
                     Finally
                         Cursor = Cursors.Default
@@ -1277,16 +1277,53 @@ Public Class FrmMain
 
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
-            Try
-                shell.Start()
-            Catch ex As Exception
-                Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
-                DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
-                If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
-                File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
-                Helper.WriteDebugInfoSameLine(Resources.strDone)
-                shell.Start()
-            End Try
+            Helper.Log("Checking for extra GN Fields...")
+            Dim processname As String = "GN Field"
+            If Process.GetProcessesByName(processname).Length > 0 Then
+                For Each proc As Process In Process.GetProcessesByName(processname)
+                    proc.Kill()
+                Next
+            End If
+            Helper.Log("Spinning GN Drives...")
+
+            If Program.GNFieldActive = True And Program.ELSActive = False Then
+                Helper.Log("GN Field is supposed to be active! Let's start it!")
+                Process.Start("GN Field.exe")
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
+            End If
+
+            If Program.GNFieldActive = True And Program.ELSActive = True Then
+                Helper.Log("GN Field is supposed to be active, and the ELS are invading! Let's start it with a random name!")
+                Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
+                'Maybe the sleep is the problem?
+                'Thread.Sleep(100)
+            End If
+
+            If Program.GNFieldActive = False Then
+                Try
+                    Helper.Log("Start PSO2!")
+                    shell.Start()
+                Catch ex As Exception
+                    Helper.Log("EXCEPTION, HELP! ;_;")
+                    Helper.WriteDebugInfo(Resources.strItSeemsThereWasAnError)
+                    DownloadFile("http://download.pso2.jp/patch_prod/patches/pso2.exe.pat", "pso2.exe")
+                    If File.Exists((Program.Pso2RootDir & "\pso2.exe")) AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile((Program.Pso2RootDir & "\pso2.exe"))
+                    File.Move("pso2.exe", (Program.Pso2RootDir & "\pso2.exe"))
+                    Helper.WriteDebugInfoSameLine(Resources.strDone)
+                    Helper.Log("Starting PSO2 again.")
+                    shell.Start()
+                End Try
+            Else
+                Thread.Sleep(100)
+                Helper.Log("Waiting for GN Field to activate...")
+                Thread.Sleep(60000)
+                Helper.WriteDebugInfoAndFailed("GN Field failed to launch! Please restart the PSO2 Tweaker.")
+                Helper.Log("Slept for 60 seconds, GN Field didn't launch. Exiting PSO2 Launch method.")
+                Exit Sub
+            End If
+
+
 
             Hide()
             Dim hWnd As IntPtr = External.FindWindow("Phantasy Star Online 2", Nothing)
@@ -1314,8 +1351,7 @@ Public Class FrmMain
             Close()
 
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
-            Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
+            Helper.LogWithException(Resources.strERROR, ex)
         End Try
     End Sub
 
@@ -1730,7 +1766,7 @@ Public Class FrmMain
                 RestoreBackup(EnglishPatch)
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -1742,7 +1778,7 @@ Public Class FrmMain
                 RestoreBackup(LargeFiles)
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -2070,7 +2106,7 @@ Public Class FrmMain
             If SkipDialogs = False Then Helper.WriteDebugInfoAndOk(Resources.strGGReset)
             If SkipDialogs = True Then btnLaunchPSO2.PerformClick()
         Catch ex As Exception
-            If SkipDialogs = False Then Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            If SkipDialogs = False Then Helper.LogWithException(Resources.strERROR, ex)
             If SkipDialogs = False Then Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             If ex.Message.Contains("Access to the ") Then MsgBox("It looks like Gameguard believes it's open, whether or not it actually is. You'll need to restart your computer to fix this problem. Sorry!")
         End Try
@@ -2125,7 +2161,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo(Resources.strAllNecessaryFiles)
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -2137,7 +2173,7 @@ Public Class FrmMain
                 RestoreBackup(StoryPatch)
             End If
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -2174,7 +2210,7 @@ Public Class FrmMain
             Helper.WriteDebugInfoSameLine(Resources.strDone)
             MsgBox(Resources.strFixPermissionsDone)
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -2251,7 +2287,7 @@ Public Class FrmMain
             _pso2OptionsFrm.Left += 50
             _pso2OptionsFrm.ShowDialog()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             Cursor = Cursors.Default
@@ -2268,7 +2304,7 @@ Public Class FrmMain
             _optionsFrm.Left += 50
             _optionsFrm.ShowDialog()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             Cursor = Cursors.Default
@@ -2509,7 +2545,7 @@ Public Class FrmMain
 
             Helper.WriteDebugInfoAndOk(Resources.strallDone)
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             If ex.Message <> "Arithmetic operation resulted in an overflow." Then
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             End If
@@ -2725,7 +2761,7 @@ Public Class FrmMain
             FrmDiagnostic.Left += 50
             FrmDiagnostic.ShowDialog()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -3266,7 +3302,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo(patchname & " " & Resources.strInstalledUpdated)
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -3429,7 +3465,7 @@ Public Class FrmMain
             Helper.DeleteFile(patchName)
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -3462,7 +3498,7 @@ Public Class FrmMain
             RegKey.SetValue(Of String)(patchVersionKey, "Not Installed")
             UnlockGui()
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         End Try
     End Sub
@@ -3637,7 +3673,7 @@ Public Class FrmMain
             frmPlugins.ShowDialog()
             Exit Sub
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
         Finally
             Cursor = Cursors.Default
@@ -3648,7 +3684,7 @@ Public Class FrmMain
         Try
             source = Program.AreYouAlive.DownloadString("http://107.170.16.100/Plugins/PluginMD5HashList.txt")
         Catch ex As Exception
-            Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+            Helper.LogWithException(Resources.strERROR, ex)
             Helper.WriteDebugInfo("Failed to get the plugin update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
             Exit Sub
         End Try

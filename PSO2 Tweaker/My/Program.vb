@@ -215,14 +215,14 @@ Namespace My
                         If launchPso2 Then Environment.Exit(0)
 
                     Catch ex As Exception
-                        Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                        Helper.LogWithException(Resources.strERROR, ex)
                         Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
                     End Try
                 Next
 
                 If Not transOverride Then Helper.DeleteFile(Pso2RootDir & "\ddraw.dll")
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                Helper.LogWithException(Resources.strERROR, ex)
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             End Try
 
@@ -301,7 +301,7 @@ Namespace My
                     Helper.Log("----------------------------------------")
                 End If
             Catch ex As Exception
-                Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                Helper.LogWithException(Resources.strERROR, ex)
                 Helper.WriteDebugInfo(Resources.strERROR & ex.Message)
             End Try
         End Sub
