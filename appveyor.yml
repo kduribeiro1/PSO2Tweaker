@@ -27,5 +27,6 @@ after_build:
 - cmd: cd ..\..\..
 
 build:
-  verbosity: minimal
-
+  project: "PSO2 Tweaker.sln"
+  verbosity: quiet
+ 
