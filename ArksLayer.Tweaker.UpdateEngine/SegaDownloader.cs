@@ -198,8 +198,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         public Task<string> GetRemoteVersion()
         {
-            var client = new AquaClient();
-            return client.DownloadStringTaskAsync(PatchBaseUrl + "version.ver");
+            var url = PatchBaseUrl + "version.ver";
+            return DownloadPatchlist(url, 5);
         }
 
         /// <summary>
