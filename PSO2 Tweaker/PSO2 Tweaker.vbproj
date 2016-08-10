@@ -131,7 +131,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar2">
-      <HintPath>..\..\PSO2 Tweaker Updater\WindowsApplication2\bin\Release\DevComponents.DotNetBar2.dll</HintPath>
+      <HintPath>..\libs\DevComponents.DotNetBar2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
