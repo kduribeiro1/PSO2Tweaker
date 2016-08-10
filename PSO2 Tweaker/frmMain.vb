@@ -277,6 +277,8 @@ Public Class FrmMain
             End If
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, False)
+            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnableBeta.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, False)
+
             If RegKey.GetValue(Of Boolean)(RegKey.LaunchPSO2fromORB) = True Then
                 btnLaunchPSO2.Visible = False
                 btnLaunchPSO2fromORB.Visible = True

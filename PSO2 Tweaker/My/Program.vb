@@ -85,14 +85,21 @@ Namespace My
                 End If
 
                 Helper.Log("Pursuing freedom...")
+                Dim TestURL As String = "http://arks-layer.com/freedom.txt"
                 Try
-                    Dim TestURL As String = Client.DownloadString("http://arks-layer.com/freedom.txt")
+                    If RegKey.GetValue(Of Boolean)(RegKey.EnableBeta) = True Then
+                        TestURL = Client.DownloadString("http://aida.moe/freedom/")
+                    Else
+                        TestURL = Client.DownloadString("http://arks-layer.com/freedom.txt")
+                    End If
+
                     If Not TestURL.Contains("freedom") Then
                         Helper.Log("Reverting to default freedom...")
                         FreedomUrl = "http://108.61.203.33/freedom/"
                     Else
                         FreedomUrl = TestURL
                     End If
+
                 Catch ex As Exception
                     Helper.Log("Reverting to default freedom...")
                     FreedomUrl = "http://108.61.203.33/freedom/"

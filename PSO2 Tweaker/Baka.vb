@@ -7,7 +7,7 @@
         PictureBox1.Location = New Point(66, 1)
         Dim rn As New Random
         Dim ImageLink As String = ""
-        Dim ImageNumber As Integer = rn.Next(0, 9)       'Tells the program to put the random thing inside of the textbox
+        Dim ImageNumber As Integer = rn.Next(0, 11)       'Tells the program to put the random thing inside of the textbox
         Select Case ImageNumber 'Starts the case block
             Case 0 '1st case define
                 ImageLink = "http://i.imgur.com/eOFxwm2.gif"
@@ -30,6 +30,10 @@
                 ImageLink = "http://i.imgur.com/4EtldLS.gif"
             Case 9
                 ImageLink = "http://i.imgur.com/Vt93JtZ.gif"
+            Case 10
+                ImageLink = "http://i.imgur.com/xlSbI9G.gif"
+            Case 11
+                ImageLink = "http://i.imgur.com/xlSbI9G.gif"
         End Select 'End the case block
         PictureBox1.Load(ImageLink)
     End Sub
