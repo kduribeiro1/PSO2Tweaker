@@ -82,12 +82,7 @@ namespace ArksLayer.Tweaker.Terminal
             // You can log those files if you want.
         }
 
-        public void OnHousekeepingCompleted()
-        {
-            Console.WriteLine("All done!");
-        }
-
-        public void OnHousekeepingStart()
+        public void OnHousekeeping()
         {
             Console.WriteLine("A little housekeeping...");
         }
@@ -143,6 +138,16 @@ namespace ArksLayer.Tweaker.Terminal
         public void OnPatchlistFetchStart()
         {
             Console.WriteLine("Downloading patchlist...");
+        }
+
+        public void OnUpdateCompleted()
+        {
+            Console.WriteLine("Update finished.");
+        }
+
+        public void OnUpdateStart(bool rehash)
+        {
+            Console.WriteLine("Update finished.");
         }
     }
 }

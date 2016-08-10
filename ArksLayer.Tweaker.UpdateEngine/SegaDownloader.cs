@@ -193,6 +193,16 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
+        /// Grabs a version string for the game client from remote SEGA server.
+        /// </summary>
+        /// <returns></returns>
+        public Task<string> GetRemoteVersion()
+        {
+            var client = new AquaClient();
+            return client.DownloadStringTaskAsync(PatchBaseUrl + "version.ver");
+        }
+
+        /// <summary>
         /// Induce an artificial delay against file download as not to flood the SEGA server with download requests.
         /// Then notify the user that the download is being delayed.
         /// </summary>

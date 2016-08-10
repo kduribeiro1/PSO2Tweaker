@@ -12,158 +12,165 @@ namespace ArksLayer.Tweaker.Abstractions
     public interface ITrigger
     {
         /// <summary>
-        /// Called when the library wants to log something. This method may run in a separated thread, implement with caution.
+        /// Called when the library wants to log something. 
+        /// This method may run in a separated thread, implement with caution.
         /// </summary>
         /// <param name="s"></param>
         void AppendLog(string s);
 
         /// <summary>
-        /// Output.WriteLine("Your game is up-to-date!");
+        /// This method will be called once per UpdateEngine.Update if no update to the game client is needed.
         /// </summary>
         void IfUpdateNotNeeded();
 
         /// <summary>
-        /// Output.AppendLog($"Moving backup from {file} to {target}");
-        /// Output.WriteLine($"Found {backupFiles.Count()} files in backup directory. Restoring...");
+        /// This method will be called once per UpdateEngine.Update when a backup restore is going to be performed.
+        /// Ideal implementation should also log the backup files.
         /// </summary>
         /// <param name="backupFiles"></param>
         void OnBackupRestore(IEnumerable<string> backupFiles);
 
         /// <summary>
-        /// Output.WriteLine("Uncensoring game chat...");
+        /// This method will be called once per UpdateEngine.Update if in-game chat censor file is to be deleted.
         /// </summary>
         void OnCensorRemoval();
 
         /// <summary>
-        /// Output.WriteLine("Unable to read the latest client file hashes!");
+        /// This method will be called once per UpdateEngine.Update if previous client hash failed to be read.
         /// </summary>
         void OnClientHashReadFailed();
 
         /// <summary>
-        /// Output.WriteLine($"Game client hashes found!");
+        /// This method will be called once per UpdateEngine.Update if previous client hash successfully read.
         /// </summary>
         void OnClientHashReadSuccess();
 
         /// <summary>
-        /// Called when a file download failed completely after certain number of retries.
+        /// This method will be called by the UpdateEngine.Update for every downloads that completely failed after certain amount of retries.
+        /// Ideal implementation should also destroy the progress bar for the download.
         /// </summary>
         /// <param name="url"></param>
         void OnDownloadAborted(string url);
 
         /// <summary>
-        /// Called when a file download finished successfully!
-        /// You might want to destroy or update the progress bar of this file here...
+        /// This method will be called by the UpdateEngine.Update for every downloads that completely failed after certain amount of retries.
+        /// Ideal implementation should also destroy the progress bar for the download.
         /// </summary>
         /// <param name="url"></param>
         void OnDownloadFinish(string url);
 
         /// <summary>
-        /// Called when a file download failed but will be retried.
-        /// Retry is not immediately and will happen after a certain number of seconds delay.
-        /// You might want to notify the user when this happens.
+        /// This method will be called by the UpdateEngine.Update for every downloads that completely failed but will be retried.
+        /// Ideal implementation should also destroy the progress bar for the download.
         /// </summary>
         /// <param name="url"></param>
         /// <param name="delaySecond"></param>
         void OnDownloadRetry(string url, int delaySecond);
 
         /// <summary>
-        /// Called when a file download is started.
-        /// You might want to attach a progress delegate to that WebClient object here or summon a progress bar here...
-        /// Also, you can save that WebClient object into something like a Dictionary of url and WebClient, so user can cancel the individual file download if stuck, if provided the UI control to do so.
+        /// This method will be called by the UpdateEngine.Update for every downloads that was started.
+        /// Ideal implementation should summon a progress bar for the download.
+        /// Download progress can be tracked using the WebClient.OnDownloadProgressChanged event handler.
+        /// Download can be cancelled using WebClient.CancelAsync.
         /// </summary>
         /// <param name="url"></param>
         /// <param name="client"></param>
         void OnDownloadStart(string url, WebClient client);
 
         /// <summary>
-        /// Called when full client hash process is finished.
-        /// You might want to destroy the hash progress bar here...
+        /// This method will be called once per UpdateEngine.Update if whole game client hashing finished.
+        /// Ideal implementation should also destroy the hashing progress bar.
         /// </summary>
         void OnHashComplete();
 
         /// <summary>
-        /// Called every second, sends hash progress update.
-        /// You might want to update the hash progress bar here...
+        /// This method will be called every second during UpdateEngine.Update whole client hash progress.
+        /// Ideal implementation should visualize the progress with preferrably a progress bar.
         /// </summary>
         /// <param name="progress"></param>
         /// <param name="total"></param>
         void OnHashProgress(int progress, int total);
 
         /// <summary>
-        /// Called when full client hash process is started.
-        /// You might want to summon a progress bar here...
-        /// Foreach Output.AppendLog("Queued for hashing: " + file.FileName);
-        /// Output.WriteLine($"Discovered { fileCount } files in game directory.");
+        /// This method will be called once per UpdateEngine.Update when starting a whole client hashing.
+        /// Ideal implementation should also log the files to be hashed.
         /// </summary>
         /// <param name="files"></param>
         void OnHashStart(IEnumerable<string> files);
 
         /// <summary>
-        /// Output.WriteLine("All done!");
+        /// This method will be called once per UpdateEngine.Update when housekeeping is started.
         /// </summary>
-        void OnHousekeepingCompleted();
+        void OnHousekeeping();
 
         /// <summary>
-        /// Output.WriteLine("A little housekeeping...");
-        /// </summary>
-        void OnHousekeepingStart();
-
-        /// <summary>
-        /// Output.WriteLine($"Found { legacyFiles.Count } legacy files: {megabytes} MB");
-        /// Output.AppendLog($"Legacy file {Q.FullName} deleted.");
+        /// This method will be called once per UpdateEngine.Update if legacy files are found and to be deleted.
+        /// Ideal implementation should also log the legacy files.
         /// </summary>
         /// <param name="legacyFiles"></param>
         void OnLegacyFilesFound(IEnumerable<string> legacyFiles);
 
         /// <summary>
-        /// Output.WriteLine("There are no legacy files to clean up!");
+        /// This method will be called once per UpdateEngine.Update if legacy files are not found.
         /// </summary>
         void OnLegacyFilesNotFound();
 
         /// <summary>
-        /// Output.WriteLine("Scanning for legacy files...");
+        /// This method will be called once per UpdateEngine.Update if a scan for legacy files is to be started.
         /// </summary>
         void OnLegacyFilesScanning();
 
         /// <summary>
-        /// Output.WriteLine($"Discovering missing files...");
-        /// Output.WriteLine($"Found {missingFiles.Count} missing files!");
+        /// This method will be called once per UpdateEngine.Update if there are missing or corrupted files in the game client.
+        /// Ideal implementation should also log the missing files.
         /// </summary>
         /// <param name="missingFiles"></param>
         void OnMissingFilesDiscovery(IEnumerable<string> missingFiles);
 
         /// <summary>
-        /// Output.WriteLine($"Failed to download {failCount} files!");
+        /// This method will be called once per UpdateEngine.Update if there are one or more game patch downloads that failed.
         /// </summary>
         /// <param name="failCount"></param>
         void OnPatchingFailed(int failCount);
 
         /// <summary>
-        /// Output.WriteLine($"Resuming patch download of {missingFiles.Count} files...");
+        /// This method will be called once per UpdateEngine.Update if there are patch downloads to be resumed.
+        /// Ideal implementation may also log the missing files.
         /// </summary>
         /// <param name="missingFiles"></param>
         void OnPatchingResume(IEnumerable<string> missingFiles);
 
         /// <summary>
-        /// Called when the UpdateEngine is going to batch start patch download Tasks. Sends how many files are to be downloaded in total.
+        /// This method will be called once per UpdateEngine.Update if there are patch files to be downloaded.
         /// </summary>
         /// <param name="fileCount"></param>
         void OnPatchingStart(int fileCount);
 
         /// <summary>
-        /// Output.WriteLine("Update complete!");
+        /// This method will be called once per UpdateEngine.Update if all patches were successfully downloaded.
         /// </summary>
         void OnPatchingSuccess();
 
         /// <summary>
-        /// Output.WriteLine($"Patchlist contains {result.Count} file hashes.");
+        /// This method will be called once per UpdateEngine.Update when patchlists are successfully downloaded and merged.
         /// </summary>
         /// <param name="count"></param>
         void OnPatchlistFetchCompleted(int count);
 
         /// <summary>
-        /// Output.WriteLine("Downloading patchlists...");
+        /// This method will be called once per UpdateEngine.Update when patchlists are to be downloaded (and merged).
         /// </summary>
         void OnPatchlistFetchStart();
+
+        /// <summary>
+        /// This method will be called once per UpdateEngine.Update when it's done.
+        /// </summary>
+        void OnUpdateCompleted();
+
+        /// <summary>
+        /// This method will be called once per UpdateEngine.Update when it's starting.
+        /// </summary>
+        /// <param name="rehash"></param>
+        void OnUpdateStart(bool rehash);
     }
 }

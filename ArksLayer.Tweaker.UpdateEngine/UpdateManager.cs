@@ -137,8 +137,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         public void Housekeeping()
         {
-            Output.OnHousekeepingStart();
-
+            Output.OnHousekeeping();
             if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);
             if (File.Exists(MissingFilesJson)) File.Delete(MissingFilesJson);
             if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
@@ -150,8 +149,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 Output.OnCensorRemoval();
                 File.Delete(censorFile);
             }
-
-            Output.OnHousekeepingCompleted();
         }
 
         /// <summary>
@@ -191,8 +188,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// (A much more elegant solution instead of maintaining your own hashes!)</param>
         /// <param name="cleanLegacy">Can be set true if desiring legacy files purging.</param>
         /// <returns>True if patching is successful. False otherwise.</returns>
-        public async Task<bool> Update(bool rehash, bool cleanLegacy)
+        public async Task Update(bool rehash, bool cleanLegacy)
         {
+            var remoteVersion = Downloader.GetRemoteVersion();
+            Output.OnUpdateStart(rehash);
+
             IList<PatchInfo> patchlist;
             IList<PatchInfo> missingFiles;
 
@@ -226,20 +226,30 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 {
                     // Uh-oh, one or more download failed
                     Output.OnPatchingFailed(failCount);
-                    return false;
+                    return;
                 }
 
                 Output.AppendLog("Saving the latest client hashes...");
                 await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
                 Output.OnPatchingSuccess();
-
                 Housekeeping();
-                return true;
+            } else
+            {
+                Output.IfUpdateNotNeeded();
+                Housekeeping();
             }
 
-            Output.IfUpdateNotNeeded();
-            Housekeeping();
-            return true;
+            Settings.GameVersion = await remoteVersion;
+            Output.OnUpdateCompleted();
+        }
+
+        /// <summary>
+        /// Checks if game client version equals to the remote update version.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> IsGameUpToDate()
+        {
+            return await Downloader.GetRemoteVersion() == Settings.GameVersion;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using System.IO;
 
 namespace ArksLayer.Tweaker.Abstractions
 {
@@ -102,6 +103,55 @@ namespace ArksLayer.Tweaker.Abstractions
             set
             {
                 Root.SetValue(StoryPatchVersionKey, value.Trim());
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the PSO2 user profile folder.
+        /// </summary>
+        public string UserFolder
+        {
+            get
+            {
+                var documents = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                return Path.Combine(documents, @"Documents\SEGA\PHANTASYSTARONLINE2");
+            }
+        }
+
+        /// <summary>
+        /// Sets or gets the value of the game version file.
+        /// </summary>
+        public string GameVersionFile
+        {
+            get
+            {
+                return Path.Combine(UserFolder, "version.ver");
+            }
+        }
+
+        /// <summary>
+        /// A lock for thread-safe game version file IO.
+        /// </summary>
+        private static object GameVersionFileLock = new object();
+
+        /// <summary>
+        /// Sets or gets the value of the game client version.
+        /// </summary>
+        public string GameVersion
+        {
+            set
+            {
+                lock(GameVersionFileLock)
+                {
+                    File.WriteAllText(GameVersionFile, value);
+                }
+            }
+            get
+            {
+                lock (GameVersionFileLock)
+                {
+                    return File.ReadAllText(GameVersionFile);
+                }
             }
         }
     }

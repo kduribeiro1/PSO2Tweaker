@@ -22,7 +22,8 @@ namespace ArksLayer.Tweaker.Terminal
             Console.WriteLine(settings.GameDirectory);
             Console.WriteLine(updater.DataWin32Directory);
             Console.WriteLine(updater.BackupDirectory);
-            
+
+            Console.WriteLine(await updater.IsGameUpToDate());
             await updater.Update(false, true);
         }
 
