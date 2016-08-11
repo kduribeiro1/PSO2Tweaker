@@ -1263,20 +1263,6 @@ Public Class FrmMain
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
             Dim shell As Process = New Process With {.StartInfo = startInfo}
 
-            shell.Start()
-
-            If Program.GNFieldActive = True And Program.ELSActive = False Then
-                Process.Start("GN Field.exe")
-                Thread.Sleep(100)
-                End
-            End If
-
-            If Program.GNFieldActive = True And Program.ELSActive = True Then
-                Process.Start(RegKey.GetValue(Of String)("GNFieldName"))
-                Thread.Sleep(100)
-                End
-            End If
-
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
             Helper.Log("Checking for extra GN Fields...")
@@ -1287,6 +1273,9 @@ Public Class FrmMain
                 Next
             End If
             Helper.Log("Spinning GN Drives...")
+
+            File.Delete("GN Field.exe")
+            MsgBox("Deleted GN Field")
 
             If Program.GNFieldActive = True And Program.ELSActive = False Then
                 Helper.Log("GN Field is supposed to be active! Let's start it!")
