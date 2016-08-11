@@ -11,24 +11,34 @@ namespace ArksLayer.Tweaker.Abstractions
     public interface ITweakerSettings
     {
         /// <summary>
-        /// Sets or gets value of the directory path to pso2_bin.
+        /// Sets or gets the value of the directory path to the English Large Patch version.
+        /// </summary>
+        string EnglishLargePatchVersion { set; get; }
+
+        /// <summary>
+        /// Sets or gets the value of the directory path to the English Patch version.
+        /// </summary>
+        string EnglishPatchVersion { set; get; }
+
+        /// <summary>
+        /// Sets or gets the value of the directory path to pso2_bin.
         /// Expected result example: D:\PSO2\pso2_bin
         /// </summary>
         string GameDirectory { set; get; }
 
         /// <summary>
-        /// Sets or gets value of the directory path to the English Patch version.
+        /// Sets or gets the value of the game client version.
         /// </summary>
-        string EnglishPatchVersion { set; get; }
+        string GameVersion { set; get; }
 
         /// <summary>
-        /// Sets or gets value of the directory path to the English Large Patch version.
-        /// </summary>
-        string EnglishLargePatchVersion { set; get; }
-
-        /// <summary>
-        /// Sets or gets value of the directory path to the Story Patch version.
+        /// Sets or gets the value of the directory path to the Story Patch version.
         /// </summary>
         string StoryPatchVersion { set; get; }
+
+        /// <summary>
+        /// Gets the value of the PSO2 user profile folder.
+        /// </summary>
+        string UserFolder { get; }
     }
 }

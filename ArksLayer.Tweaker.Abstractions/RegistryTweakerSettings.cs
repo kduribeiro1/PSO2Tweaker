@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using System.IO;
 
 namespace ArksLayer.Tweaker.Abstractions
 {
@@ -12,18 +13,9 @@ namespace ArksLayer.Tweaker.Abstractions
     public class RegistryTweakerSettings : ITweakerSettings
     {
         /// <summary>
-        /// Constructs an instance of the class, pointing to parameter registry path for HKEY_CURRENT_USER.
+        /// Registry key for value containing the version of English Large Patch.
         /// </summary>
-        /// <param name="path"></param>
-        public RegistryTweakerSettings(string path = @"Software\AIDA")
-        {
-            this.Root = Registry.CurrentUser.CreateSubKey(path);
-        }
-
-        /// <summary>
-        /// Registry key for value containing directory path to pso2_bin.
-        /// </summary>
-        private const string GameDirectoryKey = "PSO2Dir";
+        private const string EnglishLargePatchVersionKey = "LargeFilesVersion";
 
         /// <summary>
         /// Registry key for value containing the version of English Patch.
@@ -31,9 +23,9 @@ namespace ArksLayer.Tweaker.Abstractions
         private const string EnglishPatchVersionKey = "ENPatchVersion";
 
         /// <summary>
-        /// Registry key for value containing the version of English Large Patch.
+        /// Registry key for value containing directory path to pso2_bin.
         /// </summary>
-        private const string EnglishLargePatchVersionKey = "LargeFilesVersion";
+        private const string GameDirectoryKey = "PSO2Dir";
 
         /// <summary>
         /// Registry key for value containing the version of Story Patch.
@@ -41,19 +33,25 @@ namespace ArksLayer.Tweaker.Abstractions
         private const string StoryPatchVersionKey = "StoryPatchVersion";
 
         /// <summary>
-        /// Sets or gets value of the directory path to pso2_bin.
-        /// Expected result example: D:\PSO2\pso2_bin
+        /// Constructs an instance of the class, pointing to parameter registry path for HKEY_CURRENT_USER.
         /// </summary>
-        public string GameDirectory
+        /// <param name="path"></param>
+        public RegistryTweakerSettings(string path = @"Software\AIDA")
+        {
+            this.Root = Registry.CurrentUser.CreateSubKey(path);
+        }
+        /// <summary>
+        /// Sets or gets value of the directory path to the English Large Patch version.
+        /// </summary>
+        public string EnglishLargePatchVersion
         {
             get
             {
-                var value = (string)Root.GetValue(GameDirectoryKey);
-                return value.TrimEnd('\\');
+                return (string)Root.GetValue(EnglishLargePatchVersionKey);
             }
             set
             {
-                Root.SetValue(GameDirectoryKey, value.TrimEnd('\\'));
+                Root.SetValue(EnglishLargePatchVersionKey, value.Trim());
             }
         }
 
@@ -73,19 +71,25 @@ namespace ArksLayer.Tweaker.Abstractions
         }
 
         /// <summary>
-        /// Sets or gets value of the directory path to the English Large Patch version.
+        /// Sets or gets value of the directory path to pso2_bin.
+        /// Expected result example: D:\PSO2\pso2_bin
         /// </summary>
-        public string EnglishLargePatchVersion
+        public string GameDirectory
         {
             get
             {
-                return (string)Root.GetValue(EnglishLargePatchVersionKey);
+                var value = (string)Root.GetValue(GameDirectoryKey);
+                return value.TrimEnd('\\');
             }
             set
             {
-                Root.SetValue(EnglishLargePatchVersionKey, value.Trim());
+                Root.SetValue(GameDirectoryKey, value.TrimEnd('\\'));
             }
         }
+        /// <summary>
+        /// Using this property, you can manipulate Windows Registry for Tweaker directly.
+        /// </summary>
+        public RegistryKey Root { get; private set; }
 
         /// <summary>
         /// Sets or gets value of the directory path to the Story Patch version.
@@ -103,8 +107,52 @@ namespace ArksLayer.Tweaker.Abstractions
         }
 
         /// <summary>
-        /// Using this property, you can manipulate Windows Registry for Tweaker directly.
+        /// Gets the value of the PSO2 user profile folder.
         /// </summary>
-        public RegistryKey Root { get; private set; }
+        public string UserFolder
+        {
+            get
+            {
+                var documents = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                return Path.Combine(documents, @"Documents\SEGA\PHANTASYSTARONLINE2");
+            }
+        }
+
+        /// <summary>
+        /// Sets or gets the value of the game version file.
+        /// </summary>
+        public string GameVersionFile
+        {
+            get
+            {
+                return Path.Combine(UserFolder, "version.ver");
+            }
+        }
+
+        /// <summary>
+        /// A lock for thread-safe game version file IO.
+        /// </summary>
+        private static object GameVersionFileLock = new object();
+
+        /// <summary>
+        /// Sets or gets the value of the game client version.
+        /// </summary>
+        public string GameVersion
+        {
+            set
+            {
+                lock(GameVersionFileLock)
+                {
+                    File.WriteAllText(GameVersionFile, value);
+                }
+            }
+            get
+            {
+                lock (GameVersionFileLock)
+                {
+                    return File.ReadAllText(GameVersionFile);
+                }
+            }
+        }
     }
 }

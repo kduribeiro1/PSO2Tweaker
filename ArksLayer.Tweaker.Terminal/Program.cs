@@ -15,7 +15,7 @@ namespace ArksLayer.Tweaker.Terminal
         public static async Task MainAsync()
         {
             // Use IOC Container in the main Tweaker project to deal with dependencies.
-            var output = new ConsoleRenderer();
+            var output = new ConsoleTrigger();
             var settings = new RegistryTweakerSettings(@"Software\AIDA");
             var updater = new UpdateManager(settings, output);
 
@@ -23,8 +23,8 @@ namespace ArksLayer.Tweaker.Terminal
             Console.WriteLine(updater.DataWin32Directory);
             Console.WriteLine(updater.BackupDirectory);
 
-            //updater.Crash();
-            await updater.Update(false);
+            Console.WriteLine(await updater.IsGameUpToDate());
+            await updater.Update(false, true);
         }
 
         public static void Main(string[] args)

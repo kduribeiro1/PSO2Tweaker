@@ -1,43 +1,13 @@
 ﻿# ArksLayer.Tweaker.Abstractions
-### A collection of interface and strongly-typed configuration classes for PSO2 Tweaker.
+### A collection of interfaces and strongly-typed configuration classes for PSO2 Tweaker.
 
-## IRenderer
+## ITrigger
 
-Provides an interface that can be implemented for linking the UI against other `ArksLayer.Tweaker` modules. Current signatures:
-
-```csharp
-public interface IRenderer
-{
-    void WriteLine(string s);
-    void AppendLog(string s);
-
-	void OnPatchingStart(int fileCount);
-
-    void OnDownloadStart(string url, WebClient client);
-    void OnDownloadFinish(string url);
-    void OnDownloadRetry(string url, int delaySecond);
-    void OnDownloadAborted(string url);
-
-    void OnHashStart();
-    void OnHashProgress(int progress, int total);
-    void OnHashComplete();
-}
-``` 
+Provides the definitions for an assortment of methods that can be implemented for linking a UI against other `ArksLayer.Tweaker` modules.
 
 ## ITweakerSettings
 
-Provides an interface that can be loaded by other `ArksLayer.Tweaker` modules for strongly reading application settings. Current signatures:
-
-```csharp
-public interface ITweakerSettings
-{
-    string GameDirectory { set; get; }
-
-	string EnglishPatchVersion { set; get; }
-	string EnglishLargePatchVersion { set; get; }
-	string StoryPatchVersion { set; get; }
-}
-```
+Provides property definitions that can be implemented for providing a `ArksLayer.Tweaker` with strongly-typed application settings.
 
 ## RegistryTweakerSettings
 

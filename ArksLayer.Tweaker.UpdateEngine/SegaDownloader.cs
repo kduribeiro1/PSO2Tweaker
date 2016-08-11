@@ -17,18 +17,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
     internal class SegaDownloader
     {
         /// <summary>
-        /// Construct an instance of SegaDownloader using the provided UI renderer.
+        /// Patchlist URL for the game launcher executables.
         /// </summary>
-        /// <param name="output"></param>
-        public SegaDownloader(IRenderer output)
-        {
-            this.Output = output;
-        }
-
-        /// <summary>
-        /// Base URL for the standard patch server.
-        /// </summary>
-        private const string PatchBaseUrl = "http://download.pso2.jp/patch_prod/patches/";
+        private const string LauncherListUrl = PatchBaseUrl + "launcherlist.txt";
 
         /// <summary>
         /// Base URL for the older patch server.
@@ -36,9 +27,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private const string OldPatchBaseUrl = "http://download.pso2.jp/patch_prod/patches_old/";
 
         /// <summary>
-        /// Patchlist URL for the game launcher executables.
+        /// Patchlist URL from the older patch server.
         /// </summary>
-        private const string LauncherListUrl = PatchBaseUrl + "launcherlist.txt";
+        private const string OldPatchlistUrl = OldPatchBaseUrl + "patchlist.txt";
+
+        /// <summary>
+        /// Base URL for the standard patch server.
+        /// </summary>
+        private const string PatchBaseUrl = "http://download.pso2.jp/patch_prod/patches/";
 
         /// <summary>
         /// Patchlist URL from the standard patch server.
@@ -46,14 +42,73 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private const string PatchlistUrl = PatchBaseUrl + "patchlist.txt";
 
         /// <summary>
-        /// Patchlist URL from the older patch server.
+        /// Construct an instance of SegaDownloader using the provided UI renderer.
         /// </summary>
-        private const string OldPatchlistUrl = OldPatchBaseUrl + "patchlist.txt";
-
+        /// <param name="output"></param>
+        public SegaDownloader(ITrigger output)
+        {
+            this.Output = output;
+        }
         /// <summary>
         /// Dependency to UI renderer class.
         /// </summary>
-        private IRenderer Output { get; set; }
+        private ITrigger Output { get; set; }
+
+        /// <summary>
+        /// Attempts to download a patch into a target directory.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="directory"></param>
+        /// <param name="successLog">If provided, will write a line containing the patch file name then flush immediately into the log when a download is successful.</param>
+        /// <param name="attempts">Causes the download to be retried as much as the number allows, with exponential backoff algorithm</param>
+        /// <returns>True if download is successful, else false.</returns>
+        public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, StreamWriter successLog = null, int attempts = 4)
+        {
+            if (attempts < 1) attempts = 1;
+
+            var file = Path.Combine(directory, target.File);
+            var folder = new FileInfo(file).DirectoryName;
+            //Directory.CreateDirectory(folder);
+
+            var baseUrl = target.Old ? OldPatchBaseUrl : PatchBaseUrl;
+            var url = baseUrl + target.File + ".pat";
+
+            for (int i = 0; i < attempts; i++)
+            {
+                await ExponentialBackoff(i, url);
+
+                var client = new AquaClient();
+                var download = client.DownloadFileTaskAsync(url, file);
+                Output.AppendLog($"Downloading a file from {url} to {file}");
+                Output.OnDownloadStart(url, client);
+
+                try
+                {
+                    await download;
+                    if (new FileInfo(file).Length == 0) throw new Exception("Empty response!");
+
+                    Output.OnDownloadFinish(url);
+                    if (successLog != null)
+                    {
+                        lock (UpdateManager.DownloadSuccessLogLock)
+                        {
+                            successLog.WriteLine(target.File);
+                            successLog.Flush();
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception Ex)
+                {
+                    Output.AppendLog($"Download failed {url} because: {Ex.Message}");
+                }
+            }
+
+            Output.OnDownloadAborted(url);
+            return false;
+            //throw new Exception("Unable to download " + url);
+        }
 
         /// <summary>
         /// Attempts do download an update patchlist from SEGA server.
@@ -62,7 +117,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         public async Task<IList<PatchInfo>> FetchUpdatePatchlist()
         {
-            Output.WriteLine("Downloading patchlists...");
+            Output.OnPatchlistFetchStart();
 
             var launcherList = DownloadAndParsePatchlist(LauncherListUrl);
             var patchlist = DownloadAndParsePatchlist(PatchlistUrl);
@@ -71,45 +126,21 @@ namespace ArksLayer.Tweaker.UpdateEngine
             await Task.WhenAll(launcherList, patchlist, oldPatchlist);
 
             // Apparently, there are duplicates and the (new) patchlist takes priority before the old patchlist!
-            Output.WriteLine("Merging patchlists...");
-
-            var merge = new ConcurrentDictionary<string, PatchInfo>();
+            var merge = new Dictionary<string, PatchInfo>();
             MergePatchlist(merge, await launcherList, false);
             MergePatchlist(merge, await patchlist, false);
             MergePatchlist(merge, await oldPatchlist, true);
 
-            var result = merge.Values.ToList();
+            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "user_default.pso2", "user_intel.pso2" };
+            var result = merge.Values.AsParallel().Where(Q => FilterPatch(blacklist, Q)).ToList();
+
             using (var file = File.CreateText("patchlist.json"))
             {
                 await file.WriteAsync(JsonConvert.SerializeObject(result));
             }
-            Output.WriteLine($"Patchlist contains {result.Count} file hashes.");
+
+            Output.OnPatchlistFetchCompleted(result.Count);
             return result;
-        }
-
-        /// <summary>
-        /// Attempts to merge multiple patches into a dictionary of filename to patch information.
-        /// If a filename already exists in the dictionary, then the patch information will be disregarded. (First Come First Serve)
-        /// Has built-in blacklist to prevent certain files do be downloaded. (Because baka AIDA always failed to download them)
-        /// </summary>
-        /// <param name="merge"></param>
-        /// <param name="patchlist"></param>
-        /// <param name="old">Indicates whether the patch should be downloaded from the older patch server</param>
-        private void MergePatchlist(ConcurrentDictionary<string, PatchInfo> merge, IList<PatchInfo> patchlist, bool old)
-        {
-            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "gameversion.ver", "user_default.pso2", "user_intel.pso2", "edition.txt" };
-
-            Parallel.ForEach(patchlist, p =>
-            {
-                foreach (var black in blacklist)
-                {
-                    if (p.File.EndsWith(black, StringComparison.InvariantCultureIgnoreCase)) return;
-                }
-
-                p.Old = old;
-                // TryAdd returns false if the key already exists
-                merge.TryAdd(p.File, p);
-            });
         }
 
         /// <summary>
@@ -120,11 +151,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private async Task<IList<PatchInfo>> DownloadAndParsePatchlist(string url)
         {
             var response = await DownloadPatchlist(url);
-
-            Output.WriteLine($"PARSING {url}");
             var result = ParsePatchlist(response);
-
-            Output.WriteLine($"READY {url}");
             return result;
         }
 
@@ -166,59 +193,13 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
-        /// Attempts to download a patch into a target directory.
+        /// Grabs a version string for the game client from remote SEGA server.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="directory"></param>
-        /// <param name="successLog">If provided, will write a line containing the patch file name then flush immediately into the log when a download is successful.</param>
-        /// <param name="attempts">Causes the download to be retried as much as the number allows, with exponential backoff algorithm</param>
-        /// <returns>True if download is successful, else false.</returns>
-        public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, StreamWriter successLog = null, int attempts = 4)
+        /// <returns></returns>
+        public Task<string> GetRemoteVersion()
         {
-            if (attempts < 1) attempts = 1;
-
-            var file = Path.Combine(directory, target.File);
-            var folder = new FileInfo(file).DirectoryName;
-            //Directory.CreateDirectory(folder);
-
-            var baseUrl = target.Old ? OldPatchBaseUrl : PatchBaseUrl;
-            var url = baseUrl + target.File + ".pat";
-
-            for (int i = 0; i < attempts; i++)
-            {
-                await ExponentialBackoff(i, url);
-
-                var client = new AquaClient();
-                var download = client.DownloadFileTaskAsync(url, file);
-                Output.AppendLog($"Downloading a file from {url} to {file}");
-                Output.OnDownloadStart(url, client);
-
-                try
-                {
-                    await download;
-                    if (new FileInfo(file).Length == 0) throw new Exception("Empty response!");
-
-                    Output.OnDownloadFinish(url);
-                    if (successLog != null)
-                    {
-                        lock (successLog)
-                        {
-                            successLog.WriteLine(target.File);
-                            successLog.Flush();
-                        }
-                    }
-
-                    return true;
-                }
-                catch (Exception Ex)
-                {
-                    Output.AppendLog($"Download failed {url} because: {Ex.Message}");
-                }
-            }
-
-            Output.OnDownloadAborted(url);
-            return false;
-            //throw new Exception("Unable to download " + url);
+            var url = PatchBaseUrl + "version.ver";
+            return DownloadPatchlist(url, 5);
         }
 
         /// <summary>
@@ -244,6 +225,40 @@ namespace ArksLayer.Tweaker.UpdateEngine
             return Task.Delay(1);
         }
 
+        /// <summary>
+        /// Uses a passed file blacklist to determine whether a patch should be downloaded.
+        /// </summary>
+        /// <param name="blacklist"></param>
+        /// <param name="patch"></param>
+        /// <returns></returns>
+        private bool FilterPatch(IEnumerable<string> blacklist, PatchInfo patch)
+        {
+            foreach (var black in blacklist)
+            {
+                if (patch.File.EndsWith(black, StringComparison.InvariantCultureIgnoreCase)) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to merge multiple patches into a dictionary of filename to patch information.
+        /// If a filename already exists in the dictionary, then the patch information will be disregarded. (First Come First Serve)
+        /// </summary>
+        /// <param name="merge"></param>
+        /// <param name="patchlist"></param>
+        /// <param name="old">Indicates whether the patch should be downloaded from the older patch server</param>
+        private void MergePatchlist(IDictionary<string, PatchInfo> merge, IList<PatchInfo> patchlist, bool old)
+        {
+            // Converted concurrent dictionary to standard dictionary because benchmark shows that it can be 60% faster.
+            foreach (var p in patchlist)
+            {
+                if (!merge.ContainsKey(p.File))
+                {
+                    p.Old = old;
+                    merge[p.File] = p;
+                }
+            }
+        }
         /// <summary>
         /// Parse a raw downloaded patchlist content.
         /// </summary>
