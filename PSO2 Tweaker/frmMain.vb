@@ -1274,9 +1274,6 @@ Public Class FrmMain
             End If
             Helper.Log("Spinning GN Drives...")
 
-            File.Delete("GN Field.exe")
-            MsgBox("Deleted GN Field")
-
             If Program.GNFieldActive = True And Program.ELSActive = False Then
                 Helper.Log("GN Field is supposed to be active! Let's start it!")
                 Process.Start("GN Field.exe")
