@@ -869,7 +869,7 @@ Public Class FrmMain
                         Exit Sub
                     End If
                 Catch ex As Exception
-                    Helper.Log(ex.Message.ToString & " Stack Trace: " & ex.StackTrace)
+                    Helper.LogWithException(Resources.strERROR, ex)
                     Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
                     Exit Sub
                 End Try

@@ -1248,7 +1248,7 @@ click cancel and hit Yes.</value>
     <value>104, 33</value>
   </data>
   <data name="ButtonX1.TabIndex" type="System.Int32, mscorlib">
-    <value>65</value>
+    <value>64</value>
   </data>
   <data name="ButtonX1.Text" xml:space="preserve">
     <value>PSO2 Tweaker beta settings</value>
