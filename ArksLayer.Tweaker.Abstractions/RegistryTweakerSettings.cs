@@ -141,8 +141,12 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             set
             {
-                lock(GameVersionFileLock)
+                lock (GameVersionFileLock)
                 {
+                    if (!Directory.Exists(UserFolder))
+                    {
+                        Directory.CreateDirectory(UserFolder);
+                    }
                     File.WriteAllText(GameVersionFile, value);
                 }
             }
@@ -150,6 +154,10 @@ namespace ArksLayer.Tweaker.Abstractions
             {
                 lock (GameVersionFileLock)
                 {
+                    if (!File.Exists(GameVersionFile))
+                    {
+                        return null;
+                    }
                     return File.ReadAllText(GameVersionFile);
                 }
             }
