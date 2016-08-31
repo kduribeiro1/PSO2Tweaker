@@ -148,7 +148,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 var censorFile = Path.Combine(DataWin32Directory, "ffbff2ac5b7a7948961212cefd4d402c");
                 if (File.Exists(censorFile))
                 {
-                    Output.OnCensorRemoval();
+                    Output.AppendLog($"Removing chat censor file: {censorFile}");
                     File.Delete(censorFile);
                 }
             });
