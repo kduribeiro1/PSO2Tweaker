@@ -135,42 +135,47 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <summary>
         /// Deletes the file that must not exist for the next patching operation and then uncensor the game if not uncensored already.
         /// </summary>
-        public void Housekeeping()
+        public Task Housekeeping()
         {
             Output.OnHousekeeping();
-            if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);
-            if (File.Exists(MissingFilesJson)) File.Delete(MissingFilesJson);
-            if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
-
-            //Remove Censor
-            var censorFile = Path.Combine(DataWin32Directory, "ffbff2ac5b7a7948961212cefd4d402c");
-            if (File.Exists(censorFile))
+            return Task.Run(() =>
             {
-                Output.OnCensorRemoval();
-                File.Delete(censorFile);
-            }
+                if (File.Exists(PatchlistJson)) File.Delete(PatchlistJson);
+                if (File.Exists(MissingFilesJson)) File.Delete(MissingFilesJson);
+                if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
+
+                //Remove Censor
+                var censorFile = Path.Combine(DataWin32Directory, "ffbff2ac5b7a7948961212cefd4d402c");
+                if (File.Exists(censorFile))
+                {
+                    Output.OnCensorRemoval();
+                    File.Delete(censorFile);
+                }
+            });
         }
 
         /// <summary>
         /// Restore all backups in the backup directory to the assets folder, indiscriminately.
         /// </summary>
-        public void RestoreBackupFiles()
+        public async Task RestoreBackupFiles()
         {
             if (!Directory.Exists(BackupDirectory)) return;
 
-            var backupFiles = Directory.GetFiles(BackupDirectory, "*.*", SearchOption.AllDirectories).ToList();
+            var backupFiles = await Task.Run(() => Directory.GetFiles(BackupDirectory, "*.*", SearchOption.AllDirectories));
             if (!backupFiles.Any()) return;
 
             Output.OnBackupRestore(backupFiles);
-
-            foreach (var file in backupFiles)
+            await Task.Run(() =>
             {
-                var fileName = Path.GetFileName(file);
-                var target = Path.Combine(DataWin32Directory, fileName);
+                foreach (var file in backupFiles)
+                {
+                    var fileName = Path.GetFileName(file);
+                    var target = Path.Combine(DataWin32Directory, fileName);
 
-                if (File.Exists(target)) File.Delete(target);
-                File.Move(file, target);
-            }
+                    if (File.Exists(target)) File.Delete(target);
+                    File.Move(file, target);
+                }
+            });
 
             // Why the fuck are we using hard-coded string as enum values? This is stupid
             Settings.EnglishPatchVersion = "Not Installed";
@@ -205,11 +210,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
             {
                 var patchlistDownload = Downloader.FetchUpdatePatchlist();
 
-                RestoreBackupFiles();
-                var gameFiles = EnumerateGameFiles();
+                await RestoreBackupFiles();
+                var gameFiles = await Task.Run(() => EnumerateGameFiles());
                 patchlist = await patchlistDownload;
 
-                if (cleanLegacy) CleanLegacyFiles(patchlist, gameFiles);
+                if (cleanLegacy)
+                {
+                    await CleanLegacyFiles(patchlist, gameFiles);
+                }
                 var gameHashes = await GetClientHash(rehash);
 
                 missingFiles = await DiscoverMissingPatches(gameHashes, patchlist);
@@ -232,11 +240,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 Output.AppendLog("Saving the latest client hashes...");
                 await OverwriteLatestClientJson(patchlist.ToDictionary(Q => Q.File, Q => Q.Hash));
                 Output.OnPatchingSuccess();
-                Housekeeping();
-            } else
+                await Housekeeping();
+            }
+            else
             {
                 Output.IfUpdateNotNeeded();
-                Housekeeping();
+                await Housekeeping();
             }
 
             Settings.GameVersion = await remoteVersion;
@@ -258,7 +267,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// My game client was updated ever since Episode 2: using this method weeds out 1300+ files (1GB).
         /// </summary>
         /// <returns></returns>
-        private void CleanLegacyFiles(IList<PatchInfo> patchlist, IList<string> gameFiles)
+        private async Task CleanLegacyFiles(IList<PatchInfo> patchlist, IList<string> gameFiles)
         {
             Output.OnLegacyFilesScanning();
 
@@ -283,10 +292,13 @@ namespace ArksLayer.Tweaker.UpdateEngine
             }
 
             Output.OnLegacyFilesFound(legacyFiles);
-            foreach (var file in legacyFiles)
+            await Task.Run(() =>
             {
-                File.Delete(file);
-            }
+                foreach (var file in legacyFiles)
+                {
+                    File.Delete(file);
+                }
+            });
         }
         /// <summary>
         /// Compares the patchlist to the game client hashes and discover whether there are missing files that require downloading.
@@ -296,9 +308,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private async Task<IList<PatchInfo>> DiscoverMissingPatches(IDictionary<string, string> gameFiles, IList<PatchInfo> patchlist)
         {
-            var patchDictionary = patchlist.ToDictionary(Q => Q.File, Q => Q);
-
-            var missingFiles = patchDictionary.AsParallel()
+            var missingFiles = patchlist
+                .ToDictionary(Q => Q.File, Q => Q)
+                .AsParallel()
                 .Select(Q =>
                 {
                     string hash;
@@ -308,6 +320,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
                     var isEqual = hash.Equals(Q.Value.Hash, StringComparison.InvariantCultureIgnoreCase);
                     return isEqual ? null : Q.Value;
+
+                    // For cleaner syntax, NULL here simply means that the file hash in patchlist is found and is equal.
+                    // AKA, items that are NOT NULL means that the file in patchlist is NOT FOUND or is DIFFERENT and SHOULD BE DOWNLOADED.
                 })
                 .Where(Q => Q != null)
                 .ToList();
