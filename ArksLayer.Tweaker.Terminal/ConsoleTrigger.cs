@@ -90,7 +90,10 @@ namespace ArksLayer.Tweaker.Terminal
         public void OnLegacyFilesFound(IEnumerable<string> legacyFiles)
         {
             Console.WriteLine($"Destroying {legacyFiles.Count()} legacy files...");
-            // You can log those files if you want.
+            foreach (var file in legacyFiles)
+            {
+                Console.WriteLine("LEGACY :" + file);
+            }
         }
 
         public void OnLegacyFilesNotFound()
@@ -147,7 +150,7 @@ namespace ArksLayer.Tweaker.Terminal
 
         public void OnUpdateStart(bool rehash)
         {
-            Console.WriteLine("Update finished.");
+            Console.WriteLine("Update started.");
         }
     }
 }
