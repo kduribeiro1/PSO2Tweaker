@@ -1499,7 +1499,7 @@ Public Class FrmMain
 
     Private Async Sub ButtonItem10_Click(sender As Object, e As EventArgs) Handles ButtonItem10.Click
         ' Use IOC Container in the main Tweaker project to deal with dependencies.
-        Dim output As New ConsoleRenderer
+        Dim output As New TweakerTrigger
         Dim Settings = New RegistryTweakerSettings("Software\AIDA")
         Dim updater = New UpdateManager(Settings, output)
 
@@ -1507,7 +1507,7 @@ Public Class FrmMain
 
         'Console.WriteLine(settings.GameDirectory)
         frmDownloader.CleanupUI()
-        Await updater.Update(True)
+        Await updater.Update(True, True)
     End Sub
 
     Private Sub btnGameguard_Click(sender As Object, e As EventArgs) Handles btnGameguard.Click
@@ -2888,7 +2888,7 @@ Public Class FrmMain
 
     Private Async Sub btnQUANTUMSYSTEM_Click(sender As Object, e As EventArgs) Handles btnQUANTUMSYSTEM.Click
         ' Use IOC Container in the main Tweaker project to deal with dependencies.
-        Dim output As New ConsoleRenderer
+        Dim output As New TweakerTrigger
         Dim Settings = New RegistryTweakerSettings("Software\AIDA")
         Dim updater = New UpdateManager(Settings, output)
 
@@ -2903,7 +2903,7 @@ Public Class FrmMain
             Helper.LogWithException(Resources.strERROR, ex)
         End Try
         frmDownloader.CleanupUI()
-        Await updater.Update(False)
+        Await updater.Update(False, True)
     End Sub
 
     Public Sub FinalUpdateSteps()
@@ -2925,250 +2925,5 @@ Public Class FrmMain
         Helper.WriteDebugInfo("Game updated to the latest version. Don't forget to re-install/update the patches, as some of the files might have been untranslated.")
         RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
         UnlockGui()
-    End Sub
-End Class
-
-
-Public Class ConsoleRenderer
-    Implements IRenderer
-
-    Dim _downloadedfilecount As Integer = 0
-    Dim patchfilecount As Integer = 0
-    Dim TotalDownloadedQuantum As Long
-    Dim DoneDownloading As Boolean = False
-    Dim SeenMessage As Boolean = False
-    Dim patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
-    Public Sub AppendLog(s As String)
-        Helper.WriteDebugInfo(s)
-    End Sub
-
-    Public Sub OnDownloadProgress(url As String, progressByte As Long, totalByte As Long)
-        Dim percentage = String.Format("{0:N2}%", Math.Truncate(progressByte / CDbl(totalByte) * 100 * 100) / 100)
-        Dim s = "DOWNLOADING {url} | {progressByte / 1024} KB out of {totalByte / 1024} KB | {percentage}"
-        WriteLine(s)
-    End Sub
-
-    Public Sub WriteLine(s As String)
-        If s.Contains("PSO2 Tweaker ver") Then Exit Sub
-        Helper.WriteDebugInfo(s)
-    End Sub
-
-    Private Sub IRenderer_WriteLine(s As String) Implements IRenderer.WriteLine
-        'These are placeholders - Once everything is set in stone and ready, I'll modify the strings in a much better fashion. [AIDA]
-        'These nothing wrong with the engine strings themselves, but I can count the amount of PSO2 players who know what hashes are on two hands. [AIDA]
-
-        If s.Contains("Download failed http://download.pso2.jp/patch_prod/patches/data/win32/script/user_default.pso2.pat") = True Then Exit Sub
-        If s.Contains("Download failed http://download.pso2.jp/patch_prod/patches_old/data/win32/script/user_intel.pso2.pat") = True Then Exit Sub
-
-        If s.Contains("Downloading patchlists...") Then s = "Checking for PSO2 updates..."
-        If s.Contains("Scanning for legacy files...") Or s.Contains("There are no legacy files to clean up!") Or s.Contains("Patchlist contains ") Then Exit Sub
-        If s.Contains("Searching for latest game client hashes...") Then Exit Sub
-        If s.Contains("Unable to read the latest client file hashes!") Then s = "Couldn't find previous update data, starting from scratch..."
-        If s.Contains("Game client hashes found!") Then s = "Found previous update data!"
-        If s.Contains("Discovering missing files...") Then s = "Checking for missing files..."
-        If s.Contains("A little housekeeping...") Then s = "Cleaning up..."
-        If s.Contains("Your game is up-to-date!") Then
-            s = "Your game appears to be up-to-date! If you believe this is incorrect, please click Troubleshooting -> Check for Old/Missing Files to do a full filecheck instead of a fast check."
-            patchwriter.Flush()
-            patchwriter.Close()
-        End If
-
-        If s.Contains("PSO2 Tweaker ver") Then Exit Sub
-
-        If s.Contains("PARSING ") Or s.Contains("READY ") Or s.Contains("Merging ") Then
-            Exit Sub
-        End If
-
-        If s.Contains(" deleted") Then
-            patchwriter.WriteLine(s)
-            'Helper.PatchLog(s)
-        Else
-            Helper.WriteDebugInfo(s)
-        End If
-    End Sub
-    Public Sub WritePatchLog(s As String)
-        patchwriter.WriteLine(DateTime.Now.ToString("G") & " " & s)
-    End Sub
-    Private Sub IRenderer_AppendLog(s As String) Implements IRenderer.AppendLog
-        'Helper.WriteDebugInfo(s)
-        If s.Contains("Downloading a file from") Then s = s.Replace("Downloading a file from ", "Downloading ")
-        WritePatchLog(s.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("data/win32/", "data\win32\"))
-    End Sub
-
-
-    Private Sub IRenderer_OnDownloadStart(url As String, client As WebClient) Implements IRenderer.OnDownloadStart
-
-        If DoneDownloading = True Then Exit Sub
-        'If url.Contains("PSO2JP.ini") Or url.Contains("gameversion.ver") Or url.Contains("GameGuard.des") Or url.Contains("edition.txt") Then
-        ' patchfilecount -= 1
-        ' client.CancelAsync()
-        ' If patchfilecount = 0 Then
-        ' DoneDownloading = True
-        ' frmDownloader.Hide()
-        ' FrmMain.FinalUpdateSteps()
-        ' Thread.Sleep(10000)
-        ' frmDownloader.Close()
-        ' End If
-        ' End If
-
-        If patchfilecount > 0 Then frmDownloader.Show()
-        'Dim lastprogress As Long
-        Dim CaptureBar As Boolean = False
-        Dim Filename As String
-        AddHandler client.DownloadProgressChanged,
-            Sub(o, e)
-
-                If DoneDownloading = True Then Exit Sub
-                Filename = url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "")
-
-                If frmDownloader.ProgressBarX1.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX1.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX2.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX2.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX3.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX3.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX4.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX4.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX5.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX5.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX6.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX6.Text = url
-                    CaptureBar = True
-                End If
-
-                'Do something here
-                'If lastprogress = e.BytesReceived Then
-                ' Return
-                ' End If
-                '
-                'lastprogress = e.BytesReceived
-                '
-                Dim percentage As Integer = 0
-                'Dim percentage = String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                'Dim s = "DOWNLOADING {url} | {e.BytesReceived / 1024} KB out of {e.TotalBytesToReceive / 1024} KB | {percentage}"
-                'MsgBox(s)
-
-                If frmDownloader.ProgressBarX1.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX1.Value = percentage
-                    frmDownloader.LabelX1.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX2.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX2.Value = percentage
-                    frmDownloader.LabelX2.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX3.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX3.Value = percentage
-                    frmDownloader.LabelX3.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX4.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX4.Value = percentage
-                    frmDownloader.LabelX4.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX5.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX5.Value = percentage
-                    frmDownloader.LabelX5.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX6.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX6.Value = percentage
-                    frmDownloader.LabelX6.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-
-                frmDownloader.lblTotal.Text = "Total amount downloaded: " & Helper.SizeSuffix(TotalDownloadedQuantum) & vbCrLf & "Total files downloaded: " & _downloadedfilecount & vbCrLf & "Files left to download: " & patchfilecount - _downloadedfilecount & "/" & patchfilecount
-                If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
-                    DoneDownloading = True
-                    patchwriter.Flush()
-                    frmDownloader.Hide()
-                    FrmMain.FinalUpdateSteps()
-                End If
-            End Sub
-
-    End Sub
-
-    Private Sub IRenderer_OnDownloadFinish(url As String) Implements IRenderer.OnDownloadFinish
-        If frmDownloader.ProgressBarX1.Text = url Then
-            frmDownloader.ProgressBarX1.Text = ""
-        End If
-        If frmDownloader.ProgressBarX2.Text = url Then
-            frmDownloader.ProgressBarX2.Text = ""
-        End If
-        If frmDownloader.ProgressBarX3.Text = url Then
-            frmDownloader.ProgressBarX3.Text = ""
-        End If
-        If frmDownloader.ProgressBarX4.Text = url Then
-            frmDownloader.ProgressBarX4.Text = ""
-        End If
-        If frmDownloader.ProgressBarX5.Text = url Then
-            frmDownloader.ProgressBarX5.Text = ""
-        End If
-        If frmDownloader.ProgressBarX6.Text = url Then
-            frmDownloader.ProgressBarX6.Text = ""
-        End If
-
-        WritePatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/", "").Replace(".pat", "") & "!")
-        _downloadedfilecount += 1
-        If url.Contains(".pat") And url.Contains("exe") = False Then TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
-        If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("http://download.pso2.jp/patch_prod/patches/", ""))
-        'FrmMain.lblStatus.Text = "Downloaded " & _downloadedfilecount & " files"
-        'Throw New NotImplementedException()
-    End Sub
-
-    Private Sub IRenderer_OnDownloadRetry(url As String, delaySecond As Integer) Implements IRenderer.OnDownloadRetry
-        WritePatchLog("Retrying download for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
-        'Throw New NotImplementedException()
-    End Sub
-
-    Private Sub IRenderer_OnDownloadAborted(url As String) Implements IRenderer.OnDownloadAborted
-        WritePatchLog("Download aborted for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
-        Helper.WriteDebugInfoAndWarning("Download aborted for " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "") & "!")
-        patchfilecount -= 1
-        'Throw New NotImplementedException()
-    End Sub
-
-    Private Sub IRenderer_OnHashStart() Implements IRenderer.OnHashStart
-        Helper.WriteDebugInfo("Beginning QUANTUM SYSTEM update check...")
-        _downloadedfilecount = 0
-    End Sub
-
-    Private Sub IRenderer_OnHashProgress(progress As Integer, total As Integer) Implements IRenderer.OnHashProgress
-        Dim progressvalue As Integer = CInt((progress * 100 / total))
-        If total - progress > 0 And total - progress < 10 And SeenMessage = False Then
-            Helper.WriteDebugInfo("These last few files might take a bit, please wait...")
-            SeenMessage = True
-        End If
-        If total - progress > 0 And total - progress < 5 Then
-            FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (99.99%) - " & Resources.strRightClickforOptions)
-            FrmMain.PBMainBar.Value = 99
-        Else
-            FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (" & Format((progress * 100 / total), "00.00") & "%) - " & Resources.strRightClickforOptions)
-            FrmMain.PBMainBar.Value = progressvalue
-        End If
-
-        'FrmMain.lblStatus.Text = progress & " out of " & total & " files hashed."
-    End Sub
-
-    Private Sub IRenderer_OnHashComplete() Implements IRenderer.OnHashComplete
-        'Throw New NotImplementedException()
-
-    End Sub
-
-    Private Sub IRenderer_OnPatchingStart(fileCount As Integer) Implements IRenderer.OnPatchingStart
-        patchfilecount = fileCount
-        'Throw New NotImplementedException()
     End Sub
 End Class
