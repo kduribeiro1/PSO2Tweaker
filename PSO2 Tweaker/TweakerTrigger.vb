@@ -53,31 +53,42 @@ Public Class TweakerTrigger
     End Sub
 
     Public Sub OnDownloadFinish(url As String) Implements ITrigger.OnDownloadFinish
-        If frmDownloader.ProgressBarX1.Text = url Then
-            frmDownloader.ProgressBarX1.Text = ""
-        End If
-        If frmDownloader.ProgressBarX2.Text = url Then
-            frmDownloader.ProgressBarX2.Text = ""
-        End If
-        If frmDownloader.ProgressBarX3.Text = url Then
-            frmDownloader.ProgressBarX3.Text = ""
-        End If
-        If frmDownloader.ProgressBarX4.Text = url Then
-            frmDownloader.ProgressBarX4.Text = ""
-        End If
-        If frmDownloader.ProgressBarX5.Text = url Then
-            frmDownloader.ProgressBarX5.Text = ""
-        End If
-        If frmDownloader.ProgressBarX6.Text = url Then
-            frmDownloader.ProgressBarX6.Text = ""
-        End If
+        Try
+            If frmDownloader.ProgressBarX1.Text = url Then
+                frmDownloader.ProgressBarX1.Text = ""
+            End If
+            If frmDownloader.ProgressBarX2.Text = url Then
+                frmDownloader.ProgressBarX2.Text = ""
+            End If
+            If frmDownloader.ProgressBarX3.Text = url Then
+                frmDownloader.ProgressBarX3.Text = ""
+            End If
+            If frmDownloader.ProgressBarX4.Text = url Then
+                frmDownloader.ProgressBarX4.Text = ""
+            End If
+            If frmDownloader.ProgressBarX5.Text = url Then
+                frmDownloader.ProgressBarX5.Text = ""
+            End If
+            If frmDownloader.ProgressBarX6.Text = url Then
+                frmDownloader.ProgressBarX6.Text = ""
+            End If
 
-        WritePatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/", "").Replace(".pat", "") & "!")
-        _downloadedfilecount += 1
-        If url.Contains(".pat") And url.Contains("exe") = False Then TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
-        If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("http://download.pso2.jp/patch_prod/patches/", ""))
-        'FrmMain.lblStatus.Text = "Downloaded " & _downloadedfilecount & " files"
-        'Throw New NotImplementedException()
+            WritePatchLog("Download complete - " & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/", "").Replace(".pat", "") & "!")
+            _downloadedfilecount += 1
+            If url.Contains(".pat") And url.Contains("exe") = False Then
+                If File.Exists(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "")) = True Then
+                    TotalDownloadedQuantum += FileLen(Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
+                Else
+                    WritePatchLog("Warning, couldn't find downloaded file: " & Program.Pso2WinDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", ""))
+                End If
+
+            End If
+            If url.Contains(".exe") Then TotalDownloadedQuantum += FileLen(Program.Pso2RootDir & "\" & url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace(".pat", "").Replace("http://download.pso2.jp/patch_prod/patches/", ""))
+            'FrmMain.lblStatus.Text = "Downloaded " & _downloadedfilecount & " files"
+            'Throw New NotImplementedException()
+        Catch ex As Exception
+            Helper.LogWithException(Resources.strERROR, ex)
+        End Try
     End Sub
 
     Public Sub OnDownloadRetry(url As String, delaySecond As Integer) Implements ITrigger.OnDownloadRetry
@@ -86,106 +97,113 @@ Public Class TweakerTrigger
     End Sub
 
     Public Sub OnDownloadStart(url As String, client As WebClient) Implements ITrigger.OnDownloadStart
+        Try
 
-        If DoneDownloading = True Then Exit Sub
-        'If url.Contains("PSO2JP.ini") Or url.Contains("gameversion.ver") Or url.Contains("GameGuard.des") Or url.Contains("edition.txt") Then
-        ' patchfilecount -= 1
-        ' client.CancelAsync()
-        ' If patchfilecount = 0 Then
-        ' DoneDownloading = True
-        ' frmDownloader.Hide()
-        ' FrmMain.FinalUpdateSteps()
-        ' Thread.Sleep(10000)
-        ' frmDownloader.Close()
-        ' End If
-        ' End If
+            If DoneDownloading = True Then Exit Sub
+            'If url.Contains("PSO2JP.ini") Or url.Contains("gameversion.ver") Or url.Contains("GameGuard.des") Or url.Contains("edition.txt") Then
+            ' patchfilecount -= 1
+            ' client.CancelAsync()
+            ' If patchfilecount = 0 Then
+            ' DoneDownloading = True
+            ' frmDownloader.Hide()
+            ' FrmMain.FinalUpdateSteps()
+            ' Thread.Sleep(10000)
+            ' frmDownloader.Close()
+            ' End If
+            ' End If
 
-        If patchfilecount > 0 Then frmDownloader.Show()
-        'Dim lastprogress As Long
-        Dim CaptureBar As Boolean = False
-        Dim Filename As String
-        AddHandler client.DownloadProgressChanged,
-            Sub(o, e)
+            If patchfilecount > 0 Then frmDownloader.Show()
+            'Dim lastprogress As Long
+            Dim CaptureBar As Boolean = False
+            Dim Filename As String
+            AddHandler client.DownloadProgressChanged,
+                Sub(o, e)
+                    Try
+                        If DoneDownloading = True Then Exit Sub
+                        Filename = url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "")
 
-                If DoneDownloading = True Then Exit Sub
-                Filename = url.Replace("http://download.pso2.jp/patch_prod/patches/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches_old/data/win32/", "").Replace("http://download.pso2.jp/patch_prod/patches/", "").Replace(".pat", "")
+                        If frmDownloader.ProgressBarX1.Text = "" And CaptureBar = False Then
+                            frmDownloader.ProgressBarX1.Text = url
+                            CaptureBar = True
+                        End If
+                        If frmDownloader.ProgressBarX2.Text = "" And CaptureBar = False Then
+                            frmDownloader.ProgressBarX2.Text = url
+                            CaptureBar = True
+                        End If
+                        If frmDownloader.ProgressBarX3.Text = "" And CaptureBar = False Then
+                            frmDownloader.ProgressBarX3.Text = url
+                            CaptureBar = True
+                        End If
+                        If frmDownloader.ProgressBarX4.Text = "" And CaptureBar = False Then
+                            frmDownloader.ProgressBarX4.Text = url
+                            CaptureBar = True
+                        End If
+                        If frmDownloader.ProgressBarX5.Text = "" And CaptureBar = False Then
+                            frmDownloader.ProgressBarX5.Text = url
+                            CaptureBar = True
+                        End If
+                        If frmDownloader.ProgressBarX6.Text = "" And CaptureBar = False Then
+                            frmDownloader.ProgressBarX6.Text = url
+                            CaptureBar = True
+                        End If
 
-                If frmDownloader.ProgressBarX1.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX1.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX2.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX2.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX3.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX3.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX4.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX4.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX5.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX5.Text = url
-                    CaptureBar = True
-                End If
-                If frmDownloader.ProgressBarX6.Text = "" And CaptureBar = False Then
-                    frmDownloader.ProgressBarX6.Text = url
-                    CaptureBar = True
-                End If
+                        'Do something here
+                        'If lastprogress = e.BytesReceived Then
+                        ' Return
+                        ' End If
+                        '
+                        'lastprogress = e.BytesReceived
+                        '
+                        Dim percentage As Integer = 0
+                        'Dim percentage = String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                        'Dim s = "DOWNLOADING {url} | {e.BytesReceived / 1024} KB out of {e.TotalBytesToReceive / 1024} KB | {percentage}"
+                        'MsgBox(s)
 
-                'Do something here
-                'If lastprogress = e.BytesReceived Then
-                ' Return
-                ' End If
-                '
-                'lastprogress = e.BytesReceived
-                '
-                Dim percentage As Integer = 0
-                'Dim percentage = String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                'Dim s = "DOWNLOADING {url} | {e.BytesReceived / 1024} KB out of {e.TotalBytesToReceive / 1024} KB | {percentage}"
-                'MsgBox(s)
+                        If frmDownloader.ProgressBarX1.Text = url Then
+                            percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                            frmDownloader.ProgressBarX1.Value = percentage
+                            frmDownloader.LabelX1.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
+                        End If
+                        If frmDownloader.ProgressBarX2.Text = url Then
+                            percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                            frmDownloader.ProgressBarX2.Value = percentage
+                            frmDownloader.LabelX2.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
+                        End If
+                        If frmDownloader.ProgressBarX3.Text = url Then
+                            percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                            frmDownloader.ProgressBarX3.Value = percentage
+                            frmDownloader.LabelX3.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
+                        End If
+                        If frmDownloader.ProgressBarX4.Text = url Then
+                            percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                            frmDownloader.ProgressBarX4.Value = percentage
+                            frmDownloader.LabelX4.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
+                        End If
+                        If frmDownloader.ProgressBarX5.Text = url Then
+                            percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                            frmDownloader.ProgressBarX5.Value = percentage
+                            frmDownloader.LabelX5.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
+                        End If
+                        If frmDownloader.ProgressBarX6.Text = url Then
+                            percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
+                            frmDownloader.ProgressBarX6.Value = percentage
+                            frmDownloader.LabelX6.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
+                        End If
 
-                If frmDownloader.ProgressBarX1.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX1.Value = percentage
-                    frmDownloader.LabelX1.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX2.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX2.Value = percentage
-                    frmDownloader.LabelX2.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX3.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX3.Value = percentage
-                    frmDownloader.LabelX3.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX4.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX4.Value = percentage
-                    frmDownloader.LabelX4.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX5.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX5.Value = percentage
-                    frmDownloader.LabelX5.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-                If frmDownloader.ProgressBarX6.Text = url Then
-                    percentage = CInt(Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100)
-                    frmDownloader.ProgressBarX6.Value = percentage
-                    frmDownloader.LabelX6.Text = "Downloading " & Filename & " (" & String.Format("{0:N2}%", Math.Truncate(e.BytesReceived / CDbl(e.TotalBytesToReceive) * 100 * 100) / 100) & ")"
-                End If
-
-                frmDownloader.lblTotal.Text = "Total amount downloaded: " & Helper.SizeSuffix(TotalDownloadedQuantum) & vbCrLf & "Total files downloaded: " & _downloadedfilecount & vbCrLf & "Files left to download: " & patchfilecount - _downloadedfilecount & "/" & patchfilecount
-                If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
-                    DoneDownloading = True
-                    patchwriter.Flush()
-                    frmDownloader.Hide()
-                    FrmMain.FinalUpdateSteps()
-                End If
-            End Sub
+                        frmDownloader.lblTotal.Text = "Total amount downloaded: " & Helper.SizeSuffix(TotalDownloadedQuantum) & vbCrLf & "Total files downloaded: " & _downloadedfilecount & vbCrLf & "Files left to download: " & patchfilecount - _downloadedfilecount & "/" & patchfilecount
+                        If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
+                            DoneDownloading = True
+                            patchwriter.Flush()
+                            frmDownloader.Hide()
+                            FrmMain.FinalUpdateSteps()
+                        End If
+                    Catch ex As Exception
+                        Helper.LogWithException(Resources.strERROR, ex)
+                    End Try
+                End Sub
+        Catch ex As Exception
+            Helper.LogWithException(Resources.strERROR, ex)
+        End Try
     End Sub
 
     Public Sub OnHashComplete() Implements ITrigger.OnHashComplete
@@ -193,19 +211,22 @@ Public Class TweakerTrigger
     End Sub
 
     Public Sub OnHashProgress(progress As Integer, total As Integer) Implements ITrigger.OnHashProgress
-        Dim progressvalue As Integer = CInt((progress * 100 / total))
-        If total - progress > 0 And total - progress < 10 And SeenMessage = False Then
-            Helper.WriteDebugInfo("These last few files might take a bit, please wait...")
-            SeenMessage = True
-        End If
-        If total - progress > 0 And total - progress < 5 Then
-            FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (99.99%) - " & Resources.strRightClickforOptions)
-            FrmMain.PBMainBar.Value = 99
-        Else
-            FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (" & Format((progress * 100 / total), "00.00") & "%) - " & Resources.strRightClickforOptions)
-            FrmMain.PBMainBar.Value = progressvalue
-        End If
-
+        Try
+            Dim progressvalue As Integer = CInt((progress * 100 / total))
+            If total - progress > 0 And total - progress < 10 And SeenMessage = False Then
+                Helper.WriteDebugInfo("These last few files might take a bit, please wait...")
+                SeenMessage = True
+            End If
+            If total - progress > 0 And total - progress < 5 Then
+                FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (99.99%) - " & Resources.strRightClickforOptions)
+                FrmMain.PBMainBar.Value = 99
+            Else
+                FrmMain.PBMainBar.Text = ("Checked " & progress & " / " & total & " (" & Format((progress * 100 / total), "00.00") & "%) - " & Resources.strRightClickforOptions)
+                FrmMain.PBMainBar.Value = progressvalue
+            End If
+        Catch ex As Exception
+            Helper.LogWithException(Resources.strERROR, ex)
+        End Try
         'FrmMain.lblStatus.Text = progress & " out of " & total & " files hashed."
     End Sub
 
