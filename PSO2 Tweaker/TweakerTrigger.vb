@@ -272,6 +272,11 @@ Public Class TweakerTrigger
 
     Public Sub OnPatchingSuccess() Implements ITrigger.OnPatchingSuccess
         Helper.WriteDebugInfo("Successfully downloaded all files!")
+        'MsgBox("Test")
+        If frmDownloader.Visible = True Then
+            frmDownloader.Close()
+            FrmMain.FinalUpdateSteps()
+        End If
     End Sub
 
     Public Sub OnPatchlistFetchCompleted(count As Integer) Implements ITrigger.OnPatchlistFetchCompleted

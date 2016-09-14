@@ -1849,7 +1849,7 @@ Public Class FrmMain
     Private Sub WebBrowser4_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser4.Navigating
         If Visible Then
             'Change to Tweaker2 to test sidebar theming. - AIDA
-            If e.Url.ToString() <> Program.FreedomUrl & "tweaker.html" Then
+            If e.Url.ToString() <> Program.FreedomUrl & "tweaker.php" Then
                 Process.Start(e.Url.ToString())
                 Helper.Log("Trying to load URL for sidebar: " & e.Url.ToString)
                 ThreadPool.QueueUserWorkItem(AddressOf LoadSidebar, Nothing)
@@ -2025,7 +2025,7 @@ Public Class FrmMain
     Private Sub LoadSidebar(state As Object)
         Try
             'Change to Tweaker2 to test Sidebar theming.
-            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.html")
+            WebBrowser4.Navigate(Program.FreedomUrl & "tweaker.php")
         Catch ex As Exception
             Helper.LogWithException("Web Browser failed: ", ex)
         End Try
