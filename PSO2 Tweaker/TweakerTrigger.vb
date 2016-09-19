@@ -194,6 +194,7 @@ Public Class TweakerTrigger
                         If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
                             DoneDownloading = True
                             patchwriter.Flush()
+                            patchwriter.Close()
                             frmDownloader.Hide()
                             FrmMain.FinalUpdateSteps()
                         End If

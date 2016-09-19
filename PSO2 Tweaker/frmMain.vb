@@ -287,6 +287,7 @@ Public Class FrmMain
             Show()
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
+
         Catch ex As Exception
             Helper.LogWithException(Resources.strERROR, ex)
         End Try
@@ -296,8 +297,9 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.LogWithException(Resources.strERROR, ex)
         End Try
-
         Try
+            btnQUANTUMSYSTEM.Enabled = False
+            ButtonItem10.Enabled = False
             Application.DoEvents()
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.Pso2Dir)) Then
@@ -435,6 +437,11 @@ Public Class FrmMain
             Helper.DeleteFile("gnfieldstatus.txt")
             Helper.DeleteFile("gnfieldMD5.txt")
 
+            If File.Exists((Program.Pso2WinDir & "\ffbff2ac5b7a7948961212cefd4d402c")) Then
+                Computer.FileSystem.DeleteFile(Program.Pso2WinDir & "\ffbff2ac5b7a7948961212cefd4d402c", UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently)
+                Helper.WriteDebugInfoAndOk(Resources.strRemoving & "Censor...")
+            End If
+
             UnlockGui()
             btnLaunchPSO2.Enabled = False
 
@@ -512,6 +519,8 @@ Public Class FrmMain
         Helper.DeleteFile("Story MD5HashList.txt")
         Helper.DeleteFile("PSO2 Tweaker Updater.exe")
         Helper.WriteDebugInfo(Resources.strAllDoneSystemReady)
+        btnQUANTUMSYSTEM.Enabled = True
+        ButtonItem10.Enabled = True
         btnLaunchPSO2.Enabled = True
     End Sub
 

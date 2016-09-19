@@ -311,6 +311,7 @@ Public Class FrmOptions
     End Sub
 
     Private Sub CheckBoxX2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxX2.CheckedChanged
+        MsgBox("Please note that steam mode will NOT work while GN Field is required. Blame GameGuard, sorry!")
         RegKey.SetValue(Of String)(RegKey.SteamMode, CheckBoxX2.Checked.ToString)
     End Sub
 
