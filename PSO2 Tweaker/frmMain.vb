@@ -2743,6 +2743,7 @@ Public Class FrmMain
 
                     RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
                     For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\").GetFiles
+                        If File.Exists(Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name)) Then File.Delete(Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
                         File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
                         FinalExportString += fi.Name & ","
                     Next
@@ -2786,6 +2787,7 @@ Public Class FrmMain
                         If Not File.Exists(downloadStr) Then
                             Helper.WriteDebugInfoAndFailed("File " & downloadStr & " does not exist! Perhaps it wasn't downloaded properly?")
                         End If
+                        'If this code works, it is only because the GODDESS ZELDA HAS WISHED IT SO.
                         If downloadStr = "pso2h.dll" Or downloadStr = "translation_titles.bin" Or downloadStr = "translation.bin" Then
                             If Environment.CurrentDirectory <> Program.Pso2RootDir Then
                                 Helper.DeleteFile((Program.Pso2RootDir & "\" & downloadStr))
