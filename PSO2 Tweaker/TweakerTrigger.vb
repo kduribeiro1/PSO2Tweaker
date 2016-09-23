@@ -12,10 +12,10 @@ Public Class TweakerTrigger
     Dim TotalDownloadedQuantum As Long
     Dim DoneDownloading As Boolean = False
     Dim SeenMessage As Boolean = False
-    Dim patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
+    Public patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
 
     Public Sub WritePatchLog(s As String)
-        patchwriter.WriteLine(DateTime.Now.ToString("G") & " " & s)
+        If frmDownloader.Visible = True Then patchwriter.WriteLine(DateTime.Now.ToString("G") & " " & s)
     End Sub
 #End Region
 
@@ -194,8 +194,8 @@ Public Class TweakerTrigger
                         If patchfilecount - _downloadedfilecount = 1 And frmDownloader.Visible = True Then
                             DoneDownloading = True
                             patchwriter.Flush()
-                            patchwriter.Close()
                             frmDownloader.Hide()
+                            patchwriter.Close()
                             FrmMain.FinalUpdateSteps()
                         End If
                     Catch ex As Exception
