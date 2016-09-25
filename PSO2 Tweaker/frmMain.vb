@@ -24,6 +24,7 @@ Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Xml
 Imports PSO2_Tweaker.My
+Imports PSO2_Tweaker.VEDA
 Imports System.Text
 Imports ArksLayer.Tweaker.Abstractions
 Imports ArksLayer.Tweaker.UpdateEngine
@@ -34,6 +35,7 @@ Imports System.Security.Permissions
 ' TODO: Every instance of file downloading that retries ~5 times should be a function. I didn't realize there were so many.
 
 Public Class FrmMain
+
     Const EnglishPatch = "English Patch"
     Const RussianPatch = "Russian Patch"
     Const RussianBigPatch = "Russian Large Files Patch"
@@ -658,7 +660,12 @@ Public Class FrmMain
     End Sub
 
     Public Sub DownloadFile(ByVal address As String, ByVal filename As String)
-        DLS.Headers("user-agent") = "AQUA_HTTP"
+        If address.Contains("freedom") Then
+            DLS.Headers("user-agent") = GetUserAgent()
+        Else
+            DLS.Headers("user-agent") = "AQUA_HTTP"
+        End If
+
         DLS.Timeout = 10000
 
         While DLS.IsBusy
@@ -2936,5 +2943,9 @@ Public Class FrmMain
         Helper.WriteDebugInfo("Game updated to the latest version. Don't forget to re-install/update the patches, as some of the files might have been untranslated.")
         RegKey.SetValue(Of String)(RegKey.Pso2RemoteVersion, File.ReadAllLines("version.ver")(0))
         UnlockGui()
+    End Sub
+
+    Private Sub BtnUpdatePso2_Click(sender As Object, e As EventArgs) Handles BtnUpdatePso2.Click
+
     End Sub
 End Class

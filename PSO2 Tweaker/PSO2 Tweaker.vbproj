@@ -279,6 +279,7 @@
     </Compile>
     <Compile Include="Pso2ProxyInfo.vb" />
     <Compile Include="TweakerTrigger.vb" />
+    <Compile Include="VEDA.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Baka.resx">
