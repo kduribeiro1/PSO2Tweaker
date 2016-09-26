@@ -216,6 +216,7 @@ Public Class FrmMain
         End If
     End Sub
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        DLS.Headers("user-agent") = GetUserAgent()
         Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 _dpiSetting = g.DpiX
@@ -528,7 +529,7 @@ Public Class FrmMain
 
     Private Sub CheckForTweakerUpdates()
         Helper.WriteDebugInfo(Resources.strCheckingforupdatesPleasewaitamoment)
-        Dim source As String = Program.Client.DownloadString(Program.FreedomUrl & "version.xml")
+        Dim source As String = DLS.DownloadString(Program.FreedomUrl & "version.xml")
 
         If Not String.IsNullOrEmpty(source) AndAlso source.Contains("<VersionHistory>") Then
             Dim xm As New XmlDocument
@@ -660,10 +661,10 @@ Public Class FrmMain
     End Sub
 
     Public Sub DownloadFile(ByVal address As String, ByVal filename As String)
-        If address.Contains("freedom") Then
-            DLS.Headers("user-agent") = GetUserAgent()
-        Else
+        If address.Contains(".jp") Then
             DLS.Headers("user-agent") = "AQUA_HTTP"
+        Else
+            DLS.Headers("user-agent") = GetUserAgent()
         End If
 
         DLS.Timeout = 10000
@@ -798,7 +799,7 @@ Public Class FrmMain
             txtHTML.Text = Regex.Match(Program.Client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
             Dim strDownloadMe = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
             If RegKey.GetValue(Of String)(RegKey.LatestStoryBase) <> strDownloadMe Then
-                Dim StoryChangeLog As String = Program.Client.DownloadString("http://arks-layer.com/storyupdates.txt")
+                Dim StoryChangeLog As String = DLS.DownloadString("http://arks-layer.com/storyupdates.txt")
                 Dim mbVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it? Here's a list of changes: " & vbCrLf & StoryChangeLog, MsgBoxStyle.YesNo)
                 If mbVisitLink = vbYes Then InstallStoryPatchNew()
                 Return
@@ -813,7 +814,7 @@ Public Class FrmMain
         Try
             If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) = "Not Installed" Then Return
             Application.DoEvents()
-            Dim lastfilename As String() = Program.Client.DownloadString(Program.FreedomUrl & "patches/enpatch.txt").Split("/"c)
+            Dim lastfilename As String() = DLS.DownloadString(Program.FreedomUrl & "patches/enpatch.txt").Split("/"c)
             Dim strVersion As String = lastfilename(lastfilename.Length - 1).Replace(".rar", "")
             RegKey.SetValue(Of String)(RegKey.NewEnVersion, strVersion)
 
@@ -833,7 +834,7 @@ Public Class FrmMain
 
             Application.DoEvents()
 
-            Dim strVersion As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt").Replace("-", "/")
+            Dim strVersion As String = DLS.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt").Replace("-", "/")
 
             RegKey.SetValue(Of String)(RegKey.NewLargeFilesVersion, strVersion)
 
@@ -1356,7 +1357,7 @@ Public Class FrmMain
         Helper.WriteDebugInfoSameLine(Resources.strDone)
         Helper.WriteDebugInfo(Resources.strDownloadingPatchFile4)
         Application.DoEvents()
-        Program.Client.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
+        DLS.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
         Helper.WriteDebugInfoSameLine(Resources.strDone)
         Application.DoEvents()
         UnlockGui()
@@ -1805,7 +1806,7 @@ Public Class FrmMain
         ' The Using statement will dispose "net" as soon as we're done with it.
         ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
         ' Furthermore, we could also parse it from within the function.
-        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/enpatch.txt")
+        Dim url As String = DLS.DownloadString(Program.FreedomUrl & "patches/enpatch.txt")
         DownloadPatch(url, EnglishPatch, "ENPatch.rar", RegKey.EnPatchVersion, Resources.strBackupEN, Resources.strPleaseSelectPreDownloadENRAR)
     End Sub
 
@@ -1886,7 +1887,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
-        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/rupatch.txt")
+        Dim url As String = DLS.DownloadString(Program.FreedomUrl & "patches/rupatch.txt")
         DownloadPatch(url, RussianPatch, "RUPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
     End Sub
 
@@ -2092,7 +2093,7 @@ Public Class FrmMain
             If String.IsNullOrEmpty(jsonurl) Then Return
 
             Helper.WriteDebugInfo("Downloading configuration...")
-            Program.Client.DownloadFile(jsonurl, "ServerConfig.txt")
+            DLS.DownloadFile(jsonurl, "ServerConfig.txt")
 
             ' TODO: Deserialize directly from a string instead of saving to a file.
             Dim proxyInfo As Pso2ProxyInfo
@@ -2205,7 +2206,7 @@ Public Class FrmMain
 
             Helper.WriteDebugInfoAndOk("Connection success!")
             Helper.WriteDebugInfo("Downloading and installing publickey.blob...")
-            Program.Client.DownloadFile(proxyInfo.PublicKeyUrl, Program.StartPath & "\publickey.blob")
+            DLS.DownloadFile(proxyInfo.PublicKeyUrl, Program.StartPath & "\publickey.blob")
             If File.Exists(Program.Pso2RootDir & "\publickey.blob") AndAlso Program.StartPath <> Program.Pso2RootDir Then Helper.DeleteFile(Program.Pso2RootDir & "\publickey.blob")
             If Program.StartPath <> Program.Pso2RootDir Then File.Move(Program.StartPath & "\publickey.blob", Program.Pso2RootDir & "\publickey.blob")
             Helper.WriteDebugInfoSameLine(" Done!")
@@ -2260,7 +2261,7 @@ Public Class FrmMain
 
             ' Create a match using regular exp<b></b>ressions
             ' Spit out the value plucked from the code
-            txtHTML.Text = Regex.Match(Program.Client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
+            txtHTML.Text = Regex.Match(DLS.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
 
             Dim backupdir As String = BuildBackupPath(StoryPatch)
             Dim strStoryPatchLatestBase As String = txtHTML.Text.Replace("<u>", "").Replace("</u>", "").Replace("/", "-")
@@ -2609,7 +2610,7 @@ Public Class FrmMain
             ' Create a match using regular exp<b></b>ressions
             ' Spit out the value plucked from the code
             Dim backupdir As String = BuildBackupPath(LargeFiles)
-            Dim LFDate As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt")
+            Dim LFDate As String = DLS.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt")
 
             Helper.WriteDebugInfoAndOk("Downloading Large Files info... ")
             DownloadFile(Program.FreedomUrl & "patches/lf.stripped.db.7z", "lf.stripped.db.7z")
@@ -2881,18 +2882,18 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnRussianBigFiles_Click(sender As Object, e As EventArgs) Handles btnRussianBigFiles.Click
-        Dim url As String = Program.Client.DownloadString(Program.FreedomUrl & "patches/rulargefiles.txt")
+        Dim url As String = DLS.DownloadString(Program.FreedomUrl & "patches/rulargefiles.txt")
         DownloadPatch(url, RussianBigPatch, "RUBigFiles.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
     End Sub
 
     Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
-        Dim url As String = Program.Client.DownloadString("http://107.170.16.100/patches/espatch.txt")
+        Dim url As String = DLS.DownloadString("http://107.170.16.100/patches/espatch.txt")
         'Really need to rewrite this code to detect the filetype for me. [AIDA]
         DownloadPatch(url, SpanishPatch, "ESPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Spanish Patch backups." & vbCrLf & "¿Deseas hacer una copia de tus ficheros antes de aplicar el parche? Esto eliminará las copias de seguridad anteriores del Parche español.", "Please select the pre-downloaded Spanish Patch ZIP file." & vbCrLf & "Por favor seleccione el fichero ZIP del parche español predescargado.")
     End Sub
 
     Private Sub btnInstallGermanPatch_Click(sender As Object, e As EventArgs) Handles btnInstallGermanPatch.Click
-        Dim url As String = Program.Client.DownloadString("http://107.170.16.100/patches/depatch.txt")
+        Dim url As String = DLS.DownloadString("http://107.170.16.100/patches/depatch.txt")
         DownloadPatch(url, GermanPatch, "DEPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous German Patch backups." & vbCrLf & "Möchtest du eine Sicherung erstellen, bevor Änderungen am Spiel vorgenommen werden? Damit werden alle vorherigen Sicherungen des deutschen Patchs gelöscht.", "Please select the pre-downloaded German Patch ZIP file." & vbCrLf & "Bitte wähle die zuvor heruntergeladene ZIP-Datei des deutschen Patchs aus.")
     End Sub
 
@@ -2929,7 +2930,7 @@ Public Class FrmMain
         'Final update steps - Set the version file, reset patches. [AIDA]
         _cancelled = False
         'Helper.WriteDebugInfo(Resources.strDownloading & "version file...")
-        Program.Client.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
+        DLS.DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
 
 
         If File.Exists((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver")) Then Helper.DeleteFile((_myDocuments & "\SEGA\PHANTASYSTARONLINE2\version.ver"))
