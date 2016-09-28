@@ -334,6 +334,12 @@ Public Class FrmMain
             If File.ReadAllLines("gnfieldstatus.txt")(0) = "Active" And Program.NoGNFieldMode = False Then
                 'GN Field needs to be active
                 Program.GNFieldActive = True
+                If Process.GetProcessesByName("GN Field").Length > 0 Then
+                    Helper.Log("GN Field detected, disabling!")
+                    For Each proc As Process In Process.GetProcessesByName("GN Field")
+                        proc.Kill()
+                    Next
+                End If
                 If Not File.Exists("GN Field.exe") Then
                     Helper.WriteDebugInfo(Resources.strDownloading & "GN Field...")
                     Application.DoEvents()
