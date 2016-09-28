@@ -532,7 +532,7 @@ Public Class FrmMain
 
     Private Sub CheckForTweakerUpdates()
         Helper.WriteDebugInfo(Resources.strCheckingforupdatesPleasewaitamoment)
-        MsgBox(Program.FreedomUrl & "version.xml")
+
         Dim source As String = Program.Client.DownloadString(Program.FreedomUrl & "version.xml")
 
         If Not String.IsNullOrEmpty(source) AndAlso source.Contains("<VersionHistory>") Then
