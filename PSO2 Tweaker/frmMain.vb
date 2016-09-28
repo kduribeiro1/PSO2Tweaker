@@ -215,6 +215,7 @@ Public Class FrmMain
         End If
     End Sub
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
                 _dpiSetting = g.DpiX
@@ -439,6 +440,11 @@ Public Class FrmMain
             Helper.DeleteFile("gnfieldstatus.txt")
             Helper.DeleteFile("gnfieldMD5.txt")
 
+            'Cleaning up any existing QUANTUM stuff
+            If File.Exists("client.json") Then Helper.DeleteFile("client.json")
+            If File.Exists("missing.json") Then Helper.DeleteFile("missing.json")
+            If File.Exists("patchlist.json") Then Helper.DeleteFile("patchlist.json")
+
             UnlockGui()
             btnLaunchPSO2.Enabled = False
 
@@ -520,6 +526,7 @@ Public Class FrmMain
 
     Private Sub CheckForTweakerUpdates()
         Helper.WriteDebugInfo(Resources.strCheckingforupdatesPleasewaitamoment)
+        MsgBox(Program.FreedomUrl & "version.xml")
         Dim source As String = Program.Client.DownloadString(Program.FreedomUrl & "version.xml")
 
         If Not String.IsNullOrEmpty(source) AndAlso source.Contains("<VersionHistory>") Then
@@ -1409,6 +1416,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub UpdatePso2(comingFromOldFiles As Boolean)
+
         _cancelledFull = False
         If IsPso2WinDirMissing() Then Return
         Dim missingfiles As New List(Of String)
