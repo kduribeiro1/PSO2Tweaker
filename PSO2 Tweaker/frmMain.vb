@@ -472,6 +472,7 @@ Public Class FrmMain
             Helper.WriteDebugInfoSameLine(Resources.strDone)
             Application.DoEvents()
 
+
             'Check for PSO2 Updates here, download the version.ver thingie
             'Check for PSO2 EN Patch updates here, parse the URL and see if it's different from the saved one
             'Check for EN Story Patch
@@ -857,7 +858,7 @@ Public Class FrmMain
         End Try
     End Sub
 
-    Private Sub CheckForPso2Updates(comingFromPrePatch As Boolean)
+    Private Async Sub CheckForPso2Updates(comingFromPrePatch As Boolean)
 
         Try
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
@@ -906,7 +907,28 @@ Public Class FrmMain
                 End If
 
                 If RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) <> version Then
-                    If MsgBox(Resources.strNewPSO2Update, vbYesNo) = vbYes Then btnQUANTUMSYSTEM.RaiseClick()
+                    If MsgBox(Resources.strNewPSO2Update, vbYesNo) = vbYes Then
+                        ' Use IOC Container in the main Tweaker project to deal with dependencies.
+                        Dim output As New TweakerTrigger
+                        Dim Settings = New RegistryTweakerSettings("Software\AIDA")
+                        Dim updater = New UpdateManager(Settings, output)
+
+                        'await updater.CleanLegacyFiles();
+
+                        'Console.WriteLine(settings.GameDirectory)
+                        Try
+
+                            'frmDownloader.TopMost = True
+                            'Me.TopMost = False
+                        Catch ex As Exception
+                            Helper.LogWithException(Resources.strERROR, ex)
+                        End Try
+                        frmDownloader.CleanupUI()
+                        RegKey.SetValue(Of String)(RegKey.StoryPatchVersion, "Not Installed")
+                        RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
+                        RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
+                        Await updater.Update(False, False)
+                    End If
                 End If
             End If
         Catch ex As Exception
