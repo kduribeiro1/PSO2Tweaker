@@ -535,6 +535,7 @@ Public Class FrmMain
 
     Private Sub CheckForTweakerUpdates()
         Helper.WriteDebugInfo(Resources.strCheckingforupdatesPleasewaitamoment)
+        DLS.Headers("user-agent") = GetUserAgent()
         Dim source As String = DLS.DownloadString(Program.FreedomUrl & "version.xml")
 
         If Not String.IsNullOrEmpty(source) AndAlso source.Contains("<VersionHistory>") Then
@@ -805,6 +806,7 @@ Public Class FrmMain
             txtHTML.Text = Regex.Match(Program.Client.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
             Dim strDownloadMe = txtHTML.Text.Replace("<u>", "").Replace("</u>", "")
             If RegKey.GetValue(Of String)(RegKey.LatestStoryBase) <> strDownloadMe Then
+                DLS.Headers("user-agent") = GetUserAgent()
                 Dim StoryChangeLog As String = DLS.DownloadString("http://arks-layer.com/storyupdates.txt")
                 Dim mbVisitLink As MsgBoxResult = MsgBox("A new story patch is available! Would you like to download and install it? Here's a list of changes: " & vbCrLf & StoryChangeLog, MsgBoxStyle.YesNo)
                 If mbVisitLink = vbYes Then InstallStoryPatchNew()
@@ -820,6 +822,7 @@ Public Class FrmMain
         Try
             If RegKey.GetValue(Of String)(RegKey.EnPatchVersion) = "Not Installed" Then Return
             Application.DoEvents()
+            DLS.Headers("user-agent") = GetUserAgent()
             Dim lastfilename As String() = DLS.DownloadString(Program.FreedomUrl & "patches/enpatch.txt").Split("/"c)
             Dim strVersion As String = lastfilename(lastfilename.Length - 1).Replace(".rar", "")
             RegKey.SetValue(Of String)(RegKey.NewEnVersion, strVersion)
@@ -839,7 +842,7 @@ Public Class FrmMain
             If RegKey.GetValue(Of String)(RegKey.LargeFilesVersion) = "Not Installed" Then Return
 
             Application.DoEvents()
-
+            DLS.Headers("user-agent") = GetUserAgent()
             Dim strVersion As String = DLS.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt").Replace("-", "/")
 
             RegKey.SetValue(Of String)(RegKey.NewLargeFilesVersion, strVersion)
@@ -1812,6 +1815,7 @@ Public Class FrmMain
         ' The Using statement will dispose "net" as soon as we're done with it.
         ' If we decide not to, we can do away with "url" and just pass net.DownloadString in as the parameter.
         ' Furthermore, we could also parse it from within the function.
+        DLS.Headers("user-agent") = GetUserAgent()
         Dim url As String = DLS.DownloadString(Program.FreedomUrl & "patches/enpatch.txt")
         DownloadPatch(url, EnglishPatch, "ENPatch.rar", RegKey.EnPatchVersion, Resources.strBackupEN, Resources.strPleaseSelectPreDownloadENRAR)
     End Sub
@@ -1893,6 +1897,7 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnRussianPatch_Click(sender As Object, e As EventArgs) Handles btnRussianPatch.Click
+        DLS.Headers("user-agent") = GetUserAgent()
         Dim url As String = DLS.DownloadString(Program.FreedomUrl & "patches/rupatch.txt")
         DownloadPatch(url, RussianPatch, "RUPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
     End Sub
@@ -2267,6 +2272,7 @@ Public Class FrmMain
 
             ' Create a match using regular exp<b></b>ressions
             ' Spit out the value plucked from the code
+            DLS.Headers("user-agent") = GetUserAgent()
             txtHTML.Text = Regex.Match(DLS.DownloadString("http://arks-layer.com/story.php"), "<u>.*?</u>").Value
 
             Dim backupdir As String = BuildBackupPath(StoryPatch)
@@ -2616,6 +2622,7 @@ Public Class FrmMain
             ' Create a match using regular exp<b></b>ressions
             ' Spit out the value plucked from the code
             Dim backupdir As String = BuildBackupPath(LargeFiles)
+            DLS.Headers("user-agent") = GetUserAgent()
             Dim LFDate As String = DLS.DownloadString(Program.FreedomUrl & "patches/largefilesTRANSAM.txt")
 
             Helper.WriteDebugInfoAndOk("Downloading Large Files info... ")
@@ -2888,17 +2895,20 @@ Public Class FrmMain
     End Sub
 
     Private Sub btnRussianBigFiles_Click(sender As Object, e As EventArgs) Handles btnRussianBigFiles.Click
+        DLS.Headers("user-agent") = GetUserAgent()
         Dim url As String = DLS.DownloadString(Program.FreedomUrl & "patches/rulargefiles.txt")
         DownloadPatch(url, RussianBigPatch, "RUBigFiles.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Russian Patch backups." & vbCrLf & "Хотите ли вы сделать резервную копию ваших файлов перед установкой патча? Это приведёт к удалению предыдущих резервных копий русского патча.", "Please select the pre-downloaded Russian Patch ZIP file." & vbCrLf & "Пожалуйста, выберите предварительно-загруженный русский zip патч файл.")
     End Sub
 
     Private Sub btnInstallSpanishPatch_Click(sender As Object, e As EventArgs) Handles btnInstallSpanishPatch.Click
+        DLS.Headers("user-agent") = GetUserAgent()
         Dim url As String = DLS.DownloadString("http://107.170.16.100/patches/espatch.txt")
         'Really need to rewrite this code to detect the filetype for me. [AIDA]
         DownloadPatch(url, SpanishPatch, "ESPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous Spanish Patch backups." & vbCrLf & "¿Deseas hacer una copia de tus ficheros antes de aplicar el parche? Esto eliminará las copias de seguridad anteriores del Parche español.", "Please select the pre-downloaded Spanish Patch ZIP file." & vbCrLf & "Por favor seleccione el fichero ZIP del parche español predescargado.")
     End Sub
 
     Private Sub btnInstallGermanPatch_Click(sender As Object, e As EventArgs) Handles btnInstallGermanPatch.Click
+        DLS.Headers("user-agent") = GetUserAgent()
         Dim url As String = DLS.DownloadString("http://107.170.16.100/patches/depatch.txt")
         DownloadPatch(url, GermanPatch, "DEPatch.zip", RegKey.NullKey, "Would you like to backup your files before applying the patch? This will erase all previous German Patch backups." & vbCrLf & "Möchtest du eine Sicherung erstellen, bevor Änderungen am Spiel vorgenommen werden? Damit werden alle vorherigen Sicherungen des deutschen Patchs gelöscht.", "Please select the pre-downloaded German Patch ZIP file." & vbCrLf & "Bitte wähle die zuvor heruntergeladene ZIP-Datei des deutschen Patchs aus.")
     End Sub

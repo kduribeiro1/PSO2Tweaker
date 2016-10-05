@@ -35,6 +35,7 @@ Namespace My
 
             Try
                 Client.Headers("user-agent") = GetUserAgent()
+
                 Helper.Log("Checking if the PSO2 Tweaker is running")
 
                 If Helper.CheckIfRunning("PSO2 Tweaker") Then Environment.Exit(0)
@@ -187,6 +188,7 @@ Namespace My
                                     For tries As Integer = 1 To 4
                                         Try
                                             Dim DLS As MyWebClient
+                                            DLS.Headers("user-agent") = GetUserAgent()
                                             DLS.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
                                             Exit For
                                         Catch ex As Exception
@@ -315,6 +317,7 @@ Namespace My
     End Class
     Public Class MyWebClient
         Inherits WebClient
+
         Private _timeout As Integer
 
         Public Property Timeout As Integer
