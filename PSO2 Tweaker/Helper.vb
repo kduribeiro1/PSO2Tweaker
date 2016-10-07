@@ -165,7 +165,7 @@ Public Class Helper
             client.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
             Dim data As String = "?api_paste_private=1&api_option=paste&api_paste_name=Error Log report&api_paste_format=text&api_paste_expire_date=N&api_dev_key=ddc1e2efaca45d3df87e6b93ceb43c9f&api_paste_code=" & File.ReadAllText(fileToUpload)
             Dim responce = client.UploadString("http://pastebin.com/api/api_post.php", "POST", data)
-            MsgBox(Resources.strPleasecopytheURL)
+            MsgBox("Whoops, something went wrong! The Tweaker will now open a pastebin page with your log. Please join the PSO2 Development Discord chat's (The link is available in the Tweaker sidebar) #general-support and post it there so we can help you/fix the issue. Thanks! - AIDA")
             Process.Start(responce)
         End Using
     End Sub

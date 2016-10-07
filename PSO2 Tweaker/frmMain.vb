@@ -1068,6 +1068,12 @@ Public Class FrmMain
                 Return
             End If
 
+            If Directory.Exists(Program.Pso2WinDir & "\backup\") = False Then
+                Helper.Log("Could not find the backup path! Are you sure you have a backup in your win32/backup folder? Let's make one.")
+                Directory.CreateDirectory(Program.Pso2WinDir & "\backup\")
+                Return
+            End If
+
             'Remove PC Opening Video [Done]
             If chkRemovePC.Checked AndAlso File.Exists((Program.Pso2WinDir & "\" & "a44fbb2aeb8084c5a5fbe80e219a9927")) Then
                 If File.Exists((Program.Pso2WinDir & "\backup\a44fbb2aeb8084c5a5fbe80e219a9927")) Then Computer.FileSystem.DeleteFile((Program.Pso2WinDir & "\backup\a44fbb2aeb8084c5a5fbe80e219a9927"), UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently)
@@ -2319,12 +2325,12 @@ Public Class FrmMain
             If Directory.Exists(backupdir) Then
                 Dim counter = Computer.FileSystem.GetFiles(backupdir)
                 If counter.Count > 0 Then
-                    processStartInfo.Arguments = ("-t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+                    processStartInfo.Arguments = (TransamCodes2() & "story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
                 Else
                     Helper.Log("[TRANSAM] Creating backup directory")
                     Directory.CreateDirectory(backupdir)
                     Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                    processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+                    processStartInfo.Arguments = (TransamCodes1() & """" & backupdir & """" & TransamCodes2() & "story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
                 End If
             End If
 
@@ -2334,13 +2340,13 @@ Public Class FrmMain
                 Helper.Log("[TRANSAM] Creating backup directory")
                 Directory.CreateDirectory(backupdir)
                 Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
+                processStartInfo.Arguments = (TransamCodes1() & """" & backupdir & """" & TransamCodes2() & "story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
             End If
 
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
-            Helper.Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
+            'Helper.Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             Helper.Log("[TRANSAM] Program started")
             If Helper.GetMd5("pso2.stripped.db") <> DBMD5 Then
                 MsgBox("ERROR: Files have been modified since download. Aborting...")
@@ -2667,12 +2673,12 @@ Public Class FrmMain
             If Directory.Exists(backupdir) Then
                 Dim counter = Computer.FileSystem.GetFiles(backupdir)
                 If counter.Count > 0 Then
-                    processStartInfo.Arguments = ("-t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+                    processStartInfo.Arguments = (TransamCodes2() & "largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
                 Else
                     Helper.Log("[TRANSAM] Creating backup directory")
                     Directory.CreateDirectory(backupdir)
                     Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                    processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+                    processStartInfo.Arguments = (TransamCodes1() & """" & backupdir & """" & TransamCodes2() & "largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
                 End If
             End If
 
@@ -2682,7 +2688,7 @@ Public Class FrmMain
                 Helper.Log("[TRANSAM] Creating backup directory")
                 Directory.CreateDirectory(backupdir)
                 Helper.WriteDebugInfo(Resources.strCreatingBackupDirectory)
-                processStartInfo.Arguments = ("-b " & """" & backupdir & """" & " -t largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
+                processStartInfo.Arguments = (TransamCodes1() & """" & backupdir & """" & TransamCodes2() & "largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
             End If
 
 
@@ -2690,7 +2696,7 @@ Public Class FrmMain
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
-            Helper.Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
+            'Helper.Log("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             Helper.Log("[TRANSAM] Program started")
             If Helper.GetMd5("lf.stripped.db") <> DBMD5 Then
                 MsgBox("ERROR: Files have been modified since download. Aborting...")
