@@ -2696,8 +2696,6 @@ Public Class FrmMain
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
-            Clipboard.SetText(processStartInfo.Arguments)
-            MsgBox("TRANSM parameters: " & processStartInfo.Arguments & vbCrLf & "TRANSAM Working Directory: " & processStartInfo.WorkingDirectory)
             Helper.Log("[TRANSAM] Program started")
             If Helper.GetMd5("lf.stripped.db") <> DBMD5 Then
                 MsgBox("ERROR: Files have been modified since download. Aborting...")
