@@ -187,7 +187,7 @@ Namespace My
                                     ' Try up to 4 times to download the translation strings.
                                     For tries As Integer = 1 To 4
                                         Try
-                                            Dim DLS As MyWebClient
+                                            Dim DLS As New MyWebClient
                                             DLS.Headers("user-agent") = GetUserAgent()
                                             DLS.DownloadFile(Program.FreedomUrl & "translation.bin", (Program.Pso2RootDir & "\translation.bin"))
                                             Exit For

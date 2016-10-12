@@ -1198,6 +1198,9 @@ Public Class FrmMain
             startInfo.EnvironmentVariables("-pso2") = "+0x01e3f1e9"
             Dim shell As Process = New Process With {.StartInfo = startInfo}
 
+
+            TRIALSystem("Request Access")
+
             'This code is no longer run because Gameguard sucks cock.
             'Maybe SEGA doesn't? WHO KNOWS. IT'S BACK IN.
             Helper.Log("Checking for extra GN Fields...")
