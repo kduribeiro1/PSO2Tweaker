@@ -302,14 +302,14 @@ Public Class FrmMain
                 End
             End If
             If Program.StartPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) Then
-                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while on the Desktop. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
-                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while on the Desktop. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while on the Desktop. Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while on the Desktop. Please move it to it's own folder, like C:\Tweaker\")
                 Environment.Exit(0)
                 End
             End If
             If Program.StartPath.Contains(Environment.GetFolderPath(Environment.SpecialFolder.Windows)) Then
-                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in a special windows folder. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
-                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in a special windows folder. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in a special windows folder. Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in a special windows folder. Please move it to it's own folder, like C:\Tweaker\")
                 Environment.Exit(0)
                 End
             End If
@@ -2373,6 +2373,8 @@ Public Class FrmMain
                 processStartInfo.Arguments = (TransamCodes1() & """" & backupdir & """ " & TransamCodes2() & "story-eng-" & strStoryPatchLatestBase & " pso2.stripped.db " & """" & Program.Pso2WinDir & """")
             End If
 
+            TRIALSystem("Request TRANSAM")
+
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
             processStartInfo.Arguments = processStartInfo.Arguments.Replace("\", "/")
@@ -2696,9 +2698,8 @@ Public Class FrmMain
             Process.Start(processStartInfo2).WaitForExit()
             Dim DBMD5 As String = Helper.GetMd5("lf.stripped.db")
             Helper.WriteDebugInfoAndOk("Downloading Trans-Am tool... ")
-            DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe")
+            DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe"
 
-            'execute pso2-transam stuff with -b flag for backup
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
             If Directory.Exists(backupdir) Then
                 Dim counter = Computer.FileSystem.GetFiles(backupdir)
@@ -2721,7 +2722,7 @@ Public Class FrmMain
                 processStartInfo.Arguments = (TransamCodes1() & """" & backupdir & """ " & TransamCodes2() & "largefiles-" & LFDate & " lf.stripped.db " & """" & Program.Pso2WinDir & """")
             End If
 
-
+            TRIALSystem("Request TRANSAM")
 
             processStartInfo.UseShellExecute = False
             Helper.Log("[TRANSAM] Starting shitstorm")
