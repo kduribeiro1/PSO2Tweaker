@@ -273,13 +273,6 @@ Namespace My
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage)) Then RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "No")
 
-                If StartPath = Helper.GetDownloadsPath() Then
-                    If RegKey.GetValue(Of String)(RegKey.SeenDownloadMessage) = "No" Then
-                        MsgBox("Please be aware - Due to various Windows 7/8 issues, this program might not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
-                        RegKey.SetValue(Of String)(RegKey.SeenDownloadMessage, "Yes")
-                    End If
-                End If
-
                 If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop)) Then RegKey.SetValue(Of Boolean)(RegKey.AlwaysOnTop, False)
                 IsMainFormTopMost = Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.AlwaysOnTop))
 

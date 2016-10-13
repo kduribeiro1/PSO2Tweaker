@@ -284,8 +284,35 @@ Public Class FrmMain
                 btnLaunchPSO2fromORB.Visible = True
             End If
 
+
+
             'Remove the next 3 lines to try sidebar theming. - AIDA
             WebBrowser1.Visible = False
+
+            If Program.StartPath = Helper.GetDownloadsPath() Then
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
+                Environment.Exit(0)
+                Stop
+            End If
+            If Program.StartPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) Then
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in the ""My Documents"" folder. Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in the ""My Documents"" folder. Please move it to it's own folder, like C:\Tweaker\")
+                Environment.Exit(0)
+                End
+            End If
+            If Program.StartPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) Then
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while on the Desktop. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while on the Desktop. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
+                Environment.Exit(0)
+                End
+            End If
+            If Program.StartPath.Contains(Environment.GetFolderPath(Environment.SpecialFolder.Windows)) Then
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in a special windows folder. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in a special windows folder. Please move it to it's own folder, like C:\Tweaker\ or a folder on the Desktop.")
+                Environment.Exit(0)
+                End
+            End If
 
             Show()
 
