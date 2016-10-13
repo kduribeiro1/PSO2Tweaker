@@ -2698,7 +2698,7 @@ Public Class FrmMain
             Process.Start(processStartInfo2).WaitForExit()
             Dim DBMD5 As String = Helper.GetMd5("lf.stripped.db")
             Helper.WriteDebugInfoAndOk("Downloading Trans-Am tool... ")
-            DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe"
+            DownloadFile(Program.FreedomUrl & "pso2-transam.exe", "pso2-transam.exe")
 
             Dim processStartInfo As ProcessStartInfo = New ProcessStartInfo() With {.FileName = "pso2-transam.exe", .Verb = "runas"}
             If Directory.Exists(backupdir) Then
