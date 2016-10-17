@@ -215,7 +215,7 @@ Public Class FrmMain
             e.Graphics.DrawImage(Me.BackgroundImage, 0, 44, FormWidth, Me.Height - 44)
         End If
     End Sub
-    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Async Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         DLS.Headers("user-agent") = GetUserAgent()
         Using g As Graphics = CreateGraphics()
             If g.DpiX = 120 OrElse g.DpiX = 96 Then
@@ -484,7 +484,23 @@ Public Class FrmMain
             If File.Exists("missing.json") Then
                 Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you Like to resume patching?", vbYesNo)
                 If yesNoResume = MsgBoxResult.Yes Then
-                    btnQUANTUMSYSTEM.RaiseClick()
+                    ' Use IOC Container in the main Tweaker project to deal with dependencies.
+                    Dim output As New TweakerTrigger
+                    Dim Settings = New RegistryTweakerSettings("Software\AIDA")
+                    Dim updater = New UpdateManager(Settings, output)
+
+                    'await updater.CleanLegacyFiles();
+
+                    'Console.WriteLine(settings.GameDirectory)
+                    Try
+
+                        'frmDownloader.TopMost = True
+                        'Me.TopMost = False
+                    Catch ex As Exception
+                        Helper.LogWithException(Resources.strERROR, ex)
+                    End Try
+                    frmDownloader.CleanupUI()
+                    Await updater.Update(False, False)
                     Exit Sub
                 Else
                     Helper.DeleteFile("missing.json")
@@ -1998,7 +2014,7 @@ Public Class FrmMain
         InstallPso2()
     End Sub
 
-    Private Sub InstallPso2()
+    Private Async Sub InstallPso2()
         Dim installFolder As String = ""
         'Const installYesNo As MsgBoxResult = vbYes
         'If installYesNo = vbNo Then
@@ -2087,9 +2103,25 @@ Public Class FrmMain
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
 
-                    btnQUANTUMSYSTEM.RaiseClick()
+                    ' Use IOC Container in the main Tweaker project to deal with dependencies.
+                    Dim output As New TweakerTrigger
+                    Dim Settings = New RegistryTweakerSettings("Software\AIDA")
+                    Dim updater = New UpdateManager(Settings, output)
 
-                    MsgBox("PSO2 installed, patched to the latest Japanese version, and ready to play!" & vbCrLf & "Press OK to continue.")
+                    'await updater.CleanLegacyFiles();
+
+                    'Console.WriteLine(settings.GameDirectory)
+                    Try
+
+                        'frmDownloader.TopMost = True
+                        'Me.TopMost = False
+                    Catch ex As Exception
+                        Helper.LogWithException(Resources.strERROR, ex)
+                    End Try
+                    frmDownloader.CleanupUI()
+                    Await updater.Update(False, False)
+
+                    Helper.WriteDebugInfo("PSO2 successfully installed! It is now being updated, and will be ready to play once it's finished.")
                     Refresh()
                 End If
             End If
