@@ -316,8 +316,8 @@ Public Class FrmMain
                 End
             End If
             If Program.StartPath = Path.GetPathRoot(Environment.SystemDirectory) Then
-                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
-                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
                 Environment.Exit(0)
                 End
             End If
