@@ -80,6 +80,7 @@ Partial Class FrmMain
         Me.btnAnalyze = New DevComponents.DotNetBar.ButtonItem()
         Me.Button2 = New DevComponents.DotNetBar.ButtonItem()
         Me.ButtonItem10 = New DevComponents.DotNetBar.ButtonItem()
+        Me.ButtonItem4 = New DevComponents.DotNetBar.ButtonItem()
         Me.BtnUpdatePso2 = New DevComponents.DotNetBar.ButtonItem()
         Me.btnGameguard = New DevComponents.DotNetBar.ButtonItem()
         Me.btnFixPSO2EXEs = New DevComponents.DotNetBar.ButtonItem()
@@ -130,7 +131,6 @@ Partial Class FrmMain
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.DLS = New PSO2_Tweaker.My.MyWebClient()
-        Me.ButtonItem4 = New DevComponents.DotNetBar.ButtonItem()
         Me.cmsTextBarOptions.SuspendLayout()
         Me.cmsProgressBar.SuspendLayout()
         Me.SuspendLayout()
@@ -545,6 +545,11 @@ Partial Class FrmMain
         Me.ButtonItem10.Name = "ButtonItem10"
         resources.ApplyResources(Me.ButtonItem10, "ButtonItem10")
         '
+        'ButtonItem4
+        '
+        Me.ButtonItem4.Name = "ButtonItem4"
+        resources.ApplyResources(Me.ButtonItem4, "ButtonItem4")
+        '
         'BtnUpdatePso2
         '
         Me.BtnUpdatePso2.ButtonStyle = DevComponents.DotNetBar.eButtonStyle.ImageAndText
@@ -839,11 +844,6 @@ Partial Class FrmMain
         Me.DLS.QueryString = CType(resources.GetObject("DLS.QueryString"), System.Collections.Specialized.NameValueCollection)
         Me.DLS.Timeout = 10000
         Me.DLS.UseDefaultCredentials = False
-        '
-        'ButtonItem4
-        '
-        Me.ButtonItem4.Name = "ButtonItem4"
-        resources.ApplyResources(Me.ButtonItem4, "ButtonItem4")
         '
         'FrmMain
         '

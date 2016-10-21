@@ -36,7 +36,7 @@ Public Class Helper
             Program.MainForm.WriteDebugInfo(addThisText)
         Catch
         End Try
-        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": " & addThisText & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfoSameLine(ByVal addThisText As String)
@@ -44,11 +44,11 @@ Public Class Helper
             Program.MainForm.WriteDebugInfoSameLine(addThisText)
         Catch
         End Try
-        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": " & addThisText & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfoAndOk(ByVal addThisText As String)
-        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [OK!]" & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": " & addThisText & " [OK!]" & vbCrLf)
         Try
             Program.MainForm.WriteDebugInfoAndOk(addThisText)
         Catch
@@ -60,7 +60,7 @@ Public Class Helper
             Program.MainForm.WriteDebugInfoAndWarning(addThisText)
         Catch
         End Try
-        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [WARNING!]" & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": " & addThisText & " [WARNING!]" & vbCrLf)
     End Sub
 
     Public Shared Sub WriteDebugInfoAndFailed(ByVal addThisText As String)
@@ -68,7 +68,7 @@ Public Class Helper
             Program.MainForm.WriteDebugInfoAndFailed(addThisText)
         Catch
         End Try
-        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & " " & addThisText & " [FAILED!]" & vbCrLf)
+        File.AppendAllText(Program.StartPath & "\logfile.txt", DateTime.Now.ToString("G") & ": " & addThisText & " [FAILED!]" & vbCrLf)
         If Convert.ToBoolean(RegKey.GetValue(Of String)(RegKey.Pastebin)) Then
             Dim upload As MsgBoxResult = MsgBox(Resources.strSomethingWentWrongUpload, vbYesNo)
             If upload = MsgBoxResult.Yes Then

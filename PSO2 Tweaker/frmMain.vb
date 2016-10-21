@@ -29,6 +29,7 @@ Imports System.Text
 Imports ArksLayer.Tweaker.Abstractions
 Imports ArksLayer.Tweaker.UpdateEngine
 Imports System.Security.Permissions
+Imports System.Threading.Tasks
 
 
 ' TODO: Replace all redundant code with functions
@@ -58,6 +59,7 @@ Public Class FrmMain
     Dim _vedaUnlocked As Boolean = False
     Public SkipDialogs As Boolean = False
     Dim _totalsize2 As Long
+    Dim NewInstall As Boolean = False
 
     Sub New()
         Try
@@ -313,7 +315,13 @@ Public Class FrmMain
                 Environment.Exit(0)
                 End
             End If
-
+            If Program.StartPath = Path.GetPathRoot(Environment.SystemDirectory) Then
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
+                Environment.Exit(0)
+                End
+            End If
+            'string path = Path.GetPathRoot(Environment.SystemDirectory);
             Show()
 
             Helper.WriteDebugInfoAndOk((Resources.strProgramOpeningSuccessfully & Application.Info.Version.ToString()))
@@ -478,12 +486,12 @@ Public Class FrmMain
                 Helper.WriteDebugInfoAndOk(Resources.strRemoving & "Censor...")
             End If
 
-            UnlockGui()
-            btnLaunchPSO2.Enabled = False
+            'btnLaunchPSO2.Enabled = False
 
             If File.Exists("missing.json") Then
                 Dim yesNoResume As MsgBoxResult = MsgBox("It seems that the last patching attempt was interrupted. Would you Like to resume patching?", vbYesNo)
                 If yesNoResume = MsgBoxResult.Yes Then
+                    LockGui()
                     ' Use IOC Container in the main Tweaker project to deal with dependencies.
                     Dim output As New TweakerTrigger
                     Dim Settings = New RegistryTweakerSettings("Software\AIDA")
@@ -501,7 +509,6 @@ Public Class FrmMain
                     End Try
                     frmDownloader.CleanupUI()
                     Await updater.Update(False, False)
-                    Exit Sub
                 Else
                     Helper.DeleteFile("missing.json")
                     Helper.DeleteFile("done.log")
@@ -511,7 +518,7 @@ Public Class FrmMain
             Helper.WriteDebugInfo(Resources.strCheckingforPSO2Updates)
             Application.DoEvents()
 
-            CheckForPso2Updates(False)
+            Await CheckForPso2Updates(False)
             Helper.WriteDebugInfoSameLine(Resources.strDone)
             Application.DoEvents()
 
@@ -555,6 +562,7 @@ Public Class FrmMain
                     Helper.WriteDebugInfoAndOk("Setting up plugin system...")
                     Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\")
                     Directory.CreateDirectory(Program.Pso2RootDir & "\plugins\disabled\")
+                    NewInstall = True
                 End If
 
                 If Not Dns.GetHostEntry("gs001.pso2gs.net").AddressList(0).ToString().Contains("210.189.") And File.Exists(Program.Pso2RootDir & "\plugins\disabled\PSO2Proxy.dll") = True And File.Exists(Program.Pso2RootDir & "\plugins\PSO2Proxy.dll") = False Then
@@ -574,7 +582,7 @@ Public Class FrmMain
         Helper.WriteDebugInfo(Resources.strAllDoneSystemReady)
         btnQUANTUMSYSTEM.Enabled = True
         ButtonItem10.Enabled = True
-        btnLaunchPSO2.Enabled = True
+        'btnLaunchPSO2.Enabled = True
     End Sub
 
     Private Sub CheckForTweakerUpdates()
@@ -747,12 +755,24 @@ Public Class FrmMain
         End While
     End Sub
 
-    Private Sub LockGui()
-        Enabled = False
+    Public Sub LockGui()
+        Dim ctrl As Control
+        For Each ctrl In Me.Controls
+            ctrl.Enabled = False
+        Next
+        RibbonControl.Enabled = True
+        Office2007StartButton1.Enabled = False
+        rtbDebug.Enabled = True
+        'Enabled = False
     End Sub
 
-    Private Sub UnlockGui()
+    Public Sub UnlockGui()
         Enabled = True
+        Dim ctrl As Control
+        For Each ctrl In Me.Controls
+            ctrl.Enabled = True
+        Next
+        Office2007StartButton1.Enabled = True
     End Sub
 
     Private Shared Function MergePatches() As Dictionary(Of String, String)
@@ -901,7 +921,7 @@ Public Class FrmMain
         End Try
     End Sub
 
-    Private Async Sub CheckForPso2Updates(comingFromPrePatch As Boolean)
+    Private Async Function CheckForPso2Updates(comingFromPrePatch As Boolean) As Task
 
         Try
             'Precede file, syntax is Yes/No:<Dateoflastprepatch>
@@ -936,12 +956,12 @@ Public Class FrmMain
                     If String.IsNullOrEmpty(source) Then
                         Helper.Log("ERROR: Wasn't able to contact Arks Layer, help!")
                         Helper.WriteDebugInfo("Failed to get the PSO2 Version update information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
-                        Exit Sub
+                        Exit Function
                     End If
                 Catch ex As Exception
                     Helper.LogWithException(Resources.strERROR, ex)
                     Helper.WriteDebugInfo("Failed to get the PSO2 Version information. Usually, this means AIDA broke something. Please DO NOT panic, as the rest of the program will work fine. There is no need to report this error either.")
-                    Exit Sub
+                    Exit Function
                 End Try
                 DownloadFile("http://arks-layer.com/vanila/version.txt", "version.ver")
                 Dim version = File.ReadAllLines("version.ver")(0)
@@ -951,6 +971,7 @@ Public Class FrmMain
 
                 If RegKey.GetValue(Of String)(RegKey.Pso2RemoteVersion) <> version Then
                     If MsgBox(Resources.strNewPSO2Update, vbYesNo) = vbYes Then
+                        LockGui()
                         ' Use IOC Container in the main Tweaker project to deal with dependencies.
                         Dim output As New TweakerTrigger
                         Dim Settings = New RegistryTweakerSettings("Software\AIDA")
@@ -977,7 +998,7 @@ Public Class FrmMain
         Catch ex As Exception
             Helper.LogWithException(Resources.strERROR, ex)
         End Try
-    End Sub
+    End Function
 
     Private Sub InstallPrePatch()
         Dim applyPrePatchYesNo As MsgBoxResult = MsgBox("It appears that it's time to install the pre-patch download - Is this okay? If you select no, the pre-patch will not be installed.", vbYesNo)
@@ -2103,6 +2124,8 @@ Public Class FrmMain
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnPatchVersion)) Then RegKey.SetValue(Of String)(RegKey.EnPatchVersion, "Not Installed")
                     If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LargeFilesVersion)) Then RegKey.SetValue(Of String)(RegKey.LargeFilesVersion, "Not Installed")
 
+                    LockGui()
+
                     ' Use IOC Container in the main Tweaker project to deal with dependencies.
                     Dim output As New TweakerTrigger
                     Dim Settings = New RegistryTweakerSettings("Software\AIDA")
@@ -2853,38 +2876,39 @@ Public Class FrmMain
                     'Move all plugins to the disabled folder instead. [AIDA]
 
                     RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
+
                     For Each fi As FileInfo In New DirectoryInfo(Program.Pso2RootDir & "\plugins\").GetFiles
-                        If File.Exists(Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name)) Then File.Delete(Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
-                        File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
-                        FinalExportString += fi.Name & ","
-                    Next
-                    If FinalExportString.Length > 0 Then FinalExportString = FinalExportString.Remove(FinalExportString.Length - 1, 1)
-                    RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
-                    While Not (oReader.EndOfStream)
-                        filename = oReader.ReadLine().Split(","c)
-                        truefilename = filename(0)
+                            If File.Exists(Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name)) Then File.Delete(Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
+                            File.Move(fi.FullName, Path.Combine(Program.Pso2RootDir & "\plugins\disabled", fi.Name))
+                            FinalExportString += fi.Name & ","
+                        Next
+                        If FinalExportString.Length > 0 Then FinalExportString = FinalExportString.Remove(FinalExportString.Length - 1, 1)
+                        RegKey.SetValue(Of String)(RegKey.PluginsEnabled, FinalExportString)
+                        While Not (oReader.EndOfStream)
+                            filename = oReader.ReadLine().Split(","c)
+                            truefilename = filename(0)
 
-                        If truefilename = "pso2h.dll" Or truefilename = "translation_titles.bin" Or truefilename = "translation.bin" Then
-                            If Not File.Exists((Program.Pso2RootDir & "\" & truefilename)) Then
-                                missingfiles.Add(truefilename)
-                            ElseIf Helper.GetMd5((Program.Pso2RootDir & "\" & truefilename)) <> filename(1) Then
-                                missingfiles.Add(truefilename)
+                            If truefilename = "pso2h.dll" Or truefilename = "translation_titles.bin" Or truefilename = "translation.bin" Then
+                                If Not File.Exists((Program.Pso2RootDir & "\" & truefilename)) Then
+                                    missingfiles.Add(truefilename)
+                                ElseIf Helper.GetMd5((Program.Pso2RootDir & "\" & truefilename)) <> filename(1) Then
+                                    missingfiles.Add(truefilename)
+                                End If
+                            Else
+                                If Not File.Exists((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) Then
+                                    missingfiles.Add(truefilename)
+                                ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) <> filename(1) Then
+                                    missingfiles.Add(truefilename)
+                                End If
                             End If
-                        Else
-                            If Not File.Exists((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) Then
-                                missingfiles.Add(truefilename)
-                            ElseIf Helper.GetMd5((Program.Pso2RootDir & "\plugins\disabled\" & truefilename)) <> filename(1) Then
-                                missingfiles.Add(truefilename)
-                            End If
-                        End If
-                        numberofChecks += 1
-                        lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
-                        Application.DoEvents()
-                    End While
+                            numberofChecks += 1
+                            lblStatus.Text = (Resources.strCurrentlyCheckingFile & numberofChecks & "")
+                            Application.DoEvents()
+                        End While
 
-                    Helper.WriteDebugInfo("Downloading/Installing updates...")
-                    Dim totaldownload As Long = missingfiles.Count
-                    Dim downloaded As Long = 0
+                        Helper.WriteDebugInfo("Downloading/Installing updates...")
+                        Dim totaldownload As Long = missingfiles.Count
+                        Dim downloaded As Long = 0
 
                     For Each downloadStr As String In missingfiles
                         'Download the missing files:
@@ -2923,35 +2947,42 @@ Public Class FrmMain
                         If File.Exists(downloadStr) = True And Environment.CurrentDirectory <> Program.Pso2RootDir Then Helper.DeleteFile(downloadStr)
                         Application.DoEvents()
                     Next
+
+                    If NewInstall = True Then
+                        Helper.WriteDebugInfo("Auto-enabling item/title translations for fresh plugin install...")
+                        RegKey.SetValue(Of String)(RegKey.PluginsEnabled, "PSO2TitleTranslator.dll,translator.dll")
+                    End If
+
+
                     'Restore the plugins to their proper folders now
                     'If there's enabled plugins, do stuff.
                     Dim FileToMove As String = ""
-                    If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString.Length > 1 Then
-                        'Check to see if it's more than one file by seeing if there are any commas
-                        If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Contains(",") = False Then
-                            'It's just one file
-                            'MsgBox("One plugin enabled - " & RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString)
-                            FileToMove = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString
-                            If File.Exists(Program.Pso2RootDir & "\plugins\" & FileToMove) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & FileToMove))
-                            If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & FileToMove) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & FileToMove), (Program.Pso2RootDir & "\plugins\" & FileToMove))
+                        If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString.Length > 1 Then
+                            'Check to see if it's more than one file by seeing if there are any commas
+                            If RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Contains(",") = False Then
+                                'It's just one file
+                                'MsgBox("One plugin enabled - " & RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString)
+                                FileToMove = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).ToString
+                                If File.Exists(Program.Pso2RootDir & "\plugins\" & FileToMove) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & FileToMove))
+                                If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & FileToMove) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & FileToMove), (Program.Pso2RootDir & "\plugins\" & FileToMove))
+                            Else
+                                'It's multiple files
+                                Dim EnabledPlugins() As String = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Split(CType(",", Char()))
+                                For Each EnabledFilename In EnabledPlugins
+                                    'MsgBox(EnabledFilename)
+                                    If File.Exists(Program.Pso2RootDir & "\plugins\" & EnabledFilename) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & EnabledFilename))
+                                    If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename), (Program.Pso2RootDir & "\plugins\" & EnabledFilename))
+                                Next
+                            End If
                         Else
-                            'It's multiple files
-                            Dim EnabledPlugins() As String = RegKey.GetValue(Of String)(RegKey.PluginsEnabled).Split(CType(",", Char()))
-                            For Each EnabledFilename In EnabledPlugins
-                                'MsgBox(EnabledFilename)
-                                If File.Exists(Program.Pso2RootDir & "\plugins\" & EnabledFilename) = True Then Helper.DeleteFile((Program.Pso2RootDir & "\plugins\" & EnabledFilename))
-                                If File.Exists(Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename) Then File.Move((Program.Pso2RootDir & "\plugins\disabled\" & EnabledFilename), (Program.Pso2RootDir & "\plugins\" & EnabledFilename))
-                            Next
+                            'MsgBox("No plugins enabled!")
                         End If
-                    Else
-                        'MsgBox("No plugins enabled!")
-                    End If
 
-                    Helper.WriteDebugInfoAndOk("Plugins updated successfully.")
-                    RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
-                    RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
-                Else
-                    Helper.WriteDebugInfoAndOk("No plugin updates available.")
+                        Helper.WriteDebugInfoAndOk("Plugins updated successfully.")
+                        RegKey.SetValue(Of String)(RegKey.PluginVersion, RegKey.GetValue(Of String)(RegKey.NewPluginVersionTemp))
+                        RegKey.SetValue(Of String)(RegKey.NewPluginVersionTemp, "")
+                    Else
+                        Helper.WriteDebugInfoAndOk("No plugin updates available.")
                 End If
             End Using
         Else
@@ -3012,6 +3043,7 @@ Public Class FrmMain
     End Sub
 
     Private Async Sub btnQUANTUMSYSTEM_Click(sender As Object, e As EventArgs) Handles btnQUANTUMSYSTEM.Click
+        LockGui()
         ' Use IOC Container in the main Tweaker project to deal with dependencies.
         Dim output As New TweakerTrigger
         Dim Settings = New RegistryTweakerSettings("Software\AIDA")
@@ -3029,10 +3061,10 @@ Public Class FrmMain
         End Try
         frmDownloader.CleanupUI()
         Await updater.Update(False, False)
+
     End Sub
 
     Public Sub FinalUpdateSteps()
-        LockGui()
         'Final update steps - Set the version file, reset patches. [AIDA]
         _cancelled = False
         'Helper.WriteDebugInfo(Resources.strDownloading & "version file...")
@@ -3412,4 +3444,5 @@ Public Class FrmMain
         _cancelledFull = False
         UpdatePso2(True)
     End Sub
+
 End Class

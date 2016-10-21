@@ -7632,6 +7632,9 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
   </data>
@@ -7843,6 +7846,12 @@
     <value>ButtonItem10</value>
   </data>
   <data name="&gt;&gt;ButtonItem10.Type" xml:space="preserve">
+    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+  </data>
+  <data name="&gt;&gt;ButtonItem4.Name" xml:space="preserve">
+    <value>ButtonItem4</value>
+  </data>
+  <data name="&gt;&gt;ButtonItem4.Type" xml:space="preserve">
     <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
   </data>
   <data name="&gt;&gt;BtnUpdatePso2.Name" xml:space="preserve">
@@ -8107,13 +8116,7 @@
     <value>DLS</value>
   </data>
   <data name="&gt;&gt;DLS.Type" xml:space="preserve">
-    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.1.1.5, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ButtonItem4.Name" xml:space="preserve">
-    <value>ButtonItem4</value>
-  </data>
-  <data name="&gt;&gt;ButtonItem4.Type" xml:space="preserve">
-    <value>DevComponents.DotNetBar.ButtonItem, DevComponents.DotNetBar2, Version=8.2.0.2, Culture=neutral, PublicKeyToken=5fd520d36328f741</value>
+    <value>PSO2_Tweaker.My.MyWebClient, PSO2 Tweaker, Version=3.1.2.2, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMain</value>
