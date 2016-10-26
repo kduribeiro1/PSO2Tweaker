@@ -92,7 +92,8 @@ Namespace My
                 Try
                     TestURL = Client.DownloadString("http://arks-layer.com/freedom.txt")
 
-                    If RegKey.GetValue(Of Boolean)(RegKey.EnableBeta) = True Then TestURL = TestURL.Replace("freedom/", "freedombeta/")
+                    'Re-Enable this if we do BETAs again
+                    'If RegKey.GetValue(Of Boolean)(RegKey.EnableBeta) = True Then TestURL = TestURL.Replace("freedom/", "freedombeta/")
 
                     If Not TestURL.Contains("freedom") Then
                         Helper.Log("Reverting to default freedom...")

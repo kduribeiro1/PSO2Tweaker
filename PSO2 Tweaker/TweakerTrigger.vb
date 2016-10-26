@@ -12,7 +12,7 @@ Public Class TweakerTrigger
     Dim TotalDownloadedQuantum As Long
     Dim DoneDownloading As Boolean = False
     Dim SeenMessage As Boolean = False
-    Public patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
+    Public Shared patchwriter As TextWriter = TextWriter.Synchronized(File.AppendText("patchlog.txt"))
 
     Public Sub WritePatchLog(s As String)
         If frmDownloader.Visible = True Then patchwriter.WriteLine(DateTime.Now.ToString("G") & " " & s)
@@ -196,7 +196,6 @@ Public Class TweakerTrigger
                             DoneDownloading = True
                             patchwriter.Flush()
                             frmDownloader.Hide()
-                            patchwriter.Close()
                             FrmMain.FinalUpdateSteps()
                         End If
                     Catch ex As Exception

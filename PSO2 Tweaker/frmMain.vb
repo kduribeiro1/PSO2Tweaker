@@ -279,7 +279,9 @@ Public Class FrmMain
             End If
 
             If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.LaunchPSO2fromORB.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.LaunchPSO2fromORB, False)
-            If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnableBeta.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, False)
+            'Re-enable this if we do more BETAs in the future
+            'If String.IsNullOrEmpty(RegKey.GetValue(Of String)(RegKey.EnableBeta.ToString)) Then RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, False)
+            RegKey.SetValue(Of Boolean)(RegKey.EnableBeta, False)
 
             If RegKey.GetValue(Of Boolean)(RegKey.LaunchPSO2fromORB) = True Then
                 btnLaunchPSO2.Visible = False
@@ -290,10 +292,17 @@ Public Class FrmMain
 
             'Remove the next 3 lines to try sidebar theming. - AIDA
             WebBrowser1.Visible = False
-
+            'Here is what I will call our "idiot handling" code
+            '
             If Program.StartPath = Helper.GetDownloadsPath() Then
                 MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
                 Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in the ""Downloads"" folder. Please move it to it's own folder, like C:\Tweaker\")
+                Environment.Exit(0)
+                Stop
+            End If
+            If Program.StartPath = Program.Pso2RootDir.Replace("\\", "\") Then
+                MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while in the pso2_bin folder. Please move it to it's own folder, like C:\Tweaker\")
+                Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while in the pso2_bin folder. Please move it to it's own folder, like C:\Tweaker\")
                 Environment.Exit(0)
                 Stop
             End If
@@ -318,6 +327,12 @@ Public Class FrmMain
             If Program.StartPath = Path.GetPathRoot(Environment.SystemDirectory) Then
                 MsgBox("Please be aware - Due to various Windows issues, this program will not work correctly while on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
                 Helper.Log("Please be aware - Due to various Windows issues, this program will not work correctly while on the root drive (" & Path.GetPathRoot(Environment.SystemDirectory) & "). Please move it to it's own folder, like C:\Tweaker\")
+                Environment.Exit(0)
+                End
+            End If
+            If Process.GetCurrentProcess().MainModule.ModuleName <> "PSO2 Tweaker.exe" And Process.GetCurrentProcess().MainModule.ModuleName <> "PSO2 Tweaker.vshost.exe" Then
+                MsgBox("Your PSO2 Tweaker is named incorrectly. Please rename the program you just ran to ""PSO2 Tweaker.exe"" exactly, then run it again.")
+                Helper.Log("Your PSO2 Tweaker is named incorrectly. Please rename the program you just ran to ""PSO2 Tweaker.exe"" exactly, then run it again.")
                 Environment.Exit(0)
                 End
             End If
@@ -3065,6 +3080,7 @@ Public Class FrmMain
     End Sub
 
     Public Sub FinalUpdateSteps()
+        TweakerTrigger.patchwriter.Close()
         'Final update steps - Set the version file, reset patches. [AIDA]
         _cancelled = False
         'Helper.WriteDebugInfo(Resources.strDownloading & "version file...")
