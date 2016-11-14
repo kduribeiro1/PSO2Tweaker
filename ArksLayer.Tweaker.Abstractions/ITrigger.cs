@@ -31,14 +31,15 @@ namespace ArksLayer.Tweaker.Abstractions
         void OnBackupRestore(IEnumerable<string> backupFiles);
 
         /// <summary>
-        /// This method will be called once per UpdateEngine.Update if in-game chat censor file is to be deleted.
-        /// </summary>
-        void OnCensorRemoval();
-
-        /// <summary>
         /// This method will be called once per UpdateEngine.Update if previous client hash failed to be read.
         /// </summary>
         void OnClientHashReadFailed();
+
+        /// <summary>
+        /// Will be called when a fan translation patch process is started.
+        /// </summary>
+        /// <param name="name"></param>
+        void OnFanPatching(string name);
 
         /// <summary>
         /// This method will be called once per UpdateEngine.Update if previous client hash successfully read.
@@ -66,6 +67,11 @@ namespace ArksLayer.Tweaker.Abstractions
         /// <param name="url"></param>
         /// <param name="delaySecond"></param>
         void OnDownloadRetry(string url, int delaySecond);
+
+        /// <summary>
+        /// Will be called when a fan translation patch process is completed.
+        /// </summary>
+        void OnFanPatchSuccessful(string name);
 
         /// <summary>
         /// This method will be called by the UpdateEngine.Update for every downloads that was started.

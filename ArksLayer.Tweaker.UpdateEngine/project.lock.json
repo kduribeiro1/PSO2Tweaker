@@ -12,7 +12,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "ArksLayer.Tweaker.Abstractions/0.4.9": {
+      "ArksLayer.Tweaker.Abstractions/0.5.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "compile": {
@@ -49,7 +49,7 @@
         "tools/install.ps1"
       ]
     },
-    "ArksLayer.Tweaker.Abstractions/0.4.9": {
+    "ArksLayer.Tweaker.Abstractions/0.5.0": {
       "type": "project",
       "path": "../ArksLayer.Tweaker.Abstractions/project.json",
       "msbuildProject": "../ArksLayer.Tweaker.Abstractions/ArksLayer.Tweaker.Abstractions.xproj"
@@ -57,10 +57,13 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "ArksLayer.Tweaker.Abstractions >= 0.4.9-*",
+      "ArksLayer.Tweaker.Abstractions >= 0.5.0-*",
       "Newtonsoft.Json >= 9.0.1"
     ],
-    ".NETFramework,Version=v4.5": []
+    ".NETFramework,Version=v4.5": [
+      "System.IO.Compression >= 4.0.0",
+      "System.IO.Compression.FileSystem >= 4.0.0"
+    ]
   },
   "tools": {},
   "projectFileToolGroups": {}

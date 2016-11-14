@@ -55,28 +55,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
-        /// Gets the known, usual backup directory for the legacy Tweaker functions.
-        /// </summary>
-        public string BackupDirectory
-        {
-            get
-            {
-                return Path.Combine(DataWin32Directory, "backup");
-            }
-        }
-
-        /// <summary>
-        /// Gets the game file directory where the game asset files usually located in.
-        /// </summary>
-        public string DataWin32Directory
-        {
-            get
-            {
-                return Path.Combine(Settings.GameDirectory, @"data\win32");
-            }
-        }
-
-        /// <summary>
         /// Dependency to patch downloader class.
         /// </summary>
         private SegaDownloader Downloader { get; set; }
@@ -92,47 +70,6 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private ITweakerSettings Settings { get; set; }
 
         /// <summary>
-        /// Throws an exception on-demand from within the engine.
-        /// Might be useful if you're trying to develop a working exception handler for the engine that doesn't say Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs
-        /// </summary>
-        public async Task Crash(int type)
-        {
-            switch (type)
-            {
-                case 1:
-                    {
-                        throw new Exception("An exception happened synchronously.");
-                    }
-                case 2:
-                    {
-                        await Task.Run(() =>
-                        {
-                            throw new Exception("An exception happened asynchronously.");
-                        });
-                        break;
-                    }
-                case 3:
-                    {
-                        Parallel.For(1, 4, i =>
-                        {
-                            throw new Exception("An exception happened in a parallel loop.");
-                        });
-                        break;
-                    }
-                case 4:
-                    {
-                        IEnumerable<int> faux = new int[] { 1, 2, 3, 4 };
-                        faux = faux.AsParallel().Select(Q =>
-                        {
-                            throw new Exception("An exception happened in a PLINQ");
-                            return Q;
-                        });
-                        break;
-                    }
-            }
-        }
-
-        /// <summary>
         /// Deletes the file that must not exist for the next patching operation and then uncensor the game if not uncensored already.
         /// </summary>
         public Task Housekeeping()
@@ -145,7 +82,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
 
                 //Remove Censor
-                var censorFile = Path.Combine(DataWin32Directory, "ffbff2ac5b7a7948961212cefd4d402c");
+                var censorFile = Path.Combine(Settings.DataWin32Directory(), "ffbff2ac5b7a7948961212cefd4d402c");
                 if (File.Exists(censorFile))
                 {
                     Output.AppendLog($"Removing chat censor file: {censorFile}");
@@ -159,10 +96,17 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         public async Task RestoreBackupFiles()
         {
-            if (!Directory.Exists(BackupDirectory)) return;
+            if (!Directory.Exists(Settings.BackupDirectory())) return;
 
-            var backupFiles = await Task.Run(() => Directory.GetFiles(BackupDirectory, "*.*", SearchOption.AllDirectories));
-            if (!backupFiles.Any()) return;
+            Settings.EnglishPatchVersion = "Not Installed";
+            Settings.EnglishLargePatchVersion = "Not Installed";
+            Settings.StoryPatchVersion = "Not Installed";
+
+            var backupFiles = await Task.Run(() => Directory.EnumerateFiles(Settings.BackupDirectory(), "*.*", SearchOption.AllDirectories));
+            if (!backupFiles.Any())
+            {
+                return;
+            }
 
             Output.OnBackupRestore(backupFiles);
             await Task.Run(() =>
@@ -170,17 +114,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 foreach (var file in backupFiles)
                 {
                     var fileName = Path.GetFileName(file);
-                    var target = Path.Combine(DataWin32Directory, fileName);
+                    var target = Path.Combine(Settings.DataWin32Directory(), fileName);
 
                     if (File.Exists(target)) File.Delete(target);
                     File.Move(file, target);
                 }
             });
-
-            // Why the fuck are we using hard-coded string as enum values? This is stupid
-            Settings.EnglishPatchVersion = "Not Installed";
-            Settings.EnglishLargePatchVersion = "Not Installed";
-            Settings.StoryPatchVersion = "Not Installed";
         }
 
         /// <summary>
@@ -339,10 +278,10 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private IList<string> EnumerateGameFiles()
         {
-            var gameFiles = Directory.GetFiles(DataWin32Directory, "*.*", SearchOption.AllDirectories)
+            var gameFiles = Directory.EnumerateFiles(Settings.DataWin32Directory(), "*.*", SearchOption.AllDirectories)
                 .AsParallel()
                 // Logically, since this method is being called AFTER backup restore, there shouldn't be any more files in the backup folder. But hey, better be safe than sorry!
-                .Where(Q => !Q.StartsWith(BackupDirectory, StringComparison.InvariantCultureIgnoreCase))
+                .Where(Q => !Q.StartsWith(Settings.BackupDirectory(), StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
 
             var whitelist = new[] { "pso2.exe", "pso2launcher.exe", "pso2updater.exe", "pso2download.exe", "pso2predownload.exe", "gameversion.ver", "edition.txt" };
@@ -500,7 +439,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private async Task<IDictionary<string, string>> RehashWholeClient()
         {
-            var gameFiles = PrepareGameFilesHashModels();
+            var gameFiles = await Task.Run(() => PrepareGameFilesHashModels());
             Output.OnHashStart(gameFiles.Select(Q => Q.FileName));
 
             // Perform the long-running operation in the background thread instead of the UI thread.
