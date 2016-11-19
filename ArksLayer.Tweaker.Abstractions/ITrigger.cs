@@ -77,7 +77,7 @@ namespace ArksLayer.Tweaker.Abstractions
         /// <summary>
         /// This method will be called when user successfully configured Telepipe Proxy from a JSON file.
         /// </summary>
-        void OnTelepipeProxyEnabled();
+        void OnTelepipeProxyEnabled(string name);
 
         /// <summary>
         /// Will be called when a fan translation patch process is completed.
@@ -143,6 +143,11 @@ namespace ArksLayer.Tweaker.Abstractions
         /// </summary>
         /// <param name="missingFiles"></param>
         void OnMissingFilesDiscovery(IEnumerable<string> missingFiles);
+
+        /// <summary>
+        /// This method will be called when a fan patch file cannot be found from given URL / File Path.
+        /// </summary>
+        void OnFanPatchNotFound();
 
         /// <summary>
         /// This method will be called once per UpdateEngine.Update if there are one or more game patch downloads that failed.

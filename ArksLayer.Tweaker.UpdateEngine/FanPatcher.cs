@@ -1,5 +1,6 @@
 ﻿using ArksLayer.Tweaker.Abstractions;
 using Newtonsoft.Json;
+using SharpCompress.Archives;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -97,7 +98,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 });
             }
 
-            Triggers.OnTelepipeProxyEnabled();
+            Triggers.OnTelepipeProxyEnabled(telepipe.Name);
         }
 
         /// <summary>
@@ -179,7 +180,10 @@ namespace ArksLayer.Tweaker.UpdateEngine
             var patchName = GetPatchTypeName(patchType);
 
             Stream buffer = await TryObtainFile(path);
-            if (buffer == null) return;
+            if (buffer == null)
+            {
+                Triggers.OnFanPatchNotFound();
+            }
 
             Triggers.OnFanPatching(patchType.ToString());
 
@@ -191,43 +195,42 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     Directory.CreateDirectory(backupFolder);
                 }
 
-                using (var zip = new ZipArchive(buffer))
+                using (var archive = ArchiveFactory.Open(buffer))
                 {
-                    foreach (var entry in zip.Entries)
+                    var files = archive.Entries.Where(Q => Q.IsDirectory == false);
+                    foreach (var file in files)
                     {
-                        var target = Path.Combine(Settings.DataWin32Directory(), entry.Name);
+                        var name = Path.GetFileName(file.Key);
+                        var target = Path.Combine(Settings.DataWin32Directory(), name);
                         if (File.Exists(target))
                         {
-                            var backup = Path.Combine(backupFolder, entry.Name);
+                            var backup = Path.Combine(backupFolder, name);
                             File.Move(target, backup);
                         }
-                        entry.ExtractToFile(target);
+                        file.WriteToFile(target, new SharpCompress.Readers.ExtractionOptions
+                        {
+                            Overwrite = true,
+                            ExtractFullPath = false
+                        });
                     }
                 }
+                buffer.Dispose();
             });
 
-            switch (patchType)
+            if (patchType == FanPatchType.EnglishLargePatch)
             {
-                case FanPatchType.EnglishPatch:
-                    {
-                        Settings.EnglishPatchVersion = Path.GetFileNameWithoutExtension(path);
-                        break;
-                    }
-                case FanPatchType.EnglishLargePatch:
-                    {
-                        Settings.EnglishLargePatchVersion = Path.GetFileNameWithoutExtension(path);
-                        break;
-                    }
-                default:
-                    throw new NotImplementedException("Fan patch type not supported.");
+                Settings.EnglishPatchVersion = Path.GetFileNameWithoutExtension(path);
+            }
+            if (patchType == FanPatchType.EnglishLargePatch)
+            {
+                Settings.EnglishLargePatchVersion = Path.GetFileNameWithoutExtension(path);
             }
 
             Triggers.OnFanPatchSuccessful(patchName);
-            buffer.Dispose();
         }
 
         /// <summary>
-        /// Returns appropriate backup folder / patch name for the given patch type.
+        /// Returns appropriate backup folder / patch name for the given patch type, based on existing folder names.
         /// </summary>
         /// <param name="patchType"></param>
         /// <returns></returns>

@@ -1,0 +1,16 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "ArksLayer.Tweaker.Abstractions": "0.5.5-*",
+    "ArksLayer.Tweaker.UpdateEngine": "0.5.5-*"
+  },
+
+  "frameworks": {
+    "net45": {
+    }
+  }
+}
