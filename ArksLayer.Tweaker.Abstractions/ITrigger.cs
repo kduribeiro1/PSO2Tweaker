@@ -54,6 +54,11 @@ namespace ArksLayer.Tweaker.Abstractions
         void OnDownloadAborted(string url);
 
         /// <summary>
+        /// This method will be called when user attempted to configure Telepipe Proxy from a JSON file.
+        /// </summary>
+        void OnTelepipeProxyEnabling();
+
+        /// <summary>
         /// This method will be called by the UpdateEngine.Update for every downloads that completely failed after certain amount of retries.
         /// Ideal implementation should also destroy the progress bar for the download.
         /// </summary>
@@ -67,6 +72,12 @@ namespace ArksLayer.Tweaker.Abstractions
         /// <param name="url"></param>
         /// <param name="delaySecond"></param>
         void OnDownloadRetry(string url, int delaySecond);
+
+
+        /// <summary>
+        /// This method will be called when user successfully configured Telepipe Proxy from a JSON file.
+        /// </summary>
+        void OnTelepipeProxyEnabled();
 
         /// <summary>
         /// Will be called when a fan translation patch process is completed.
