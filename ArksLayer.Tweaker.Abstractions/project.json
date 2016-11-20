@@ -11,7 +11,7 @@
       "url": "https://github.com/ryanelian/PSO2Tweaker"
     }
   },
-  "version": "0.5.5-*",
+  "version": "0.5.6-*",
   "authors": [ "Ryan Elian" ],
   "description": "A collection of interface and strongly-typed configuration classes for PSO2 Tweaker.",
   "title": "ArksLayer.Tweaker.Abstractions",

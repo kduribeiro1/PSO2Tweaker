@@ -21,7 +21,7 @@
           "lib/net45/SharpCompress.dll": {}
         }
       },
-      "ArksLayer.Tweaker.Abstractions/0.5.5": {
+      "ArksLayer.Tweaker.Abstractions/0.5.6": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "compile": {
@@ -31,11 +31,11 @@
           "net45/ArksLayer.Tweaker.Abstractions.dll": {}
         }
       },
-      "ArksLayer.Tweaker.UpdateEngine/0.5.4": {
+      "ArksLayer.Tweaker.UpdateEngine/0.5.6": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
-          "ArksLayer.Tweaker.Abstractions": "0.5.5",
+          "ArksLayer.Tweaker.Abstractions": "0.5.6",
           "Newtonsoft.Json": "9.0.1",
           "sharpcompress": "0.14.0"
         },
@@ -89,12 +89,12 @@
         "sharpcompress.nuspec"
       ]
     },
-    "ArksLayer.Tweaker.Abstractions/0.5.5": {
+    "ArksLayer.Tweaker.Abstractions/0.5.6": {
       "type": "project",
       "path": "../ArksLayer.Tweaker.Abstractions/project.json",
       "msbuildProject": "../ArksLayer.Tweaker.Abstractions/ArksLayer.Tweaker.Abstractions.xproj"
     },
-    "ArksLayer.Tweaker.UpdateEngine/0.5.4": {
+    "ArksLayer.Tweaker.UpdateEngine/0.5.6": {
       "type": "project",
       "path": "../ArksLayer.Tweaker.UpdateEngine/project.json",
       "msbuildProject": "../ArksLayer.Tweaker.UpdateEngine/ArksLayer.Tweaker.UpdateEngine.xproj"
@@ -102,8 +102,8 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "ArksLayer.Tweaker.Abstractions >= 0.5.5-*",
-      "ArksLayer.Tweaker.UpdateEngine >= 0.5.5-*"
+      "ArksLayer.Tweaker.Abstractions >= 0.5.6-*",
+      "ArksLayer.Tweaker.UpdateEngine >= 0.5.6-*"
     ],
     ".NETFramework,Version=v4.5": []
   },

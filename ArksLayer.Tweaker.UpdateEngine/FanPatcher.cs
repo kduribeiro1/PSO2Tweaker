@@ -217,7 +217,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 buffer.Dispose();
             });
 
-            if (patchType == FanPatchType.EnglishLargePatch)
+            if (patchType == FanPatchType.EnglishPatch)
             {
                 Settings.EnglishPatchVersion = Path.GetFileNameWithoutExtension(path);
             }

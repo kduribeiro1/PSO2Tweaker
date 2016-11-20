@@ -21,7 +21,7 @@
           "lib/net45/SharpCompress.dll": {}
         }
       },
-      "ArksLayer.Tweaker.Abstractions/0.5.5": {
+      "ArksLayer.Tweaker.Abstractions/0.5.6": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "compile": {
@@ -74,7 +74,7 @@
         "sharpcompress.nuspec"
       ]
     },
-    "ArksLayer.Tweaker.Abstractions/0.5.5": {
+    "ArksLayer.Tweaker.Abstractions/0.5.6": {
       "type": "project",
       "path": "../ArksLayer.Tweaker.Abstractions/project.json",
       "msbuildProject": "../ArksLayer.Tweaker.Abstractions/ArksLayer.Tweaker.Abstractions.xproj"
@@ -82,7 +82,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "ArksLayer.Tweaker.Abstractions >= 0.5.5-*",
+      "ArksLayer.Tweaker.Abstractions >= 0.5.6-*",
       "Newtonsoft.Json >= 9.0.1",
       "sharpcompress >= 0.14.0"
     ],
