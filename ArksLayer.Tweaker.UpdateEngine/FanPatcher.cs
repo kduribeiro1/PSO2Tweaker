@@ -197,21 +197,23 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
                 using (var archive = ArchiveFactory.Open(buffer))
                 {
-                    var files = archive.Entries.Where(Q => Q.IsDirectory == false);
-                    foreach (var file in files)
+                    var reader = archive.ExtractAllEntries();
+                    while (reader.MoveToNextEntry())
                     {
-                        var name = Path.GetFileName(file.Key);
+                        if (reader.Entry.IsDirectory) continue;
+
+                        var name = Path.GetFileName(reader.Entry.Key);
                         var target = Path.Combine(Settings.DataWin32Directory(), name);
                         if (File.Exists(target))
                         {
                             var backup = Path.Combine(backupFolder, name);
                             File.Move(target, backup);
                         }
-                        file.WriteToFile(target, new SharpCompress.Readers.ExtractionOptions
+
+                        using (var file = new FileStream(target, FileMode.Create))
                         {
-                            Overwrite = true,
-                            ExtractFullPath = false
-                        });
+                            reader.WriteEntryTo(file);
+                        }
                     }
                 }
                 buffer.Dispose();
