@@ -26,5 +26,65 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             return Path.Combine(settings.GameDirectory, @"data\win32");
         }
+
+
+#pragma warning disable RECS0154 // Parameter is never used
+        /// <summary>
+        /// Gets the value of the PSO2 user profile folder.
+        /// </summary>
+        public static string GetUserFolderPath(this ITweakerSettings settings)
+        {
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return Path.Combine(documents, @"Documents\SEGA\PHANTASYSTARONLINE2");
+        }
+#pragma warning restore RECS0154 // Parameter is never used
+
+        /// <summary>
+        /// Gets the path of the game version file.
+        /// </summary>
+        public static string GetGameVersionFilePath(this ITweakerSettings settings)
+        {
+            return Path.Combine(settings.GetUserFolderPath(), "version.ver");
+        }
+
+        /// <summary>
+        /// A lock for thread-safe game version file IO.
+        /// </summary>
+        private static object GameVersionFileLock = new object();
+
+        /// <summary>
+        /// Gets the value of the game client version.
+        /// </summary>
+        public static string GetGameVersion(this ITweakerSettings settings)
+        {
+            lock (GameVersionFileLock)
+            {
+                var path = settings.GetGameVersionFilePath();
+                if (!File.Exists(path))
+                {
+                    return null;
+                }
+                return File.ReadAllText(path);
+            }
+        }
+
+        /// <summary>
+        /// Sets the value of the game client version.
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="version"></param>
+        public static void SetGameVersion(this ITweakerSettings settings, string version)
+        {
+            lock (GameVersionFileLock)
+            {
+                var path = settings.GetGameVersionFilePath();
+                var dir = Path.GetDirectoryName(path);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                File.WriteAllText(path, version);
+            }
+        }
     }
 }

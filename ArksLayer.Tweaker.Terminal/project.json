@@ -5,7 +5,7 @@
   },
 
   "dependencies": {
-    "ArksLayer.Tweaker.Abstractions": "0.5.6-*",
+    "ArksLayer.Tweaker.Abstractions": "0.6.0-*",
     "ArksLayer.Tweaker.UpdateEngine": "0.5.7-*"
   },
 

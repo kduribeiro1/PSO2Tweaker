@@ -16,7 +16,7 @@ namespace ArksLayer.Tweaker.Terminal
         {
             // Use IOC Container in the UI project to deal with dependencies.
             var output = new ConsoleTrigger();
-            var settings = new RegistryTweakerSettings(@"Software\AIDA");
+            var settings = new JsonTweakerSettings(JsonTweakerSettings.DefaultTweakerJsonFilePath);
             var updater = new UpdateManager(settings, output);
 
             Console.WriteLine("pso_bin is located at : " + settings.GameDirectory);

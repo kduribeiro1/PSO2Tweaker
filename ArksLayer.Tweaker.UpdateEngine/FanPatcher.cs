@@ -183,6 +183,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             if (buffer == null)
             {
                 Triggers.OnFanPatchNotFound();
+                return;
             }
 
             Triggers.OnFanPatching(patchType.ToString());
