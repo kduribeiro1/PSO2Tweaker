@@ -131,7 +131,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
             MergePatchlist(merge, await patchlist, false);
             MergePatchlist(merge, await oldPatchlist, true);
 
-            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "user_default.pso2", "user_intel.pso2" };
+            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "user_default.pso2", "user_intel.pso2", UpdateManager.CensorFile };
             var result = merge.Values.AsParallel().Where(Q => FilterPatch(blacklist, Q)).ToList();
 
             using (var file = File.CreateText("patchlist.json"))

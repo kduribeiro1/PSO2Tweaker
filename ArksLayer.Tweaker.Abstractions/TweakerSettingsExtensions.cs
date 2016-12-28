@@ -27,6 +27,13 @@ namespace ArksLayer.Tweaker.Abstractions
             return Path.Combine(settings.GameDirectory, @"data\win32");
         }
 
+        /// <summary>
+        /// Gets the game file directory where the game asset files usually located in.
+        /// </summary>
+        public static string LicenseDirectory(this ITweakerSettings settings)
+        {
+            return Path.Combine(settings.GameDirectory, @"data\license");
+        }
 
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>

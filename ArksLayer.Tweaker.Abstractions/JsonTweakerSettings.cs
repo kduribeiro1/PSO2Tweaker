@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,9 +19,9 @@ namespace ArksLayer.Tweaker.Abstractions
         /// </summary>
         public static object ConfigurationLock = new object();
 
-        private TweakerJson Configuration;
+        private JObject Configuration;
         private FileSystemWatcher Watch;
-        private string FilePath;
+        private readonly string FilePath;
 
         /// <summary>
         /// Returns a default Tweaker JSON configuration file path, which is located in %appdata%\PSO2 Tweaker\settings.json 
@@ -41,12 +42,12 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             get
             {
-                return Configuration.LargeFilesVersion;
+                return Configuration["LargeFilesVersion"].Value<string>();
             }
 
             set
             {
-                Configuration.LargeFilesVersion = value;
+                Configuration["LargeFilesVersion"] = value;
                 WriteConfiguration();
             }
         }
@@ -58,12 +59,12 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             get
             {
-                return Configuration.ENPatchVersion;
+                return Configuration["ENPatchVersion"].Value<string>();
             }
 
             set
             {
-                Configuration.ENPatchVersion = value;
+                Configuration["ENPatchVersion"] = value;
                 WriteConfiguration();
             }
         }
@@ -76,12 +77,12 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             get
             {
-                return Configuration.PSO2Dir;
+                return Configuration["PSO2Dir"].Value<string>();
             }
 
             set
             {
-                Configuration.PSO2Dir = value;
+                Configuration["PSO2Dir"] = value;
                 WriteConfiguration();
             }
         }
@@ -109,12 +110,12 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             get
             {
-                return Configuration.StoryPatchVersion;
+                return Configuration["StoryPatchVersion"].Value<string>();
             }
 
             set
             {
-                Configuration.StoryPatchVersion = value;
+                Configuration["StoryPatchVersion"] = value;
                 WriteConfiguration();
             }
         }
@@ -126,15 +127,8 @@ namespace ArksLayer.Tweaker.Abstractions
         public JsonTweakerSettings(string file)
         {
             this.FilePath = file;
-
-            if (File.Exists(file) == false)
-            {
-                this.Configuration = new TweakerJson();
-                WriteConfiguration();
-            }
-
-            ReadConfiguration();
             InitializeWatcher();
+            ReadConfiguration();
         }
 
         private void InitializeWatcher()
@@ -142,6 +136,7 @@ namespace ArksLayer.Tweaker.Abstractions
             this.Watch = new FileSystemWatcher();
             Watch.Path = Path.GetDirectoryName(FilePath);
             Watch.Filter = Path.GetFileName(FilePath);
+            Watch.Created += Watch_Changed;
             Watch.Changed += Watch_Changed;
 
             Watch.EnableRaisingEvents = true;
@@ -157,11 +152,18 @@ namespace ArksLayer.Tweaker.Abstractions
         {
             lock (ConfigurationLock)
             {
-                using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var sr = new StreamReader(fs))
+                if (File.Exists(FilePath) == false)
                 {
-                    var json = sr.ReadToEnd();
-                    this.Configuration = JsonConvert.DeserializeObject<TweakerJson>(json);
+                    this.Configuration = JObject.FromObject(new TweakerJson());
+                }
+                else
+                {
+                    using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (var sr = new StreamReader(fs))
+                    {
+                        var json = sr.ReadToEnd();
+                        this.Configuration = JObject.Parse(json);
+                    }
                 }
             }
         }

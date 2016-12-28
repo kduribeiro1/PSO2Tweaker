@@ -30,6 +30,10 @@ namespace ArksLayer.Tweaker.Abstractions
 
         public string NewLargeFilesVersion { set; get; }
 
+        public string OldX { set; get; }
+
+        public string OldY { set; get; }
+
         public string Pastebin { set; get; }
 
         public string PluginsEnabled { set; get; }
@@ -43,6 +47,8 @@ namespace ArksLayer.Tweaker.Abstractions
         public string PSO2PrecedeVersion { set; get; }
 
         public string PSO2RemoteVersion { set; get; }
+
+        public string ShipStatus { set; get; }
 
         public string SteamMode { set; get; }
 

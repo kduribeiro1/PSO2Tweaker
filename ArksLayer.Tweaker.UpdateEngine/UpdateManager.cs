@@ -40,6 +40,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
         private const string PatchlistJson = "patchlist.json";
 
         /// <summary>
+        /// This file contains thousands of curse words, made by SEGA.
+        /// </summary>
+        public const string CensorFile = "ffbff2ac5b7a7948961212cefd4d402c";
+
+        /// <summary>
         /// Constructs an instance of UpdateManager requiring a tweaker settings class and a UI renderer class.
         /// </summary>
         /// <param name="settings"></param>
@@ -82,11 +87,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 if (File.Exists(DownloadSuccessLog)) File.Delete(DownloadSuccessLog);
 
                 //Remove Censor
-                var censorFile = Path.Combine(Settings.DataWin32Directory(), "ffbff2ac5b7a7948961212cefd4d402c");
-                if (File.Exists(censorFile))
+                var censorPath = Path.Combine(Settings.DataWin32Directory(), CensorFile);
+                if (File.Exists(censorPath))
                 {
-                    Output.AppendLog($"Removing chat censor file: {censorFile}");
-                    File.Delete(censorFile);
+                    Output.AppendLog($"Removing chat censor file: {censorPath}");
+                    File.Delete(censorPath);
                 }
             });
         }
@@ -278,13 +283,20 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private IList<string> EnumerateGameFiles()
         {
-            var gameFiles = Directory.EnumerateFiles(Settings.DataWin32Directory(), "*.*", SearchOption.AllDirectories)
-                .AsParallel()
-                // Logically, since this method is being called AFTER backup restore, there shouldn't be any more files in the backup folder. But hey, better be safe than sorry!
-                .Where(Q => !Q.StartsWith(Settings.BackupDirectory(), StringComparison.InvariantCultureIgnoreCase))
-                .ToList();
+            var gameFiles = new List<string>(70000);
 
-            var whitelist = new[] { "pso2.exe", "pso2launcher.exe", "pso2updater.exe", "pso2download.exe", "pso2predownload.exe", "gameversion.ver", "edition.txt" };
+            var dataFiles = Directory.EnumerateFiles(Settings.DataWin32Directory(), "*.*", SearchOption.TopDirectoryOnly).ToList();
+            gameFiles.AddRange(dataFiles);
+
+            var licenseFiles = Directory.EnumerateFiles(Settings.LicenseDirectory(), "*.*", SearchOption.TopDirectoryOnly);
+            gameFiles.AddRange(licenseFiles);
+
+            var whitelist = new[] { "pso2.exe", "pso2launcher.exe", "pso2updater.exe",
+                "pso2download.exe", "pso2predownload.exe", "gameversion.ver", "edition.txt",
+                "D3dx9d_43.dll", "D3dx9d_42.dll", "cudart32_30_9.dll",
+                "sdkencryptedappticket.dll", "sdkencryptedappticket64.dll"
+            };
+
             foreach (var file in whitelist)
             {
                 var path = Path.Combine(Settings.GameDirectory, file);
