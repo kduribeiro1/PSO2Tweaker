@@ -77,20 +77,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
         {
             if (_SkipList == null)
             {
-                _SkipList = new HashSet<string>();
-
-                using (var stream = new FileStream("skip.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var reader = new StreamReader(stream))
-                {
-                    while (reader.EndOfStream == false)
-                    {
-                        var s = reader.ReadLine().Trim();
-                        if (string.IsNullOrEmpty(s) != false)
-                        {
-                            _SkipList.Add(s);
-                        }
-                    }
-                }
+                var ar = File.ReadLines("skip.txt").Select(Q => Q.Trim()).Where(Q => string.IsNullOrEmpty(Q) == false);
+                _SkipList = new HashSet<string>(ar);
             }
         }
 
