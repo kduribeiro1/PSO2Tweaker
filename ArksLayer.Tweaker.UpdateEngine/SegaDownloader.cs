@@ -54,6 +54,46 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         private ITrigger Output { get; set; }
 
+        private object SkipListLock = new object();
+        private HashSet<string> _SkipList;
+
+        public HashSet<string> SkipList
+        {
+            get
+            {
+                if (_SkipList == null)
+                {
+                    lock (SkipListLock)
+                    {
+                        ReadSkipList();
+                    }
+                }
+
+                return _SkipList;
+            }
+        }
+
+        private void ReadSkipList()
+        {
+            if (_SkipList == null)
+            {
+                _SkipList = new HashSet<string>();
+
+                using (var stream = new FileStream("skip.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var reader = new StreamReader(stream))
+                {
+                    while (reader.EndOfStream == false)
+                    {
+                        var s = reader.ReadLine().Trim();
+                        if (string.IsNullOrEmpty(s) != false)
+                        {
+                            _SkipList.Add(s);
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Attempts to download a patch into a target directory.
         /// </summary>
@@ -64,6 +104,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns>True if download is successful, else false.</returns>
         public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, StreamWriter successLog = null, int attempts = 4)
         {
+            if (SkipList.Contains(target.File))
+            {
+                Output.AppendLog($"Skipping download: {target.File}");
+                return true;
+            }
+
             if (attempts < 1) attempts = 1;
 
             var file = Path.Combine(directory, target.File);
