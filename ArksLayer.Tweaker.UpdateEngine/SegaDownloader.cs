@@ -54,6 +54,34 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         private ITrigger Output { get; set; }
 
+        private object SkipListLock = new object();
+        private HashSet<string> _SkipList;
+
+        public HashSet<string> SkipList
+        {
+            get
+            {
+                if (_SkipList == null)
+                {
+                    lock (SkipListLock)
+                    {
+                        ReadSkipList();
+                    }
+                }
+
+                return _SkipList;
+            }
+        }
+
+        private void ReadSkipList()
+        {
+            if (_SkipList == null)
+            {
+                var ar = File.ReadLines("skip.txt").Select(Q => Q.Trim()).Where(Q => string.IsNullOrEmpty(Q) == false);
+                _SkipList = new HashSet<string>(ar);
+            }
+        }
+
         /// <summary>
         /// Attempts to download a patch into a target directory.
         /// </summary>
@@ -64,6 +92,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns>True if download is successful, else false.</returns>
         public async Task<bool> DownloadGamePatch(PatchInfo target, string directory, StreamWriter successLog = null, int attempts = 4)
         {
+            if (SkipList.Contains(target.File))
+            {
+                Output.AppendLog($"Skipping download: {target.File}");
+                return true;
+            }
+
             if (attempts < 1) attempts = 1;
 
             var file = Path.Combine(directory, target.File);
@@ -115,7 +149,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// The value returned will be a list of patch information.
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<PatchInfo>> FetchUpdatePatchlist()
+        public async Task<List<PatchInfo>> FetchUpdatePatchlist()
         {
             Output.OnPatchlistFetchStart();
 
@@ -125,20 +159,25 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             await Task.WhenAll(launcherList, patchlist, oldPatchlist);
 
+            var t = Stopwatch.StartNew();
+
             // Apparently, there are duplicates and the (new) patchlist takes priority before the old patchlist!
             var merge = new Dictionary<string, PatchInfo>();
             MergePatchlist(merge, await launcherList, false);
             MergePatchlist(merge, await patchlist, false);
             MergePatchlist(merge, await oldPatchlist, true);
+            Output.Benchmark(t, "Patchlist merge");
 
-            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "user_default.pso2", "user_intel.pso2" };
+            var blacklist = new string[] { "PSO2JP.ini", "GameGuard.des", "user_default.pso2", "user_intel.pso2", UpdateManager.CensorFile };
             var result = merge.Values.AsParallel().Where(Q => FilterPatch(blacklist, Q)).ToList();
+            Output.Benchmark(t, "Patchlist blacklist");
 
             using (var file = File.CreateText("patchlist.json"))
             {
                 await file.WriteAsync(JsonConvert.SerializeObject(result));
             }
 
+            Output.Benchmark(t, "Patchlist write");
             Output.OnPatchlistFetchCompleted(result.Count);
             return result;
         }
@@ -148,10 +187,10 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private async Task<IList<PatchInfo>> DownloadAndParsePatchlist(string url)
+        private async Task<List<PatchInfo>> DownloadAndParsePatchlist(string url)
         {
             var response = await DownloadPatchlist(url);
-            var result = ParsePatchlist(response);
+            var result = await Task.Run(() => ParsePatchlist(response));
             return result;
         }
 
@@ -247,12 +286,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <param name="merge"></param>
         /// <param name="patchlist"></param>
         /// <param name="old">Indicates whether the patch should be downloaded from the older patch server</param>
-        private void MergePatchlist(IDictionary<string, PatchInfo> merge, IList<PatchInfo> patchlist, bool old)
+        private void MergePatchlist(Dictionary<string, PatchInfo> merge, List<PatchInfo> patchlist, bool old)
         {
             // Converted concurrent dictionary to standard dictionary because benchmark shows that it can be 60% faster.
             foreach (var p in patchlist)
             {
-                if (!merge.ContainsKey(p.File))
+                if (merge.ContainsKey(p.File) == false)
                 {
                     p.Old = old;
                     merge[p.File] = p;
@@ -264,15 +303,21 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         /// <param name="raw"></param>
         /// <returns></returns>
-        private IList<PatchInfo> ParsePatchlist(string raw)
+        private List<PatchInfo> ParsePatchlist(string raw)
         {
+            var t = Stopwatch.StartNew();
+
             // patchlist structure: [File]\t[Size]\t[Hash]\r\n
 
-            return raw.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+            var result = raw.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                 .AsParallel()
                 .Select(Q => ParsePatchlistRow(Q))
                 .Where(Q => Q != null) // ParsePatchlistRow may be NULL if exception occured!
                 .ToList();
+
+            Output.Benchmark(t, "Parsing patchlist");
+
+            return result;
         }
 
         /// <summary>
