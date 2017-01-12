@@ -1,9 +1,12 @@
 ﻿using ArksLayer.Tweaker.Abstractions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -101,14 +104,14 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         public async Task RestoreBackupFiles()
         {
-            if (!Directory.Exists(Settings.BackupDirectory())) return;
+            if (Directory.Exists(Settings.BackupDirectory()) == false) return;
 
             Settings.EnglishPatchVersion = "Not Installed";
             Settings.EnglishLargePatchVersion = "Not Installed";
             Settings.StoryPatchVersion = "Not Installed";
 
             var backupFiles = await Task.Run(() => Directory.EnumerateFiles(Settings.BackupDirectory(), "*.*", SearchOption.AllDirectories));
-            if (!backupFiles.Any())
+            if (backupFiles.Any() == false)
             {
                 return;
             }
@@ -142,8 +145,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
             var remoteVersion = Downloader.GetRemoteVersion();
             Output.OnUpdateStart(rehash);
 
-            IList<PatchInfo> patchlist;
-            IList<PatchInfo> missingFiles;
+            List<PatchInfo> patchlist;
+            List<PatchInfo> missingFiles;
 
             if (File.Exists(MissingFilesJson))
             {
@@ -155,7 +158,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 var patchlistDownload = Downloader.FetchUpdatePatchlist();
 
                 await RestoreBackupFiles();
-                var gameFiles = await Task.Run(() => EnumerateGameFiles());
+                var gameFiles = await Task.Run(() => ListGameFiles());
                 patchlist = await patchlistDownload;
 
                 if (cleanLegacy)
@@ -211,9 +214,11 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// My game client was updated ever since Episode 2: using this method weeds out 1300+ files (1GB).
         /// </summary>
         /// <returns></returns>
-        private async Task CleanLegacyFiles(IList<PatchInfo> patchlist, IList<string> gameFiles)
+        private async Task CleanLegacyFiles(List<PatchInfo> patchlist, List<string> gameFiles)
         {
             Output.OnLegacyFilesScanning();
+
+            var t = Stopwatch.StartNew();
 
             var requiredFiles = patchlist.AsParallel().Select(Q =>
             {
@@ -229,7 +234,9 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 .Except(requiredFiles)
                 .ToList();
 
-            if (!legacyFiles.Any())
+            Output.Benchmark(t, "Scan legacy files");
+
+            if (legacyFiles.Any() == false)
             {
                 Output.OnLegacyFilesNotFound();
                 return;
@@ -243,6 +250,8 @@ namespace ArksLayer.Tweaker.UpdateEngine
                     File.Delete(file);
                 }
             });
+
+            Output.Benchmark(t, "Destroy legacy files");
         }
         /// <summary>
         /// Compares the patchlist to the game client hashes and discover whether there are missing files that require downloading.
@@ -250,39 +259,55 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <param name="gameFiles"></param>
         /// <param name="patchlist"></param>
         /// <returns></returns>
-        private async Task<IList<PatchInfo>> DiscoverMissingPatches(IDictionary<string, string> gameFiles, IList<PatchInfo> patchlist)
+        private async Task<List<PatchInfo>> DiscoverMissingPatches(Dictionary<string, string> gameFiles, List<PatchInfo> patchlist)
         {
-            var missingFiles = patchlist
-                .ToDictionary(Q => Q.File, Q => Q)
-                .AsParallel()
-                .Select(Q =>
+            var t = Stopwatch.StartNew();
+            var missing = new ConcurrentBag<PatchInfo>();
+
+            Parallel.ForEach(patchlist, patch =>
+            {
+                string hash;
+
+                var isFound = gameFiles.TryGetValue(patch.File, out hash);
+                if (isFound == false)
                 {
-                    string hash;
+                    missing.Add(patch);
+                    Output.AppendLog($"File {patch.File} is missing.");
+                    return;
+                }
 
-                    var isFound = gameFiles.TryGetValue(Q.Key, out hash);
-                    if (!isFound) return Q.Value;
+                if (string.IsNullOrEmpty(hash))
+                {
+                    missing.Add(patch);
+                    Output.AppendLog($"File {patch.File} has null or empty hash?!?");
+                    return;
+                }
 
-                    var isEqual = hash.Equals(Q.Value.Hash, StringComparison.InvariantCultureIgnoreCase);
-                    return isEqual ? null : Q.Value;
+                var isEqual = hash.Equals(patch.Hash, StringComparison.InvariantCultureIgnoreCase);
+                if (isEqual == false)
+                {
+                    missing.Add(patch);
+                    Output.AppendLog($"File {patch.File} hash mismatched; expected: {patch.Hash}, you have: {hash}.");
+                    return;
+                }
+            });
 
-                    // For cleaner syntax, NULL here simply means that the file hash in patchlist is found and is equal.
-                    // AKA, items that are NOT NULL means that the file in patchlist is NOT FOUND or is DIFFERENT and SHOULD BE DOWNLOADED.
-                })
-                .Where(Q => Q != null)
-                .ToList();
+            var result = missing.ToList();
+            Output.OnMissingFilesDiscovery(result.Select(Q => Q.File));
+            await WriteMissingFilesToJson(result);
 
-            Output.OnMissingFilesDiscovery(missingFiles.Select(Q => Q.File));
-            await WriteMissingFilesToJson(missingFiles);
-
-            return missingFiles;
+            Output.Benchmark(t, "Discover missing files");
+            return result;
         }
 
         /// <summary>
         /// Returns a list of all game files.
         /// </summary>
         /// <returns></returns>
-        private IList<string> EnumerateGameFiles()
+        private List<string> ListGameFiles()
         {
+            var t = Stopwatch.StartNew();
+
             var gameFiles = new List<string>(70000);
 
             var dataFiles = Directory.EnumerateFiles(Settings.DataWin32Directory(), "*.*", SearchOption.TopDirectoryOnly).ToList();
@@ -306,6 +331,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
                 }
             }
 
+            Output.Benchmark(t, "Enumerate game files");
             return gameFiles;
         }
 
@@ -316,10 +342,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// <returns></returns>
         private int GetBufferSize(long length)
         {
+            var maxbuffer = 4 * 1024 * 1024;
+
             // Default stream buffer size is 4KB
             if (length < 4096) return 4096;
 
-            if (length < 4096 * 1024)
+            if (length < maxbuffer)
             {
                 // 3000 KB file = 3072000 bytes
                 // pow = 22
@@ -331,7 +359,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
 
             // Most hard drives have 16MB or 32MB buffer size.
             // We'll take 4MB off that for hashing larger files!
-            return 4096 * 1024;
+            return maxbuffer;
         }
 
         /// <summary>
@@ -339,7 +367,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         /// <param name="rehash"></param>
         /// <returns></returns>
-        private async Task<IDictionary<string, string>> GetClientHash(bool rehash)
+        private async Task<Dictionary<string, string>> GetClientHash(bool rehash)
         {
             if (rehash) return await RehashWholeClient();
 
@@ -358,7 +386,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Create a named JSON file containing file-MD5 hashes dictionary.
         /// </summary>
         /// <param name="dictionary"></param>
-        private async Task OverwriteLatestClientJson(IDictionary<string, string> dictionary)
+        private async Task OverwriteLatestClientJson(Dictionary<string, string> dictionary)
         {
             using (var file = File.CreateText(ClientHashesJson))
             {
@@ -367,33 +395,12 @@ namespace ArksLayer.Tweaker.UpdateEngine
         }
 
         /// <summary>
-        /// Return all hashable information of game files.
-        /// File order is sorted for optimal hill-climbing disk buffer and to avoid Branch Predictor failures.
-        /// </summary>
-        /// <returns></returns>
-        private IList<HashModel> PrepareGameFilesHashModels()
-        {
-            return EnumerateGameFiles()
-                .AsParallel()
-                .Select(Q => new FileInfo(Q))
-                .Select(Q => new HashModel
-                {
-                    FileName = Q.FullName,
-                    FileSize = Q.Length,
-                    BufferSize = GetBufferSize(Q.Length),
-                    HashBinary = null
-                })
-                .OrderBy(Q => Q.FileSize)
-                .ToList();
-        }
-
-        /// <summary>
         /// Returns a sequence of all files that were successfully downloaded in prior game client update attempt.
         /// </summary>
         /// <returns></returns>
-        private async Task<IList<string>> ReadDownloadedFilesFromLog()
+        private async Task<List<string>> ReadDownloadedFilesFromLog()
         {
-            if (!File.Exists(DownloadSuccessLog)) return new List<string>();
+            if (File.Exists(DownloadSuccessLog) == false) return new List<string>();
 
             using (var file = File.OpenText(DownloadSuccessLog))
             {
@@ -405,7 +412,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Read latest game client hash dictionary.
         /// </summary>
         /// <returns></returns>
-        private async Task<IDictionary<string, string>> ReadLatestClientHash()
+        private async Task<Dictionary<string, string>> ReadLatestClientHash()
         {
             using (var file = File.OpenText(ClientHashesJson))
             {
@@ -421,7 +428,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Read the sequence of missing files from the named JSON file.
         /// </summary>
         /// <returns></returns>
-        private async Task<IList<PatchInfo>> ReadMissingFilesFromJson()
+        private async Task<List<PatchInfo>> ReadMissingFilesFromJson()
         {
             using (var file = File.OpenText(MissingFilesJson))
             {
@@ -434,7 +441,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// Read the sequence of patch information from the named JSON file.
         /// </summary>
         /// <returns></returns>
-        private async Task<IList<PatchInfo>> ReadPatchlistFromJson()
+        private async Task<List<PatchInfo>> ReadPatchlistFromJson()
         {
             //Output.WriteLine("Reading last downloaded patchlist...");
             using (var file = File.OpenText(PatchlistJson))
@@ -449,87 +456,89 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// When done, save the hashes into the named JSON file and return the result.
         /// </summary>
         /// <returns></returns>
-        private async Task<IDictionary<string, string>> RehashWholeClient()
+        private async Task<Dictionary<string, string>> RehashWholeClient()
         {
-            var gameFiles = await Task.Run(() => PrepareGameFilesHashModels());
-            Output.OnHashStart(gameFiles.Select(Q => Q.FileName));
+            var game = await Task.Run(() =>
+            {
+                // Random shuffle because YOLO.
+                return ListGameFiles().OrderBy(Q => Guid.NewGuid()).Select(Q => new HashModel
+                {
+                    FileName = Q
+                }).ToList();
+            });
+
+            var total = game.Count;
+            Output.OnHashStart(game.Select(Q => Q.FileName));
 
             // Perform the long-running operation in the background thread instead of the UI thread.
             var progress = 0;
-            var hashJob = Task.Run(() =>
+            var streamJob = Task.Run(() =>
             {
-                // Should probably not use multi-threading here.
-                // Hashing is input-bound instead of CPU-bound. Logically should be able to use Async-Await here, but...
-                // Unless you're using SSD, parallel read will cause hard drive head to move back and forth trying to read two files at the same time.
-                // Hence, files are read and hashed in sequential. Too bad.
-                // However, binary hashes can be converted to string later using PLINQ.
-                for (progress = 0; progress < gameFiles.Count; progress++)
+                var t = Stopwatch.StartNew();
+
+                // Read the file sequentially, storing the content in-memory.
+                // Then pass the content to a background process, where the hashes will be computed.
+                // Because reference to the binary array is not being stored, GC will release the memory as needed.
+                // Much more efficient because delays caused by hash workloads are offloaded to background process,
+                // While the files are being read non-stop!
+                foreach (var file in game)
                 {
-                    var file = gameFiles[progress];
-                    try
-                    {
-                        using (var stream = new FileStream(file.FileName, FileMode.Open, FileAccess.Read, FileShare.Read, file.BufferSize))
-                        using (var md5 = MD5.Create())
-                        {
-                            file.HashBinary = md5.ComputeHash(stream);
-                        }
-                    }
-                    catch (Exception Ex)
-                    {
-                        Output.AppendLog($"Hashing failed for file {file.FileName} : {Ex.Message}");
-                    }
+                    var binary = File.ReadAllBytes(file.FileName);
+                    file.ComputeHash(binary, Settings.GameDirectory);
+
+                    progress++;
                 }
 
-                return gameFiles.AsParallel().Where(Q => Q.HashBinary != null).Select(Q =>
-                {
-                    var key = Q.FileName.Remove(0, Settings.GameDirectory.Length + 1).Replace('\\', '/');
-                    var hash = BitConverter.ToString(Q.HashBinary).Replace("-", "").ToLower();
-
-                    return new KeyValuePair<string, string>(key, hash);
-                }).ToDictionary(Q => Q.Key, Q => Q.Value);
+                Output.Benchmark(t, "Read files to hash");
             });
 
             var lastProgress = 0;
             do
             {
-                await Task.Delay(1000);
+                await Task.Delay(500);
                 if (progress > lastProgress)
                 {
                     lastProgress = progress;
-                    Output.OnHashProgress(lastProgress, gameFiles.Count);
+                    Output.OnHashProgress(lastProgress, total);
                 }
-            } while (lastProgress < gameFiles.Count);
+            } while (lastProgress < total);
 
+            await streamJob;
+            var computeJobs = game.Select(Q => Q.ComputeTask);
+            await Task.WhenAll(computeJobs);
+
+            var hashes = game.ToDictionary(Q => Q.Key, Q => Q.Hash);
             Output.OnHashComplete();
 
-            var hashes = await hashJob;
             await OverwriteLatestClientJson(hashes);
             return hashes;
         }
+
         /// <summary>
         /// Read missing files again prior to update interruptions / failure and then read the files that were successfully downloaded previously.
         /// Update the missing files using this information and then return it.
         /// </summary>
         /// <returns></returns>
-        private async Task<IList<PatchInfo>> ResumePatching()
+        private async Task<List<PatchInfo>> ResumePatching()
         {
             var missingFiles = await ReadMissingFilesFromJson();
             var downloaded = new HashSet<string>(await ReadDownloadedFilesFromLog());
 
             if (downloaded.Any())
             {
-                missingFiles = missingFiles.Where(Q => !downloaded.Contains(Q.File)).ToList();
+                missingFiles = missingFiles.Where(Q => downloaded.Contains(Q.File) == false).ToList();
             }
 
             Output.OnPatchingResume(missingFiles.Select(Q => Q.File));
             return missingFiles;
         }
+
         /// <summary>
         /// Attempts to recover the missing files from remote update server or local update repository.
         /// </summary>
         /// <param name="missingFiles">List of missing files</param>
         /// <returns>How many files failed to download</returns>
-        private async Task<int> TryUpdateGame(IList<PatchInfo> missingFiles)
+        private async Task<int> TryUpdateGame(List<PatchInfo> missingFiles)
         {
             using (var doneLog = File.AppendText(DownloadSuccessLog))
             {
@@ -545,7 +554,7 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         /// <param name="missingFiles"></param>
         /// <returns></returns>
-        private async Task WriteMissingFilesToJson(IList<PatchInfo> missingFiles)
+        private async Task WriteMissingFilesToJson(List<PatchInfo> missingFiles)
         {
             if (missingFiles.Any())
             {
