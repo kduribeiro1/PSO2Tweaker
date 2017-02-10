@@ -41,8 +41,8 @@ namespace ArksLayer.Tweaker.Abstractions
         /// </summary>
         public static string GetUserFolderPath(this ITweakerSettings settings)
         {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(documents, @"Documents\SEGA\PHANTASYSTARONLINE2");
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            return Path.Combine(documents, @"SEGA\PHANTASYSTARONLINE2");
         }
 #pragma warning restore RECS0154 // Parameter is never used
 
