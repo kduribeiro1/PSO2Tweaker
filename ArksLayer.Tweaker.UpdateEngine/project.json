@@ -11,7 +11,7 @@
       "url": "https://github.com/ryanelian/PSO2Tweaker"
     }
   },
-  "version": "0.6.6-*",
+  "version": "0.6.7-*",
   "authors": [ "Ryan Elian" ],
   "description": "A high performance game client update module for PSO2 Tweaker.",
   "title": "ArksLayer.Tweaker.UpdateEngine",
@@ -19,7 +19,7 @@
   "dependencies": {
     "ArksLayer.Tweaker.Abstractions": "0.6.6-*",
     "Newtonsoft.Json": "9.0.1",
-    "sharpcompress": "0.14.1"
+    "SharpCompress": "0.15.1"
   },
   "frameworks": {
     "net45": {

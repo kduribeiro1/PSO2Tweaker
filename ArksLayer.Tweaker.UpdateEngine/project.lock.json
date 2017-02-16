@@ -12,7 +12,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "sharpcompress/0.14.1": {
+      "SharpCompress/0.15.1": {
         "type": "package",
         "compile": {
           "lib/net45/SharpCompress.dll": {}
@@ -61,12 +61,12 @@
         "tools/install.ps1"
       ]
     },
-    "sharpcompress/0.14.1": {
-      "sha512": "APj5WSr/Mw0BqhMeX/SvuaqjpwMd9LvKnRstJIEkT/NMWua6TAALG6nPSHxioWB/dOZ8zdBTp8tjSKmSCLhznQ==",
+    "SharpCompress/0.15.1": {
+      "sha512": "iiT6dsbWMoo7RA1JCrbyo7jhoArxAQm0FRgXRQmT7B8EbiVo4bjW57mUnjN9/oNUsPjyOAz/4bGaequX+tpWiQ==",
       "type": "package",
-      "path": "sharpcompress/0.14.1",
+      "path": "SharpCompress/0.15.1",
       "files": [
-        "SharpCompress.0.14.1.nupkg.sha512",
+        "SharpCompress.0.15.1.nupkg.sha512",
         "SharpCompress.nuspec",
         "lib/net35/SharpCompress.dll",
         "lib/net40/SharpCompress.dll",
@@ -87,7 +87,7 @@
     "": [
       "ArksLayer.Tweaker.Abstractions >= 0.6.6-*",
       "Newtonsoft.Json >= 9.0.1",
-      "sharpcompress >= 0.14.1"
+      "SharpCompress >= 0.15.1"
     ],
     ".NETFramework,Version=v4.5": []
   },

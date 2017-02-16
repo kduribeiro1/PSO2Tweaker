@@ -54,9 +54,19 @@ namespace ArksLayer.Tweaker.UpdateEngine
         /// </summary>
         private ITrigger Output { get; set; }
 
+        /// <summary>
+        /// Lock object for manipulating the skip list singleton.
+        /// </summary>
         private object SkipListLock = new object();
+
+        /// <summary>
+        /// Internal container to the list of files to be skipped.
+        /// </summary>
         private HashSet<string> _SkipList;
 
+        /// <summary>
+        /// Using singleton pattern, fetch a list of file to be skipped.
+        /// </summary>
         public HashSet<string> SkipList
         {
             get
@@ -73,10 +83,17 @@ namespace ArksLayer.Tweaker.UpdateEngine
             }
         }
 
+        /// <summary>
+        /// Attempt to read from skip.txt, if exist.
+        /// </summary>
         private void ReadSkipList()
         {
             if (_SkipList == null)
             {
+                if (File.Exists("skip.txt") == false)
+                {
+                    _SkipList = new HashSet<string>();
+                }
                 var ar = File.ReadLines("skip.txt").Select(Q => Q.Trim()).Where(Q => string.IsNullOrEmpty(Q) == false);
                 _SkipList = new HashSet<string>(ar);
             }
