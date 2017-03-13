@@ -1,3 +1,5 @@
+[THIS PROJECT IS DEPRECATED AND NO LONGER WORKED ON. PLEASE SEE [THIS REPOSITORY](https://github.com/Arks-Layer/PSO2TweakerV4) FOR THE NEW VERSION]
+
 PSO2Tweaker
 ===========
 [![Build status](https://ci.appveyor.com/api/projects/status/github/Arks-Layer/PSO2Tweaker?branch=master&svg=true&retina=true)](https://ci.appveyor.com/project/TheCrimsonDevil/pso2tweaker/branch/master)
